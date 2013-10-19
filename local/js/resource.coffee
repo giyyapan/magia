@@ -1,17 +1,27 @@
-class window.ResManager extends EventEmitter
+window.Imgs =
+  buttonCenter:'button_center.png'
+  map:'map.gif'
+  demonMap:'demonMap.gif'
+  elfMap:'elfMap.gif'
+  
+class window.ResourceManager extends Suzaku.EventEmitter
   constructor:()->
+    super()
     @imgs = []
     @sounds = []
     @templates = []
     @loadedNum = 0
     @totalResNum = null
     @loaded =
-      img:{}
+      imgs:{}
       sounds:{}
       templates:{}
-  useImg:(img)->
+    @imgPath = ""
+    @soundPath = ""
+    @tplPath = ""
+  useImg:(name,src)->
     #img.name img.src
-    @imgs.push img
+    @imgs.push name:name,src:src
   useSound:(sound)->
     #sound.name sound.src
     @sounds.push sound
@@ -29,22 +39,21 @@ class window.ResManager extends EventEmitter
       when "img" then @imgPath = path
       when "sound" then @soundPath = path
       when "template" then @tplPath = path
-    console.log 'set #{type} file path:',path if gameConfig.debug
+    #console.log "set #{type} file path:",path if gameConfig.debug
   start:(callback)->
     @on "load",callback if typeof callback is "function"
     @loadedNum = 0
-    @totalResNum = @imgs.length + @sounds.length + @totalResNum.length
+    @totalResNum = @imgs.length + @sounds.length + @templates.length
     ajaxManager = new Suzaku.AjaxManager
     for img in @imgs
+      console.log img
       i = new Image()
       i.src = @imgPath+img.src
       i.addEventListener "load",=>
         @loaded.imgs[img.name] = i
         @_resOnload 'img'
-        
     #for sound in @sounds
       #@_resOnload 'sound'
-
     localDir = @tplPath
     for tplName in @templates
       url = if name.indexOf(".html")>-1 then localDir+tplName else localDir+tplName+".html"
@@ -52,12 +61,13 @@ class window.ResManager extends EventEmitter
         @loaded.templates[req.Suzaku_tplName] = data
         @_resOnload 'template'
       req.Suzaku_tplName = tplName
-      
     ajaxManager.start =>
       console.log "template loaded" if gameConfig.debug
-      
   _resOnload:(type)->
     @loadedNum += 1
-    @emit "loadOne",type
+    @emit "loadOne",@totalResNum,@loadedNum,type
     if @loadedNum >= @totalResNum
       @emit "load",@loaded
+
+
+  

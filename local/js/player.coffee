@@ -1,6 +1,6 @@
 playerData =
   name:"Nola"
-  lastArea:"home"
+  lastScene:"home"
   level:1
   assert:
     money:4000
@@ -24,11 +24,9 @@ playerData =
     spd:8
     luk:10
     
-class Player extends Suzaku.EventEmitter
+class window.PlayerData
   constructor:(data)->
     @data = data
-    @data = playerData
+    @data = playerData if not data
     for name of @data
       this[name] = @data[name]
-    
-    
