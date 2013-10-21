@@ -185,12 +185,14 @@ class AjaxManager extends EventEmitter
       url:url
       data:data
       dataType:dataType
+      retry:5
       success:success
   addPostRequest:(url,data,success,dataType)->
     return @addRequest
       type:"post"
       url:url
       data:data
+      retry:5
       dataType:dataType
       success:success
   start:(callback)->
@@ -238,6 +240,7 @@ class AjaxManager extends EventEmitter
     console.log "ajax error",error if debug
     taskOpt = req.Suzaku_taskOpt
     retry = taskOpt.retry
+    retry = 5 if not retry
     retried = req.Suzaku_retried or 0
     if retried < retry
       ajaxReq = $.ajax req.Suzaku_JAjaxReqOpt

@@ -1,4 +1,5 @@
 window.Utils =
+  getSize:->
   setCSS3Attr:(dom,name,value)->
     J = $(dom)
     obj = {}

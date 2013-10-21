@@ -3,6 +3,14 @@ window.Imgs =
   map:'map.gif'
   demonMap:'demonMap.gif'
   elfMap:'elfMap.gif'
+  homeDown:'home_down.jpg'
+  homeUp:'home_up.jpg'
+window.Templates = [
+  "start-menu"
+  "home-1st-floor"
+  "home-2nd-floor"
+  ]
+window.Css = []
   
 class window.ResourceManager extends Suzaku.EventEmitter
   constructor:()->
@@ -30,7 +38,7 @@ class window.ResourceManager extends Suzaku.EventEmitter
     @templates.push template
   setPath:(type,path)->
     if typeof path isnt "string"
-      return console.error "Illegal Path: #{path} --ResManager" if gameConfig.debug
+      return console.error "Illegal Path: #{path} --ResManager" if GameConfig.debug
     arr = path.split ''
     if arr[arr.length-1] isnt "/"
       arr.push "/"
@@ -39,19 +47,21 @@ class window.ResourceManager extends Suzaku.EventEmitter
       when "img" then @imgPath = path
       when "sound" then @soundPath = path
       when "template" then @tplPath = path
-    #console.log "set #{type} file path:",path if gameConfig.debug
+    #console.log "set #{type} file path:",path if GameConfig.debug
   start:(callback)->
     @on "load",callback if typeof callback is "function"
     @loadedNum = 0
     @totalResNum = @imgs.length + @sounds.length + @templates.length
     ajaxManager = new Suzaku.AjaxManager
+    self = this
     for img in @imgs
       console.log img
       i = new Image()
       i.src = @imgPath+img.src
-      i.addEventListener "load",=>
-        @loaded.imgs[img.name] = i
-        @_resOnload 'img'
+      i.name = img.name
+      i.addEventListener "load",->
+        self.loaded.imgs[this.name] = this
+        self._resOnload 'img'
     #for sound in @sounds
       #@_resOnload 'sound'
     localDir = @tplPath
@@ -62,7 +72,7 @@ class window.ResourceManager extends Suzaku.EventEmitter
         @_resOnload 'template'
       req.Suzaku_tplName = tplName
     ajaxManager.start =>
-      console.log "template loaded" if gameConfig.debug
+      console.log "template loaded" if GameConfig.debug
   _resOnload:(type)->
     @loadedNum += 1
     @emit "loadOne",@totalResNum,@loadedNum,type

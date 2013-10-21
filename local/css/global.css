@@ -1,3 +1,5 @@
+/* line 1, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000031}}
 .no-user-select {
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -5,6 +7,8 @@
   -khtml-user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+/* line 8, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000038}}
 body,
 canvas,
 div {
@@ -14,28 +18,40 @@ div {
   -khtml-user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+/* line 11, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000311}}
+button {
+  font-size: 18px;
+  padding: 10px;
+}
+/* line 15, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000315}}
 body {
   text-align: center;
 }
+/* line 18, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000318}}
 #gameCanvas {
   border: 1px solid white;
-  background-color: rgba(100, 100, 100, 0.3);
 }
+/* line 22, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000322}}
 #BGLayer {
-  background-color: rgba(50, 50, 200, 0.3);
+  background-color: #efefef;
 }
-#UILayer {
-  background-color: rgba(50, 200, 50, 0.3);
-}
+/* line 28, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000328}}
 .screen {
   position: absolute;
   top: 0;
   width: 1280px;
   height: 720px;
 }
+/* line 34, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000334}}
 #loadingPage {
   padding-top: 150px;
-  background-color: #444;
+  background-color: #666;
   color: white;
   width: 100%;
   height: 100%;

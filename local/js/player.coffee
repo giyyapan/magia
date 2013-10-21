@@ -1,6 +1,6 @@
 playerData =
   name:"Nola"
-  lastScene:"home"
+  lastStage:"home"
   level:1
   assert:
     money:4000

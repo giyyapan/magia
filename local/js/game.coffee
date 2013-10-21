@@ -2,23 +2,6 @@ conf =
   debug:2 #0 to turn debug off, 1 for basic debug, and 2 for full debug
   showFPS:true
   frameRate:60
-  script:[
-    'js/base.js'
-    'js/utils.js'
-    
-    'js/player.js'
-    #'js/item.js'
-    #'js/monster.js'
-    
-    'js/startScene.js'
-    #'js/home.js'
-    #'js/worldMap.js'
-    #'js/town.js'
-    #'js/area.js'
-    
-    'js/resource.js'
-    'js/magia.js'
-    ]
     
 if not document.createElement('canvas').getContext
   dom = document.createElement('div')
@@ -32,11 +15,6 @@ if not document.createElement('canvas').getContext
   
   document.body.style.background = '#ffffff'
 
-window.gameConfig = conf
-scriptContainer = $("#script-container").get(0)
-for script in conf.script
-  s = document.createElement('script')
-  s.src = script 
-  scriptContainer.appendChild s
+window.GameConfig = conf
 
         
