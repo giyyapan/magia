@@ -1,6 +1,7 @@
-class FirstFloor extends Layer
+class FirstFloor extends Drawable
   constructor:(@stage)->
     super()
+    @camera = @stage.camera
     @menu = new Menu Res.tpls["home-1st-floor"]
     @setImg Res.imgs.homeDown
     @menu.UI.upstairs.onclick = =>
@@ -8,18 +9,21 @@ class FirstFloor extends Layer
   moveDown:(callback)->
     s = Utils.getSize()
     @transform.rotate = 0
-    @animate {y:s.height,"transform.rotate":0.5,"transform.opacity":0},"normal","swing",callback
+    #@animate {y:s.height,"transform.rotate":0.5,"transform.opacity":0},"normal","swing",callback
+    @animate {y:s.height},"normal","swing",callback
   moveUp:(callback)->
-    @animate {y:0,"transform.rotate":0,"transform.opacity":1},"normal","swing",callback
+    #@animate {y:0,"transform.rotate":0,"transform.opacity":1},"normal","swing",callback
+    @animate {y:0},"normal","swing",callback
   show:->
     @menu.hide()
     @fadeIn "fast",=>
       @menu.show()
     
-class SecondFloor extends Layer
+class SecondFloor extends Drawable
   constructor:(@stage)->
     super()
     @y = - Utils.getSize().height
+    @camera = @stage.camera
     @menu = new Menu Res.tpls["home-2nd-floor"]
     @setImg Res.imgs.homeUp
     @menu.UI.downstairs.onclick = =>
@@ -36,8 +40,8 @@ class window.Home extends Stage
     @game = game
     playerData = game.playerData
     @camera = new Camera()
-    @firstFloor = new FirstFloor playerData
-    @secondFloor = new SecondFloor playerData
+    @firstFloor = new FirstFloor this
+    @secondFloor = new SecondFloor this
     @drawQueueAddAfter @secondFloor,@firstFloor
     @firstFloor.on "goUp",=>
       @firstFloor.menu.hide()

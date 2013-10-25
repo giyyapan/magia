@@ -11,6 +11,7 @@
       var _this = this;
       this.stage = stage;
       FirstFloor.__super__.constructor.call(this);
+      this.camera = this.stage.camera;
       this.menu = new Menu(Res.tpls["home-1st-floor"]);
       this.setImg(Res.imgs.homeDown);
       this.menu.UI.upstairs.onclick = function() {
@@ -23,17 +24,13 @@
       s = Utils.getSize();
       this.transform.rotate = 0;
       return this.animate({
-        y: s.height,
-        "transform.rotate": 0.5,
-        "transform.opacity": 0
+        y: s.height
       }, "normal", "swing", callback);
     };
 
     FirstFloor.prototype.moveUp = function(callback) {
       return this.animate({
-        y: 0,
-        "transform.rotate": 0,
-        "transform.opacity": 1
+        y: 0
       }, "normal", "swing", callback);
     };
 
@@ -47,7 +44,7 @@
 
     return FirstFloor;
 
-  })(Layer);
+  })(Drawable);
 
   SecondFloor = (function(_super) {
     __extends(SecondFloor, _super);
@@ -57,6 +54,7 @@
       this.stage = stage;
       SecondFloor.__super__.constructor.call(this);
       this.y = -Utils.getSize().height;
+      this.camera = this.stage.camera;
       this.menu = new Menu(Res.tpls["home-2nd-floor"]);
       this.setImg(Res.imgs.homeUp);
       this.menu.UI.downstairs.onclick = function() {
@@ -80,7 +78,7 @@
 
     return SecondFloor;
 
-  })(Layer);
+  })(Drawable);
 
   window.Home = (function(_super) {
     __extends(Home, _super);
@@ -92,8 +90,8 @@
       this.game = game;
       playerData = game.playerData;
       this.camera = new Camera();
-      this.firstFloor = new FirstFloor(playerData);
-      this.secondFloor = new SecondFloor(playerData);
+      this.firstFloor = new FirstFloor(this);
+      this.secondFloor = new SecondFloor(this);
       this.drawQueueAddAfter(this.secondFloor, this.firstFloor);
       this.firstFloor.on("goUp", function() {
         _this.firstFloor.menu.hide();

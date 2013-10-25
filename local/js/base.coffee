@@ -3,6 +3,7 @@ class window.Drawable extends Suzaku.EventEmitter
     super()
     @x = x or 0
     @y = y or 0
+    @z = null
     @imgData = null
     @width = width or 30
     @height = height or 30
@@ -11,28 +12,45 @@ class window.Drawable extends Suzaku.EventEmitter
     @onshow = true
     @transform =
       opacity:null
+      translateX:0
+      translateY:0
+      translateZ:0
       scaleX:null
       scaleY:null
+      scale:null
       rotate:null
       martrix:null
     @drawQueue = 
       before:[]
       after:[]
+    @realValue = {}
+    @_initAnimate()
+  _initAnimate:->
+    @_animates = []
+    for name,f of Animate.funcs
+      this[name] = f
   onDraw:(context,tickDelay)->
+    @_handleAnimate tickDelay
+    for name,value in @transform when value isnt null
+      @realValue[name] = value
+    @emit "onDraw",this
     context.save()
-    @handleTransform context
+    @_handleTransform context
     for item in @drawQueue.before
       item.onDraw context,tickDelay
     @draw context if @draw
     for item in @drawQueue.after
       item.onDraw context,tickDelay
     context.restore()
-  handleTransform:(context)->
-    t = @transform
+  _handleTransform:(context)->
+    r = @realValue
     context.translate parseInt @x,parseInt @y
-    context.globalAlpha = t.opacity if t.opacity
-    context.scale (t.scaleX or 1),(t.scaleY or 1) if t.scaleX or t.scaleY
-    context.rotate t.rotate if t.rotate
+    context.globalAlpha = t.opacity if r.opacity isnt null
+    if r.scaleX or r.scaleY isnt null or r.scale isnt null
+      r.scaleX = r.scaleX or r.scale or 1
+      r.scaleY = r.scaleY or r.scale or 1
+      context.scale t.scaleX,t.scaleY
+    context.rotate t.rotate if r.rotate isnt null
   setImg:(img,resX,resY,resWidth,resHeight)->
     @imgData =
       img:img
@@ -69,18 +87,10 @@ class window.Drawable extends Suzaku.EventEmitter
     for d in arguments
       console.error "#{d} is not drawable" if not d.onDraw
       @drawQueue.before.push d 
-      
-class window.Animateble extends Drawable
-  constructor:(x,y,width,height)->
-    super x,y,width,height
-    @_animates = []
-  onDraw:(context,tickDelay)->
-    @_handleAnimate tickDelay
-    super context,tickDelay
   _handleAnimate:(tickDelay)->
     for a in @_animates
       a.sumDelay += tickDelay
-      p = a.easing(a.time,a.sumDelay)
+      p = a.easing(a.time,a.sumDelay,a.tickDelay)
       if p > 0.99
         p = 1
         a.end = true
@@ -92,14 +102,6 @@ class window.Animateble extends Drawable
       else arr.push a
     item = null for item in @_animates
     @_animates = arr
-  fadeIn:(time,callback)->
-    @animate ((p)->
-      @transform.opacity = p
-      ),time,"linear",callback
-  fadeOut:(time,callback)->
-    @animate ((p)->
-      @transform.opacity = 1 - p
-      ),time,"linear",callback
   animate:(func,time="normal",easing="swing",callback)->
     return console.error "no func" if not func
     if typeof func is "object"
@@ -111,9 +113,7 @@ class window.Animateble extends Drawable
         when "normal" then time = 350
         when "slow" then time = 600
     if typeof easing is "string"
-      switch easing
-        when "swing" then easing = Animateble.swing
-        else easing = Animateble.linear
+      easing = Animate.easing[easing]
     @_animates.push
       func:func
       time:time
@@ -141,16 +141,24 @@ class window.Animateble extends Drawable
         data = dataObj[name]
         ref[n] = data.origin + data.delta * p
     return f
+Animate =
+  easing:
+    swing:(time,sumDelay)->
+      return p = sumDelay/time
+    linear:(time,sumDelay,tickDelay)->
+      p = sumDelay/time
+      return (-Math.cos(p*Math.PI)/2+0.5)
+  funcs:
+    fadeIn:(time,callback)->
+      @animate ((p)->
+        @transform.opacity = p
+        ),time,"linear",callback
+    fadeOut:(time,callback)->
+      @animate ((p)->
+        @transform.opacity = 1 - p
+        ),time,"linear",callback
 
-      
-Animateble.swing = (time,sumDelay)->
-  return p = sumDelay/time
-  
-Animateble.linear = (time,sumDelay,tickDelay)->
-  p = sumDelay/time
-  return (-Math.cos(p*Math.PI)/2+0.5)
-
-class window.Camera extends Animateble
+class window.Camera extends Drawable
   constructor:(x,y)->
     size = Utils.getSize()
     x = x or size.width/2
@@ -180,34 +188,15 @@ class window.Camera extends Animateble
     @x = @defaultX
     @y = @defaultY
     @lens = @defaultLens
+  render:->
+    for d in arguments
+      console.error "#{d} is not drawable" if not d.onDraw and GameConfig.debug
+      onDraw.on "onDraw",(d)=>
+        @_render d
+  _render:(d)->
+    d.realValue.translateX -= this.x
+    d.realValue.translateY -= this.y
     
-class window.Layer extends Animateble
-  constructor:(x,y,width,height)->
-    s = Utils.getSize()
-    super 0,0,s.width,s.height
-    @anchorX = 0
-    @anchorY = 0
-    @z = 0
-    @camera = null
-  setCamera:(c)->
-    @camera = c
-  renderWithCamera:(context)->
-    context.translate parseInt -@camera.x,parseInt -@camera.y
-  onDraw:(context,tickDelay)->
-    @_handleAnimate tickDelay
-    context.save()
-    @handleTransform context
-    @renderWithCamera() if @camera
-    for item in @drawQueue.before
-      item.onDraw context
-    @draw context if @draw
-    for item in @drawQueue.after
-      item.onDraw context
-    context.restore()
-  renderWithCamera:(context)->
-    context.translate parseInt -@camera.x,parseInt -@camera.y
-
-
 class window.Menu extends Suzaku.Widget
   constructor:(tpl)->
     super tpl
@@ -222,7 +211,7 @@ class window.Menu extends Suzaku.Widget
   hide:->
     @J.fadeOut "fast"
     
-class window.Stage extends Animateble
+class window.Stage extends Drawable
   constructor:(@game)->
     super()
     @anchorX = 0

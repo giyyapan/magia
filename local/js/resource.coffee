@@ -1,5 +1,6 @@
 window.Imgs =
   buttonCenter:'button_center.png'
+  scree:'scree.png'
   map:'map.gif'
   demonMap:'demonMap.gif'
   elfMap:'elfMap.gif'
@@ -9,6 +10,7 @@ window.Templates = [
   "start-menu"
   "home-1st-floor"
   "home-2nd-floor"
+  "world-map"
   ]
 window.Css = []
   

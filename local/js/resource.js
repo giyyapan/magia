@@ -5,6 +5,7 @@
 
   window.Imgs = {
     buttonCenter: 'button_center.png',
+    scree: 'scree.png',
     map: 'map.gif',
     demonMap: 'demonMap.gif',
     elfMap: 'elfMap.gif',
@@ -12,7 +13,7 @@
     homeUp: 'home_up.jpg'
   };
 
-  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor"];
+  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map"];
 
   window.Css = [];
 
