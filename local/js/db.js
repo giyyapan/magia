@@ -34,17 +34,17 @@
         y: 0,
         subAreas: {
           entry: {
-            bg: [Res.imgs.homeDown],
+            bg: [Res.imgs.forest1],
             resPoints: ["1,1", "20,20", "30,30", "50,50"],
             movePoints: ["exit", "west", "east"]
           },
           east: {
-            bg: Res.imgs.homeDown,
+            bg: Res.imgs.forest2,
             resPoints: ["1,1", "20,80"],
             movePoints: ["entry"]
           },
           west: {
-            bg: Res.imgs.homeDown,
+            bg: Res.imgs.forest3,
             resPoints: ["1,1", "20,80"],
             movePoints: ["entry"]
           }

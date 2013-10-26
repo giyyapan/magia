@@ -1,4 +1,4 @@
-class FirstFloor extends Drawable
+class FirstFloor extends Layer
   constructor:(@stage)->
     super()
     @camera = @stage.camera
@@ -19,7 +19,7 @@ class FirstFloor extends Drawable
     @fadeIn "fast",=>
       @menu.show()
     
-class SecondFloor extends Drawable
+class SecondFloor extends Layer
   constructor:(@stage)->
     super()
     @y = - Utils.getSize().height
@@ -55,4 +55,3 @@ class window.Home extends Stage
         @firstFloor.menu.show()
     @firstFloor.show()
   tick:->
-  draw:->

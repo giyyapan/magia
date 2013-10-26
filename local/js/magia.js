@@ -59,15 +59,18 @@
       tickDelay = this.nowTickTime - this.lastTickTime;
       context = this.canvas.dom.getContext("2d");
       this.clearCanvas(context);
+      if (this.currentStage) {
+        this.currentStage.tick(tickDelay);
+        this.currentStage.onDraw(context, tickDelay);
+      }
       if (window.GameConfig.showFPS) {
         context.fillStyle = "white";
         context.font = "30px Arail";
         fps = 1000 / tickDelay;
+        if (fps < 30 && GameConfig.debug > 1) {
+          console.log(fps);
+        }
         context.fillText("fps:" + (parseInt(fps)), 10, 30);
-      }
-      if (this.currentStage) {
-        this.currentStage.tick(tickDelay);
-        this.currentStage.onDraw(context, tickDelay);
       }
       self = this;
       return window.requestAnimationFrame(function() {

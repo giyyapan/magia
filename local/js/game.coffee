@@ -2,6 +2,8 @@ conf =
   debug:2 #0 to turn debug off, 1 for basic debug, and 2 for full debug
   showFPS:true
   frameRate:60
+  canvasId:"#gameCanvas"
+  UILayerId:"#UILayer"
     
 if not document.createElement('canvas').getContext
   dom = document.createElement('div')

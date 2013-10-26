@@ -1,5 +1,10 @@
 /* line 1, global.less */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000031}}
+template {
+  display: none;
+}
+/* line 2, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000032}}
 .no-user-select {
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -7,8 +12,8 @@
   -khtml-user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-/* line 8, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000038}}
+/* line 9, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000039}}
 body,
 canvas,
 div {
@@ -18,37 +23,37 @@ div {
   -khtml-user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-/* line 11, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000311}}
+/* line 12, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000312}}
 button {
   font-size: 18px;
   padding: 10px;
 }
-/* line 15, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000315}}
+/* line 16, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000316}}
 body {
   text-align: center;
 }
-/* line 18, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000318}}
+/* line 19, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000319}}
 #gameCanvas {
   border: 1px solid white;
 }
-/* line 22, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000322}}
+/* line 23, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000323}}
 #BGLayer {
   background-color: #efefef;
 }
-/* line 28, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000328}}
+/* line 29, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000329}}
 .screen {
   position: absolute;
   top: 0;
   width: 1280px;
   height: 720px;
 }
-/* line 34, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000334}}
+/* line 35, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000335}}
 #loadingPage {
   padding-top: 150px;
   background-color: #666;

@@ -21,15 +21,15 @@ class window.DB extends Suzaku.EventEmitter
       x:0,y:0
       subAreas:
         entry:
-          bg:[Res.imgs.homeDown] #day,night
+          bg:[Res.imgs.forest1] #day,night
           resPoints:["1,1","20,20","30,30","50,50"] #start from 1
           movePoints:["exit","west","east"]
         east:
-          bg:Res.imgs.homeDown
+          bg:Res.imgs.forest2
           resPoints:["1,1","20,80"]
           movePoints:["entry"]
         west:
-          bg:Res.imgs.homeDown
+          bg:Res.imgs.forest3
           resPoints:["1,1","20,80"]
           movePoints:["entry"]
   initThings:->

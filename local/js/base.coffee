@@ -4,11 +4,13 @@ class window.Drawable extends Suzaku.EventEmitter
     @x = x or 0
     @y = y or 0
     @z = null
+    @offsetSize = true
     @imgData = null
     @width = width or 30
     @height = height or 30
     @anchorX = parseInt @width/2
     @anchorY = parseInt @height/2
+    @renderData = null
     @onshow = true
     @transform =
       opacity:null
@@ -33,9 +35,9 @@ class window.Drawable extends Suzaku.EventEmitter
     @_handleAnimate tickDelay
     for name,value in @transform when value isnt null
       @realValue[name] = value
-    @emit "onDraw",this
     context.save()
     @_handleTransform context
+    @emit "render",this
     for item in @drawQueue.before
       item.onDraw context,tickDelay
     @draw context if @draw
@@ -45,12 +47,12 @@ class window.Drawable extends Suzaku.EventEmitter
   _handleTransform:(context)->
     r = @realValue
     context.translate parseInt @x,parseInt @y
-    context.globalAlpha = t.opacity if r.opacity isnt null
+    context.globalAlpha = r.opacity if r.opacity isnt null
     if r.scaleX or r.scaleY isnt null or r.scale isnt null
       r.scaleX = r.scaleX or r.scale or 1
       r.scaleY = r.scaleY or r.scale or 1
-      context.scale t.scaleX,t.scaleY
-    context.rotate t.rotate if r.rotate isnt null
+      context.scale r.scaleX,r.scaleY
+    context.rotate r.rotate if r.rotate isnt null
   setImg:(img,resX,resY,resWidth,resHeight)->
     @imgData =
       img:img
@@ -157,8 +159,16 @@ Animate =
       @animate ((p)->
         @transform.opacity = 1 - p
         ),time,"linear",callback
-
+        
+class window.Layer extends Drawable
+  constructor:->
+    s = Utils.getSize()
+    super 0,0,s.width,s.height
+    @anchorX = 0
+    @anchorY = 0
+    
 class window.Camera extends Drawable
+  #Camera need to be pushed to drawQueue
   constructor:(x,y)->
     size = Utils.getSize()
     x = x or size.width/2
@@ -168,6 +178,7 @@ class window.Camera extends Drawable
     @defaultX = @x
     @defaultY = @y
     @lens = @defaultLens = 1
+    @degree = 30
   lookAt:(target,time)->
     @moveTo target.x,target.y,time
     @lensTo (@width/target.width * 1.1),time
@@ -188,28 +199,70 @@ class window.Camera extends Drawable
     @x = @defaultX
     @y = @defaultY
     @lens = @defaultLens
+  onDraw:(context,tickDelay)->
+    @_handleAnimate tickDelay
   render:->
+    #先用render方法对drawable或者menu设置监听器，再将他们压入stage的绘制队列中
+    self = this
+    size = Utils.getSize()
     for d in arguments
-      console.error "#{d} is not drawable" if not d.onDraw and GameConfig.debug
-      onDraw.on "onDraw",(d)=>
-        @_render d
-  _render:(d)->
-    d.realValue.translateX -= this.x
-    d.realValue.translateY -= this.y
+      if d.onDraw
+        d.on "render",->
+          self._render this,size
+      else if d instanceof Menu
+        d.on "render",->
+          self._renderMenu this,size
+      console.error "#{d} is not drawable or Menu" if not d.onDraw and GameConfig.debug
+  _render:(d,s)->
+    if not d.renderData
+      d.renderData =
+        z:d.z - 1
+    rd = d.renderData
+    if rd.z isnt d.z + d.realValue.translateZ
+      rd.z = d.z + d.realValue.translateZ
+      rd.scaleX = (s.width + d.z * Math.tan(@degree))/s.width
+      rd.scaleY = (s.height + d.z * Math.tan(@degree))/s.height
+    sX = rd.scaleX * @lens
+    sY = rd.scaleY * @lens
+    r = d.realValue
+    if not d.offsetSize
+      r.scaleX *= sX
+      r.scaleY *= sY
+    r.rotate -= @rotate
+    r.translateX -= this.x * sX
+    r.translateY -= this.y * sY
+  _renderMenu:(m,s)->
+    if not m.renderData
+      m.renderData =
+        z:d.z - 1
+    rd = d.renderData
+    if rd.z isnt m.z
+      rd.z = m.z
+      rd.scaleX = (s.width + m.z * Math.tan(@degree))/s.width
+      rd.scaleY = (s.height + m.z * Math.tan(@degree))/s.height
+    Utils.setCSS3Attr m.J,"transform-origin","#{@x}px #{@y}px"
+    value = "translate(#{-@x},#{-@y})"
+    if not m.offsetSize
+      value += "scale(#{rd.scaleX * @lens},#{rd.scaleY * @lens})"
+    Utils.setCSS3Attr m.J,"transform",value
     
 class window.Menu extends Suzaku.Widget
   constructor:(tpl)->
     super tpl
-    @J = $("#UILayer")
+    console.log this
+    @z = 0
+    @UILayer = $ GameConfig.UILayerId 
   init:->
-    @J.hide()
-    @J.html ""
-    @appendTo @J
+    @UILayer.hide()
+    @UILayer.html ""
+    @appendTo @UILayer 
   show:->
     @init()
-    @J.fadeIn "fast"
+    @UILayer.fadeIn "fast"
   hide:->
-    @J.fadeOut "fast"
+    @UILayer.fadeOut "fast"
+  onDraw:->
+    @emit "render"
     
 class window.Stage extends Drawable
   constructor:(@game)->
@@ -220,4 +273,5 @@ class window.Stage extends Drawable
     @fadeIn "fast",callback
   hide:(callback)->
     @fadeOut "fast",callback
+  draw:->
   tick:->

@@ -44,7 +44,7 @@
 
     return FirstFloor;
 
-  })(Drawable);
+  })(Layer);
 
   SecondFloor = (function(_super) {
     __extends(SecondFloor, _super);
@@ -78,7 +78,7 @@
 
     return SecondFloor;
 
-  })(Drawable);
+  })(Layer);
 
   window.Home = (function(_super) {
     __extends(Home, _super);
@@ -111,8 +111,6 @@
     }
 
     Home.prototype.tick = function() {};
-
-    Home.prototype.draw = function() {};
 
     return Home;
 

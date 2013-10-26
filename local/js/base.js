@@ -12,11 +12,13 @@
       this.x = x || 0;
       this.y = y || 0;
       this.z = null;
+      this.offsetSize = true;
       this.imgData = null;
       this.width = width || 30;
       this.height = height || 30;
       this.anchorX = parseInt(this.width / 2);
       this.anchorY = parseInt(this.height / 2);
+      this.renderData = null;
       this.onshow = true;
       this.transform = {
         opacity: null,
@@ -59,9 +61,9 @@
           this.realValue[name] = value;
         }
       }
-      this.emit("onDraw", this);
       context.save();
       this._handleTransform(context);
+      this.emit("render", this);
       _ref1 = this.drawQueue.before;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
         item = _ref1[_j];
@@ -83,15 +85,15 @@
       r = this.realValue;
       context.translate(parseInt(this.x, parseInt(this.y)));
       if (r.opacity !== null) {
-        context.globalAlpha = t.opacity;
+        context.globalAlpha = r.opacity;
       }
       if (r.scaleX || r.scaleY !== null || r.scale !== null) {
         r.scaleX = r.scaleX || r.scale || 1;
         r.scaleY = r.scaleY || r.scale || 1;
-        context.scale(t.scaleX, t.scaleY);
+        context.scale(r.scaleX, r.scaleY);
       }
       if (r.rotate !== null) {
-        return context.rotate(t.rotate);
+        return context.rotate(r.rotate);
       }
     };
 
@@ -318,6 +320,21 @@
     }
   };
 
+  window.Layer = (function(_super) {
+    __extends(Layer, _super);
+
+    function Layer() {
+      var s;
+      s = Utils.getSize();
+      Layer.__super__.constructor.call(this, 0, 0, s.width, s.height);
+      this.anchorX = 0;
+      this.anchorY = 0;
+    }
+
+    return Layer;
+
+  })(Drawable);
+
   window.Camera = (function(_super) {
     __extends(Camera, _super);
 
@@ -331,6 +348,7 @@
       this.defaultX = this.x;
       this.defaultY = this.y;
       this.lens = this.defaultLens = 1;
+      this.degree = 30;
     }
 
     Camera.prototype.lookAt = function(target, time) {
@@ -364,25 +382,79 @@
       return this.lens = this.defaultLens;
     };
 
+    Camera.prototype.onDraw = function(context, tickDelay) {
+      return this._handleAnimate(tickDelay);
+    };
+
     Camera.prototype.render = function() {
-      var d, _i, _len, _results,
-        _this = this;
+      var d, self, size, _i, _len, _results;
+      self = this;
+      size = Utils.getSize();
       _results = [];
       for (_i = 0, _len = arguments.length; _i < _len; _i++) {
         d = arguments[_i];
-        if (!d.onDraw && GameConfig.debug) {
-          console.error("" + d + " is not drawable");
+        if (d.onDraw) {
+          d.on("render", function() {
+            return self._render(this, size);
+          });
+        } else if (d instanceof Menu) {
+          d.on("render", function() {
+            return self._renderMenu(this, size);
+          });
         }
-        _results.push(onDraw.on("onDraw", function(d) {
-          return _this._render(d);
-        }));
+        if (!d.onDraw && GameConfig.debug) {
+          _results.push(console.error("" + d + " is not drawable or Menu"));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     };
 
-    Camera.prototype._render = function(d) {
-      d.realValue.translateX -= this.x;
-      return d.realValue.translateY -= this.y;
+    Camera.prototype._render = function(d, s) {
+      var r, rd, sX, sY;
+      if (!d.renderData) {
+        d.renderData = {
+          z: d.z - 1
+        };
+      }
+      rd = d.renderData;
+      if (rd.z !== d.z + d.realValue.translateZ) {
+        rd.z = d.z + d.realValue.translateZ;
+        rd.scaleX = (s.width + d.z * Math.tan(this.degree)) / s.width;
+        rd.scaleY = (s.height + d.z * Math.tan(this.degree)) / s.height;
+      }
+      sX = rd.scaleX * this.lens;
+      sY = rd.scaleY * this.lens;
+      r = d.realValue;
+      if (!d.offsetSize) {
+        r.scaleX *= sX;
+        r.scaleY *= sY;
+      }
+      r.rotate -= this.rotate;
+      r.translateX -= this.x * sX;
+      return r.translateY -= this.y * sY;
+    };
+
+    Camera.prototype._renderMenu = function(m, s) {
+      var rd, value;
+      if (!m.renderData) {
+        m.renderData = {
+          z: d.z - 1
+        };
+      }
+      rd = d.renderData;
+      if (rd.z !== m.z) {
+        rd.z = m.z;
+        rd.scaleX = (s.width + m.z * Math.tan(this.degree)) / s.width;
+        rd.scaleY = (s.height + m.z * Math.tan(this.degree)) / s.height;
+      }
+      Utils.setCSS3Attr(m.J, "transform-origin", "" + this.x + "px " + this.y + "px");
+      value = "translate(" + (-this.x) + "," + (-this.y) + ")";
+      if (!m.offsetSize) {
+        value += "scale(" + (rd.scaleX * this.lens) + "," + (rd.scaleY * this.lens) + ")";
+      }
+      return Utils.setCSS3Attr(m.J, "transform", value);
     };
 
     return Camera;
@@ -394,22 +466,28 @@
 
     function Menu(tpl) {
       Menu.__super__.constructor.call(this, tpl);
-      this.J = $("#UILayer");
+      console.log(this);
+      this.z = 0;
+      this.UILayer = $(GameConfig.UILayerId);
     }
 
     Menu.prototype.init = function() {
-      this.J.hide();
-      this.J.html("");
-      return this.appendTo(this.J);
+      this.UILayer.hide();
+      this.UILayer.html("");
+      return this.appendTo(this.UILayer);
     };
 
     Menu.prototype.show = function() {
       this.init();
-      return this.J.fadeIn("fast");
+      return this.UILayer.fadeIn("fast");
     };
 
     Menu.prototype.hide = function() {
-      return this.J.fadeOut("fast");
+      return this.UILayer.fadeOut("fast");
+    };
+
+    Menu.prototype.onDraw = function() {
+      return this.emit("render");
     };
 
     return Menu;
@@ -433,6 +511,8 @@
     Stage.prototype.hide = function(callback) {
       return this.fadeOut("fast", callback);
     };
+
+    Stage.prototype.draw = function() {};
 
     Stage.prototype.tick = function() {};
 

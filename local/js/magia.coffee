@@ -36,14 +36,15 @@ class Magia
     tickDelay =  @nowTickTime - @lastTickTime
     context = @canvas.dom.getContext "2d"
     @clearCanvas context
+    if @currentStage
+      @currentStage.tick tickDelay
+      @currentStage.onDraw context,tickDelay
     if window.GameConfig.showFPS
       context.fillStyle = "white"
       context.font = "30px Arail"
       fps = 1000/tickDelay
+      console.log fps if fps < 30 and GameConfig.debug > 1
       context.fillText "fps:#{parseInt fps}",10,30
-    if @currentStage
-      @currentStage.tick tickDelay
-      @currentStage.onDraw context,tickDelay
     self = this
     window.requestAnimationFrame ->
       self.tick()

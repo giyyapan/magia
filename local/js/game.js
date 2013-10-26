@@ -5,7 +5,9 @@
   conf = {
     debug: 2,
     showFPS: true,
-    frameRate: 60
+    frameRate: 60,
+    canvasId: "#gameCanvas",
+    UILayerId: "#UILayer"
   };
 
   if (!document.createElement('canvas').getContext) {
