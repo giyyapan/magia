@@ -1,4 +1,4 @@
-class window.DB extends Suzaku.EventEmitter
+class window.Database extends Suzaku.EventEmitter
   constructor:->
     @areas = {}
     @towns = {}
@@ -12,24 +12,24 @@ class window.DB extends Suzaku.EventEmitter
     @tasks = null
     @storys = null
     @initAreas()
-    @initItems()
+    @initThings()
     @initRules()
   initAreas:->
     s = Utils.getSize()
     @areas.forest = 
       name:"森林"
       x:0,y:0
-      subAreas:
+      places:
         entry:
-          bg:[Res.imgs.forest1] #day,night
+          bg:["forest1"] #day,night
           resPoints:["1,1","20,20","30,30","50,50"] #start from 1
           movePoints:["exit","west","east"]
         east:
-          bg:Res.imgs.forest2
+          bg:"forest2"
           resPoints:["1,1","20,80"]
           movePoints:["entry"]
         west:
-          bg:Res.imgs.forest3
+          bg:"forest3"
           resPoints:["1,1","20,80"]
           movePoints:["entry"]
   initThings:->
@@ -47,7 +47,7 @@ class window.DB extends Suzaku.EventEmitter
         gather:["forest entry.2,entry.3"]
       lakeWater:
         name:"湖水"
-        traits:["water:15","heal:3"]
+        traits:["water:15","clear:3"]
         gather:["forest entry.5"]
       blueRose:
         name:"蓝玫瑰"

@@ -11,7 +11,7 @@ class Suzaku
     @AjaxManager = AjaxManager
     @ApiManager = ApiManager
     
-    @KeybordManager = null    
+    @KeybordManager = KeybordManager
     @AnimationManager = null
     @Utils = null
     @Key = null
@@ -125,6 +125,7 @@ class Widget extends EventEmitter
     parent = target.parentElement or target.parentNode
     if target instanceof HTMLElement then parent.removeChild target
   appendTo:(target)->
+    console.error "need a target --Suzaku.Widget",target if not target
     if target instanceof Widget or target.dom instanceof window.HTMLElement
       return target.dom.appendChild @dom
     if $ and target instanceof $
@@ -398,7 +399,22 @@ class ApiManager extends EventEmitter
     return ()->
       api.send.apply api,arguments
       return api
-    
+
+class KeybordManager extends EventEmitter
+  init:->
+    pushedKey = {}
+    window.onkeydown = (evt)->
+      for name,keyCode of window.Suzaku.Key
+        if evt.keyCode is keyCode
+          pushedKey[name] = true
+          break
+    window.onkeyup = (evt)->
+      for name,keyCode of window.Suzaku.Key
+        if evt.keyCode is keyCode
+          pushedKey[name] = false
+          break
+    return pushedKey
+        
 window.Suzaku = new Suzaku
 window.Suzaku.Utils = Utils =
   bindMobileClick:(dom,callback)->
@@ -428,7 +444,6 @@ window.Suzaku.Utils = Utils =
       dom.onmouseup = (evt)->
         dom.ontouchend = null
         callback.call this,evt
-
   setLocalStorage:(obj)->
     for name,item of obj
       window.localStorage[name] = item
@@ -560,6 +575,7 @@ window.Suzaku.Utils = Utils =
         else continue
     if returnArr then return arr
     else return arr.join ''
+
 window.Suzaku.Key =
   0:48
   1:49
@@ -604,6 +620,7 @@ window.Suzaku.Key =
   left:37
   right:39
   down:40
+  up:38
   enter:13
   backspace:8
   escape:27
@@ -616,4 +633,3 @@ window.Suzaku.Mouse =
   left:0
   middle:1
   right:2
-

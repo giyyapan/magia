@@ -1,11 +1,13 @@
 class FirstFloor extends Layer
   constructor:(@stage)->
     super()
-    @camera = @stage.camera
+    @camera = new Camera()
     @menu = new Menu Res.tpls["home-1st-floor"]
     @setImg Res.imgs.homeDown
     @menu.UI.upstairs.onclick = =>
       @emit "goUp"
+    @menu.UI.exit.onclick = =>
+      @emit "exit"
   moveDown:(callback)->
     s = Utils.getSize()
     @transform.rotate = 0
@@ -15,9 +17,8 @@ class FirstFloor extends Layer
     #@animate {y:0,"transform.rotate":0,"transform.opacity":1},"normal","swing",callback
     @animate {y:0},"normal","swing",callback
   show:->
-    @menu.hide()
-    @fadeIn "fast",=>
-      @menu.show()
+    @fadeIn "fast"
+    @menu.show()
     
 class SecondFloor extends Layer
   constructor:(@stage)->
@@ -38,7 +39,6 @@ class window.Home extends Stage
   constructor:(game)->
     super()
     @game = game
-    playerData = game.playerData
     @camera = new Camera()
     @firstFloor = new FirstFloor this
     @secondFloor = new SecondFloor this
@@ -53,5 +53,8 @@ class window.Home extends Stage
       @secondFloor.moveUp()
       @firstFloor.moveUp =>
         @firstFloor.menu.show()
+    @firstFloor.on "exit",=>
+      @clearDrawQueue()
+      @game.switchStage "worldMap"
     @firstFloor.show()
   tick:->

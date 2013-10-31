@@ -3,10 +3,10 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  window.DB = (function(_super) {
-    __extends(DB, _super);
+  window.Database = (function(_super) {
+    __extends(Database, _super);
 
-    function DB() {
+    function Database() {
       this.areas = {};
       this.towns = {};
       this.things = {
@@ -21,30 +21,30 @@
       this.tasks = null;
       this.storys = null;
       this.initAreas();
-      this.initItems();
+      this.initThings();
       this.initRules();
     }
 
-    DB.prototype.initAreas = function() {
+    Database.prototype.initAreas = function() {
       var s;
       s = Utils.getSize();
       return this.areas.forest = {
         name: "森林",
         x: 0,
         y: 0,
-        subAreas: {
+        places: {
           entry: {
-            bg: [Res.imgs.forest1],
+            bg: ["forest1"],
             resPoints: ["1,1", "20,20", "30,30", "50,50"],
             movePoints: ["exit", "west", "east"]
           },
           east: {
-            bg: Res.imgs.forest2,
+            bg: "forest2",
             resPoints: ["1,1", "20,80"],
             movePoints: ["entry"]
           },
           west: {
-            bg: Res.imgs.forest3,
+            bg: "forest3",
             resPoints: ["1,1", "20,80"],
             movePoints: ["entry"]
           }
@@ -52,7 +52,7 @@
       };
     };
 
-    DB.prototype.initThings = function() {
+    Database.prototype.initThings = function() {
       this.things.items = {
         scree: {
           name: "小石子",
@@ -68,7 +68,7 @@
         },
         lakeWater: {
           name: "湖水",
-          traits: ["water:15", "heal:3"],
+          traits: ["water:15", "clear:3"],
           gather: ["forest entry.5"]
         },
         blueRose: {
@@ -108,7 +108,7 @@
       };
     };
 
-    DB.prototype.initRules = function() {
+    Database.prototype.initRules = function() {
       return this.rules.reaction = {
         from: ["fire:5"],
         to: "",
@@ -116,7 +116,7 @@
       };
     };
 
-    return DB;
+    return Database;
 
   })(Suzaku.EventEmitter);
 

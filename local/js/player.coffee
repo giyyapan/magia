@@ -24,9 +24,13 @@ playerData =
     spd:8
     luk:10
     
-class window.PlayerData
+class window.Player
   constructor:(data)->
     @data = data
     @data = playerData if not data
     for name of @data
       this[name] = @data[name]
+  getItems:->
+    for item in arguments
+      console.log "player get ",item
+      

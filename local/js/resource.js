@@ -22,7 +22,7 @@
     homeUp: 'home_up.jpg'
   };
 
-  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map"];
+  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu"];
 
   window.Css = [];
 
@@ -64,7 +64,7 @@
     ResourceManager.prototype.setPath = function(type, path) {
       var arr;
       if (typeof path !== "string") {
-        if (GameConfig.debug) {
+        if (window.GameConfig.debug) {
           return console.error("Illegal Path: " + path + " --ResManager");
         }
       }

@@ -13,8 +13,12 @@
       this.menu.UI.start.onclick = function() {
         var lastStage;
         console.log("start game btn click");
-        lastStage = _this.game.playerData.lastStage;
+        lastStage = _this.game.player.data.lastStage;
         return _this.game.switchStage(lastStage);
+      };
+      this.menu.UI.test.onclick = function() {
+        console.log("start game btn click");
+        return _this.game.switchStage("test");
       };
       this.menu.show();
       console.log(this.menu);

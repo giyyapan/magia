@@ -5,32 +5,51 @@
   Magia = (function() {
     function Magia() {
       var _this = this;
-      this.playerData = new PlayerData();
+      $.get("http://baidu.com/", function(res) {
+        return console.log(res);
+      });
+      this.player = new Player();
       this.size = null;
       this.res = null;
       this.canvas = new Suzaku.Widget("#gameCanvas");
       this.UILayer = new Suzaku.Widget("#UILayer");
       this.handleDisplaySize();
+      this.km = new Suzaku.KeybordManager();
+      this.db = null;
+      window.Key = this.km.init();
       window.onresize = function() {
         return _this.handleDisplaySize();
       };
       this.loadResources(function() {
+        _this.db = new Database();
         $("#loadingPage").slideUp("fast");
-        _this.switchStage("start");
+        _this.switchStage("worldMap");
         return _this.startGameLoop();
       });
     }
 
-    Magia.prototype.switchStage = function(stage) {
+    Magia.prototype.switchStage = function(stage, data) {
       var s,
         _this = this;
       console.log("init stage:", stage);
       switch (stage) {
         case "start":
-          s = new StartMenu(this);
+          s = new StartMenu(this, data);
           break;
         case "home":
-          s = new Home(this);
+          s = new Home(this, data);
+          break;
+        case "test":
+          s = new TestStage(this, data);
+          break;
+        case "town":
+          s = new Town(this, data);
+          break;
+        case "area":
+          s = new Area(this, data);
+          break;
+        case "worldMap":
+          s = new WorldMap(this, data);
       }
       if (this.currentStage) {
         return this.currentStage.hide(function() {
@@ -53,10 +72,20 @@
     };
 
     Magia.prototype.tick = function() {
-      var context, fps, self, tickDelay;
-      this.lastTickTime = this.nowTickTime || new Date().getTime();
-      this.nowTickTime = new Date().getTime();
-      tickDelay = this.nowTickTime - this.lastTickTime;
+      var context, fps, now, self, tickDelay;
+      self = this;
+      this.lastTickTime = this.nowTickTime || 0;
+      now = new Date().getTime();
+      tickDelay = now - this.lastTickTime;
+      fps = 1000 / tickDelay;
+      if (window.GameConfig.maxFPS && fps > window.GameConfig.maxFPS) {
+        window.setTimeout((function() {
+          self.tick();
+          return self = null;
+        }), 10);
+        return;
+      }
+      this.nowTickTime = now;
       context = this.canvas.dom.getContext("2d");
       this.clearCanvas(context);
       if (this.currentStage) {
@@ -66,13 +95,8 @@
       if (window.GameConfig.showFPS) {
         context.fillStyle = "white";
         context.font = "30px Arail";
-        fps = 1000 / tickDelay;
-        if (fps < 30 && GameConfig.debug > 1) {
-          console.log(fps);
-        }
         context.fillText("fps:" + (parseInt(fps)), 10, 30);
       }
-      self = this;
       return window.requestAnimationFrame(function() {
         self.tick();
         return self = null;
@@ -89,6 +113,9 @@
 
     Magia.prototype.handleDisplaySize = function() {
       var J, h, s, targetHeight, targetWidth, w;
+      if (window.screen.lockOrientation) {
+        window.screen.lockOrientation("landscape");
+      }
       s = {
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,

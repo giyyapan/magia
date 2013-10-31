@@ -42,18 +42,35 @@ body {
 /* line 23, global.less */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000323}}
 #BGLayer {
+  overflow: hidden;
   background-color: #efefef;
 }
-/* line 29, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000329}}
+/* line 27, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000327}}
+#UILayer {
+  overflow: hidden;
+  position: relative;
+}
+/* line 31, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000331}}
+#UILayer .menu {
+  absolute: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+/* line 40, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000340}}
 .screen {
   position: absolute;
   top: 0;
   width: 1280px;
   height: 720px;
 }
-/* line 35, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000335}}
+/* line 46, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000346}}
 #loadingPage {
   padding-top: 150px;
   background-color: #666;
@@ -64,4 +81,26 @@ body {
   z-index: 9999;
   top: 0;
   left: 0;
+}
+/* line 57, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000357}}
+.popup-box-wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(20, 20, 20, 0.3);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+/* line 65, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000365}}
+.popup-box-wrapper .popup-box {
+  margin: auto;
+  margin-top: 50px;
+  width: 400px;
+  min-height: 300px;
+  background-color: #632A15;
+  padding: 30px;
+  color: white;
 }

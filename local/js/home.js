@@ -11,11 +11,14 @@
       var _this = this;
       this.stage = stage;
       FirstFloor.__super__.constructor.call(this);
-      this.camera = this.stage.camera;
+      this.camera = new Camera();
       this.menu = new Menu(Res.tpls["home-1st-floor"]);
       this.setImg(Res.imgs.homeDown);
       this.menu.UI.upstairs.onclick = function() {
         return _this.emit("goUp");
+      };
+      this.menu.UI.exit.onclick = function() {
+        return _this.emit("exit");
       };
     }
 
@@ -35,11 +38,8 @@
     };
 
     FirstFloor.prototype.show = function() {
-      var _this = this;
-      this.menu.hide();
-      return this.fadeIn("fast", function() {
-        return _this.menu.show();
-      });
+      this.fadeIn("fast");
+      return this.menu.show();
     };
 
     return FirstFloor;
@@ -84,11 +84,9 @@
     __extends(Home, _super);
 
     function Home(game) {
-      var playerData,
-        _this = this;
+      var _this = this;
       Home.__super__.constructor.call(this);
       this.game = game;
-      playerData = game.playerData;
       this.camera = new Camera();
       this.firstFloor = new FirstFloor(this);
       this.secondFloor = new SecondFloor(this);
@@ -106,6 +104,10 @@
         return _this.firstFloor.moveUp(function() {
           return _this.firstFloor.menu.show();
         });
+      });
+      this.firstFloor.on("exit", function() {
+        _this.clearDrawQueue();
+        return _this.game.switchStage("worldMap");
       });
       this.firstFloor.show();
     }

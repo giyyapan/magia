@@ -36,8 +36,8 @@
     }
   };
 
-  window.PlayerData = (function() {
-    function PlayerData(data) {
+  window.Player = (function() {
+    function Player(data) {
       var name;
       this.data = data;
       if (!data) {
@@ -48,7 +48,17 @@
       }
     }
 
-    return PlayerData;
+    Player.prototype.getItems = function() {
+      var item, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = arguments.length; _i < _len; _i++) {
+        item = arguments[_i];
+        _results.push(console.log("player get ", item));
+      }
+      return _results;
+    };
+
+    return Player;
 
   })();
 

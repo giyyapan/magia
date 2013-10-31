@@ -20,6 +20,9 @@ window.Templates = [
   "home-1st-floor"
   "home-2nd-floor"
   "world-map"
+  "popup-box"
+  "test-menu"
+  "area-menu"
   ]
 window.Css = []
   
@@ -49,7 +52,7 @@ class window.ResourceManager extends Suzaku.EventEmitter
     @templates.push template
   setPath:(type,path)->
     if typeof path isnt "string"
-      return console.error "Illegal Path: #{path} --ResManager" if GameConfig.debug
+      return console.error "Illegal Path: #{path} --ResManager" if window.GameConfig.debug
     arr = path.split ''
     if arr[arr.length-1] isnt "/"
       arr.push "/"

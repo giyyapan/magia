@@ -1,0 +1,42 @@
+{
+    "name": "Magia",
+    "version": "1.0.0",
+    "type": "certified",
+    "package": "com.app.magia",
+    "version_code": 1,
+    "minimum_runtime_version": "0.0.1",
+    "description": "a simple game",
+    "icons": {
+        "96": "/img/item.png"
+    },
+    "developer": {
+        "name": "giyyapan",
+        "url": "http://giyyapan.me"
+    },
+    "appcache": "/magia.appcache",
+   "launch_url": "/index.html",
+    "locales": {
+       "en": {
+           "name": "Helloworld",
+           "description": "a simple WebApp sample code",
+           "developer": {
+                "name": "NG-WebOS",
+                "url": "/index.html"
+           }
+       },
+       "zh-rCN": {
+           "name": "Helloworld",
+           "description": "Magi",
+           "developer": {
+                "name": "NG-WebOS",
+                "url": "/index.html"
+           }
+       }
+    },
+    "fullscreen": "true",
+		"orientation":"landscape",
+    "platform": "phone",
+		"debug":"on",
+    "permissions": {
+    }
+}

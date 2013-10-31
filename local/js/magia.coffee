@@ -1,23 +1,33 @@
 class Magia
   constructor:->
-    @playerData = new PlayerData()
+    $.get "http://baidu.com/",(res)->
+      console.log res
+    @player = new Player()
     @size = null
     @res = null
     @canvas = new Suzaku.Widget("#gameCanvas")
     @UILayer = new Suzaku.Widget("#UILayer")
     @handleDisplaySize()
+    @km = new Suzaku.KeybordManager()
+    @db = null
+    window.Key = @km.init()
     window.onresize = =>
       @handleDisplaySize()
-    #@db = new Database()
     @loadResources =>
+      @db = new Database()
       $("#loadingPage").slideUp "fast"
-      @switchStage "start"
+      #@switchStage "start"
+      @switchStage "worldMap"
       @startGameLoop()
-  switchStage:(stage)->
+  switchStage:(stage,data)->
     console.log "init stage:",stage
     switch stage
-      when "start" then s = new StartMenu this
-      when "home" then s = new Home this
+      when "start" then s = new StartMenu this,data
+      when "home" then s = new Home this,data
+      when "test" then s = new TestStage this,data
+      when "town" then s = new Town this,data
+      when "area" then s = new Area this,data
+      when "worldMap" then s = new WorldMap this,data
     if @currentStage
       @currentStage.hide =>
         @currentStage = s
@@ -31,9 +41,18 @@ class Magia
       self.tick()
       self = null
   tick:->
-    @lastTickTime = @nowTickTime or new Date().getTime()
-    @nowTickTime = new Date().getTime()
-    tickDelay =  @nowTickTime - @lastTickTime
+    self = this
+    @lastTickTime = @nowTickTime or 0
+    now = new Date().getTime()
+    tickDelay =  now - @lastTickTime
+    fps = 1000/tickDelay
+    if window.GameConfig.maxFPS and fps > window.GameConfig.maxFPS
+      window.setTimeout (->
+        self.tick()
+        self = null
+        ),10
+      return
+    @nowTickTime = now
     context = @canvas.dom.getContext "2d"
     @clearCanvas context
     if @currentStage
@@ -42,10 +61,7 @@ class Magia
     if window.GameConfig.showFPS
       context.fillStyle = "white"
       context.font = "30px Arail"
-      fps = 1000/tickDelay
-      console.log fps if fps < 30 and GameConfig.debug > 1
       context.fillText "fps:#{parseInt fps}",10,30
-    self = this
     window.requestAnimationFrame ->
       self.tick()
       self = null
@@ -55,6 +71,7 @@ class Magia
   go:(step)->
     #go foward or backward  
   handleDisplaySize:->
+    window.screen.lockOrientation "landscape" if window.screen.lockOrientation
     s =
       screenWidth:window.innerWidth
       screenHeight:window.innerHeight

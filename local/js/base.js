@@ -21,14 +21,14 @@
       this.renderData = null;
       this.onshow = true;
       this.transform = {
-        opacity: null,
+        opacity: 1,
         translateX: 0,
         translateY: 0,
         translateZ: 0,
-        scaleX: null,
-        scaleY: null,
-        scale: null,
-        rotate: null,
+        scaleX: 1,
+        scaleY: 1,
+        scale: 1,
+        rotate: 0,
         martrix: null
       };
       this.drawQueue = {
@@ -38,6 +38,11 @@
       this.realValue = {};
       this._initAnimate();
     }
+
+    Drawable.prototype.setAnchor = function(x, y) {
+      this.anchorX = x;
+      return this.anchorY = y;
+    };
 
     Drawable.prototype._initAnimate = function() {
       var f, name, _ref, _results;
@@ -52,47 +57,47 @@
     };
 
     Drawable.prototype.onDraw = function(context, tickDelay) {
-      var item, name, value, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+      var item, name, value, _i, _j, _len, _len1, _ref, _ref1, _ref2;
       this._handleAnimate(tickDelay);
       _ref = this.transform;
-      for (value = _i = 0, _len = _ref.length; _i < _len; value = ++_i) {
-        name = _ref[value];
+      for (name in _ref) {
+        value = _ref[name];
         if (value !== null) {
           this.realValue[name] = value;
         }
       }
       context.save();
-      this._handleTransform(context);
       this.emit("render", this);
+      this._handleTransform(context);
       _ref1 = this.drawQueue.before;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        item = _ref1[_j];
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        item = _ref1[_i];
         item.onDraw(context, tickDelay);
       }
       if (this.draw) {
         this.draw(context);
       }
       _ref2 = this.drawQueue.after;
-      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-        item = _ref2[_k];
+      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+        item = _ref2[_j];
         item.onDraw(context, tickDelay);
       }
       return context.restore();
     };
 
     Drawable.prototype._handleTransform = function(context) {
-      var r;
+      var r, x, y;
       r = this.realValue;
-      context.translate(parseInt(this.x, parseInt(this.y)));
+      x = r.translateX + this.x;
+      y = r.translateY + this.y;
       if (r.opacity !== null) {
         context.globalAlpha = r.opacity;
       }
-      if (r.scaleX || r.scaleY !== null || r.scale !== null) {
-        r.scaleX = r.scaleX || r.scale || 1;
-        r.scaleY = r.scaleY || r.scale || 1;
-        context.scale(r.scaleX, r.scaleY);
-      }
-      if (r.rotate !== null) {
+      r.scaleX = r.scaleX || r.scale || 1;
+      r.scaleY = r.scaleY || r.scale || 1;
+      context.scale(r.scaleX, r.scaleY);
+      context.translate(parseInt(x), parseInt(y));
+      if (r.rotate) {
         return context.rotate(r.rotate);
       }
     };
@@ -108,26 +113,28 @@
     };
 
     Drawable.prototype.draw = function(context) {
-      var i, s, x, y;
+      var i, s;
       if (!this.onshow) {
         return;
       }
       s = Utils.getSize();
-      x = this.x - this.anchorX;
-      y = this.y - this.anchorY;
-      if (x >= s.width || y >= s.height) {
+      if (-this.anchorX >= s.width || -this.anchorY >= s.height) {
         return;
       }
       if (this.imgData) {
         i = this.imgData;
         if (i.x) {
-          return context.drawImage(i.img, i.x, i.y, i.width, i.height, x, y, this.width, this.height);
+          context.drawImage(i.img, i.x, i.y, i.width, i.height, -this.anchorX, -this.anchorY, this.width, this.height);
         } else {
-          return context.drawImage(i.img, x, y, this.width, this.height);
+          context.drawImage(i.img, -this.anchorX, -this.anchorY, this.width, this.height);
         }
+        context.fillStyle = "black";
+        context.fillRect(-50, -50, 100, 100);
+        context.fillStyle = "darkred";
+        return context.fillText("" + (parseInt(this.anchorX)) + "," + (parseInt(this.anchorY)), 0, 100);
       } else if (GameConfig.debug === 2) {
         context.fillStyle = "rgba(20,20,20,0.2)";
-        return context.fillRect(x, y, this.width, this.height);
+        return context.fillRect(-this.anchorX, -this.anchorY, this.width, this.height);
       }
     };
 
@@ -323,12 +330,14 @@
   window.Layer = (function(_super) {
     __extends(Layer, _super);
 
-    function Layer() {
+    function Layer(img) {
       var s;
       s = Utils.getSize();
       Layer.__super__.constructor.call(this, 0, 0, s.width, s.height);
-      this.anchorX = 0;
-      this.anchorY = 0;
+      this.setAnchor(0, 0);
+      if (img instanceof Image) {
+        this.setImg(img);
+      }
     }
 
     return Layer;
@@ -339,11 +348,11 @@
     __extends(Camera, _super);
 
     function Camera(x, y) {
-      var size;
-      size = Utils.getSize();
-      x = x || size.width / 2;
-      y = y || size.height / 2;
-      Camera.__super__.constructor.call(this, x, y, size.width, size.height);
+      var s;
+      s = Utils.getSize();
+      x = x || 0;
+      y = y || 0;
+      Camera.__super__.constructor.call(this, x, y, s.width, s.height);
       this.scale = 0;
       this.defaultX = this.x;
       this.defaultY = this.y;
@@ -394,13 +403,15 @@
       for (_i = 0, _len = arguments.length; _i < _len; _i++) {
         d = arguments[_i];
         if (d.onDraw) {
-          d.on("render", function() {
-            return self._render(this, size);
-          });
-        } else if (d instanceof Menu) {
-          d.on("render", function() {
-            return self._renderMenu(this, size);
-          });
+          if (d.isMenu) {
+            d.on("render", function() {
+              return self._renderMenu(this, size);
+            });
+          } else {
+            d.on("render", function() {
+              return self._render(this, size);
+            });
+          }
         }
         if (!d.onDraw && GameConfig.debug) {
           _results.push(console.error("" + d + " is not drawable or Menu"));
@@ -413,13 +424,14 @@
 
     Camera.prototype._render = function(d, s) {
       var r, rd, sX, sY;
+      this.degree = 45;
       if (!d.renderData) {
         d.renderData = {
           z: d.z - 1
         };
       }
       rd = d.renderData;
-      if (rd.z !== d.z + d.realValue.translateZ) {
+      if (rd.z !== (d.z + d.realValue.translateZ)) {
         rd.z = d.z + d.realValue.translateZ;
         rd.scaleX = (s.width + d.z * Math.tan(this.degree)) / s.width;
         rd.scaleY = (s.height + d.z * Math.tan(this.degree)) / s.height;
@@ -427,32 +439,40 @@
       sX = rd.scaleX * this.lens;
       sY = rd.scaleY * this.lens;
       r = d.realValue;
-      if (!d.offsetSize) {
+      r.rotate = r.rotate - this.rotate;
+      r.translateX = r.translateX - (this.x / sX);
+      r.translateY = r.translateY - (this.y / sY);
+      if (d.offsetSize) {
+        r.scaleX *= this.lens;
+        return r.scaleY *= this.lens;
+      } else {
         r.scaleX *= sX;
-        r.scaleY *= sY;
+        return r.scaleY *= sY;
       }
-      r.rotate -= this.rotate;
-      r.translateX -= this.x * sX;
-      return r.translateY -= this.y * sY;
     };
 
     Camera.prototype._renderMenu = function(m, s) {
-      var rd, value;
+      var rd, sX, sY, value, x, y;
       if (!m.renderData) {
         m.renderData = {
-          z: d.z - 1
+          z: m.z - 1
         };
       }
-      rd = d.renderData;
+      rd = m.renderData;
       if (rd.z !== m.z) {
         rd.z = m.z;
         rd.scaleX = (s.width + m.z * Math.tan(this.degree)) / s.width;
         rd.scaleY = (s.height + m.z * Math.tan(this.degree)) / s.height;
       }
+      sX = rd.scaleX * this.lens;
+      sY = rd.scaleY * this.lens;
+      x = -(this.x / sX);
+      y = -(this.y / sY);
       Utils.setCSS3Attr(m.J, "transform-origin", "" + this.x + "px " + this.y + "px");
-      value = "translate(" + (-this.x) + "," + (-this.y) + ")";
+      value = "translate(" + x + "px," + y + "px) ";
+      value += "rotate(" + this.transform.rotate + "deg) ";
       if (!m.offsetSize) {
-        value += "scale(" + (rd.scaleX * this.lens) + "," + (rd.scaleY * this.lens) + ")";
+        value += "scale(" + (rd.scaleX * this.lens) + "," + (rd.scaleY * this.lens) + ") ";
       }
       return Utils.setCSS3Attr(m.J, "transform", value);
     };
@@ -466,7 +486,7 @@
 
     function Menu(tpl) {
       Menu.__super__.constructor.call(this, tpl);
-      console.log(this);
+      this.isMenu = true;
       this.z = 0;
       this.UILayer = $(GameConfig.UILayerId);
     }
@@ -487,7 +507,7 @@
     };
 
     Menu.prototype.onDraw = function() {
-      return this.emit("render");
+      return this.emit("render", this);
     };
 
     return Menu;
@@ -519,5 +539,53 @@
     return Stage;
 
   })(Drawable);
+
+  window.PopupBox = (function(_super) {
+    __extends(PopupBox, _super);
+
+    function PopupBox(tpl) {
+      var self;
+      PopupBox.__super__.constructor.call(this, tpl || Res.tpls['popup-box']);
+      this.box = this.UI.box;
+      this.J.hide();
+      this.box.J.hide();
+      self = this;
+      if (this.UI['close-btn']) {
+        this.UI['close-btn'].onclick = function() {
+          return self.close();
+        };
+      }
+      if (this.UI['accept-btn']) {
+        this.UI['accept-btn'].onclick = function() {
+          return self.accept();
+        };
+      }
+    }
+
+    PopupBox.prototype.show = function() {
+      this.appendTo($("#UILayer"));
+      this.J.fadeIn("fast");
+      return this.box.J.slideDown("fast");
+    };
+
+    PopupBox.prototype.close = function() {
+      var self;
+      self = this;
+      this.J.fadeOut("fast");
+      return this.box.J.slideUp("fast", function() {
+        self.remove();
+        return self = null;
+      });
+    };
+
+    PopupBox.prototype.accept = function() {
+      if (window.GameConfig.debug) {
+        return console.log(this, "accept");
+      }
+    };
+
+    return PopupBox;
+
+  })(Suzaku.Widget);
 
 }).call(this);
