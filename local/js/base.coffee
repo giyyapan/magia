@@ -272,11 +272,14 @@ class window.Menu extends Suzaku.Widget
     @UILayer.hide()
     @UILayer.html ""
     @appendTo @UILayer 
-  show:->
+  show:(callback)->
     @init()
-    @UILayer.fadeIn "fast"
-  hide:->
-    @UILayer.fadeOut "fast"
+    @J.show()
+    @UILayer.fadeIn "fast",callback
+  hide:(callback)->
+    @UILayer.fadeOut "fast",=>
+      @J.hide()
+      callback() if callback
   onDraw:->
     @emit "render",this
     

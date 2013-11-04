@@ -3,14 +3,31 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  window.ThingListWidget = (function(_super) {
+    __extends(ThingListWidget, _super);
+
+    function ThingListWidget(originData, number) {
+      ThingListWidget.__super__.constructor.call(this, Res.tpls['thing-list-item']);
+      if (originData.img) {
+        this.UI.img.src = originData.img.src;
+      }
+      this.UI.name.J.text(originData.name);
+      this.UI.quatity.J.text(number);
+    }
+
+    return ThingListWidget;
+
+  })(Suzaku.Widget);
+
   window.Things = (function(_super) {
     __extends(Things, _super);
 
-    function Things(name, data) {
-      Things.__super__.constructor.apply(this, arguments);
-      this.data = data;
+    function Things(name, data, type) {
+      Things.__super__.constructor.call(this);
+      this.data = this.originData = data;
       this.name = name;
       this.dspName = data.name;
+      this.type = type;
       if (data.img) {
         this.img = Res.imgs[data.img];
       } else {
@@ -22,16 +39,61 @@
 
   })(Suzaku.EventEmitter);
 
+  window.PlayerItem = (function(_super) {
+    __extends(PlayerItem, _super);
+
+    function PlayerItem(name, originData, number) {
+      PlayerItem.__super__.constructor.call(this, name, originData, "item");
+      this.number = number;
+    }
+
+    return PlayerItem;
+
+  })(Things);
+
+  window.PlayerSupplies = (function(_super) {
+    __extends(PlayerSupplies, _super);
+
+    function PlayerSupplies(name, originData, specificData) {
+      PlayerSupplies.__super__.constructor.call(this, name, data, "supplies");
+      this.specificData = specificData;
+    }
+
+    return PlayerSupplies;
+
+  })(Things);
+
+  window.PlayerMaterial = (function(_super) {
+    __extends(PlayerMaterial, _super);
+
+    function PlayerMaterial(name, originData, specificData) {
+      PlayerMaterial.__super__.constructor.call(this, name, data, "material");
+      this.specificData = specificData;
+    }
+
+    return PlayerMaterial;
+
+  })(Things);
+
+  window.PlayerEquipment = (function(_super) {
+    __extends(PlayerEquipment, _super);
+
+    function PlayerEquipment() {}
+
+    return PlayerEquipment;
+
+  })(Things);
+
   window.GatherItem = (function(_super) {
     __extends(GatherItem, _super);
 
     function GatherItem(name, data) {
-      GatherItem.__super__.constructor.call(this, name, data);
+      GatherItem.__super__.constructor.call(this, name, data, "item");
     }
 
     GatherItem.prototype.getGatherDataByPlace = function(area, place) {
       var arr, arr2, gatherData, placeGatherData, theArea, _i, _j, _len, _len1, _ref, _ref1;
-      _ref = itemData.gather;
+      _ref = this.data.gather;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         gatherData = _ref[_i];
         arr = gatherData.split(" ");
@@ -55,7 +117,7 @@
     };
 
     GatherItem.prototype.tryGather = function(data) {
-      return true;
+      return 1;
     };
 
     return GatherItem;

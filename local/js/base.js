@@ -497,13 +497,20 @@
       return this.appendTo(this.UILayer);
     };
 
-    Menu.prototype.show = function() {
+    Menu.prototype.show = function(callback) {
       this.init();
-      return this.UILayer.fadeIn("fast");
+      this.J.show();
+      return this.UILayer.fadeIn("fast", callback);
     };
 
-    Menu.prototype.hide = function() {
-      return this.UILayer.fadeOut("fast");
+    Menu.prototype.hide = function(callback) {
+      var _this = this;
+      return this.UILayer.fadeOut("fast", function() {
+        _this.J.hide();
+        if (callback) {
+          return callback();
+        }
+      });
     };
 
     Menu.prototype.onDraw = function() {

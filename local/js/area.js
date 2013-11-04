@@ -8,7 +8,8 @@
     __extends(Place, _super);
 
     function Place(area, db, name, data) {
-      var index, item, moveTarget, p, self, _i, _j, _len, _len1, _ref, _ref1;
+      var index, item, moveTarget, p, self, _i, _j, _len, _len1, _ref, _ref1,
+        _this = this;
       this.area = area;
       this.db = db;
       this.name = name;
@@ -17,6 +18,9 @@
       this.bg = new Layer(Res.imgs[this.data.bg]);
       this.menu = new Menu(Res.tpls['area-menu']);
       this.menu.J.addClass(this.name);
+      this.menu.UI.backpack.onclick = function() {
+        return _this.emit("showBackpack");
+      };
       this.menu.show();
       this.resPoints = [];
       this.drawQueueAddAfter(this.bg);
@@ -26,9 +30,9 @@
       for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
         p = _ref[index];
         item = new Suzaku.Widget(this.menu.UI['res-point-tpl'].J.html());
-        item.J.html(index);
-        item.dom.number = index;
-        item.J.addClass("gp" + index);
+        item.J.html("采集点" + (index + 1));
+        item.dom.number = index + 1;
+        item.J.addClass("gp" + (index + 1));
         item.appendTo(this.menu.UI['res-point-box']);
         item.dom.onclick = function() {
           return self.handleGatherResault(self.gatherItem(this.number));
@@ -49,37 +53,44 @@
     }
 
     Place.prototype.initItems = function() {
-      var gatherData, i, index, item, itemData, name, _i, _j, _len, _len1, _ref, _ref1;
+      var gatherData, i, index, item, itemData, name, _i, _len, _ref, _ref1;
       _ref = this.data.resPoints;
       for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
         i = _ref[index];
         this.resPoints.push([]);
       }
       _ref1 = this.db.things.items;
-      for (itemData = _j = 0, _len1 = _ref1.length; _j < _len1; itemData = ++_j) {
-        name = _ref1[itemData];
+      for (name in _ref1) {
+        itemData = _ref1[name];
         if (!itemData.gather) {
           continue;
         }
         item = new GatherItem(name, itemData);
         gatherData = item.getGatherDataByPlace(this.area.name, this.name);
         if (gatherData) {
-          this.resPoints[gatherData.resPoint - 1] = item;
+          this.resPoints[gatherData.resPoint - 1].push(item);
         }
       }
       return console.log(this.resPoints);
     };
 
     Place.prototype.gatherItem = function(resPointNum) {
-      var index, items, res;
+      var gatherNumber, index, item, items, res, _i, _len;
       index = resPointNum - 1;
       items = this.resPoints[index];
       res = [];
       if (items.length === 0) {
-        return "这里什么也没有";
+        return null;
       }
-      if (item.tryGather() === true) {
-        res.push(item);
+      for (_i = 0, _len = items.length; _i < _len; _i++) {
+        item = items[_i];
+        gatherNumber = item.tryGather();
+        if (gatherNumber) {
+          res.push({
+            gatherItem: item,
+            number: gatherNumber
+          });
+        }
       }
       return res;
     };
@@ -87,10 +98,11 @@
     Place.prototype.handleGatherResault = function(data) {
       var box;
       if (typeof data !== "string") {
-        this.emit("getItem", data);
+        return this.emit("getItem", data);
+      } else {
+        box = new GatherResaultBox("什么也没有采集到");
+        return box.show();
       }
-      box = new GatherResaultBox(data);
-      return box.show();
     };
 
     return Place;
@@ -101,11 +113,22 @@
     __extends(GatherResaultBox, _super);
 
     function GatherResaultBox(data) {
+      var itemResData, number, originData, w, _i, _len;
       GatherResaultBox.__super__.constructor.call(this);
       this.UI.title.J.text("采集结果");
       if (typeof data === "string") {
-        this.UI.content.J.text(data.str);
-        return;
+        this.UI.content.J.text(data);
+      } else {
+        this.UI.content.J.hide();
+        this.UI['content-list'].J.show();
+        for (_i = 0, _len = data.length; _i < _len; _i++) {
+          itemResData = data[_i];
+          originData = itemResData.gatherItem.originData;
+          number = itemResData.number;
+          console.log(itemResData);
+          w = new ThingListWidget(originData, number);
+          w.appendTo(this.UI['content-list']);
+        }
       }
     }
 
@@ -117,15 +140,17 @@
     __extends(Area, _super);
 
     function Area(game, areaName) {
-      this.game = game;
       Area.__super__.constructor.call(this, game);
+      this.game = game;
       this.name = areaName;
       this.data = game.db.areas[areaName];
+      this.backpackMenu = new Backpack(game, "gatherArea");
       this.enterPlace("entry");
     }
 
     Area.prototype.enterPlace = function(placeName) {
-      var placeData;
+      var placeData,
+        _this = this;
       if (placeName === "exit") {
         return this.game.switchStage("worldMap");
       }
@@ -135,7 +160,50 @@
       }
       this.currentPlace = new Place(this, this.game.db, placeName, placeData);
       this.clearDrawQueue();
-      return this.drawQueueAddAfter(this.currentPlace);
+      this.drawQueueAddAfter(this.currentPlace);
+      this.currentPlace.on("getItem", function(itemDataArr) {
+        return _this.getItem(itemDataArr);
+      });
+      return this.currentPlace.on("showBackpack", function() {
+        return _this.showBackpack();
+      });
+    };
+
+    Area.prototype.showBackpack = function() {
+      var self;
+      console.log("show backpack");
+      console.log(this.backpackMenu);
+      self = this;
+      this.backpackMenu.on("close", function() {
+        var _this = this;
+        self.currentPlace.onShow = true;
+        return self.backpackMenu.hide(function() {
+          return self.currentPlace.menu.show();
+        });
+      });
+      return this.backpackMenu.show(function() {
+        return self.currentPlace.onShow = false;
+      });
+    };
+
+    Area.prototype.getItem = function(itemDataArr) {
+      var box, data, name, number, originData, _i, _len;
+      if (!this.game.player.checkFreeSpace("backpack", itemDataArr)) {
+        return;
+      }
+      for (_i = 0, _len = itemDataArr.length; _i < _len; _i++) {
+        data = itemDataArr[_i];
+        name = data.gatherItem.name;
+        originData = data.gatherItem.originData;
+        number = data.number;
+        this.game.player.getItem("backpack", {
+          name: name,
+          originData: originData,
+          number: number
+        });
+      }
+      box = new GatherResaultBox(itemDataArr);
+      return box.show();
     };
 
     return Area;

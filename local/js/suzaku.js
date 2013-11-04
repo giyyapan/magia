@@ -806,27 +806,39 @@
       }
       return _results;
     },
-    free: function(target) {
-      var i, index, item, name, _i, _len;
-      if (target._SuzakuFree) {
-        return;
-      }
-      target._SuzakuFree = true;
-      if (target instanceof Array) {
-        for (index = _i = 0, _len = target.length; _i < _len; index = ++_i) {
-          i = target[index];
-          target[index] = null;
+    free: function() {
+      var i, index, item, name, target, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = arguments.length; _i < _len; _i++) {
+        target = arguments[_i];
+        if (!target) {
+          continue;
         }
-        return true;
-      }
-      if (typeof target === "object") {
-        for (name in target) {
-          item = target[name];
-          Utils.free(item);
-          delete target[name];
+        if (target instanceof Array) {
+          _results.push((function() {
+            var _j, _len1, _results1;
+            _results1 = [];
+            for (index = _j = 0, _len1 = target.length; _j < _len1; index = ++_j) {
+              i = target[index];
+              _results1.push(target[index] = null);
+            }
+            return _results1;
+          })());
+        } else if (typeof target === "object") {
+          _results.push((function() {
+            var _results1;
+            _results1 = [];
+            for (name in target) {
+              item = target[name];
+              _results1.push(delete target[name]);
+            }
+            return _results1;
+          })());
+        } else {
+          _results.push(void 0);
         }
-        return true;
       }
+      return _results;
     },
     clone: function(target, deepClone) {
       var index, item, name, newArr, newObj, _i, _len;

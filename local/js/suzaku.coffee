@@ -447,18 +447,15 @@ window.Suzaku.Utils = Utils =
   setLocalStorage:(obj)->
     for name,item of obj
       window.localStorage[name] = item
-  free:(target)->
-    return if target._SuzakuFree
-    target._SuzakuFree = true
-    if target instanceof Array
-      for i,index in target
-        target[index] = null
-      return true
-    if typeof target is "object"
-      for name,item of target
-        Utils.free item
-        delete target[name]
-      return true
+  free:()->
+    for target in arguments
+      continue if not target
+      if target instanceof Array
+        for i,index in target
+          target[index] = null
+      else if typeof target is "object"
+        for name,item of target
+          delete target[name]
   clone:(target,deepClone=false)->
     if target instanceof Array
       newArr = []

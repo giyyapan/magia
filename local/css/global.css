@@ -104,3 +104,38 @@ body {
   padding: 30px;
   color: white;
 }
+/* line 75, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000375}}
+.lv1 {
+  background: #fff;
+}
+/* line 76, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000376}}
+.lv2 {
+  background: #42e189;
+}
+/* line 77, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000377}}
+.lv3 {
+  background: #1bd6f1;
+}
+/* line 78, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000378}}
+.lv4 {
+  background: #ffd220;
+}
+/* line 79, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000379}}
+.lv5 {
+  background: #ec6334;
+}
+/* line 80, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000380}}
+.lv6 {
+  background: #cd64c0;
+}
+/* line 81, global.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000381}}
+.traits-life {
+  background: #59a84c;
+}

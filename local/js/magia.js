@@ -5,16 +5,13 @@
   Magia = (function() {
     function Magia() {
       var _this = this;
-      $.get("http://baidu.com/", function(res) {
-        return console.log(res);
-      });
-      this.player = new Player();
       this.size = null;
       this.res = null;
       this.canvas = new Suzaku.Widget("#gameCanvas");
       this.UILayer = new Suzaku.Widget("#UILayer");
       this.handleDisplaySize();
       this.km = new Suzaku.KeybordManager();
+      this.player = null;
       this.db = null;
       window.Key = this.km.init();
       window.onresize = function() {
@@ -22,6 +19,7 @@
       };
       this.loadResources(function() {
         _this.db = new Database();
+        _this.player = new Player(null, _this.db);
         $("#loadingPage").slideUp("fast");
         _this.switchStage("worldMap");
         return _this.startGameLoop();

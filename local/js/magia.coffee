@@ -1,20 +1,19 @@
 class Magia
   constructor:->
-    $.get "http://baidu.com/",(res)->
-      console.log res
-    @player = new Player()
     @size = null
     @res = null
     @canvas = new Suzaku.Widget("#gameCanvas")
     @UILayer = new Suzaku.Widget("#UILayer")
     @handleDisplaySize()
     @km = new Suzaku.KeybordManager()
+    @player = null
     @db = null
     window.Key = @km.init()
     window.onresize = =>
       @handleDisplaySize()
     @loadResources =>
       @db = new Database()
+      @player = new Player null,@db
       $("#loadingPage").slideUp "fast"
       #@switchStage "start"
       @switchStage "worldMap"

@@ -22,7 +22,7 @@
     homeUp: 'home_up.jpg'
   };
 
-  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu"];
+  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu", "thing-list-item", "backpack"];
 
   window.Css = [];
 

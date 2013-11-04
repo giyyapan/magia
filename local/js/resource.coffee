@@ -15,6 +15,7 @@ window.Imgs =
   elfMap:'elfMap.gif'
   homeDown:'home_down.jpg'
   homeUp:'home_up.jpg'
+  
 window.Templates = [
   "start-menu"
   "home-1st-floor"
@@ -23,6 +24,8 @@ window.Templates = [
   "popup-box"
   "test-menu"
   "area-menu"
+  "thing-list-item"
+  "backpack"
   ]
 window.Css = []
   
