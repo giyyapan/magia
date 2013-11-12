@@ -91,7 +91,8 @@ class window.Camera extends Drawable
     r = d.realValue
     r.rotate = r.rotate - @rotate
     r.translateX = r.translateX - (@x / sX)
-    r.translateY = r.translateY - (@y / sY) if not @fixedYCoordinates
+    if not d.fixedYCoordinates
+      r.translateY = r.translateY - (@y / sY) 
     if not d.offsetSize
       r.scaleX *= sX
       r.scaleY *= sY
@@ -100,7 +101,7 @@ class window.Camera extends Drawable
       m.renderData =
         z:m.z - 1
     rd = m.renderData
-    if rd.z isnt m.z
+    if rd.z isnt m.z 
       rd.z = m.z
       rd.scaleX = @getOffsetScaleX m,s
       rd.scaleY = @getOffsetScaleY m,s
@@ -108,8 +109,16 @@ class window.Camera extends Drawable
     sY = rd.scaleY
     x = - (@x / sX)
     y = - (@y / sY)
-    Utils.setCSS3Attr m.J,"transform-origin","#{parseInt(@x+@width/2)}px #{parseInt(@y+@height/2)}px"
-    value = "translate(#{x}px,#{y}px) "
+    if rd.x is x and rd.y is y and rd.rotate is @transform.rotate and rd.scale is @scale
+      return
+    rd.x = x
+    rd.y = y
+    rd.rotate = @transform.rotate
+    rd.scale = @scale
+    originX = parseInt(-x + s.width/2)
+    originY = parseInt(-y + s.height/2)
+    Utils.setCSS3Attr m.J,"transform-origin","#{originX}px #{originY}px"
+    value = "translate(#{parseInt x}px,#{parseInt y}px) "
     value += "rotate(#{@transform.rotate}deg) "
     value += "scale(#{@scale},#{@scale}) "
     Utils.setCSS3Attr m.J,"transform",value

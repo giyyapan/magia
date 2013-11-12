@@ -86,7 +86,7 @@
         target = "backpack";
       }
       name = dataObj.name;
-      originData = dataObj.originData || this.db.things.items[name];
+      originData = dataObj.originData || this.db.things.items.get(name);
       number = dataObj.number;
       item = new PlayerItem(name, originData, number);
       switch (target) {

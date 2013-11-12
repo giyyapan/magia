@@ -14,7 +14,7 @@
       this.name = name;
       this.data = data;
       Place.__super__.constructor.call(this);
-      this.camera = new Camera();
+      this.camera = new Camera(500, 0);
       this.drawQueueAddAfter(this.camera);
       this.initBg();
       this.initMenu();
@@ -25,7 +25,7 @@
     }
 
     Place.prototype.tick = function() {
-      var s;
+      var changed, s;
       s = Utils.getSize();
       if (Key.up) {
         if (Key.shift) {
@@ -39,29 +39,58 @@
       }
       if (Key.right) {
         this.currentX += 15;
+        changed = true;
       }
       if (Key.left) {
         this.currentX -= 15;
+        changed = true;
       }
       if (this.currentX < 0) {
         this.currentX = 0;
       }
-      if (this.currentX > this.bg.width - s.width) {
-        this.currentX = this.bg.width - s.width;
+      if (this.currentX > this.mainBg.width - s.width) {
+        this.currentX = this.mainBg.width - s.width;
       }
-      return this.camera.x = this.camera.getOffsetPositionX(this.currentX, this.bg);
+      if (changed) {
+        return this.camera.x = this.camera.getOffsetPositionX(this.currentX, this.mainBg);
+      }
     };
 
     Place.prototype.initBg = function() {
-      this.bg = new Layer(Res.imgs[this.data.bg[0]]);
-      this.bgFloat = new Layer(Res.imgs[this.data.bg[1]]);
-      this.bgFloat2 = new Layer(Res.imgs[this.data.bg[2]]);
-      this.bgFloat2.fixToBottom();
-      this.bgFloat2.transform.scale = 1.5;
-      this.bgFloat2.x = 300;
-      this.bg.z = 1000;
-      this.bgFloat.z = 600;
-      return this.camera.render(this.bg, this.bgFloat, this.bgFloat2);
+      var bg, data, imgName, initLayer, _ref, _ref1;
+      initLayer = function(layer, detail) {
+        var name, value, _results;
+        _results = [];
+        for (name in detail) {
+          value = detail[name];
+          if (name === "fixToBottom") {
+            _results.push(layer.fixToBottom());
+          } else {
+            _results.push(layer[name] = value);
+          }
+        }
+        return _results;
+      };
+      this.floatBgs = [];
+      this.bgs = [];
+      _ref = this.data.bg;
+      for (imgName in _ref) {
+        data = _ref[imgName];
+        bg = new Layer(Res.imgs[imgName]);
+        initLayer(bg, data);
+        this.bgs.push(bg);
+        this.camera.render(bg);
+      }
+      _ref1 = this.data.floatBg;
+      for (imgName in _ref1) {
+        data = _ref1[imgName];
+        bg = new Layer(Res.imgs[imgName]);
+        console.log(bg);
+        initLayer(bg, data);
+        this.floatBgs.push(bg);
+        this.camera.render(bg);
+      }
+      return this.mainBg = this.bgs[0];
     };
 
     Place.prototype.initMenu = function() {
@@ -76,14 +105,14 @@
         x = _this.currentX;
         delete _this.camera.lock;
         if (x === 0) {
-          _this.menu.UI['move-left'].J.fadeOut(200);
+          _this.menu.UI['move-left'].J.removeClass("autohide").fadeOut(200);
         } else {
-          _this.menu.UI['move-left'].J.fadeIn(200);
+          _this.menu.UI['move-left'].J.addClass("autohide").fadeIn(200);
         }
-        if (x === (_this.bg.width - s.width)) {
-          return _this.menu.UI['move-right'].J.fadeOut(200);
+        if (x === (_this.mainBg.width - s.width)) {
+          return _this.menu.UI['move-right'].J.removeClass("autohide").fadeOut(200);
         } else {
-          return _this.menu.UI['move-right'].J.fadeIn(200);
+          return _this.menu.UI['move-right'].J.addClass("autohide").fadeIn(200);
         }
       };
       this.menu.UI['move-right'].onclick = function(evt) {
@@ -92,12 +121,12 @@
         console.log("right");
         _this.camera.lock = true;
         _this.currentX += 400;
-        if (_this.currentX > _this.bg.width - s.width) {
-          _this.currentX = _this.bg.width - s.width;
+        if (_this.currentX > _this.mainBg.width - s.width) {
+          _this.currentX = _this.mainBg.width - s.width;
         }
-        x = _this.camera.getOffsetPositionX(_this.currentX, _this.bg);
-        if (x > _this.bg.width) {
-          x = _this.bg.width;
+        x = _this.camera.getOffsetPositionX(_this.currentX, _this.mainBg);
+        if (x > _this.mainBg.width) {
+          x = _this.mainBg.width;
         }
         return _this.camera.animate({
           x: x
@@ -114,7 +143,7 @@
         if (_this.currentX < 0) {
           _this.currentX = 0;
         }
-        x = _this.camera.getOffsetPositionX(_this.currentX, _this.bg);
+        x = _this.camera.getOffsetPositionX(_this.currentX, _this.mainBg);
         return _this.camera.animate({
           x: x
         }, "normal", function() {
@@ -148,12 +177,15 @@
     };
 
     Place.prototype.searchPosition = function(x, y) {
-      var dx, dy, realH, realW, realX, realY, s, scale, sx, sy;
+      var bg, cx, cy, dx, dy, hEdge, realH, realW, realX, realY, s, scale, wEdge, _i, _j, _len, _len1, _ref, _ref1,
+        _this = this;
       s = Utils.getSize();
-      scale = 1.5;
-      return;
+      scale = 1.3;
       if (!this.scaledIn) {
-        this.menu.J.find(".autohide").addClass("invisible");
+        if (this.camera.lock) {
+          return;
+        }
+        this.camera.lock = true;
         this.scaledIn = true;
         this.lastCameraPosition = {
           x: this.camera.x,
@@ -161,33 +193,66 @@
         };
         realW = s.width / scale;
         realH = s.height / scale;
-        sx = this.camera.getOffsetScaleX(this.bg.z);
-        sy = this.camera.getOffsetScaleY(this.bg.z);
-        dx = x + this.camera.x - s.width / 2;
-        dy = y + this.camera.y - s.height / 2;
-        realX = dx / (realW / 4) / sx;
-        if (realX < -1) {
-          realX = -1;
+        dx = x - s.width / 2;
+        dy = y - s.height / 2;
+        wEdge = s.width / 2 - realW / 2;
+        hEdge = s.height / 2 - realH / 2;
+        if (dx < -wEdge) {
+          dx = -wEdge;
         }
-        if (realX > 1) {
-          realX = 1;
+        if (dx > wEdge) {
+          dx = wEdge;
         }
-        realX = realX * (realW / 4);
-        realY = this.camera.y;
-        console.log(realX, realY);
-        this.camera.moveTo(realX, realY, "fast");
-        this.camera.scaleTo(scale, "fast");
-        return this.bgFloat.animate({
-          "transform.opacity": 0
-        }, "fast");
+        if (dy < -hEdge) {
+          dy = -hEdge;
+        }
+        if (dy > hEdge) {
+          dy = hEdge;
+        }
+        realX = this.currentX + dx;
+        realY = 0 + dy;
+        cx = this.camera.getOffsetPositionX(realX, this.mainBg);
+        cy = this.camera.getOffsetPositionY(realY, this.mainBg);
+        _ref = this.floatBgs;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          bg = _ref[_i];
+          bg.animate({
+            "transform.opacity": 0
+          }, "fast");
+        }
+        this.menu.J.find(".autohide").fadeOut("fast", function() {
+          return _this.relativeMenu.UI['res-point-box'].J.fadeIn("fast");
+        });
+        return this.camera.animate({
+          x: cx,
+          y: cy,
+          scale: scale
+        }, "fast", function() {
+          return _this.camera.lock = false;
+        });
       } else {
-        this.menu.J.find(".autohide").removeClass("invisible");
+        if (this.camera.lock) {
+          return;
+        }
+        this.camera.lock = true;
         this.scaledIn = false;
-        this.camera.moveTo(this.lastCameraPosition.x, this.lastCameraPosition.y, "fast");
-        this.camera.scaleTo(1, "fast");
-        return this.bgFloat.animate({
-          "transform.opacity": 1
-        }, "fast");
+        _ref1 = this.floatBgs;
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          bg = _ref1[_j];
+          bg.animate({
+            "transform.opacity": 1
+          }, "fast");
+        }
+        this.relativeMenu.UI['res-point-box'].J.fadeOut("fast", function() {
+          return _this.menu.J.find(".autohide").fadeIn("fast");
+        });
+        return this.camera.animate({
+          x: this.lastCameraPosition.x,
+          y: this.lastCameraPosition.y,
+          scale: 1
+        }, "fast", function() {
+          return _this.camera.lock = false;
+        });
       }
     };
 
@@ -199,9 +264,14 @@
       item.dom.number = index + 1;
       item.J.addClass("gp" + (index + 1));
       item.appendTo(this.relativeMenu.UI['res-point-box']);
-      return item.dom.onclick = function() {
+      return item.J.css({
+        position: "absolute",
+        left: p.split(",")[0] + "px",
+        top: p.split(",")[1] + "px"
+      }, item.dom.onclick = function(evt) {
+        evt.stopPropagation();
         return self.handleGatherResault(self.gatherItem(this.number));
-      };
+      });
     };
 
     Place.prototype.addMovePoint = function(moveTarget, index) {
@@ -218,22 +288,20 @@
     };
 
     Place.prototype.initItems = function() {
-      var gatherData, i, index, item, itemData, name, _i, _len, _ref, _ref1;
-      _ref = this.data.resPoints;
+      var gatherData, index, item, itemData, items, name, resData, _i, _j, _len, _len1, _ref, _ref1;
+      _ref = this.data.resources;
       for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
-        i = _ref[index];
-        this.resPoints.push([]);
-      }
-      _ref1 = this.db.things.items;
-      for (name in _ref1) {
-        itemData = _ref1[name];
-        if (!itemData.gather) {
-          continue;
-        }
-        item = new GatherItem(name, itemData);
-        gatherData = item.getGatherDataByPlace(this.area.name, this.name);
-        if (gatherData) {
-          this.resPoints[gatherData.resPoint - 1].push(item);
+        resData = _ref[index];
+        items = [];
+        this.resPoints.push(items);
+        _ref1 = resData.split(",");
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          name = _ref1[_j];
+          itemData = this.db.things.items.get(name);
+          console.log(itemData);
+          item = new GatherItem(name, itemData);
+          gatherData = item.getGatherData(this.area.name, this.name);
+          items.push(item);
         }
       }
       return console.log(this.resPoints);
@@ -308,7 +376,7 @@
       Area.__super__.constructor.call(this, game);
       this.game = game;
       this.name = areaName;
-      this.data = game.db.areas[areaName];
+      this.data = game.db.areas.get(areaName);
       this.backpackMenu = new Backpack(game, "gatherArea");
       this.enterPlace("entry");
     }

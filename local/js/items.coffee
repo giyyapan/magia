@@ -38,16 +38,8 @@ class window.PlayerEquipment extends Things
 class window.GatherItem extends Things
   constructor:(name,data)->
     super name,data,"item"
-  getGatherDataByPlace:(area,place)->
-    for gatherData in @data.gather
-      arr = gatherData.split " "
-      theArea = arr[0]
-      continue if theArea isnt area
-      for placeGatherData in arr[1].split(",")
-        arr2 = placeGatherData.split(".")
-        continue if arr2[0] isnt place
-        return resPoint:parseInt(arr2[1])
-    return false
+  getGatherData:()->
+    return true
   tryGather:(data)->
     #check condition
     return 1

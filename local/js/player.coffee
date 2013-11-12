@@ -48,7 +48,7 @@ class window.Player
         when "material" then @getMaterial target,data
   getItem:(target="backpack",dataObj)-> #target= backpack/storage 只有item是可堆叠的
     name = dataObj.name
-    originData = dataObj.originData or @db.things.items[name]
+    originData = dataObj.originData or @db.things.items.get name
     number = dataObj.number
     item = new PlayerItem(name,originData,number)
     switch target

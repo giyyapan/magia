@@ -1,7 +1,7 @@
 class Place extends Layer
   constructor:(@area,@db,@name,@data)->
     super()
-    @camera = new Camera()
+    @camera = new Camera 500,0
     @drawQueueAddAfter @camera
     @initBg()
     @initMenu()
@@ -22,21 +22,36 @@ class Place extends Layer
         #@camera.scale = 1 if @camera.scale < 1
         #@camera.z -= 20
       #else @camera.y += 20
-    if Key.right then @currentX += 15
-    if Key.left then @currentX -= 15
+    if Key.right
+      @currentX += 15
+      changed = true
+    if Key.left
+      @currentX -= 15
+      changed = true
     if @currentX < 0 then @currentX = 0
-    if @currentX > @bg.width - s.width then @currentX = @bg.width - s.width
-    @camera.x = @camera.getOffsetPositionX @currentX,@bg
+    if @currentX > @mainBg.width - s.width then @currentX = @mainBg.width - s.width
+    @camera.x = @camera.getOffsetPositionX @currentX,@mainBg if changed
   initBg:->
-    @bg = new Layer Res.imgs[@data.bg[0]]
-    @bgFloat = new Layer Res.imgs[@data.bg[1]]
-    @bgFloat2 = new Layer Res.imgs[@data.bg[2]]
-    @bgFloat2.fixToBottom()
-    @bgFloat2.transform.scale = 1.5
-    @bgFloat2.x = 300
-    @bg.z = 1000
-    @bgFloat.z = 600
-    @camera.render @bg,@bgFloat,@bgFloat2
+    initLayer=(layer,detail)->
+      for name,value of detail
+        if name is "fixToBottom"
+          layer.fixToBottom()
+        else
+          layer[name] = value
+    @floatBgs = []
+    @bgs = []
+    for imgName,data of @data.bg
+      bg = new Layer Res.imgs[imgName]
+      initLayer bg,data
+      @bgs.push bg
+      @camera.render bg
+    for imgName,data of @data.floatBg
+      bg = new Layer Res.imgs[imgName]
+      console.log bg
+      initLayer bg,data
+      @floatBgs.push bg
+      @camera.render bg
+    @mainBg = @bgs[0]
   initMenu:->
     s = Utils.getSize()
     @menu = new Menu Res.tpls['area-menu']
@@ -45,19 +60,23 @@ class Place extends Layer
     moveCallback = ()=>
       x = @currentX
       delete @camera.lock
-      if x is 0 then @menu.UI['move-left'].J.fadeOut 200
-      else @menu.UI['move-left'].J.fadeIn 200
-      if x is (@bg.width - s.width) then @menu.UI['move-right'].J.fadeOut 200
-      else @menu.UI['move-right'].J.fadeIn 200
+      if x is 0
+        @menu.UI['move-left'].J.removeClass("autohide").fadeOut 200
+      else
+        @menu.UI['move-left'].J.addClass("autohide").fadeIn 200
+      if x is (@mainBg.width - s.width)
+        @menu.UI['move-right'].J.removeClass("autohide").fadeOut 200
+      else
+        @menu.UI['move-right'].J.addClass("autohide").fadeIn 200
     @menu.UI['move-right'].onclick = (evt)=>
       evt.stopPropagation()
       console.log "right"
       @camera.lock = true
       @currentX += 400
       #if @currentX < 0 then @currentX = 0
-      if @currentX > @bg.width - s.width then @currentX = @bg.width - s.width
-      x = @camera.getOffsetPositionX @currentX,@bg
-      if x > @bg.width then x = @bg.width
+      if @currentX > @mainBg.width - s.width then @currentX = @mainBg.width - s.width
+      x = @camera.getOffsetPositionX @currentX,@mainBg
+      if x > @mainBg.width then x = @mainBg.width
       @camera.animate {x:x},"normal",->
         moveCallback()
     @menu.UI['move-left'].onclick = (evt)=>
@@ -66,8 +85,8 @@ class Place extends Layer
       @camera.lock = true
       @currentX -= 400
       if @currentX < 0 then @currentX = 0
-      #if @currentX > @bg.width - s.width then @currentX = @bg.width - s.width
-      x = @camera.getOffsetPositionX @currentX,@bg
+      #if @currentX > @mainBg.width - s.width then @currentX = @mainBg.width - s.width
+      x = @camera.getOffsetPositionX @currentX,@mainBg
       @camera.animate {x:x},"normal",->
         moveCallback()
     @menu.UI.backpack.onclick = (evt)=>
@@ -88,35 +107,49 @@ class Place extends Layer
     @camera.render @relativeMenu
   searchPosition:(x,y)->
     s = Utils.getSize()
-    scale = 1.5
-    return
+    scale = 1.3
     if not @scaledIn
-      @menu.J.find(".autohide").addClass "invisible"
+      return if @camera.lock
+      @camera.lock = true
+      #@menu.J.find(".autohide").addClass "invisible"
       @scaledIn = true
       @lastCameraPosition =
         x:@camera.x
         y:@camera.y
-      realW = s.width / scale
-      realH = s.height / scale
-      sx = @camera.getOffsetScaleX(@bg.z)
-      sy = @camera.getOffsetScaleY(@bg.z)
-      dx = x + @camera.x - s.width/2
-      dy = y + @camera.y - s.height/2
-      realX = dx/(realW/4)/sx
-      if realX < -1 then realX = -1
-      if realX > 1 then realX = 1
-      realX = realX*(realW/4)
-      realY = @camera.y
-      console.log realX,realY
-      @camera.moveTo realX,realY,"fast"
-      @camera.scaleTo scale,"fast"
-      @bgFloat.animate {"transform.opacity":0},"fast"
+      realW = s.width/scale
+      realH = s.height/scale
+      dx = x - s.width/2
+      dy = y - s.height/2
+      wEdge = s.width/2 - realW/2
+      hEdge = s.height/2 - realH/2
+      if dx < - wEdge
+        dx = - wEdge
+      if dx > wEdge
+        dx = wEdge
+      if dy < - hEdge
+        dy = - hEdge
+      if dy > hEdge
+        dy = hEdge
+      realX = @currentX + dx
+      realY = 0 + dy
+      cx = @camera.getOffsetPositionX realX,@mainBg
+      cy = @camera.getOffsetPositionY realY,@mainBg
+      for bg in @floatBgs
+        bg.animate {"transform.opacity":0},"fast"
+      @menu.J.find(".autohide").fadeOut "fast",=>
+        @relativeMenu.UI['res-point-box'].J.fadeIn "fast"
+      @camera.animate {x:cx,y:cy,scale:scale},"fast",=>
+        @camera.lock = false
     else
-      @menu.J.find(".autohide").removeClass "invisible"
+      return if @camera.lock
+      @camera.lock = true
       @scaledIn = false
-      @camera.moveTo @lastCameraPosition.x,@lastCameraPosition.y,"fast"
-      @camera.scaleTo 1,"fast"
-      @bgFloat.animate {"transform.opacity":1},"fast"
+      for bg in @floatBgs
+        bg.animate {"transform.opacity":1},"fast"
+      @relativeMenu.UI['res-point-box'].J.fadeOut "fast",=>
+        @menu.J.find(".autohide").fadeIn "fast"
+      @camera.animate {x:@lastCameraPosition.x,y:@lastCameraPosition.y,scale:1},"fast",=>
+        @camera.lock = false
   addResPoint:(p,index)->
     self = this
     item = new Suzaku.Widget @relativeMenu.UI['res-point-tpl'].J.html()
@@ -124,7 +157,9 @@ class Place extends Layer
     item.dom.number = index+1
     item.J.addClass "gp#{index+1}"
     item.appendTo @relativeMenu.UI['res-point-box']
-    item.dom.onclick = ->
+    item.J.css position:"absolute",left:p.split(",")[0]+"px",top:p.split(",")[1]+"px",
+    item.dom.onclick = (evt)->
+      evt.stopPropagation()
       self.handleGatherResault self.gatherItem @number
   addMovePoint:(moveTarget,index)->
     area = @area
@@ -136,14 +171,15 @@ class Place extends Layer
     item.dom.onclick = ->
       area.enterPlace @target
   initItems:->
-    for i,index in @data.resPoints
-      @resPoints.push []
-    for name,itemData of @db.things.items
-      continue if not itemData.gather
-      item = new GatherItem name,itemData
-      gatherData = item.getGatherDataByPlace @area.name,@name
-      if gatherData
-        @resPoints[gatherData.resPoint-1].push item
+    for resData,index in @data.resources
+      items = []
+      @resPoints.push items
+      for name in resData.split ","
+        itemData = @db.things.items.get name
+        console.log itemData
+        item = new GatherItem name,itemData
+        gatherData = item.getGatherData @area.name,@name
+        items.push item
     console.log @resPoints
   gatherItem:(resPointNum)->
     index = resPointNum - 1
@@ -183,7 +219,7 @@ class window.Area extends Stage
     super game
     @game = game
     @name = areaName
-    @data = game.db.areas[areaName]
+    @data = game.db.areas.get areaName
     @backpackMenu = new Backpack game,"gatherArea"
     @enterPlace "entry"
   enterPlace:(placeName)->

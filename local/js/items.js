@@ -91,29 +91,8 @@
       GatherItem.__super__.constructor.call(this, name, data, "item");
     }
 
-    GatherItem.prototype.getGatherDataByPlace = function(area, place) {
-      var arr, arr2, gatherData, placeGatherData, theArea, _i, _j, _len, _len1, _ref, _ref1;
-      _ref = this.data.gather;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        gatherData = _ref[_i];
-        arr = gatherData.split(" ");
-        theArea = arr[0];
-        if (theArea !== area) {
-          continue;
-        }
-        _ref1 = arr[1].split(",");
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          placeGatherData = _ref1[_j];
-          arr2 = placeGatherData.split(".");
-          if (arr2[0] !== place) {
-            continue;
-          }
-          return {
-            resPoint: parseInt(arr2[1])
-          };
-        }
-      }
-      return false;
+    GatherItem.prototype.getGatherData = function() {
+      return true;
     };
 
     GatherItem.prototype.tryGather = function(data) {

@@ -2,7 +2,7 @@ window.Imgs =
   buttonCenter:'button_center.png'
   item:'item.png'
   forestEntry:'forest-entry.jpg'
-  forestEntryFloat:'forest-entry-float.png'
+  forestEntryFloat1:'forest-entry-float.png'
   forestEntryFloat2:'forest-entry-float2.png'
   forest2:'forest2.jpg'
   forest3:'forest3.jpg'

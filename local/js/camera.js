@@ -156,7 +156,7 @@
       r = d.realValue;
       r.rotate = r.rotate - this.rotate;
       r.translateX = r.translateX - (this.x / sX);
-      if (!this.fixedYCoordinates) {
+      if (!d.fixedYCoordinates) {
         r.translateY = r.translateY - (this.y / sY);
       }
       if (!d.offsetSize) {
@@ -166,7 +166,7 @@
     };
 
     Camera.prototype._renderMenu = function(m, s) {
-      var rd, sX, sY, value, x, y;
+      var originX, originY, rd, sX, sY, value, x, y;
       if (!m.renderData) {
         m.renderData = {
           z: m.z - 1
@@ -182,8 +182,17 @@
       sY = rd.scaleY;
       x = -(this.x / sX);
       y = -(this.y / sY);
-      Utils.setCSS3Attr(m.J, "transform-origin", "" + (parseInt(this.x + this.width / 2)) + "px " + (parseInt(this.y + this.height / 2)) + "px");
-      value = "translate(" + x + "px," + y + "px) ";
+      if (rd.x === x && rd.y === y && rd.rotate === this.transform.rotate && rd.scale === this.scale) {
+        return;
+      }
+      rd.x = x;
+      rd.y = y;
+      rd.rotate = this.transform.rotate;
+      rd.scale = this.scale;
+      originX = parseInt(-x + s.width / 2);
+      originY = parseInt(-y + s.height / 2);
+      Utils.setCSS3Attr(m.J, "transform-origin", "" + originX + "px " + originY + "px");
+      value = "translate(" + (parseInt(x)) + "px," + (parseInt(y)) + "px) ";
       value += "rotate(" + this.transform.rotate + "deg) ";
       value += "scale(" + this.scale + "," + this.scale + ") ";
       return Utils.setCSS3Attr(m.J, "transform", value);
