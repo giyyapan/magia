@@ -1,0 +1,5 @@
+.double-border {
+  box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
+  border: 2px solid #2a1d0f;
+  border-radius: 10px;
+}
