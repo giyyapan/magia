@@ -6,9 +6,13 @@
   window.Imgs = {
     buttonCenter: 'button_center.png',
     item: 'item.png',
-    forest1: 'forest1.jpg',
+    forestEntry: 'forest-entry.jpg',
+    forestEntryFloat: 'forest-entry-float.png',
+    forestEntryFloat2: 'forest-entry-float2.png',
     forest2: 'forest2.jpg',
     forest3: 'forest3.jpg',
+    bfForestMain: 'bf-forest-main.jpg',
+    bfForestFloat: 'bf-forest-float.png',
     layer1: 'layer1.png',
     layer2: 'layer2.png',
     layer3: 'layer3.png',
@@ -22,7 +26,11 @@
     homeUp: 'home_up.jpg'
   };
 
-  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu", "thing-list-item", "backpack"];
+  window.Sprites = {
+    test: "test"
+  };
+
+  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu"];
 
   window.Css = [];
 
@@ -32,6 +40,7 @@
     function ResourceManager() {
       ResourceManager.__super__.constructor.call(this);
       this.imgs = [];
+      this.sprites = [];
       this.sounds = [];
       this.templates = [];
       this.loadedNum = 0;
@@ -39,9 +48,11 @@
       this.loaded = {
         imgs: {},
         sounds: {},
+        sprites: {},
         templates: {}
       };
       this.imgPath = "";
+      this.spritePath = "";
       this.soundPath = "";
       this.tplPath = "";
     }
@@ -50,6 +61,17 @@
       return this.imgs.push({
         name: name,
         src: src
+      });
+    };
+
+    ResourceManager.prototype.useSprite = function(name, src) {
+      var dataSrc, mapSrc;
+      mapSrc = "" + src + ".png";
+      dataSrc = "" + src + ".json";
+      return this.sprites.push({
+        name: name,
+        mapSrc: mapSrc,
+        dataSrc: dataSrc
       });
     };
 
@@ -78,19 +100,21 @@
           return this.imgPath = path;
         case "sound":
           return this.soundPath = path;
+        case "sprite":
+          return this.spritePath = path;
         case "template":
           return this.tplPath = path;
       }
     };
 
     ResourceManager.prototype.start = function(callback) {
-      var ajaxManager, i, img, localDir, req, self, tplName, url, _i, _j, _len, _len1, _ref, _ref1,
+      var ajaxManager, i, img, localDir, req, self, sprite, tplName, url, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2,
         _this = this;
       if (typeof callback === "function") {
         this.on("load", callback);
       }
       this.loadedNum = 0;
-      this.totalResNum = this.imgs.length + this.sounds.length + this.templates.length;
+      this.totalResNum = this.imgs.length + this.sprites.length + this.sounds.length + this.templates.length;
       ajaxManager = new Suzaku.AjaxManager;
       self = this;
       _ref = this.imgs;
@@ -105,10 +129,30 @@
           return self._resOnload('img');
         });
       }
-      localDir = this.tplPath;
-      _ref1 = this.templates;
+      _ref1 = this.sprites;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        tplName = _ref1[_j];
+        sprite = _ref1[_j];
+        i = new Image();
+        console.log(this.spritePath);
+        i.src = this.spritePath + sprite.mapSrc;
+        i.dataSrc = this.spritePath + sprite.dataSrc;
+        i.name = sprite.name;
+        i.addEventListener("load", function() {
+          img = this;
+          return $.get(img.dataSrc, function(data) {
+            console.log(data);
+            self.loaded.sprites[img.name] = {
+              map: img,
+              data: data
+            };
+            return self._resOnload('sprite');
+          });
+        });
+      }
+      localDir = this.tplPath;
+      _ref2 = this.templates;
+      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+        tplName = _ref2[_k];
         url = name.indexOf(".html") > -1 ? localDir + tplName : localDir + tplName + ".html";
         req = ajaxManager.addGetRequest(url, null, function(data, textStatus, req) {
           _this.loaded.templates[req.Suzaku_tplName] = data;

@@ -23,23 +23,23 @@ class window.TestStage extends Stage
     l6.width = 5000
     @menu = new Menu Res.tpls['test-menu']
     @camera.render l1,l2,l3,l4,l5,l6,@menu
-    @drawQueueAddAfter @camera,l1,l2,l3,l4,l5,l6,@menu
+    @drawQueueAddAfter @camera
     #@drawQueueAddAfter @camera,l1,@menu
     @menu.show()
     @key = {}
-    k = Suzaku.Key
     window.onmousewheel = (evt)=>
-      @camera.lens += evt.wheelDeltaY/500
-      console.log @camera.lens
+      @camera.sacle += evt.wheelDeltaY/500
+      console.log @camera.scale
   tick:->
     if Key.up
       if Key.shift
-        @camera.lens += 0.01
+        @camera.scale += 0.03
         #@camera.z += 20
       else @camera.y -= 20
     if Key.down
       if Key.shift
-        @camera.lens -= 0.01
+        @camera.scale -= 0.03
+        #@camera.scale = 1 if @camera.scale < 1
         #@camera.z -= 20
       else @camera.y += 20
     if Key.right then @camera.x += 20

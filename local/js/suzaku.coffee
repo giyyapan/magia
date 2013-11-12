@@ -417,6 +417,27 @@ class KeybordManager extends EventEmitter
         
 window.Suzaku = new Suzaku
 window.Suzaku.Utils = Utils =
+  localData:(action,key,value)->
+    #action = "set,clear,get"
+    switch action
+      when "set","save"
+        if typeof value is "undefined"
+          return console.error "no value to save."
+        else
+          window.localStorage.setItem name,JSON.stringify(value)
+          return true
+      when "get","read"
+        v = window.localStorage.getItem name 
+        if not v then return null
+        try
+          return JSON.parse(v)
+        catch
+          return v
+      when "clear","remove"
+        window.localStorage.removeItem name
+        return true
+      else
+        console.error "invailid localData action:#{action}"
   bindMobileClick:(dom,callback)->
     if not dom
       return console.error "no dom exist --Suzaku.bindMobileClick"

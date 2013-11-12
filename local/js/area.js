@@ -8,49 +8,214 @@
     __extends(Place, _super);
 
     function Place(area, db, name, data) {
-      var index, item, moveTarget, p, self, _i, _j, _len, _len1, _ref, _ref1,
-        _this = this;
+      var self;
       this.area = area;
       this.db = db;
       this.name = name;
       this.data = data;
       Place.__super__.constructor.call(this);
-      this.bg = new Layer(Res.imgs[this.data.bg]);
-      this.menu = new Menu(Res.tpls['area-menu']);
-      this.menu.J.addClass(this.name);
-      this.menu.UI.backpack.onclick = function() {
-        return _this.emit("showBackpack");
-      };
-      this.menu.show();
+      this.camera = new Camera();
+      this.drawQueueAddAfter(this.camera);
+      this.initBg();
+      this.initMenu();
       this.resPoints = [];
-      this.drawQueueAddAfter(this.bg);
+      this.currentX = 0;
       this.initItems();
       self = this;
+    }
+
+    Place.prototype.tick = function() {
+      var s;
+      s = Utils.getSize();
+      if (Key.up) {
+        if (Key.shift) {
+          this.camera.scale += 0.03;
+        }
+      }
+      if (Key.down) {
+        if (Key.shift) {
+          this.camera.scale -= 0.03;
+        }
+      }
+      if (Key.right) {
+        this.currentX += 15;
+      }
+      if (Key.left) {
+        this.currentX -= 15;
+      }
+      if (this.currentX < 0) {
+        this.currentX = 0;
+      }
+      if (this.currentX > this.bg.width - s.width) {
+        this.currentX = this.bg.width - s.width;
+      }
+      return this.camera.x = this.camera.getOffsetPositionX(this.currentX, this.bg);
+    };
+
+    Place.prototype.initBg = function() {
+      this.bg = new Layer(Res.imgs[this.data.bg[0]]);
+      this.bgFloat = new Layer(Res.imgs[this.data.bg[1]]);
+      this.bgFloat2 = new Layer(Res.imgs[this.data.bg[2]]);
+      this.bgFloat2.fixToBottom();
+      this.bgFloat2.transform.scale = 1.5;
+      this.bgFloat2.x = 300;
+      this.bg.z = 1000;
+      this.bgFloat.z = 600;
+      return this.camera.render(this.bg, this.bgFloat, this.bgFloat2);
+    };
+
+    Place.prototype.initMenu = function() {
+      var index, moveCallback, moveTarget, p, s, _i, _j, _len, _len1, _ref, _ref1,
+        _this = this;
+      s = Utils.getSize();
+      this.menu = new Menu(Res.tpls['area-menu']);
+      this.menu.J.addClass(this.name);
+      this.menu.UI.title.J.text(this.data.name);
+      moveCallback = function() {
+        var x;
+        x = _this.currentX;
+        delete _this.camera.lock;
+        if (x === 0) {
+          _this.menu.UI['move-left'].J.fadeOut(200);
+        } else {
+          _this.menu.UI['move-left'].J.fadeIn(200);
+        }
+        if (x === (_this.bg.width - s.width)) {
+          return _this.menu.UI['move-right'].J.fadeOut(200);
+        } else {
+          return _this.menu.UI['move-right'].J.fadeIn(200);
+        }
+      };
+      this.menu.UI['move-right'].onclick = function(evt) {
+        var x;
+        evt.stopPropagation();
+        console.log("right");
+        _this.camera.lock = true;
+        _this.currentX += 400;
+        if (_this.currentX > _this.bg.width - s.width) {
+          _this.currentX = _this.bg.width - s.width;
+        }
+        x = _this.camera.getOffsetPositionX(_this.currentX, _this.bg);
+        if (x > _this.bg.width) {
+          x = _this.bg.width;
+        }
+        return _this.camera.animate({
+          x: x
+        }, "normal", function() {
+          return moveCallback();
+        });
+      };
+      this.menu.UI['move-left'].onclick = function(evt) {
+        var x;
+        evt.stopPropagation();
+        console.log("left");
+        _this.camera.lock = true;
+        _this.currentX -= 400;
+        if (_this.currentX < 0) {
+          _this.currentX = 0;
+        }
+        x = _this.camera.getOffsetPositionX(_this.currentX, _this.bg);
+        return _this.camera.animate({
+          x: x
+        }, "normal", function() {
+          return moveCallback();
+        });
+      };
+      this.menu.UI.backpack.onclick = function(evt) {
+        evt.stopPropagation();
+        return _this.emit("showBackpack");
+      };
+      this.menu.dom.onclick = function(evt) {
+        return _this.searchPosition(evt.offsetX, evt.offsetY);
+      };
+      this.relativeMenu = new Menu(Res.tpls['area-relative-menu']);
+      this.relativeMenu.J.addClass(this.name);
+      this.relativeMenu.z = 1000;
+      this.relativeMenu.UI['res-point-box'].J.hide();
       _ref = this.data.resPoints;
       for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
         p = _ref[index];
-        item = new Suzaku.Widget(this.menu.UI['res-point-tpl'].J.html());
-        item.J.html("采集点" + (index + 1));
-        item.dom.number = index + 1;
-        item.J.addClass("gp" + (index + 1));
-        item.appendTo(this.menu.UI['res-point-box']);
-        item.dom.onclick = function() {
-          return self.handleGatherResault(self.gatherItem(this.number));
-        };
+        this.addResPoint(p, index);
       }
       _ref1 = this.data.movePoints;
       for (index = _j = 0, _len1 = _ref1.length; _j < _len1; index = ++_j) {
         moveTarget = _ref1[index];
-        item = new Suzaku.Widget(this.menu.UI['move-point-tpl'].innerHTML);
-        item.J.html(moveTarget);
-        item.dom.target = moveTarget;
-        item.J.addClass("mp-" + moveTarget);
-        item.appendTo(this.menu.UI['move-point-box']);
-        item.dom.onclick = function() {
-          return area.enterPlace(this.target);
-        };
+        this.addMovePoint(moveTarget, index);
       }
-    }
+      this.menu.show();
+      this.relativeMenu.appendTo(this.menu.UI['relative-wrapper']);
+      return this.camera.render(this.relativeMenu);
+    };
+
+    Place.prototype.searchPosition = function(x, y) {
+      var dx, dy, realH, realW, realX, realY, s, scale, sx, sy;
+      s = Utils.getSize();
+      scale = 1.5;
+      return;
+      if (!this.scaledIn) {
+        this.menu.J.find(".autohide").addClass("invisible");
+        this.scaledIn = true;
+        this.lastCameraPosition = {
+          x: this.camera.x,
+          y: this.camera.y
+        };
+        realW = s.width / scale;
+        realH = s.height / scale;
+        sx = this.camera.getOffsetScaleX(this.bg.z);
+        sy = this.camera.getOffsetScaleY(this.bg.z);
+        dx = x + this.camera.x - s.width / 2;
+        dy = y + this.camera.y - s.height / 2;
+        realX = dx / (realW / 4) / sx;
+        if (realX < -1) {
+          realX = -1;
+        }
+        if (realX > 1) {
+          realX = 1;
+        }
+        realX = realX * (realW / 4);
+        realY = this.camera.y;
+        console.log(realX, realY);
+        this.camera.moveTo(realX, realY, "fast");
+        this.camera.scaleTo(scale, "fast");
+        return this.bgFloat.animate({
+          "transform.opacity": 0
+        }, "fast");
+      } else {
+        this.menu.J.find(".autohide").removeClass("invisible");
+        this.scaledIn = false;
+        this.camera.moveTo(this.lastCameraPosition.x, this.lastCameraPosition.y, "fast");
+        this.camera.scaleTo(1, "fast");
+        return this.bgFloat.animate({
+          "transform.opacity": 1
+        }, "fast");
+      }
+    };
+
+    Place.prototype.addResPoint = function(p, index) {
+      var item, self;
+      self = this;
+      item = new Suzaku.Widget(this.relativeMenu.UI['res-point-tpl'].J.html());
+      item.UI.name.J.text("采集点" + (index + 1));
+      item.dom.number = index + 1;
+      item.J.addClass("gp" + (index + 1));
+      item.appendTo(this.relativeMenu.UI['res-point-box']);
+      return item.dom.onclick = function() {
+        return self.handleGatherResault(self.gatherItem(this.number));
+      };
+    };
+
+    Place.prototype.addMovePoint = function(moveTarget, index) {
+      var area, item;
+      area = this.area;
+      item = new Suzaku.Widget(this.relativeMenu.UI['move-point-tpl'].innerHTML);
+      item.UI.target.J.text(moveTarget);
+      item.dom.target = moveTarget;
+      item.J.addClass("mp-" + moveTarget);
+      item.appendTo(this.relativeMenu.UI['move-point-box']);
+      return item.dom.onclick = function() {
+        return area.enterPlace(this.target);
+      };
+    };
 
     Place.prototype.initItems = function() {
       var gatherData, i, index, item, itemData, name, _i, _len, _ref, _ref1;
@@ -175,7 +340,6 @@
       console.log(this.backpackMenu);
       self = this;
       this.backpackMenu.on("close", function() {
-        var _this = this;
         self.currentPlace.onShow = true;
         return self.backpackMenu.hide(function() {
           return self.currentPlace.menu.show();
@@ -204,6 +368,12 @@
       }
       box = new GatherResaultBox(itemDataArr);
       return box.show();
+    };
+
+    Area.prototype.tick = function() {
+      if (this.currentPlace.tick) {
+        return this.currentPlace.tick();
+      }
     };
 
     return Area;

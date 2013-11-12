@@ -18,11 +18,16 @@
         reaction: [],
         combination: []
       };
+      this.sprites = {
+        characters: [],
+        items: []
+      };
       this.tasks = null;
       this.storys = null;
       this.initAreas();
       this.initThings();
       this.initRules();
+      this.initSprites();
     }
 
     Database.prototype.initAreas = function() {
@@ -34,17 +39,20 @@
         y: 0,
         places: {
           entry: {
-            bg: ["forest1"],
+            name: "森林入口",
+            bg: ["forestEntry", "forestEntryFloat", "forestEntryFloat2"],
             resPoints: ["1,1", "20,20", "30,30", "50,50"],
             movePoints: ["exit", "west", "east"]
           },
           east: {
-            bg: "forest2",
+            name: "东部森林",
+            bg: ["forest2"],
             resPoints: ["1,1", "20,80"],
             movePoints: ["entry"]
           },
           west: {
-            bg: "forest3",
+            name: "西部森林",
+            bg: ["forest3"],
             resPoints: ["1,1", "20,80"],
             movePoints: ["entry"]
           }
@@ -127,6 +135,53 @@
         from: ["fire:5"],
         to: "",
         cond: []
+      };
+    };
+
+    Database.prototype.initSprites = function() {
+      this.sprites.characters = {
+        qq: {
+          name: "QQ",
+          sprite: Res.sprites.test,
+          basicData: {
+            hp: 1000,
+            def: 30,
+            attack: {
+              damage: {
+                normal: 30,
+                water: 10
+              }
+            },
+            magic: {
+              waterball: {
+                turn: 2,
+                damage: {
+                  water: 100
+                }
+              }
+            }
+          },
+          anchor: "100,100",
+          movements: {
+            normal: "0,8",
+            move: "0,8",
+            attack: "0,8",
+            cast: "0,8"
+          },
+          drop: {
+            certain: ["bluerose"],
+            random: null
+          }
+        }
+      };
+      return this.sprites.items = {
+        waterball: {
+          name: "水球术",
+          movements: {
+            normal: "",
+            active: ""
+          }
+        }
       };
     };
 

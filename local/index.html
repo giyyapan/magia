@@ -10,9 +10,11 @@
     <meta name="x5-fullscreen" content="true"/>
     <meta name="360-fullscreen" content="true"/>
 		<link rel="stylesheet" href="css/global.css" type="text/css"t />
+		<link rel="stylesheet" href="css/menu.css" type="text/css"t />
 	</head>
 	<body style="padding:0; margin: 0; background: #000;">
 		<div class="screen" id="BGLayer"></div>
+		<canvas class="screen" id="secondCanvas" width="1280" height="720" style="display:none;"></canvas>
 		<canvas class="screen" id="gameCanvas" width="1280" height="720"></canvas>
 		<div class="screen" id="UILayer"></div>
 		<div id="loadingPage"  >
@@ -23,8 +25,10 @@
 			<script type="text/javascript" src="js/jquery.min.js"></script>
 			<script type="text/javascript" src="js/suzaku.js"></script>
 			<script type="text/javascript" src="js/game.js"></script>
-			
+
+			<script type="text/javascript" src="js/drawable.js"></script>			
 			<script type="text/javascript" src="js/base.js"></script>
+			<script type="text/javascript" src="js/camera.js"></script>
 			<script type="text/javascript" src="js/utils.js"></script>
 			<script type="text/javascript" src="js/player.js"></script>
 			<script type="text/javascript" src="js/db.js"></script>

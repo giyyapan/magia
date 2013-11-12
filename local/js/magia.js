@@ -21,7 +21,7 @@
         _this.db = new Database();
         _this.player = new Player(null, _this.db);
         $("#loadingPage").slideUp("fast");
-        _this.switchStage("worldMap");
+        _this.switchStage("area", "forest");
         return _this.startGameLoop();
       });
     }
@@ -148,7 +148,7 @@
     };
 
     Magia.prototype.loadResources = function(callback) {
-      var loadingPage, name, rm, src, tpl, _i, _len, _ref, _ref1,
+      var loadingPage, name, rm, src, tpl, _i, _len, _ref, _ref1, _ref2,
         _this = this;
       loadingPage = new Suzaku.Widget("#loadingPage");
       rm = new ResourceManager();
@@ -158,10 +158,16 @@
         src = _ref[name];
         rm.useImg(name, src);
       }
+      rm.setPath("sprite", "img/sprites/");
+      _ref1 = window.Sprites;
+      for (name in _ref1) {
+        src = _ref1[name];
+        rm.useSprite(name, src);
+      }
       rm.setPath("template", "templates/");
-      _ref1 = window.Templates;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        tpl = _ref1[_i];
+      _ref2 = window.Templates;
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        tpl = _ref2[_i];
         rm.useTemplate(tpl);
       }
       rm.on("loadOne", function(total, loaded, type) {

@@ -1,60 +1,26 @@
-/* line 8, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\000038}}
-* {
-  font-family: "微软雅黑";
-}
-/* line 11, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000311}}
-p {
-  margin: 0;
-}
-/* line 14, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000314}}
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-/* line 19, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000319}}
-a {
-  cursor: pointer;
-}
-/* line 22, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000322}}
 .double-border {
   box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
   border: 2px solid #2a1d0f;
   border-radius: 10px;
 }
-/* line 27, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000327}}
 .backpack {
   width: 1280px;
   height: 720px;
   display: block;
 }
-/* line 32, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000332}}
 .header {
   height: 76px;
   width: 100%;
   display: block;
   background: url(../img/menu/menu-backpack-main-bg.png) repeat-x;
 }
-/* line 38, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000338}}
 .tab {
   cursor: pointer;
   position: relative;
 }
-/* line 41, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000341}}
 .tab.active .unFocused-mark {
   display: none;
 }
-/* line 44, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000344}}
 .tab .unFocused-mark {
   width: 100%;
   height: 100%;
@@ -63,21 +29,15 @@ a {
   color: white;
   position: absolute;
 }
-/* line 51, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000351}}
 .tab .unFocused-mark:hover {
   opacity: 0.3;
 }
-/* line 56, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000356}}
 .header-tabs {
   width: 334px;
   height: 100%;
   margin-left: 106px;
   background: #000;
 }
-/* line 61, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000361}}
 .header-tabs .tab {
   width: 167px;
   height: 100%;
@@ -85,8 +45,6 @@ a {
   float: left;
   background: url(../img/menu/menu-backpack-top-tab-bg.png);
 }
-/* line 67, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000367}}
 .header-tabs .tab span {
   display: block;
   font-size: 30px;
@@ -95,16 +53,12 @@ a {
   text-align: center;
   line-height: 72px;
 }
-/* line 77, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000377}}
 .main {
   height: 664px;
   width: 100%;
   background: url(../img/menu/backpack-main-bg.jpg);
   position: relative;
 }
-/* line 82, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000382}}
 .main .border {
   height: 37px;
   width: 100%;
@@ -112,62 +66,42 @@ a {
   position: absolute;
   background: url(../img/menu/backpack-border-bg.jpg);
 }
-/* line 88, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000388}}
 .main .border .lt {
   position: absolute;
   left: 0px;
 }
-/* line 92, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000392}}
 .main .border .rt {
   position: absolute;
   right: 0px;
   -webkit-transform: rotate(90deg);
 }
-/* line 97, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\0000397}}
 .main .border .lb {
   position: absolute;
   left: 0px;
   -webkit-transform: rotate(270deg);
 }
-/* line 102, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003102}}
 .main .border .rb {
   position: absolute;
   right: 0px;
   -webkit-transform: rotate(180deg);
 }
-/* line 107, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003107}}
 .main .border span {
   color: #f4dabd;
   font-size: 20px;
   line-height: 35px;
 }
-/* line 112, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003112}}
 .main .border .tab-name {
   margin-left: 160px;
 }
-/* line 115, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003115}}
 .main .border .num {
   margin-left: 280px;
 }
-/* line 119, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003119}}
 .main .top {
   top: 0px;
 }
-/* line 120, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003120}}
 .main .bottom {
   bottom: 0px;
 }
-/* line 122, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003122}}
 .realContent {
   margin-top: 36px;
   height: 590px;
@@ -175,16 +109,12 @@ a {
   display: block;
   position: absolute;
 }
-/* line 128, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003128}}
 .realContent .tabs {
   width: 105px;
   height: 100%;
   float: left;
   position: relative;
 }
-/* line 133, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003133}}
 .realContent .tabs .tab {
   height: 105px;
   width: 100%;
@@ -193,8 +123,6 @@ a {
   border-radius: 11px;
   overflow: hidden;
 }
-/* line 141, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003141}}
 .realContent .tabs .tab.exit-btn {
   height: 48px;
   position: absolute;
@@ -203,13 +131,9 @@ a {
   background-color: #ad8f6e;
   box-shadow: 0 0 4px black;
 }
-/* line 148, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003148}}
 .realContent .tabs .tab.exit-btn:hover {
   background-color: #BBA287;
 }
-/* line 154, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003154}}
 .item-list-wrapper {
   width: 476px;
   height: 100%;
@@ -221,16 +145,12 @@ a {
   border-left: 2px solid #2a1d0f;
   border-right: 2px solid #2a1d0f;
 }
-/* line 164, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003164}}
 .item-list-wrapper .item-list {
   list-style: none;
   margin: 0;
   padding: 0;
   color: #543d26;
 }
-/* line 170, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003170}}
 .item-list-wrapper .thing-list-item {
   height: 50px;
   border-bottom: 2px solid #674e34;
@@ -238,391 +158,23 @@ a {
   line-height: 49px;
   position: relative;
 }
-/* line 176, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003176}}
 .item-list-wrapper .thing-list-item img {
   width: 50px;
   height: 50px;
   float: left;
 }
-/* line 181, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003181}}
 .item-list-wrapper .thing-list-item .name {
   float: left;
 }
-/* line 184, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003184}}
 .item-list-wrapper .thing-list-item .quatity {
   float: right;
   margin-right: 10px;
 }
-/* line 188, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003188}}
 .item-list-wrapper .thing-list-item.focused {
   background: #907352;
   color: #f4dabd;
 }
-/* line 192, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003192}}
 .item-list-wrapper .thing-list-item:hover {
   background-color: #BBA287;
   cursor: pointer;
-}
-/* line 198, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003198}}
-.item-details-box-wrapper {
-  box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
-  border: 2px solid #2a1d0f;
-  border-radius: 10px;
-  width: 640px;
-  height: 540px;
-  display: block;
-  margin: 25px 0px 0px 25px;
-  float: left;
-  background: #ad8f6e;
-}
-/* line 207, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003207}}
-.item-details-box {
-  width: 560px;
-  margin-top: 30px;
-  margin-left: 40px;
-}
-/* line 211, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003211}}
-.item-details-box .head {
-  display: inline-block;
-}
-/* line 213, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003213}}
-.item-details-box .head .right {
-  float: left;
-  margin-left: 50px;
-}
-/* line 217, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003217}}
-.item-details-box .head .description {
-  width: 340px;
-  margin-top: 10px;
-  font-size: 18px;
-  color: #453625;
-  display: block;
-}
-/* line 225, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003225}}
-.item-details-box .pic {
-  box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
-  border: 2px solid #2a1d0f;
-  border-radius: 10px;
-  width: 120px;
-  height: 120px;
-  display: block;
-  float: left;
-  background: #907352;
-}
-/* line 232, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003232}}
-.item-details-box .pic img {
-  height: 90px;
-  width: 90px;
-  display: block;
-  margin-left: 16px;
-  margin-top: 16px;
-}
-/* line 240, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003240}}
-.item-details-box .name-box {
-  width: 340px;
-  height: 40px;
-  display: block;
-  position: relative;
-  color: #543d26;
-  font-size: 20px;
-  text-align: center;
-  line-height: 39px;
-}
-/* line 249, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003249}}
-.item-details-box .name-box .name {
-  width: 80px;
-  height: 40px;
-  border-radius: 5px;
-  background: #907352;
-  float: left;
-}
-/* line 256, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003256}}
-.item-details-box .name-box span {
-  position: relative;
-  float: left;
-  margin-left: 30px;
-  font-weight: bolder;
-}
-/* line 262, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003262}}
-.item-details-box .name-box hr {
-  display: block;
-  height: 2px;
-  width: 98%;
-  position: absolute;
-  bottom: 0px;
-  left: 2px;
-  background: #907352;
-}
-/* line 273, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003273}}
-.details-content-wrapper {
-  width: 511px;
-  margin: 20px 0px 0px 15px;
-}
-/* line 276, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003276}}
-.details-content-wrapper .header-flag {
-  width: 100%;
-  height: 32px;
-  background: url(../img/menu/backpack-flag-bg.jpg) no-repeat;
-  text-align: center;
-  display: inline-block;
-}
-/* line 282, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003282}}
-.details-content-wrapper .header-flag img {
-  margin-top: 5px;
-}
-/* line 287, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003287}}
-.details-content {
-  width: 100%;
-  height: 200px;
-  display: block;
-}
-/* line 291, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003291}}
-.details-content .cell {
-  width: 100%;
-  display: block;
-  border-bottom: 1px dashed #453625;
-  font-size: 18px;
-  color: #453625;
-}
-/* line 297, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003297}}
-.details-content .cell p {
-  float: left;
-  margin-left: 40px;
-}
-/* line 302, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003302}}
-.details-content .gather-info {
-  height: 40px;
-  line-height: 40px;
-}
-/* line 305, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003305}}
-.details-content .gather-info .day {
-  height: 38px;
-  width: 37px;
-  display: block;
-}
-/* line 309, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003309}}
-.details-content .gather-info .day.yes {
-  background: url(../img/menu/backpack-day-yes.png);
-}
-/* line 310, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003310}}
-.details-content .gather-info .day.no {
-  background: url(../img/menu/backpack-day-no.png);
-}
-/* line 312, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003312}}
-.details-content .gather-info .night {
-  height: 38px;
-  width: 37px;
-  display: block;
-}
-/* line 316, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003316}}
-.details-content .gather-info .night .yes {
-  background: url(../img/menu/backpack-night-yes.png);
-}
-/* line 317, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003317}}
-.details-content .gather-info .night .no {
-  background: url(../img/menu/backpack-night-no.png);
-}
-/* line 322, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003322}}
-.traits-box {
-  height: 130px;
-  line-height: 105px;
-}
-/* line 325, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003325}}
-.traits-box .traits-list {
-  height: 100%;
-}
-/* line 328, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003328}}
-.traits-box .traits-holder {
-  width: 230px;
-  height: 23px;
-  display: block;
-  float: left;
-  margin-left: 20px;
-  border: 1px solid #2a1d0f;
-  border-radius: 5px;
-  position: relative;
-}
-/* line 337, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003337}}
-.traits-box .traits-holder .traits-cursor {
-  height: 29px;
-  width: 7px;
-  display: block;
-  background: url(../img/menu/backpack-pro-cursor-bg.jpg);
-  position: absolute;
-  top: -3px;
-  left: 2px;
-}
-/* line 347, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003347}}
-.traits-box .traits-lv {
-  height: 100%;
-  display: block;
-  float: left;
-}
-/* line 351, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003351}}
-.traits-box .traits-lv .filled {
-  float: left;
-  height: 100%;
-}
-/* line 355, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003355}}
-.traits-box .traits-lv .not-filled {
-  float: left;
-  height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.4);
-}
-/* line 363, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003363}}
-.traits-list-item {
-  padding: 8px 0px 2px 0px;
-  line-height: 24px;
-  height: 30px;
-  width: 100%;
-  display: block;
-}
-/* line 369, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003369}}
-.traits-list-item p {
-  box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.6) inset;
-  font-size: 18px;
-  color: #f4dabd;
-  text-align: center;
-  width: 23px;
-  height: 23px;
-  display: block;
-  border-radius: 5px;
-  border: 1px solid #2a1d0f;
-}
-/* line 381, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003381}}
-.traits-list-item .traits-name.active {
-  width: 180px;
-}
-/* line 383, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003383}}
-.traits-list-item .lv1 {
-  border-radius: 5px 0px 0px 5px;
-}
-/* line 384, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003384}}
-.traits-list-item .lv6 {
-  border-radius: 0px 5px 5px 0px;
-}
-/* line 386, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003386}}
-.button-holder {
-  width: 510px;
-  height: 250px;
-  margin: 30px 0px 0px 30px;
-}
-/* line 390, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003390}}
-.button-holder button {
-  float: left;
-  margin-right: 40px;
-  width: 190px;
-  height: 80px;
-  display: block;
-  box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
-  border: 2px solid #2a1d0f;
-  border-radius: 10px;
-  background: #907352;
-}
-/* line 398, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003398}}
-.button-holder button img {
-  width: 70px;
-  height: 34px;
-  margin: 22px 0px 0px 60px;
-}
-/* Turn on a 16x16 scrollbar */
-/* line 406, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003406}}
-::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
-}
-/* Turn on single button up on top, and down on bottom */
-/* line 412, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003412}}
-::-webkit-scrollbar-button:start:decrement,
-::-webkit-scrollbar-button:end:increment {
-  display: block;
-}
-/* Turn off the down area up on top, and up area on bottom */
-/* line 418, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003418}}
-::-webkit-scrollbar-button:vertical:start:increment,
-::-webkit-scrollbar-button:vertical:end:decrement {
-  display: none;
-}
-/* Place The scroll down button at the bottom */
-/* line 424, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003424}}
-::-webkit-scrollbar-button:end:increment {
-  background-image: url(../img/menu/scroll_cntrl_dwn.png);
-}
-/* Place The scroll up button at the up */
-/* line 429, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003429}}
-::-webkit-scrollbar-button:start:decrement {
-  background-image: url(../img/menu/scroll_cntrl_up.png);
-}
-/* Top area above thumb and below up button */
-/* line 434, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003434}}
-::-webkit-scrollbar-track-piece:vertical:start {
-  background-image: url(../img/menu/scroll_gutter_top.png), url(../img/menu/scroll_gutter_mid.png);
-  background-repeat: no-repeat, repeat-y;
-}
-/* Bottom area below thumb and down button */
-/* line 440, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003440}}
-::-webkit-scrollbar-track-piece:vertical:end {
-  background-image: url(../img/menu/scroll_gutter_btm.png), url(../img/menu/scroll_gutter_mid.png);
-  background-repeat: no-repeat, repeat-y;
-  background-position: bottom left, 0 0;
-}
-/* The thumb itself */
-/* line 447, backpack.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/backpack\.less}line{font-family:\00003447}}
-::-webkit-scrollbar-thumb:vertical {
-  height: 56px;
-  -webkit-border-image: url(../img/menu/scroll_thumb.png) 8 0 8 0 stretch stretch;
-  border-width: 8 0 8 0;
 }

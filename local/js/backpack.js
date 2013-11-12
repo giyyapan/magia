@@ -30,6 +30,9 @@
         return _this.emit("close");
       };
       return this.UI['type-switch'].J.find(".tab").on("click", function() {
+        if (!$(this).attr("value")) {
+          return;
+        }
         return self.switchTab($(this).attr("value"));
       });
     };

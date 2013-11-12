@@ -1,10 +1,22 @@
-/* line 1, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000031}}
+* {
+  font-family: "微软雅黑";
+}
+p {
+  margin: 0;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.double-border {
+  box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
+  border: 2px solid #2a1d0f;
+  border-radius: 10px;
+}
 template {
   display: none;
 }
-/* line 2, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000032}}
 .no-user-select {
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -12,8 +24,10 @@ template {
   -khtml-user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-/* line 9, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\000039}}
+button,
+a {
+  cursor: pointer;
+}
 body,
 canvas,
 div {
@@ -23,54 +37,41 @@ div {
   -khtml-user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-/* line 12, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000312}}
 button {
   font-size: 18px;
   padding: 10px;
 }
-/* line 16, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000316}}
 body {
   text-align: center;
 }
-/* line 19, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000319}}
 #gameCanvas {
   border: 1px solid white;
 }
-/* line 23, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000323}}
 #BGLayer {
   overflow: hidden;
   background-color: #efefef;
 }
-/* line 27, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000327}}
 #UILayer {
   overflow: hidden;
   position: relative;
 }
-/* line 31, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000331}}
 #UILayer .menu {
-  absolute: absolute;
+  position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-/* line 40, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000340}}
+.invisible {
+  visibility: hidden;
+}
 .screen {
   position: absolute;
   top: 0;
   width: 1280px;
   height: 720px;
 }
-/* line 46, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000346}}
 #loadingPage {
   padding-top: 150px;
   background-color: #666;
@@ -82,8 +83,6 @@ body {
   top: 0;
   left: 0;
 }
-/* line 57, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000357}}
 .popup-box-wrapper {
   width: 100%;
   height: 100%;
@@ -93,8 +92,6 @@ body {
   left: 0;
   z-index: 999;
 }
-/* line 65, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000365}}
 .popup-box-wrapper .popup-box {
   margin: auto;
   margin-top: 50px;
@@ -104,38 +101,64 @@ body {
   padding: 30px;
   color: white;
 }
-/* line 75, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000375}}
 .lv1 {
   background: #fff;
 }
-/* line 76, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000376}}
 .lv2 {
   background: #42e189;
 }
-/* line 77, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000377}}
 .lv3 {
   background: #1bd6f1;
 }
-/* line 78, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000378}}
 .lv4 {
   background: #ffd220;
 }
-/* line 79, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000379}}
 .lv5 {
   background: #ec6334;
 }
-/* line 80, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000380}}
 .lv6 {
   background: #cd64c0;
 }
-/* line 81, global.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/giyya\/magia\/local\/css\/global\.less}line{font-family:\0000381}}
 .traits-life {
   background: #59a84c;
+}
+/* Turn on a 16x16 scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+/* Turn on single button up on top, and down on bottom */
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+  display: block;
+}
+/* Turn off the down area up on top, and up area on bottom */
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement {
+  display: none;
+}
+/* Place The scroll down button at the bottom */
+::-webkit-scrollbar-button:end:increment {
+  background-image: url(../img/menu/scroll_cntrl_dwn.png);
+}
+/* Place The scroll up button at the up */
+::-webkit-scrollbar-button:start:decrement {
+  background-image: url(../img/menu/scroll_cntrl_up.png);
+}
+/* Top area above thumb and below up button */
+::-webkit-scrollbar-track-piece:vertical:start {
+  background-image: url(../img/menu/scroll_gutter_top.png), url(../img/menu/scroll_gutter_mid.png);
+  background-repeat: no-repeat, repeat-y;
+}
+/* Bottom area below thumb and down button */
+::-webkit-scrollbar-track-piece:vertical:end {
+  background-image: url(../img/menu/scroll_gutter_btm.png), url(../img/menu/scroll_gutter_mid.png);
+  background-repeat: no-repeat, repeat-y;
+  background-position: bottom left, 0 0;
+}
+/* The thumb itself */
+::-webkit-scrollbar-thumb:vertical {
+  height: 56px;
+  -webkit-border-image: url(../img/menu/scroll_thumb.png) 8 0 8 0 stretch stretch;
+  border-width: 8 0 8 0;
 }

@@ -7,7 +7,7 @@
     __extends(TestStage, _super);
 
     function TestStage(game) {
-      var k, l1, l2, l3, l4, l5, l6,
+      var l1, l2, l3, l4, l5, l6,
         _this = this;
       TestStage.__super__.constructor.call(this, game);
       this.camera = new Camera();
@@ -32,27 +32,26 @@
       l6.width = 5000;
       this.menu = new Menu(Res.tpls['test-menu']);
       this.camera.render(l1, l2, l3, l4, l5, l6, this.menu);
-      this.drawQueueAddAfter(this.camera, l1, l2, l3, l4, l5, l6, this.menu);
+      this.drawQueueAddAfter(this.camera);
       this.menu.show();
       this.key = {};
-      k = Suzaku.Key;
       window.onmousewheel = function(evt) {
-        _this.camera.lens += evt.wheelDeltaY / 500;
-        return console.log(_this.camera.lens);
+        _this.camera.sacle += evt.wheelDeltaY / 500;
+        return console.log(_this.camera.scale);
       };
     }
 
     TestStage.prototype.tick = function() {
       if (Key.up) {
         if (Key.shift) {
-          this.camera.lens += 0.01;
+          this.camera.scale += 0.03;
         } else {
           this.camera.y -= 20;
         }
       }
       if (Key.down) {
         if (Key.shift) {
-          this.camera.lens -= 0.01;
+          this.camera.scale -= 0.03;
         } else {
           this.camera.y += 20;
         }

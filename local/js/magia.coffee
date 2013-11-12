@@ -16,7 +16,7 @@ class Magia
       @player = new Player null,@db
       $("#loadingPage").slideUp "fast"
       #@switchStage "start"
-      @switchStage "worldMap"
+      @switchStage "area","forest"
       @startGameLoop()
   switchStage:(stage,data)->
     console.log "init stage:",stage
@@ -105,6 +105,9 @@ class Magia
     rm.setPath "img","img/"
     for name,src of window.Imgs
       rm.useImg name,src
+    rm.setPath "sprite","img/sprites/"
+    for name,src of window.Sprites
+      rm.useSprite name,src
     rm.setPath "template","templates/"
     for tpl in window.Templates
       rm.useTemplate tpl
@@ -119,6 +122,3 @@ class Magia
 window.onload = ->
   magia = new Magia()
     
-    
-      
-        

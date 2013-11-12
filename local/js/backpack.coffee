@@ -17,6 +17,7 @@ class window.Backpack extends Menu
     @UI['exit-btn'].onclick = =>
       @emit "close"
     @UI['type-switch'].J.find(".tab").on "click",->
+      return if not $(this).attr "value"
       self.switchTab $(this).attr "value"
   initThings:(type="gatherArea")->
     @freeThings()

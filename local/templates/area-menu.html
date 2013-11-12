@@ -1,17 +1,11 @@
-<div class="menu area-menu">
-	<div data-id="title-box" class="title-box" >
-		<h2 data-id="title" >title</h2>
+<div class="area-menu menu">
+	<link rel="stylesheet" href="css/area.css" type="text/css"/>
+	<div data-id="relative-wrapper" ></div>
+	<div data-id="title-box" class="title-box autohide" >
+		<h1 data-id="title" class="title">title</h1>
+		<hr />
 	</div>
-	<div class="res-point-box" data-id="res-point-box" >
-	</div>
-	<div class="move-point-box" data-id="move-point-box" >
-	</div>
-	<button data-id="backpack" class="backpack">背包</button>
-	
-	<template data-id="res-point-tpl" >
-		<button class="res-point" ></button>
-	</template>
-	<template data-id="move-point-tpl" >
-		<button class="move-point" ></button>
-	</template>
+	<a class="btn" data-id="backpack" id="backpack-btn"><img src="img/menu/area-backpack-btn.png"></img></a>
+	<a class="btn move-arrow autohide" id="move-left" data-id="move-left" ><img src="img/menu/arrow-left.png"></img></a>
+	<a class="btn move-arrow autohide" id="move-right" data-id="move-right" ><img src="img/menu/arrow-right.png"></img></a>
 </div>

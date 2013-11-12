@@ -757,6 +757,38 @@
   window.Suzaku = new Suzaku;
 
   window.Suzaku.Utils = Utils = {
+    localData: function(action, key, value) {
+      var v;
+      switch (action) {
+        case "set":
+        case "save":
+          if (typeof value === "undefined") {
+            return console.error("no value to save.");
+          } else {
+            window.localStorage.setItem(name, JSON.stringify(value));
+            return true;
+          }
+          break;
+        case "get":
+        case "read":
+          v = window.localStorage.getItem(name);
+          if (!v) {
+            return null;
+          }
+          try {
+            return JSON.parse(v);
+          } catch (_error) {
+            return v;
+          }
+          break;
+        case "clear":
+        case "remove":
+          window.localStorage.removeItem(name);
+          return true;
+        default:
+          return console.error("invailid localData action:" + action);
+      }
+    },
     bindMobileClick: function(dom, callback) {
       var J;
       if (!dom) {

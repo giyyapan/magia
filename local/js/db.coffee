@@ -9,11 +9,15 @@ class window.Database extends Suzaku.EventEmitter
     @rules =
       reaction:[]
       combination:[]
+    @sprites =
+      characters:[]
+      items:[]
     @tasks = null
     @storys = null
     @initAreas()
     @initThings()
     @initRules()
+    @initSprites()
   initAreas:->
     s = Utils.getSize()
     @areas.forest = 
@@ -21,15 +25,18 @@ class window.Database extends Suzaku.EventEmitter
       x:0,y:0
       places:
         entry:
-          bg:["forest1"] #day,night
+          name:"森林入口"
+          bg:["forestEntry","forestEntryFloat","forestEntryFloat2"] #day,night
           resPoints:["1,1","20,20","30,30","50,50"] #start from 1
           movePoints:["exit","west","east"]
         east:
-          bg:"forest2"
+          name:"东部森林"
+          bg:["forest2"]
           resPoints:["1,1","20,80"]
           movePoints:["entry"]
         west:
-          bg:"forest3"
+          name:"西部森林"
+          bg:["forest3"]
           resPoints:["1,1","20,80"]
           movePoints:["entry"]
   initThings:->
@@ -90,4 +97,37 @@ class window.Database extends Suzaku.EventEmitter
   initRules:->
     @rules.reaction =
       {from:["fire:5"],to:"",cond:[]}
-    
+  initSprites:->
+    @sprites.characters =
+      qq:
+        name:"QQ"
+        sprite:Res.sprites.test
+        basicData:
+          hp:1000
+          def:30
+          attack:
+            damage:
+              normal:30
+              water:10
+          magic:
+            waterball:
+              turn:2
+              damage:
+                water:100
+        anchor:"100,100"
+        movements:
+          normal:"0,8"
+          move:"0,8"
+          #attack:"0,8:5"
+          attack:"0,8"
+          cast:"0,8"
+        drop:
+          certain:["bluerose"]
+          random:null
+    @sprites.items =
+      waterball:
+        name:"水球术"
+        movements:
+          normal:""
+          active:""
+          
