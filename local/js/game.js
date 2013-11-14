@@ -17,7 +17,6 @@
     p.style.background = 'none';
     p.style.border = 'none';
     p.insertBefore(dom);
-    document.body.style.background = '#ffffff';
   }
 
   window.GameConfig = conf;

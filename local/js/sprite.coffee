@@ -2,6 +2,7 @@ class window.Sprite extends Drawable
   constructor:(x,y,originData)->
     super x,y
     @originData = originData
+    @dspName = originData.name
     @frameRate = 20
     @frameDelay = parseInt(1000/@frameRate)
     @currentDelay = 0
@@ -12,8 +13,8 @@ class window.Sprite extends Drawable
     @currentFrame = 0
     @defaultMovement = "normal"
     @useMovement "normal",true
-  ondraw:(context,tickDelay)->
-    @_handleFrameAnimate tickDelay
+  onDraw:(context,tickDelay)->
+    @_handleMovementAnimate tickDelay
     super context,tickDelay
   initSprite:->
     @spriteMap = @originData.sprite.map
@@ -23,10 +24,10 @@ class window.Sprite extends Drawable
       @movements[name] =
         startFrame:parseInt(data.split(",")[0])
         endFrame:parseInt(data.split(",")[1])
-    @defaltAnchor
+    @defaultAnchor = 
       x:parseInt(@originData.anchor.split(",")[0])
       y:parseInt(@originData.anchor.split(",")[1])
-    @setAnchor @defaltAnchor
+    @setAnchor @defaultAnchor
   useMovement:(name,loopMovement=false)->
     if loopMovement then @defaultMovement = name
     @startFrame = @movements[name].startFrame
@@ -39,13 +40,13 @@ class window.Sprite extends Drawable
       @_nextFrame()
   _nextFrame:->
     realFrame = @startFrame + @currentFrame
-    if now > @endFrame
+    if realFrame > @endFrame
       @useMovement @defaultMovement
       @_nextFrame()
     else
       data = @spriteData.frames[realFrame]
-      ax = @defaltAnchor.x - data.spriteSourceSize.x
-      ay = @defaltAnchor.y - data.spriteSourceSize.y
+      ax = @defaultAnchor.x - data.spriteSourceSize.x
+      ay = @defaultAnchor.y - data.spriteSourceSize.y
       frameData = data.frame
       resX = frameData.x
       resY = frameData.y

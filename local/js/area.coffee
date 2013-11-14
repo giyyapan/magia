@@ -1,13 +1,77 @@
+class ResPoint extends Suzaku.Widget
+  constructor:(place,tpl,data,index)->
+    super tpl
+    @place = place
+    @data = data
+    @index = index
+    @number = index + 1
+    @pointText = "采集点#{index+1}"
+    @items = []
+    @monsters =
+      certain:null #certain 只能有一种情况
+      random:[]
+    @UI.name.J.text @pointText
+    @dom.number = index+1
+    @J.addClass "gp#{index+1}"
+    @J.css position:"absolute",left:data.split(",")[0]+"px",top:data.split(",")[1]+"px",
+    @dom.onclick = (evt)=>
+      evt.stopPropagation()
+      @emit "active",@active()
+  initItems:(resourcesData,db)->
+    return if not resourcesData[@index]
+    for name in resourcesData[@index].split ","
+      itemData = db.things.items.get name
+      console.log itemData
+      item = new GatherItem name,itemData
+      gatherData = item.getGatherData()
+      @items.push item
+  initMonsters:(monstersData,db)->
+    for mdata in monstersData.random
+      if Utils.compare mdata.split(":")[0],@number
+        @monsters.random.push mdata.split(":")[1]
+    if @monsters.random.length > 0
+      @UI.name.J.text @pointText + "（可）"
+    for mdata in monstersData.certain
+      if Utils.compare mdata.split(":")[0],@number
+        @monsters.certain =  mdata.split(":")[1]
+        @UI.name.J.text @pointText + "（必）"
+  handleEncounteringMonster:->
+    if @monsters.certain
+      @place.once "battleWin",=>
+        @monsters.certain = null
+      return @monsters.certain.split(",")
+    for m,index in @monsters.random
+      if Math.random() < 0.3
+        @randomMonsterIndex = index
+        @place.once "battleWin",=>
+          Utils.removeItemByIndex @monsters.random,@randomMonsterIndex
+          delete @randomMonsterIndex
+        return m.split(",")
+    return false
+  active:->
+    console.log "active"
+    monsters = @handleEncounteringMonster()
+    if monsters
+      return type:"monster",monsters:monsters
+    else
+      items = []
+      for item in @items
+        gatherNumber = item.tryGather()
+        if gatherNumber
+          items.push gatherItem:item,number:gatherNumber
+      return type:"item",items:items
+    return type:"empty"
+    
 class Place extends Layer
   constructor:(@area,@db,@name,@data)->
     super()
-    @camera = new Camera 500,0
+    @camera = new Camera()
+    if @data.defaultX then @camera.x = @data.defaultX
     @drawQueueAddAfter @camera
     @initBg()
     @initMenu()
     @resPoints = []
     @currentX = 0
-    @initItems()
     self = this
   tick:->
     s = Utils.getSize()
@@ -40,17 +104,18 @@ class Place extends Layer
           layer[name] = value
     @floatBgs = []
     @bgs = []
-    for imgName,data of @data.bg
-      bg = new Layer Res.imgs[imgName]
+    if @data.bg then for imgName,data of @data.bg
+      bg = new Layer().setImg Res.imgs[imgName]
+      console.log bg,data
       initLayer bg,data
       @bgs.push bg
-      @camera.render bg
-    for imgName,data of @data.floatBg
-      bg = new Layer Res.imgs[imgName]
-      console.log bg
+      @camera.render bg 
+    if @data.floatBg then for imgName,data of @data.floatBg
+      bg = new Layer().setImg Res.imgs[imgName]
+      console.log bg,data
       initLayer bg,data
       @floatBgs.push bg
-      @camera.render bg
+      @camera.render bg 
     @mainBg = @bgs[0]
   initMenu:->
     s = Utils.getSize()
@@ -152,15 +217,12 @@ class Place extends Layer
         @camera.lock = false
   addResPoint:(p,index)->
     self = this
-    item = new Suzaku.Widget @relativeMenu.UI['res-point-tpl'].J.html()
-    item.UI.name.J.text "采集点#{index+1}"
-    item.dom.number = index+1
-    item.J.addClass "gp#{index+1}"
-    item.appendTo @relativeMenu.UI['res-point-box']
-    item.J.css position:"absolute",left:p.split(",")[0]+"px",top:p.split(",")[1]+"px",
-    item.dom.onclick = (evt)->
-      evt.stopPropagation()
-      self.handleGatherResault self.gatherItem @number
+    point = new ResPoint this,@relativeMenu.UI['res-point-tpl'].J.html(),p,index
+    point.appendTo @relativeMenu.UI['res-point-box']
+    point.on "active",(res)->
+      self.handleResPointActive res
+    if @data.resources then point.initItems @data.resources,@db
+    if @data.monsters then point.initMonsters @data.monsters,@db
   addMovePoint:(moveTarget,index)->
     area = @area
     item = new Suzaku.Widget @relativeMenu.UI['move-point-tpl'].innerHTML
@@ -170,49 +232,19 @@ class Place extends Layer
     item.appendTo @relativeMenu.UI['move-point-box']
     item.dom.onclick = ->
       area.enterPlace @target
-  initItems:->
-    for resData,index in @data.resources
-      items = []
-      @resPoints.push items
-      for name in resData.split ","
-        itemData = @db.things.items.get name
-        console.log itemData
-        item = new GatherItem name,itemData
-        gatherData = item.getGatherData @area.name,@name
-        items.push item
-    console.log @resPoints
-  gatherItem:(resPointNum)->
-    index = resPointNum - 1
-    items = @resPoints[index]
-    res = []
-    return null if items.length is 0
-    for item in items
-      gatherNumber = item.tryGather()
-      if gatherNumber
-        res.push gatherItem:item,number:gatherNumber
-    return res
-  handleGatherResault:(data)->
-    if typeof data isnt "string"
-      @emit "getItem",data
-    else
+  handleResPointActive:(res)->
+    if res.type is "item"
+      @emit "getItem",res.items
+    else if res.type is "monster"
+      @encounterMonster(res.monsters)
+    else if res.type is "empty"
       box = new GatherResaultBox "什么也没有采集到"
       box.show()
-
-class GatherResaultBox extends PopupBox
-  constructor:(data)->
-    super()
-    @UI.title.J.text "采集结果"
-    if typeof data is "string"
-      @UI.content.J.text data
     else
-      @UI.content.J.hide()
-      @UI['content-list'].J.show()
-      for itemResData in data
-        originData = itemResData.gatherItem.originData
-        number = itemResData.number
-        console.log itemResData
-        w = new ThingListWidget originData,number
-        w.appendTo @UI['content-list']
+      console.error "invailid res type of res point :#{res}" if GameConfig.debug
+  encounterMonster:(monsters)->
+    console.log "encounter monsters:",monsters
+    @area.initBattlefield monsters
       
 class window.Area extends Stage
   constructor:(game,areaName)->
@@ -222,6 +254,27 @@ class window.Area extends Stage
     @data = game.db.areas.get areaName
     @backpackMenu = new Backpack game,"gatherArea"
     @enterPlace "entry"
+    @initBattlefield(["qq","qq"])
+  initBattlefield:(monsters)->
+    data =
+      monsters:monsters
+      bg:@data.battlefieldBg
+    battlefield = new window.Battlefield @game,data
+    @hide =>
+      @game.currentStage = battlefield
+      battlefield.show()
+    battlefield.on "win",=>
+      @show()
+      @game.currentStage = this
+      @emit "battleWin"
+      @currentPlace.emit "battleWin"
+      @currentPlace.menu.show()
+    battlefield.on "lose",=>
+      @show()
+      @game.currentStage = this
+      @emit "battleLose"
+      @currentPlace.emit "battleLose"
+      @currentPlace.menu.show()
   enterPlace:(placeName)->
     if placeName is "exit"
       return @game.switchStage "worldMap"
@@ -256,4 +309,18 @@ class window.Area extends Stage
   tick:->
     @currentPlace.tick() if @currentPlace.tick
     
-
+class GatherResaultBox extends PopupBox
+  constructor:(data)->
+    super()
+    @UI.title.J.text "采集结果"
+    if typeof data is "string"
+      @UI.content.J.text data
+    else
+      @UI.content.J.hide()
+      @UI['content-list'].J.show()
+      for itemResData in data
+        originData = itemResData.gatherItem.originData
+        number = itemResData.number
+        console.log itemResData
+        w = new ThingListWidget originData,number
+        w.appendTo @UI['content-list']

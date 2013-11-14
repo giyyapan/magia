@@ -4,14 +4,16 @@ class window.Layer extends Drawable
     super 0,0,s.width,s.height
     z = 100
     @setAnchor 0,0
-    if img instanceof Image
-      @setImg img
-      @width = img.width
-      @height = img.height
+    if img instanceof Image then @setImg img
   fixToBottom:->
     s = Utils.getSize()
     @y = s.height - @height
     @fixedYCoordinates = true
+  setImg:(img)->
+    super img
+    @width = img.width
+    @height = img.height
+    return this
     
 class window.Menu extends Suzaku.Widget
   constructor:(tpl)->
@@ -39,9 +41,9 @@ class window.Stage extends Drawable
     super()
     @setAnchor 0,0
   show:(callback)->
-    @fadeIn "fast",callback
+    @fadeIn "normal",callback
   hide:(callback)->
-    @fadeOut "fast",callback
+    @fadeOut "normal",callback
   draw:->
   tick:->
     

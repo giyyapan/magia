@@ -102,8 +102,18 @@
       if (r.opacity !== null) {
         context.globalAlpha = r.opacity;
       }
-      r.scaleX = r.scaleX || r.scale || 1;
-      r.scaleY = r.scaleY || r.scale || 1;
+      if (r.scaleX === null) {
+        r.scaleX = r.scale || 1;
+      }
+      if (r.scaleY === null) {
+        r.scaleY = r.scale || 1;
+      }
+      if (r.scaleX < 0) {
+        x = Utils.getSize().width - x;
+      }
+      if (r.scaleY < 0) {
+        y = Utils.getSize.height - y;
+      }
       context.scale(r.scaleX, r.scaleY);
       context.translate(parseInt(x), parseInt(y));
       if (r.rotate) {
@@ -112,6 +122,10 @@
     };
 
     Drawable.prototype.setImg = function(img, resX, resY, resWidth, resHeight) {
+      if (!(img instanceof Image)) {
+        console.error("need a img to set!", this);
+        return;
+      }
       this.imgData = {
         img: img,
         x: resX || null,
@@ -123,8 +137,9 @@
         this.width = img.width;
       }
       if (!this.height) {
-        return this.height = img.height;
+        this.height = img.height;
       }
+      return this;
     };
 
     Drawable.prototype.draw = function(context) {
@@ -161,6 +176,10 @@
         return;
       }
       return Utils.removeItem(drawable, this.drawQueue.before);
+    };
+
+    Drawable.prototype.drawQueueAdd = function() {
+      return this.drawQueueAddAfter.apply(this, arguments);
     };
 
     Drawable.prototype.drawQueueAddAfter = function() {

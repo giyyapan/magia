@@ -19,9 +19,8 @@ class window.Database extends Suzaku.EventEmitter
     @rules = new SubDB "rules"
     #rules.reaction:[]
     #rules.combination:[]
-    @sprites = 
-      characters:new SubDB "sprites-characters"
-      items:new SubDB "sprites-items"
+    @monsters = new SubDB "sprites-monsters"
+    @spriteItems = new SubDB "sprites-items"
     @tasks = new SubDB "tasks"
     @storys = new SubDB "storys"
     @initAreas()
@@ -34,8 +33,16 @@ class window.Database extends Suzaku.EventEmitter
       forest:
         name:"森林"
         x:0,y:0
+        battlefieldBg:
+          bfForestMain:
+            z:1000
+            main:true
+          bfForestFloat:
+            z:1
+            fixToBottom:true
         places:
           entry:
+            defaultX:300
             name:"森林入口"
             bg:
               forestEntry:
@@ -59,36 +66,37 @@ class window.Database extends Suzaku.EventEmitter
               "caveMashroom"]
             monsters:
               certain:['1:qq,qq,qq']
-              random:null
+              random:['2:qq','3:qq']
             movePoints:["exit","west","east"]
           east:
             name:"东部森林"
-            bg:["forest2"]
+            bg:
+              forest2:
+                z:1000
             resPoints:["1,1","20,80"]
             movePoints:["entry"]
           west:
             name:"西部森林"
-            bg:["forest3"]
+            bg:
+              forest3:
+                z:1000
             resPoints:["1,1","20,80"]
             movePoints:["entry"]
-      snowMountain:
+      snowmountain:
         name:"雪山"
         x:0,y:0
         places:
           entry:
             name:"雪山山顶"
             bg:
-              forestEntry:
+              snowmountainEntryMain:
                 z:1000
+              snowmountainEntryBg:
+                z:10000
             floatBg:
-              forestEntryFloat1:
-                z:600
-                y:-50
-                scale:1.05
-              forestEntryFloat2:
-                z:1
-                x:300
-                scale:2
+              snowmountainEntryFloat:
+                z:300
+                x:200
                 fixToBottom:true
             resPoints:["0,80","400,500","800,300","1000,300"] #start from 1
             resources:[ #每个对应一个资源点
@@ -98,10 +106,22 @@ class window.Database extends Suzaku.EventEmitter
               "herbs,mouseTailHerbs"
               "caveMashroom"
               ]
+            monsters:
+              certain:['1:qq,qq,qq']
+              random:['2:qq','3:qq']
             movePoints:["exit","west","east"]
           east:
             name:"东部雪山"
-            bg:["forest2"]
+            bg:
+              snowmountainEntryMain:
+                z:1000
+              snowmountainEntryBg:
+                fixed:true
+            floatBg:
+              snowountainEntryFloat:
+                z:600
+                x:200
+                fixToBottom:true
             resPoints:["1,1","20,80"]
             movePoints:["entry"]
           west:
@@ -161,7 +181,7 @@ class window.Database extends Suzaku.EventEmitter
     @rules.data.reaction =
       {from:["fire:5"],to:"",cond:[]}
   initSprites:->
-    @sprites.characters.data =
+    @monsters.data =
       qq:
         name:"QQ"
         sprite:Res.sprites.test
@@ -177,7 +197,7 @@ class window.Database extends Suzaku.EventEmitter
               turn:2
               damage:
                 water:100
-        anchor:"100,100"
+        anchor:"321,398"
         movements:
           normal:"0,8"
           move:"0,8"
@@ -187,7 +207,7 @@ class window.Database extends Suzaku.EventEmitter
         drop:
           certain:["bluerose"]
           random:null
-    @sprites.items.data =
+    @spriteItems.data =
       waterball:
         name:"水球术"
         movements:

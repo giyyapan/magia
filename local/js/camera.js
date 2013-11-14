@@ -91,10 +91,9 @@
     };
 
     Camera.prototype.render = function() {
-      var d, self, size, _i, _len, _results;
+      var d, self, size, _i, _len;
       self = this;
       size = Utils.getSize();
-      _results = [];
       for (_i = 0, _len = arguments.length; _i < _len; _i++) {
         d = arguments[_i];
         if (d.onDraw) {
@@ -110,12 +109,12 @@
           this.drawQueueAddAfter(d);
         }
         if (!d.onDraw && GameConfig.debug) {
-          _results.push(console.error("" + d + " is not drawable or Menu"));
-        } else {
-          _results.push(void 0);
+          console.error("" + d + " is not drawable or Menu");
         }
       }
-      return _results;
+      return this.drawQueue.after.sort(function(a, b) {
+        return b.z - a.z;
+      });
     };
 
     Camera.prototype.getOffsetScaleX = function(targetZ, s) {

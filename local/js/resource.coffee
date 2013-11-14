@@ -4,6 +4,9 @@ window.Imgs =
   forestEntry:'forest-entry.jpg'
   forestEntryFloat1:'forest-entry-float.png'
   forestEntryFloat2:'forest-entry-float2.png'
+  snowmountainEntryBg:'snowmountain-entry-bg.jpg'
+  snowmountainEntryMain:'snowmountain-entry-main.png'
+  snowmountainEntryFloat:'snowmountain-entry-float.png'
   forest2:'forest2.jpg'
   forest3:'forest3.jpg'
   bfForestMain:'bf-forest-main.jpg'
@@ -15,8 +18,6 @@ window.Imgs =
   layer5:'layer5.png'
   layer6:'layer6.png'
   worldMap:'map.gif'
-  demonMap:'demonMap.gif'
-  elfMap:'elfMap.gif'
   homeDown:'home_down.jpg'
   homeUp:'home_up.jpg'
 window.Sprites =

@@ -28,6 +28,11 @@ class EventEmitter
     @_events[event] = [] if not @_events[event]
     @_events[event].push callback
     return callback
+  once:(event,callback)->
+    f = =>
+      callback.apply this,arguments
+      @off event,f
+    @on event,f
   off:(event,listener)->
     if typeof listener is "function"
       for func in @_events[event]
@@ -500,6 +505,10 @@ window.Suzaku.Utils = Utils =
     source.__idCounter = 0 if not source.__idCounter
     source.__idCounter += 1
     return source.__idCounter
+  removeItemByIndex:(source,index)->
+    if index < 0 or index > (source.length - 1)
+      return console.error "invailid index:#{index} for source:",source
+    return source.splice index,1
   removeItem:(source,target,value)->
     if source instanceof Array
       if typeof value is "undefined"

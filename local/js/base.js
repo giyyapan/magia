@@ -14,8 +14,6 @@
       this.setAnchor(0, 0);
       if (img instanceof Image) {
         this.setImg(img);
-        this.width = img.width;
-        this.height = img.height;
       }
     }
 
@@ -24,6 +22,13 @@
       s = Utils.getSize();
       this.y = s.height - this.height;
       return this.fixedYCoordinates = true;
+    };
+
+    Layer.prototype.setImg = function(img) {
+      Layer.__super__.setImg.call(this, img);
+      this.width = img.width;
+      this.height = img.height;
+      return this;
     };
 
     return Layer;
@@ -80,11 +85,11 @@
     }
 
     Stage.prototype.show = function(callback) {
-      return this.fadeIn("fast", callback);
+      return this.fadeIn("normal", callback);
     };
 
     Stage.prototype.hide = function(callback) {
-      return this.fadeOut("fast", callback);
+      return this.fadeOut("normal", callback);
     };
 
     Stage.prototype.draw = function() {};

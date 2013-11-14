@@ -14,4 +14,7 @@ class window.WorldMap extends Stage
       game.switchStage "town"
     @menu.UI.forest.onclick = ->
       game.switchStage "area","forest"
+    @menu.UI.snowmountain.onclick = ->
+      game.switchStage "area","snowmountain"
+
     

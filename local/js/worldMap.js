@@ -25,6 +25,9 @@
       this.menu.UI.forest.onclick = function() {
         return game.switchStage("area", "forest");
       };
+      this.menu.UI.snowmountain.onclick = function() {
+        return game.switchStage("area", "snowmountain");
+      };
     }
 
     return WorldMap;

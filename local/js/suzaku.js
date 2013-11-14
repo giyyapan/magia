@@ -49,6 +49,16 @@
       return callback;
     };
 
+    EventEmitter.prototype.once = function(event, callback) {
+      var f,
+        _this = this;
+      f = function() {
+        callback.apply(_this, arguments);
+        return _this.off(event, f);
+      };
+      return this.on(event, f);
+    };
+
     EventEmitter.prototype.off = function(event, listener) {
       var func, _i, _j, _len, _len1, _ref, _ref1;
       if (typeof listener === "function") {
@@ -918,6 +928,12 @@
       }
       source.__idCounter += 1;
       return source.__idCounter;
+    },
+    removeItemByIndex: function(source, index) {
+      if (index < 0 || index > (source.length - 1)) {
+        return console.error("invailid index:" + index + " for source:", source);
+      }
+      return source.splice(index, 1);
     },
     removeItem: function(source, target, value) {
       var found, index, item, keyname, keyvalue, name, _i, _j, _len, _len1;

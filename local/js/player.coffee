@@ -64,8 +64,4 @@ class window.Player
   checkFreeSpace:(target,things)->
     return true
   saveData:->
-    
-
-      
-      
       

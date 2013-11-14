@@ -36,10 +36,8 @@
         supplies: new SubDB("things-supplies")
       };
       this.rules = new SubDB("rules");
-      this.sprites = {
-        characters: new SubDB("sprites-characters"),
-        items: new SubDB("sprites-items")
-      };
+      this.monsters = new SubDB("sprites-monsters");
+      this.spriteItems = new SubDB("sprites-items");
       this.tasks = new SubDB("tasks");
       this.storys = new SubDB("storys");
       this.initAreas();
@@ -56,8 +54,19 @@
           name: "森林",
           x: 0,
           y: 0,
+          battlefieldBg: {
+            bfForestMain: {
+              z: 1000,
+              main: true
+            },
+            bfForestFloat: {
+              z: 1,
+              fixToBottom: true
+            }
+          },
           places: {
             entry: {
+              defaultX: 300,
               name: "森林入口",
               bg: {
                 forestEntry: {
@@ -81,25 +90,33 @@
               resources: ["scree", "scree,flint", "lakeWater", "herbs,mouseTailHerbs", "caveMashroom"],
               monsters: {
                 certain: ['1:qq,qq,qq'],
-                random: null
+                random: ['2:qq', '3:qq']
               },
               movePoints: ["exit", "west", "east"]
             },
             east: {
               name: "东部森林",
-              bg: ["forest2"],
+              bg: {
+                forest2: {
+                  z: 1000
+                }
+              },
               resPoints: ["1,1", "20,80"],
               movePoints: ["entry"]
             },
             west: {
               name: "西部森林",
-              bg: ["forest3"],
+              bg: {
+                forest3: {
+                  z: 1000
+                }
+              },
               resPoints: ["1,1", "20,80"],
               movePoints: ["entry"]
             }
           }
         },
-        snowMountain: {
+        snowmountain: {
           name: "雪山",
           x: 0,
           y: 0,
@@ -107,30 +124,45 @@
             entry: {
               name: "雪山山顶",
               bg: {
-                forestEntry: {
+                snowmountainEntryMain: {
                   z: 1000
+                },
+                snowmountainEntryBg: {
+                  z: 10000
                 }
               },
               floatBg: {
-                forestEntryFloat1: {
-                  z: 600,
-                  y: -50,
-                  scale: 1.05
-                },
-                forestEntryFloat2: {
-                  z: 1,
-                  x: 300,
-                  scale: 2,
+                snowmountainEntryFloat: {
+                  z: 300,
+                  x: 200,
                   fixToBottom: true
                 }
               },
               resPoints: ["0,80", "400,500", "800,300", "1000,300"],
               resources: ["scree", "scree,flint", "lakeWater", "herbs,mouseTailHerbs", "caveMashroom"],
+              monsters: {
+                certain: ['1:qq,qq,qq'],
+                random: ['2:qq', '3:qq']
+              },
               movePoints: ["exit", "west", "east"]
             },
             east: {
               name: "东部雪山",
-              bg: ["forest2"],
+              bg: {
+                snowmountainEntryMain: {
+                  z: 1000
+                },
+                snowmountainEntryBg: {
+                  fixed: true
+                }
+              },
+              floatBg: {
+                snowountainEntryFloat: {
+                  z: 600,
+                  x: 200,
+                  fixToBottom: true
+                }
+              },
               resPoints: ["1,1", "20,80"],
               movePoints: ["entry"]
             },
@@ -217,7 +249,7 @@
     };
 
     Database.prototype.initSprites = function() {
-      this.sprites.characters.data = {
+      this.monsters.data = {
         qq: {
           name: "QQ",
           sprite: Res.sprites.test,
@@ -239,7 +271,7 @@
               }
             }
           },
-          anchor: "100,100",
+          anchor: "321,398",
           movements: {
             normal: "0,8",
             move: "0,8",
@@ -252,7 +284,7 @@
           }
         }
       };
-      return this.sprites.items.data = {
+      return this.spriteItems.data = {
         waterball: {
           name: "水球术",
           movements: {

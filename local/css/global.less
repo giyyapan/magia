@@ -5,6 +5,20 @@
 @color-bg-brown-lv2:	#907352;
 @color-bg-brown-lv3:	#674e34;
 @color-border-black:	#2a1d0f;
+.no-user-select{
+		user-select:none;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: moz-none;
+		-ms-user-select: none;
+}
+.transition(@time:.2s,@timingFunc:linear){
+		-webkit-transition:@time @timingFunc;
+		-o-transition:@time @timingFunc;
+		-ms-transition:@time @timingFunc;
+		transition:@time @timingFunc;
+}
 *{
 		font-family: "微软雅黑"
 }
@@ -32,9 +46,16 @@ template{display:none;}
 }
 button,a{
 		cursor:pointer;
+		&:active{
+				border:none;
+				outline:0;
+		}
 }
 body, canvas, div {
 		.no-user-select;
+}
+body{
+		background-color:#222 !important;
 }
 button{
 		font-size:18px;
@@ -44,8 +65,9 @@ body{
 		text-align:center;
 }
 #gameCanvas{
-		border:1px solid white;
+		//border:1px solid white;
 		//background-color:rgba(100,100,100,0.3);
+		box-shadow:0 0 8px black;
 }
 #BGLayer{
 		overflow:hidden;

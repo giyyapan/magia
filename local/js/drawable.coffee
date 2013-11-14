@@ -58,12 +58,18 @@ class window.Drawable extends Suzaku.EventEmitter
     x = r.translateX + @x
     y = r.translateY + @y
     context.globalAlpha = r.opacity if r.opacity isnt null
-    r.scaleX = r.scaleX or r.scale or 1
-    r.scaleY = r.scaleY or r.scale or 1
+    if r.scaleX is null then r.scaleX = r.scale or 1
+    if r.scaleY is null then r.scaleY = r.scale or 1
+    if r.scaleX < 0 then x = Utils.getSize().width - x
+    if r.scaleY < 0 then y = Utils.getSize.height - y
+    #console.log r.scaleX,r.scaleY,x,y
     context.scale r.scaleX,r.scaleY
     context.translate parseInt(x),parseInt(y)
     context.rotate r.rotate if r.rotate
   setImg:(img,resX,resY,resWidth,resHeight)->
+    if img not instanceof Image
+      console.error "need a img to set!",this
+      return
     @imgData =
       img:img
       x:resX or null
@@ -72,6 +78,7 @@ class window.Drawable extends Suzaku.EventEmitter
       height:resHeight or null
     @width = img.width if not @width
     @height = img.height if not @height
+    return this
   draw:(context)->
     return if not @onshow
     s = Utils.getSize()
@@ -93,6 +100,8 @@ class window.Drawable extends Suzaku.EventEmitter
   drawQueueRemove:(drawable)->
     return if Utils.removeItem drawable,@drawQueue.after
     Utils.removeItem drawable,@drawQueue.before
+  drawQueueAdd:->
+    @drawQueueAddAfter.apply this,arguments
   drawQueueAddAfter:->
     for d in arguments
       console.error "#{d} is not drawable" if not d.onDraw
