@@ -31,6 +31,7 @@
     function BattlefieldMonster(battlefield, x, y, originData) {
       BattlefieldMonster.__super__.constructor.call(this, x, y, originData);
       this.battlefield = battlefield;
+      this.speedItem = battlefield.menu.addSpeedItem(originData);
     }
 
     BattlefieldMonster.prototype.draw = function(context) {
@@ -74,6 +75,13 @@
       };
     };
 
+    BattlefieldMenu.prototype.addSpeedItem = function(data) {
+      var item, tpl;
+      tpl = this.UI['speed-item-tpl'].innerHTML;
+      item = new Widget(tpl);
+      return item;
+    };
+
     BattlefieldMenu.prototype.handlePlayerAttack = function() {
       return console.log("attack clicked");
     };
@@ -111,9 +119,9 @@
 
     Battlefield.prototype.initSprites = function() {
       var dx, dy, index, mdata, monster, name, startX, startY, x, y, _i, _len, _ref, _results;
-      startY = 400;
+      startY = 200;
       dy = 100;
-      this.player = new BattlefieldPlayer(this, 200, startY, this.db.monsters.get("qq"));
+      this.player = new BattlefieldPlayer(this, 200, startY + 30, this.db.monsters.get("qq"));
       this.mainLayer.drawQueueAddAfter(this.player);
       this.monsters = [];
       startX = 1000;

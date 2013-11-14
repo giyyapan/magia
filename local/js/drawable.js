@@ -102,17 +102,17 @@
       if (r.opacity !== null) {
         context.globalAlpha = r.opacity;
       }
+      if (r.scaleX < 0) {
+        x = -x;
+      }
+      if (r.scaleY < 0) {
+        y = -y;
+      }
       if (r.scaleX === null) {
         r.scaleX = r.scale || 1;
       }
       if (r.scaleY === null) {
         r.scaleY = r.scale || 1;
-      }
-      if (r.scaleX < 0) {
-        x = Utils.getSize().width - x;
-      }
-      if (r.scaleY < 0) {
-        y = Utils.getSize.height - y;
       }
       context.scale(r.scaleX, r.scaleY);
       context.translate(parseInt(x), parseInt(y));

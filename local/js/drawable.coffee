@@ -58,10 +58,10 @@ class window.Drawable extends Suzaku.EventEmitter
     x = r.translateX + @x
     y = r.translateY + @y
     context.globalAlpha = r.opacity if r.opacity isnt null
+    if r.scaleX < 0 then x = - x
+    if r.scaleY < 0 then y = - y
     if r.scaleX is null then r.scaleX = r.scale or 1
     if r.scaleY is null then r.scaleY = r.scale or 1
-    if r.scaleX < 0 then x = Utils.getSize().width - x
-    if r.scaleY < 0 then y = Utils.getSize.height - y
     #console.log r.scaleX,r.scaleY,x,y
     context.scale r.scaleX,r.scaleY
     context.translate parseInt(x),parseInt(y)

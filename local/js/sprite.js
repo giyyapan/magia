@@ -7,19 +7,21 @@
     __extends(Sprite, _super);
 
     function Sprite(x, y, originData) {
+      var move;
       Sprite.__super__.constructor.call(this, x, y);
       this.originData = originData;
       this.dspName = originData.name;
-      this.frameRate = 20;
+      this.frameRate = 10;
       this.frameDelay = parseInt(1000 / this.frameRate);
       this.currentDelay = 0;
       this.currentFrame = 0;
       this.initSprite();
       this.startFrame = 0;
       this.endFrame = 0;
-      this.currentFrame = 0;
       this.defaultMovement = "normal";
       this.useMovement("normal", true);
+      move = this.movements["normal"];
+      this.currentFrame = (move.startFrame - 1) + Math.round(Math.random() * move.length);
     }
 
     Sprite.prototype.onDraw = function(context, tickDelay) {
@@ -28,16 +30,18 @@
     };
 
     Sprite.prototype.initSprite = function() {
-      var data, name, _ref;
+      var arr, data, name, _ref;
       this.spriteMap = this.originData.sprite.map;
       this.spriteData = this.originData.sprite.data;
       this.movements = {};
       _ref = this.originData.movements;
       for (name in _ref) {
         data = _ref[name];
+        arr = data.split(",");
         this.movements[name] = {
-          startFrame: parseInt(data.split(",")[0]),
-          endFrame: parseInt(data.split(",")[1])
+          startFrame: parseInt(arr[0]),
+          endFrame: parseInt(arr[1]),
+          length: parseInt(arr[1]) - parseInt(arr[0])
         };
       }
       this.defaultAnchor = {
@@ -56,7 +60,7 @@
       }
       this.startFrame = this.movements[name].startFrame;
       this.endFrame = this.movements[name].endFrame;
-      return this.currentFrame = 0;
+      return this.currentFrame = -1;
     };
 
     Sprite.prototype._handleMovementAnimate = function(tickDelay) {
@@ -72,12 +76,17 @@
 
     Sprite.prototype._nextFrame = function() {
       var ax, ay, data, frameData, realFrame, resHeight, resWidth, resX, resY;
+      this.currentFrame += 1;
       realFrame = this.startFrame + this.currentFrame;
       if (realFrame > this.endFrame) {
         this.useMovement(this.defaultMovement);
         return this._nextFrame();
       } else {
         data = this.spriteData.frames[realFrame];
+        if (!data) {
+          console.error("movement frame out of range!", this, realFrame);
+          return;
+        }
         ax = this.defaultAnchor.x - data.spriteSourceSize.x;
         ay = this.defaultAnchor.y - data.spriteSourceSize.y;
         frameData = data.frame;

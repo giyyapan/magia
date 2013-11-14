@@ -12,6 +12,7 @@ class BattlefieldMonster extends Sprite
   constructor:(battlefield,x,y,originData)->
     super x,y,originData
     @battlefield = battlefield
+    @speedItem = battlefield.menu.addSpeedItem originData
   draw:(context)->
     #console.log "enter"
     super context
@@ -36,6 +37,10 @@ class BattlefieldMenu extends Menu
     @UI['escape-btn'].onclick = (evt)=>
       evt.stopPropagation()
       @handlePlayerEscape()
+  addSpeedItem:(data)->
+    tpl = @UI['speed-item-tpl'].innerHTML
+    item = new Widget tpl
+    return item
   handlePlayerAttack:->
     console.log "attack clicked"
   handlePlayerDefense:->
@@ -57,9 +62,9 @@ class window.Battlefield extends Stage
     @initSprites()
     @setView "default"
   initSprites:->
-    startY = 400
+    startY = 200
     dy = 100
-    @player = new BattlefieldPlayer this,200,startY,@db.monsters.get("qq")
+    @player = new BattlefieldPlayer this,200,startY+30,@db.monsters.get("qq")
     @mainLayer.drawQueueAddAfter @player
     @monsters = []
     startX = 1000

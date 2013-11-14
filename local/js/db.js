@@ -273,10 +273,10 @@
           },
           anchor: "321,398",
           movements: {
-            normal: "0,8",
-            move: "0,8",
-            attack: "0,8",
-            cast: "0,8"
+            normal: "0,6",
+            move: "7,14",
+            attack: "15,21:4,6",
+            cast: "0,6"
           },
           drop: {
             certain: ["bluerose"],
