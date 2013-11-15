@@ -36,7 +36,7 @@
 
   Fs = require("fs");
 
-  currentPath = Fs.realpathSync('.');
+  currentPath = __dirname;
 
   console.log(currentPath);
 

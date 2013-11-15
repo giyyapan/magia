@@ -114,7 +114,7 @@ class window.Drawable extends Suzaku.EventEmitter
     for a in @_animates
       a.sumDelay += tickDelay
       p = a.easing(a.time,a.sumDelay,a.tickDelay)
-      if p > 0.99
+      if p > 0.98
         p = 1
         a.end = true
       a.func.call this,p
@@ -178,6 +178,15 @@ Animate =
       p = sumDelay/time
       return (-Math.cos(p*Math.PI)/2+0.5)
   funcs:
+    shake:(time,callback)->
+      x = @x
+      y = @y
+      @animate ((p)->
+        if p is 1
+          @x = x
+        else
+          @x = x + Math.sin(p*10) * 10
+        ),time,"swing",callback
     fadeIn:(time,callback)->
       @animate ((p)->
         @transform.opacity = p
@@ -186,3 +195,32 @@ Animate =
       @animate ((p)->
         @transform.opacity = 1 - p
         ),time,"linear",callback
+        
+class window.Layer extends Drawable
+  constructor:(img)->
+    s = Utils.getSize()
+    super 0,0,s.width,s.height
+    z = 100
+    @setAnchor 0,0
+    if img instanceof Image then @setImg img
+  fixToBottom:->
+    s = Utils.getSize()
+    @y = s.height - @height
+    @fixedYCoordinates = true
+  setImg:(img)->
+    super img
+    @width = img.width
+    @height = img.height
+    return this
+    
+class window.Stage extends Drawable
+  constructor:(@game)->
+    super()
+    @setAnchor 0,0
+  show:(callback)->
+    @fadeIn "normal",callback
+  hide:(callback)->
+    @fadeOut "normal",callback
+  draw:->
+  tick:->
+    

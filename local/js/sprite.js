@@ -7,42 +7,53 @@
     __extends(Sprite, _super);
 
     function Sprite(x, y, originData) {
-      var move;
+      var _this = this;
       Sprite.__super__.constructor.call(this, x, y);
       this.originData = originData;
       this.dspName = originData.name;
-      this.frameRate = 10;
-      this.frameDelay = parseInt(1000 / this.frameRate);
-      this.currentDelay = 0;
+      this.animateClock = new Clock();
+      this.animateClock.setRate("normal");
+      this.animateClock.on("next", function() {
+        return _this._nextFrame();
+      });
+      this.currentMove = null;
       this.currentFrame = 0;
       this.initSprite();
-      this.startFrame = 0;
-      this.endFrame = 0;
       this.defaultMovement = "normal";
       this.useMovement("normal", true);
-      move = this.movements["normal"];
-      this.currentFrame = (move.startFrame - 1) + Math.round(Math.random() * move.length);
+      this.currentFrame = (this.currentMove.startFrame - 1) + Math.round(Math.random() * this.currentMove.length);
     }
 
     Sprite.prototype.onDraw = function(context, tickDelay) {
-      this._handleMovementAnimate(tickDelay);
+      this.animateClock.tick(tickDelay);
       return Sprite.__super__.onDraw.call(this, context, tickDelay);
     };
 
     Sprite.prototype.initSprite = function() {
-      var arr, data, name, _ref;
+      var a1, arr, data, f, kfs, name, _i, _len, _ref, _ref1;
       this.spriteMap = this.originData.sprite.map;
       this.spriteData = this.originData.sprite.data;
       this.movements = {};
       _ref = this.originData.movements;
       for (name in _ref) {
         data = _ref[name];
-        arr = data.split(",");
+        a1 = data.split(":");
+        arr = a1[0].split(",");
         this.movements[name] = {
           startFrame: parseInt(arr[0]),
           endFrame: parseInt(arr[1]),
-          length: parseInt(arr[1]) - parseInt(arr[0])
+          length: parseInt(arr[1]) - parseInt(arr[0]),
+          keyFrames: null
         };
+        if (a1[1]) {
+          kfs = [];
+          _ref1 = a1[1].split(",");
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            f = _ref1[_i];
+            kfs.push(parseInt(f));
+          }
+          this.movements[name].keyFrames = kfs;
+        }
       }
       this.defaultAnchor = {
         x: parseInt(this.originData.anchor.split(",")[0]),
@@ -51,36 +62,48 @@
       return this.setAnchor(this.defaultAnchor);
     };
 
-    Sprite.prototype.useMovement = function(name, loopMovement) {
-      if (loopMovement == null) {
-        loopMovement = false;
+    Sprite.prototype.useMovement = function(name, loopThisMove) {
+      var data;
+      if (loopThisMove == null) {
+        loopThisMove = false;
       }
-      if (loopMovement) {
-        this.defaultMovement = name;
+      if (!this.movements[name]) {
+        return console.error("no movment:" + name + " in ", this);
       }
-      this.startFrame = this.movements[name].startFrame;
-      this.endFrame = this.movements[name].endFrame;
+      if (this.currentMove && name !== this.currentMove.name) {
+        this.emit("endMove:" + this.currentMove.name);
+        this.emit("startMove:" + name);
+      }
+      if (loopThisMove) {
+        this.loopMovement = name;
+      }
+      data = this.movements[name];
+      this.currentMove = {
+        name: name,
+        startFrame: data.startFrame,
+        endFrame: data.endFrame,
+        length: data.length,
+        keyFrames: data.keyFrames
+      };
       return this.currentFrame = -1;
     };
 
-    Sprite.prototype._handleMovementAnimate = function(tickDelay) {
-      var _results;
-      this.currentDelay += tickDelay;
-      _results = [];
-      while (this.currentDelay > this.frameDelay) {
-        this.currentDelay -= this.frameDelay;
-        _results.push(this._nextFrame());
-      }
-      return _results;
-    };
-
     Sprite.prototype._nextFrame = function() {
-      var ax, ay, data, frameData, realFrame, resHeight, resWidth, resX, resY;
+      var ax, ay, data, f, frameData, index, realFrame, resHeight, resWidth, resX, resY, _i, _len, _ref;
       this.currentFrame += 1;
-      realFrame = this.startFrame + this.currentFrame;
-      if (realFrame > this.endFrame) {
-        this.useMovement(this.defaultMovement);
-        return this._nextFrame();
+      if (this.currentMove.keyFrames) {
+        _ref = this.currentMove.keyFrames;
+        for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
+          f = _ref[index];
+          if ((this.currentFrame + 1) === f) {
+            this.emit("keyFrame", index, this.currentMove.keyFrames.length);
+            break;
+          }
+        }
+      }
+      realFrame = this.currentMove.startFrame + this.currentFrame;
+      if (realFrame > this.currentMove.endFrame) {
+        return this.useMovement(this.loopMovement);
       } else {
         data = this.spriteData.frames[realFrame];
         if (!data) {

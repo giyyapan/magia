@@ -17,11 +17,40 @@
       this.defaultY = this.y;
       this.degree = 45;
       this.secondCanvas = $("#secondCanvas").get(0);
+      this.followData = null;
     }
 
-    Camera.prototype.lookAt = function(target, time) {
-      this.moveTo(target.x, target.y, time);
-      return this.scaleTo(this.width / target.width * 1.1, time);
+    Camera.prototype.follow = function(target, z) {
+      return this.followData = {
+        target: target,
+        z: z
+      };
+    };
+
+    Camera.prototype.unfollow = function() {
+      return this.followData = null;
+    };
+
+    Camera.prototype._handleFollow = function() {
+      var s, x, y;
+      if (!this.followData) {
+        return;
+      }
+      s = Utils.getSize();
+      x = this.getOffsetPositionX(this.x + s.width / 2 - this.followData.target.x, this.followData.z);
+      y = this.getOffsetPositionY(this.y + s.height / 2 - this.followData.target.y, this.followData.z);
+      console.log(x, y);
+      this.x = -x;
+      return this.y = -y;
+    };
+
+    Camera.prototype.lookAt = function(target, z, time, callback) {
+      var s, x, y;
+      s = Utils.getSize();
+      x = this.getOffsetPositionX(this.x + s.width / 2 - target.x, z);
+      y = this.getOffsetPositionY(this.y + s.height / 2 - target.y, z);
+      this.moveTo(-x, -y, time, callback);
+      return this.scaleTo(s.width / target.width * 0.48, time, callback);
     };
 
     Camera.prototype.scaleTo = function(scale, time) {
@@ -58,6 +87,7 @@
     };
 
     Camera.prototype.onDraw = function(context, tickDelay) {
+      this._handleFollow();
       this._handleAnimate(tickDelay);
       context.save();
       context.translate(parseInt(this.width / 2), parseInt(this.height / 2));

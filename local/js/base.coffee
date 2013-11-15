@@ -1,20 +1,25 @@
-class window.Layer extends Drawable
-  constructor:(img)->
-    s = Utils.getSize()
-    super 0,0,s.width,s.height
-    z = 100
-    @setAnchor 0,0
-    if img instanceof Image then @setImg img
-  fixToBottom:->
-    s = Utils.getSize()
-    @y = s.height - @height
-    @fixedYCoordinates = true
-  setImg:(img)->
-    super img
-    @width = img.width
-    @height = img.height
-    return this
-    
+window.Widget = Suzaku.Widget
+window.EventEmitter = Suzaku.EventEmitter
+class window.Clock extends Suzaku.EventEmitter
+  constructor:->
+    super
+    @setRate "normal"
+    @currentDelay = 0
+    @currentDelay = 0
+  setRate:(value)->
+    switch value
+      when "normal" then value = 13
+      when "fast" then value = 20
+      when "slow" then value = 8
+      else value = parseInt(value)
+    @frameRate = value
+    @frameDelay = parseInt(1000/@frameRate)
+  tick:(tickDelay)->
+    @currentDelay += tickDelay
+    while @currentDelay > @frameDelay
+      @currentDelay -= @frameDelay
+      @emit "next"
+      
 class window.Menu extends Suzaku.Widget
   constructor:(tpl)->
     super tpl
@@ -36,23 +41,13 @@ class window.Menu extends Suzaku.Widget
   onDraw:->
     @emit "render",this
     
-class window.Stage extends Drawable
-  constructor:(@game)->
-    super()
-    @setAnchor 0,0
-  show:(callback)->
-    @fadeIn "normal",callback
-  hide:(callback)->
-    @fadeOut "normal",callback
-  draw:->
-  tick:->
-    
 class window.PopupBox extends Suzaku.Widget
   constructor:(tpl)->
     super tpl or Res.tpls['popup-box']
     @box = @UI.box
     @J.hide()
     @box.J.hide()
+    @UILayer = $ GameConfig.UILayerId
     self = this
     if @UI['close-btn']
       @UI['close-btn'].onclick = ->
@@ -61,7 +56,7 @@ class window.PopupBox extends Suzaku.Widget
       @UI['accept-btn'].onclick = ->
         self.accept()
   show:->
-    @appendTo $("#UILayer")
+    @appendTo @UILayer
     @J.fadeIn "fast"
     @box.J.slideDown "fast"
   close:->

@@ -185,19 +185,21 @@ class window.Database extends Suzaku.EventEmitter
       qq:
         name:"QQ"
         sprite:Res.sprites.test
+        icon:null
         basicData:
           hp:1000
           def:30
+          spd:30
+        skills:
           attack:
             damage:
               normal:30
               water:10
-          magic:
-            waterball:
-              turn:2
-              damage:
-                water:100
-        anchor:"321,398"
+          waterball:
+            turn:2
+            damage:
+              water:100
+        anchor:"321,290"
         movements:
           normal:"0,6"
           move:"7,14"

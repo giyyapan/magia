@@ -30,16 +30,17 @@ class EventEmitter
     return callback
   once:(event,callback)->
     f = =>
-      callback.apply this,arguments
       @off event,f
+      callback.apply this,arguments
     @on event,f
+    return f
   off:(event,listener)->
     if typeof listener is "function"
       for func in @_events[event]
         if func is listener
           Utils.removeItem @_events[event],func
           return
-      console.log "cannot find listener #{listener} of #{event} in #{this} -- Suzaku.EventEmitter"
+      console.error "cannot find listener #{listener} of #{event}-- Suzaku.EventEmitter"
     else
       for func in @_events[event]
         func = null

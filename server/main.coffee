@@ -25,7 +25,7 @@ Http = require "http"
 Path = require "path"
 Url = require "url"
 Fs = require "fs"
-currentPath = Fs.realpathSync('.');
+currentPath = __dirname;
 console.log currentPath
 
 MainHandler = (req,res)->

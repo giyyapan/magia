@@ -215,7 +215,7 @@
         a = _ref[_i];
         a.sumDelay += tickDelay;
         p = a.easing(a.time, a.sumDelay, a.tickDelay);
-        if (p > 0.99) {
+        if (p > 0.98) {
           p = 1;
           a.end = true;
         }
@@ -350,6 +350,18 @@
       }
     },
     funcs: {
+      shake: function(time, callback) {
+        var x, y;
+        x = this.x;
+        y = this.y;
+        return this.animate((function(p) {
+          if (p === 1) {
+            return this.x = x;
+          } else {
+            return this.x = x + Math.sin(p * 10) * 10;
+          }
+        }), time, "swing", callback);
+      },
       fadeIn: function(time, callback) {
         return this.animate((function(p) {
           return this.transform.opacity = p;
@@ -362,5 +374,62 @@
       }
     }
   };
+
+  window.Layer = (function(_super) {
+    __extends(Layer, _super);
+
+    function Layer(img) {
+      var s, z;
+      s = Utils.getSize();
+      Layer.__super__.constructor.call(this, 0, 0, s.width, s.height);
+      z = 100;
+      this.setAnchor(0, 0);
+      if (img instanceof Image) {
+        this.setImg(img);
+      }
+    }
+
+    Layer.prototype.fixToBottom = function() {
+      var s;
+      s = Utils.getSize();
+      this.y = s.height - this.height;
+      return this.fixedYCoordinates = true;
+    };
+
+    Layer.prototype.setImg = function(img) {
+      Layer.__super__.setImg.call(this, img);
+      this.width = img.width;
+      this.height = img.height;
+      return this;
+    };
+
+    return Layer;
+
+  })(Drawable);
+
+  window.Stage = (function(_super) {
+    __extends(Stage, _super);
+
+    function Stage(game) {
+      this.game = game;
+      Stage.__super__.constructor.call(this);
+      this.setAnchor(0, 0);
+    }
+
+    Stage.prototype.show = function(callback) {
+      return this.fadeIn("normal", callback);
+    };
+
+    Stage.prototype.hide = function(callback) {
+      return this.fadeOut("normal", callback);
+    };
+
+    Stage.prototype.draw = function() {};
+
+    Stage.prototype.tick = function() {};
+
+    return Stage;
+
+  })(Drawable);
 
 }).call(this);

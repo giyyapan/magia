@@ -6,18 +6,19 @@
 		</ul>
 		<template data-id="speed-item-tpl" >
 			<li class="speed-item" >
+				<img src="/img/menu/bf-speed-item-bg.png" class="speed-item-bg" />
 				<div class="icon-wrapper" >
-					<img src="" data-id="icon" />					
+					<img src="" data-id="icon" />
 				</div>
 			</li>
 		</template>
 	</section>
-	<section class="action-box" >
+	<section class="action-box" data-id="action-box" style="display:none;" >
 		<div class="status-box panel-wrapper" >
 			<img src="img/menu/bf-status-box-bg.png"  />
-			<div class="life-bar" >
-				<span data-id="life-inner" ></span>
-				<span data-id="life-text" ></span>
+			<div class="life-bar" data-id="life-bar" >
+				<span data-id="life-inner" class="life-inner" ></span>
+				<span data-id="life-text" class="life-text" >100/100</span>
 			</div>
 		</div>
 		<div class="action-btns" >

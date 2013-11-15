@@ -3,37 +3,52 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  window.Layer = (function(_super) {
-    __extends(Layer, _super);
+  window.Widget = Suzaku.Widget;
 
-    function Layer(img) {
-      var s, z;
-      s = Utils.getSize();
-      Layer.__super__.constructor.call(this, 0, 0, s.width, s.height);
-      z = 100;
-      this.setAnchor(0, 0);
-      if (img instanceof Image) {
-        this.setImg(img);
-      }
+  window.EventEmitter = Suzaku.EventEmitter;
+
+  window.Clock = (function(_super) {
+    __extends(Clock, _super);
+
+    function Clock() {
+      Clock.__super__.constructor.apply(this, arguments);
+      this.setRate("normal");
+      this.currentDelay = 0;
+      this.currentDelay = 0;
     }
 
-    Layer.prototype.fixToBottom = function() {
-      var s;
-      s = Utils.getSize();
-      this.y = s.height - this.height;
-      return this.fixedYCoordinates = true;
+    Clock.prototype.setRate = function(value) {
+      switch (value) {
+        case "normal":
+          value = 13;
+          break;
+        case "fast":
+          value = 20;
+          break;
+        case "slow":
+          value = 8;
+          break;
+        default:
+          value = parseInt(value);
+      }
+      this.frameRate = value;
+      return this.frameDelay = parseInt(1000 / this.frameRate);
     };
 
-    Layer.prototype.setImg = function(img) {
-      Layer.__super__.setImg.call(this, img);
-      this.width = img.width;
-      this.height = img.height;
-      return this;
+    Clock.prototype.tick = function(tickDelay) {
+      var _results;
+      this.currentDelay += tickDelay;
+      _results = [];
+      while (this.currentDelay > this.frameDelay) {
+        this.currentDelay -= this.frameDelay;
+        _results.push(this.emit("next"));
+      }
+      return _results;
     };
 
-    return Layer;
+    return Clock;
 
-  })(Drawable);
+  })(Suzaku.EventEmitter);
 
   window.Menu = (function(_super) {
     __extends(Menu, _super);
@@ -75,31 +90,6 @@
 
   })(Suzaku.Widget);
 
-  window.Stage = (function(_super) {
-    __extends(Stage, _super);
-
-    function Stage(game) {
-      this.game = game;
-      Stage.__super__.constructor.call(this);
-      this.setAnchor(0, 0);
-    }
-
-    Stage.prototype.show = function(callback) {
-      return this.fadeIn("normal", callback);
-    };
-
-    Stage.prototype.hide = function(callback) {
-      return this.fadeOut("normal", callback);
-    };
-
-    Stage.prototype.draw = function() {};
-
-    Stage.prototype.tick = function() {};
-
-    return Stage;
-
-  })(Drawable);
-
   window.PopupBox = (function(_super) {
     __extends(PopupBox, _super);
 
@@ -109,6 +99,7 @@
       this.box = this.UI.box;
       this.J.hide();
       this.box.J.hide();
+      this.UILayer = $(GameConfig.UILayerId);
       self = this;
       if (this.UI['close-btn']) {
         this.UI['close-btn'].onclick = function() {
@@ -123,7 +114,7 @@
     }
 
     PopupBox.prototype.show = function() {
-      this.appendTo($("#UILayer"));
+      this.appendTo(this.UILayer);
       this.J.fadeIn("fast");
       return this.box.J.slideDown("fast");
     };

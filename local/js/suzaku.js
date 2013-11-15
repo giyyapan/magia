@@ -53,10 +53,11 @@
       var f,
         _this = this;
       f = function() {
-        callback.apply(_this, arguments);
-        return _this.off(event, f);
+        _this.off(event, f);
+        return callback.apply(_this, arguments);
       };
-      return this.on(event, f);
+      this.on(event, f);
+      return f;
     };
 
     EventEmitter.prototype.off = function(event, listener) {
@@ -70,7 +71,7 @@
             return;
           }
         }
-        return console.log("cannot find listener " + listener + " of " + event + " in " + this + " -- Suzaku.EventEmitter");
+        return console.error("cannot find listener " + listener + " of " + event + "-- Suzaku.EventEmitter");
       } else {
         _ref1 = this._events[event];
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {

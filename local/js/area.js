@@ -460,7 +460,7 @@
       this.data = game.db.areas.get(areaName);
       this.backpackMenu = new Backpack(game, "gatherArea");
       this.enterPlace("entry");
-      this.initBattlefield(["qq", "qq", "qq", "qq", "qq", "qq"]);
+      this.initBattlefield(["qq", "qq", "qq"]);
     }
 
     Area.prototype.initBattlefield = function(monsters) {

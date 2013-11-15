@@ -10,9 +10,27 @@ class window.Camera extends Drawable
     @defaultY = @y
     @degree = 45
     @secondCanvas = $("#secondCanvas").get(0)
-  lookAt:(target,time)->
-    @moveTo target.x,target.y,time
-    @scaleTo (@width/target.width * 1.1),time
+    @followData = null
+  follow:(target,z)->
+    @followData =
+      target:target
+      z:z
+  unfollow:->
+    @followData = null
+  _handleFollow:->
+    return if not @followData
+    s = Utils.getSize()
+    x = @getOffsetPositionX (@x + s.width/2 - @followData.target.x),@followData.z
+    y = @getOffsetPositionY (@y + s.height/2 - @followData.target.y),@followData.z
+    console.log x,y
+    @x = -x
+    @y = -y
+  lookAt:(target,z,time,callback)->
+    s = Utils.getSize()
+    x = @getOffsetPositionX (@x + s.width/2 - target.x),z
+    y = @getOffsetPositionY (@y + s.height/2 - target.y),z
+    @moveTo -x,-y,time,callback
+    @scaleTo (s.width/target.width * 0.48),time,callback
   scaleTo:(scale,time)->
     @animate {scale:scale},time,"swing"
   moveTo:(x,y,time,callback)->
@@ -28,6 +46,7 @@ class window.Camera extends Drawable
     @y = @defaultY
     @scale = @defaultScale
   onDraw:(context,tickDelay)->
+    @_handleFollow()
     @_handleAnimate tickDelay
     context.save()
     context.translate parseInt(@width/2),parseInt(@height/2)

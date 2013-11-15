@@ -35,11 +35,35 @@
 		z-index:1;
 		text-align:center;
 		.life-bar{
-				margin:auto;
-				width:80%;
-				display:block;
+				text-align: left;
+				margin: auto;
+				position: absolute;
+				left: 12px;
+				bottom: 10px;
+				border: 1px solid;
+				border-radius: 9px;
+				background-color: rgba(20, 20, 20, 0.2);
+				height: 19px;
+				box-shadow: inset 0 2px 2px rgba(20, 20, 20, 0.3),0 3px 0px #c1a581;
+				width: 70%;
+				display: block;
+				overflow: hidden;
 				.life-inner{
-						
+						width: 100%;
+						height: 100%;
+						background-color: #43bb54;
+						display: inline-block;
+						border-radius: 2px;
+						box-shadow: inset 0 2px 2px rgba(20, 20, 20, 0.3);
+						border-right: 1px solid rgb(38, 80, 32);						
+				}
+				.life-text{
+						position: absolute;
+						top:1px;
+						right: 9px;
+						color: white;
+						font-size: 16px;
+						text-shadow: 0 2px 0px rgba(20,20,20,0.7);						
 				}
 		}
 		img{
@@ -110,12 +134,16 @@
 		left:0;
 		top:20px;
 		text-align:center;
-		.speed-bar{
+		& .speed-item-list,& .speed-bar{
+				position:relative;
 				width: 980px;
+				margin: auto;
+				border:2px solid transparent;
+		}
+		.speed-bar{
 				height: 14px;
 				border-radius: 7px;
 				border: 2px solid #D8B68F;
-				margin: auto;
 				background-color: #D8B68F;
 				.speed-bar-inner{
 						display: block;
@@ -123,6 +151,20 @@
 						border-radius: 6px;
 						background-color: #7ae0e9;
 						border: 2px solid #274144;
+				}
+		}
+		.speed-item-list{
+				left:-30px;
+		}
+		.speed-item{
+				display:inline-block;
+				width:50px;
+				position:absolute;
+				top:0;
+				.speed-item-bg{
+						display:inline;
+						width:100%;
+						height:auto;
 				}
 		}
 }
