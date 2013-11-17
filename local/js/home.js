@@ -7,35 +7,19 @@
   FirstFloor = (function(_super) {
     __extends(FirstFloor, _super);
 
-    function FirstFloor(stage) {
+    function FirstFloor(home) {
       var _this = this;
-      this.stage = stage;
-      FirstFloor.__super__.constructor.call(this);
-      this.camera = new Camera();
+      FirstFloor.__super__.constructor.apply(this, arguments);
+      this.home = home;
       this.menu = new Menu(Res.tpls["home-1st-floor"]);
       this.setImg(Res.imgs.homeDown);
       this.menu.UI.upstairs.onclick = function() {
-        return _this.emit("goUp");
+        return _this.home.goUp();
       };
       this.menu.UI.exit.onclick = function() {
-        return _this.emit("exit");
+        return _this.home.exit();
       };
     }
-
-    FirstFloor.prototype.moveDown = function(callback) {
-      var s;
-      s = Utils.getSize();
-      this.transform.rotate = 0;
-      return this.animate({
-        y: s.height
-      }, "normal", "swing", callback);
-    };
-
-    FirstFloor.prototype.moveUp = function(callback) {
-      return this.animate({
-        y: 0
-      }, "normal", "swing", callback);
-    };
 
     FirstFloor.prototype.show = function() {
       this.fadeIn("fast");
@@ -49,31 +33,24 @@
   SecondFloor = (function(_super) {
     __extends(SecondFloor, _super);
 
-    function SecondFloor(stage) {
+    function SecondFloor(home) {
       var _this = this;
-      this.stage = stage;
-      SecondFloor.__super__.constructor.call(this);
+      SecondFloor.__super__.constructor.apply(this, arguments);
+      this.home = home;
       this.y = -Utils.getSize().height;
-      this.camera = this.stage.camera;
       this.menu = new Menu(Res.tpls["home-2nd-floor"]);
       this.setImg(Res.imgs.homeUp);
+      this.menu.UI['work-table'].onclick = function() {
+        return _this.showWorkTable();
+      };
       this.menu.UI.downstairs.onclick = function() {
-        return _this.emit("goDown");
+        return _this.home.goDown();
       };
     }
 
-    SecondFloor.prototype.moveDown = function(callback) {
-      return this.animate({
-        y: 0
-      }, "normal", "swing", callback);
-    };
-
-    SecondFloor.prototype.moveUp = function(callback) {
-      var s;
-      s = Utils.getSize();
-      return this.animate({
-        y: -s.height
-      }, "normal", "swing", callback);
+    SecondFloor.prototype.showWorkTable = function() {
+      var workTable;
+      return workTable = new WorkTable(this.UI['work-table']);
     };
 
     return SecondFloor;
@@ -84,35 +61,50 @@
     __extends(Home, _super);
 
     function Home(game) {
-      var _this = this;
       Home.__super__.constructor.call(this);
       this.game = game;
       this.camera = new Camera();
+      this.drawQueueAddAfter(this.camera);
       this.firstFloor = new FirstFloor(this);
       this.secondFloor = new SecondFloor(this);
-      this.drawQueueAddAfter(this.secondFloor, this.firstFloor);
-      this.firstFloor.on("goUp", function() {
-        _this.firstFloor.menu.hide();
-        _this.firstFloor.moveDown();
-        return _this.secondFloor.moveDown(function() {
-          return _this.secondFloor.menu.show();
-        });
-      });
-      this.secondFloor.on("goDown", function() {
-        _this.secondFloor.menu.hide();
-        _this.secondFloor.moveUp();
-        return _this.firstFloor.moveUp(function() {
-          return _this.firstFloor.menu.show();
-        });
-      });
-      this.firstFloor.on("exit", function() {
-        _this.clearDrawQueue();
-        return _this.game.switchStage("worldMap");
-      });
+      this.camera.render(this.firstFloor, this.secondFloor);
       this.firstFloor.show();
     }
 
-    Home.prototype.tick = function() {};
+    Home.prototype.goUp = function() {
+      var s,
+        _this = this;
+      s = Utils.getSize();
+      this.firstFloor.menu.hide();
+      this.firstFloor.animate({
+        y: s.height
+      }, "normal");
+      return this.secondFloor.animate({
+        y: 0
+      }, "normal", function() {
+        return _this.secondFloor.menu.show();
+      });
+    };
+
+    Home.prototype.goDown = function() {
+      var s,
+        _this = this;
+      s = Utils.getSize();
+      this.secondFloor.menu.hide();
+      this.secondFloor.animate({
+        y: -s.height
+      }, "normal");
+      return this.firstFloor.animate({
+        y: 0
+      }, "normal", function() {
+        return _this.firstFloor.menu.show();
+      });
+    };
+
+    Home.prototype.exit = function() {
+      this.clearDrawQueue();
+      return this.game.switchStage("worldMap");
+    };
 
     return Home;
 

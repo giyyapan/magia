@@ -6,6 +6,7 @@ class window.Clock extends Suzaku.EventEmitter
     @setRate "normal"
     @currentDelay = 0
     @currentDelay = 0
+    @paused = false
   setRate:(value)->
     switch value
       when "normal" then value = 13
@@ -18,7 +19,7 @@ class window.Clock extends Suzaku.EventEmitter
     @currentDelay += tickDelay
     while @currentDelay > @frameDelay
       @currentDelay -= @frameDelay
-      @emit "next"
+      if not @paused then @emit "next"
       
 class window.Menu extends Suzaku.Widget
   constructor:(tpl)->

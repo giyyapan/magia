@@ -10,6 +10,7 @@ class window.Camera extends Drawable
     @defaultY = @y
     @degree = 45
     @secondCanvas = $("#secondCanvas").get(0)
+    @defaultReferenceZ = 0
     @followData = null
   follow:(target,z)->
     @followData =
@@ -19,24 +20,27 @@ class window.Camera extends Drawable
     @followData = null
   _handleFollow:->
     return if not @followData
+    @setCenter @followData.target.x,@followData.target.y,@followData.z
+  setCenter:(x,y,z)->
     s = Utils.getSize()
-    x = @getOffsetPositionX (@x + s.width/2 - @followData.target.x),@followData.z
-    y = @getOffsetPositionY (@y + s.height/2 - @followData.target.y),@followData.z
-    console.log x,y
+    z = @defaultReferenceZ if not z
+    x = @getOffsetPositionX (s.width/2 - x),z
+    y = @getOffsetPositionY (s.height/2 - y),z
     @x = -x
     @y = -y
-  lookAt:(target,z,time,callback)->
+  lookAt:(target,time,scale,z,callback)->
+    if not z then z = @defaultReferenceZ
     s = Utils.getSize()
-    x = @getOffsetPositionX (@x + s.width/2 - target.x),z
-    y = @getOffsetPositionY (@y + s.height/2 - target.y),z
+    x = @getOffsetPositionX (s.width/2 - target.x),z
+    y = @getOffsetPositionY (s.height/2 - target.y),z
     @moveTo -x,-y,time,callback
-    @scaleTo (s.width/target.width * 0.48),time,callback
+    @scaleTo (scale or s.width/target.width * 0.48),time,callback
   scaleTo:(scale,time)->
-    @animate {scale:scale},time,"swing"
+    @animate {scale:scale},time,"expoOut"
   moveTo:(x,y,time,callback)->
     if x is null then x = @x
     if y is null then y = @y
-    @animate {x:x,y:y},time,"swing",callback
+    @animate {x:x,y:y},time,"expoOut",callback
   getOffsetPositionX:(x,reference)->
     return x * @getOffsetScaleX(reference)
   getOffsetPositionY:(y,reference)->

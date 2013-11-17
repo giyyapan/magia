@@ -1,60 +1,53 @@
 class FirstFloor extends Layer
-  constructor:(@stage)->
-    super()
-    @camera = new Camera()
+  constructor:(home)->
+    super
+    @home = home
     @menu = new Menu Res.tpls["home-1st-floor"]
     @setImg Res.imgs.homeDown
     @menu.UI.upstairs.onclick = =>
-      @emit "goUp"
+      @home.goUp()
     @menu.UI.exit.onclick = =>
-      @emit "exit"
-  moveDown:(callback)->
-    s = Utils.getSize()
-    @transform.rotate = 0
-    #@animate {y:s.height,"transform.rotate":0.5,"transform.opacity":0},"normal","swing",callback
-    @animate {y:s.height},"normal","swing",callback
-  moveUp:(callback)->
-    #@animate {y:0,"transform.rotate":0,"transform.opacity":1},"normal","swing",callback
-    @animate {y:0},"normal","swing",callback
+      @home.exit()
   show:->
     @fadeIn "fast"
     @menu.show()
     
 class SecondFloor extends Layer
-  constructor:(@stage)->
-    super()
+  constructor:(home)->
+    super
+    @home = home
     @y = - Utils.getSize().height
-    @camera = @stage.camera
     @menu = new Menu Res.tpls["home-2nd-floor"]
     @setImg Res.imgs.homeUp
+    @menu.UI['work-table'].onclick = =>
+      @showWorkTable()
     @menu.UI.downstairs.onclick = =>
-      @emit "goDown"
-  moveDown:(callback)->
-    @animate {y:0},"normal","swing",callback
-  moveUp:(callback)->
-    s = Utils.getSize()
-    @animate {y:-s.height},"normal","swing",callback
+      @home.goDown()
+  showWorkTable:->
+    workTable = new WorkTable @UI['work-table']
     
 class window.Home extends Stage
   constructor:(game)->
     super()
     @game = game
     @camera = new Camera()
+    @drawQueueAddAfter @camera
     @firstFloor = new FirstFloor this
     @secondFloor = new SecondFloor this
-    @drawQueueAddAfter @secondFloor,@firstFloor
-    @firstFloor.on "goUp",=>
-      @firstFloor.menu.hide()
-      @firstFloor.moveDown()
-      @secondFloor.moveDown =>
-        @secondFloor.menu.show()
-    @secondFloor.on "goDown",=>
-      @secondFloor.menu.hide()
-      @secondFloor.moveUp()
-      @firstFloor.moveUp =>
-        @firstFloor.menu.show()
-    @firstFloor.on "exit",=>
-      @clearDrawQueue()
-      @game.switchStage "worldMap"
+    @camera.render @firstFloor,@secondFloor
     @firstFloor.show()
-  tick:->
+  goUp:->
+    s = Utils.getSize()
+    @firstFloor.menu.hide()
+    @firstFloor.animate {y:s.height},"normal"
+    @secondFloor.animate {y:0},"normal",=>
+      @secondFloor.menu.show()
+  goDown:->
+    s = Utils.getSize()
+    @secondFloor.menu.hide()
+    @secondFloor.animate {y:-s.height},"normal"
+    @firstFloor.animate {y:0},"normal",=>
+      @firstFloor.menu.show()
+  exit:->
+    @clearDrawQueue()
+    @game.switchStage "worldMap"

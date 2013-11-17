@@ -19,6 +19,8 @@
       this.currentMove = null;
       this.currentFrame = 0;
       this.initSprite();
+      this.width = this.spriteData.frames[0].frame.w;
+      this.height = this.spriteData.frames[0].frame.h;
       this.defaultMovement = "normal";
       this.useMovement("normal", true);
       this.currentFrame = (this.currentMove.startFrame - 1) + Math.round(Math.random() * this.currentMove.length);

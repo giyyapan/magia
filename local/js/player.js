@@ -9,8 +9,18 @@
     assert: {
       money: 4000,
       gem: 300,
-      backpack: [],
-      storageItem: [],
+      backpack: [
+        {
+          name: "healPotion",
+          traitValue: 300,
+          type: "supplies"
+        }, {
+          name: "firePotion",
+          traitValue: 300,
+          type: "supplies"
+        }
+      ],
+      storage: [],
       currentEquipment: {
         hat: null,
         clothes: null,
@@ -36,9 +46,9 @@
       if (!data) {
         this.data = playerData;
       }
-      this.initData;
       this.backpack = [];
       this.storage = [];
+      this.initData();
       for (name in this.data) {
         this[name] = this.data[name];
       }
@@ -50,7 +60,7 @@
     };
 
     Player.prototype.initThingsFrom = function(originType, data) {
-      var origin, target, _i, _len, _results;
+      var origin, target, _i, _len;
       switch (originType) {
         case "backpack":
           origin = this.data.assert.backpack;
@@ -60,24 +70,17 @@
           origin = this.data.assert.storage;
           target = this.storage;
       }
-      _results = [];
       for (_i = 0, _len = origin.length; _i < _len; _i++) {
         data = origin[_i];
         switch (data.type) {
           case "item":
-            _results.push(this.getItem(target, data));
+            this.getItem(target, data);
             break;
           case "supplies":
-            _results.push(this.getSupplies(target, data));
-            break;
-          case "material":
-            _results.push(this.getMaterial(target, data));
-            break;
-          default:
-            _results.push(void 0);
+            this.getSupplies(target, data);
         }
       }
-      return _results;
+      return console.log(this.backpack);
     };
 
     Player.prototype.getItem = function(target, dataObj) {
@@ -107,15 +110,22 @@
     };
 
     Player.prototype.getSupplies = function(target, dataObj) {
+      var item, name, originData;
       if (target == null) {
         target = "backpack";
       }
-    };
-
-    Player.prototype.getMaterial = function(target, dataObj) {
-      if (target == null) {
-        target = "backpack";
+      name = dataObj.name;
+      originData = dataObj.originData || this.db.things.supplies.get(name);
+      item = new PlayerItem(name, originData);
+      switch (target) {
+        case "backpack":
+          target = this.backpack;
+          break;
+        case "storage":
+          target = this.storage;
       }
+      target.push(item);
+      return console.log(this);
     };
 
     Player.prototype.getEquipment = function() {};

@@ -5,8 +5,8 @@ playerData =
   assert:
     money:4000
     gem:300
-    backpack:[]
-    storageItem:[]
+    backpack:[{name:"healPotion",traitValue:300,type:"supplies"},{name:"firePotion",traitValue:300,type:"supplies"}]
+    storage:[]
     currentEquipment:
       hat:null
       clothes:null
@@ -25,9 +25,9 @@ class window.Player
     @db = db
     @data = data
     @data = playerData if not data
-    @initData
     @backpack = []
     @storage = []
+    @initData()
     for name of @data
       this[name] = @data[name]
   initData:()->
@@ -45,7 +45,7 @@ class window.Player
       switch data.type
         when "item" then @getItem target,data
         when "supplies" then @getSupplies target,data
-        when "material" then @getMaterial target,data
+    console.log @backpack
   getItem:(target="backpack",dataObj)-> #target= backpack/storage 只有item是可堆叠的
     name = dataObj.name
     originData = dataObj.originData or @db.things.items.get name
@@ -59,7 +59,14 @@ class window.Player
     target.push item
     console.log this
   getSupplies:(target="backpack",dataObj)->
-  getMaterial:(target="backpack",dataObj)->
+    name = dataObj.name
+    originData = dataObj.originData or @db.things.supplies.get name
+    item = new PlayerItem(name,originData)
+    switch target
+      when "backpack" then target = @backpack
+      when "storage" then target = @storage
+    target.push item
+    console.log this
   getEquipment:()->
   checkFreeSpace:(target,things)->
     return true

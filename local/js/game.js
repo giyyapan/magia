@@ -7,7 +7,12 @@
     showFPS: true,
     frameRate: 60,
     canvasId: "#gameCanvas",
-    UILayerId: "#UILayer"
+    UILayerId: "#UILayer",
+    speedValue: {
+      fast: 200,
+      normal: 350,
+      slow: 600
+    }
   };
 
   if (!document.createElement('canvas').getContext) {

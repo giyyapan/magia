@@ -28,7 +28,7 @@
   };
 
   window.Sprites = {
-    test: "test"
+    qq: "qq"
   };
 
   window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu"];
@@ -121,7 +121,6 @@
       _ref = this.imgs;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         img = _ref[_i];
-        console.log(img);
         i = new Image();
         i.src = this.imgPath + img.src;
         i.name = img.name;

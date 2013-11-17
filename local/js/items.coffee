@@ -1,14 +1,14 @@
-class window.ThingListWidget extends Suzaku.Widget
+class window.ThingListWidget extends Widget
   constructor:(originData,number)->
     super Res.tpls['thing-list-item']
     @UI.img.src = originData.img.src if originData.img
     @UI.name.J.text originData.name
     @UI.quatity.J.text number
     
-class window.Things extends Suzaku.EventEmitter
+class window.Things extends EventEmitter
   constructor:(name,data,type)->
     super()
-    @data = @originData = data
+    @originData = data
     @name = name
     @dspName = data.name
     @type = type
@@ -23,14 +23,9 @@ class window.PlayerItem extends Things
     @number = number
     
 class window.PlayerSupplies extends Things
-  constructor:(name,originData,specificData)->
+  constructor:(name,originData,traitValue)->
     super name,data,"supplies"
-    @specificData = specificData
-    
-class window.PlayerMaterial extends Things
-  constructor:(name,originData,specificData)->
-    super name,data,"material"
-    @specificData = specificData
+    @traitValue = traitValue
     
 class window.PlayerEquipment extends Things
   constructor:->

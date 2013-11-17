@@ -512,35 +512,12 @@ window.Suzaku.Utils = Utils =
     return source.splice index,1
   removeItem:(source,target,value)->
     if source instanceof Array
-      if typeof value is "undefined"
-        if typeof target is 'number'
-          source.splice target,1
-          return true
-        else
-          for item,index in source
-            if Utils.compare item,target
-              source.splice index,1
-              return true
-      else if typeof target is "string"
-          for item,index in source
-            if item[target] and Utils.compare(item[target],value) is true
-              return Utils.removeItem source,index
-    if typeof source is 'object' and typeof value is "undefined"
-      if typeof target is 'string' or typeof target is 'number'
-        delete source[target]
-        return true
-      if typeof target is 'object'
-        for name,item of source
-          if item is target then return Utils.removeItem source,name
-          found = true
-          for keyname,keyvalue of target
-            if Utils.compare item[keyname],keyvalue
-              continue
-            else
-              found = false
-              break
-          if found then return Utils.removeItem source,name
-    return false
+      for item,index in source when item is target
+        Utils.removeItemByIndex source,index
+    else
+      for name,item of source
+        if target is item or (typeof target is "string" and item[target] is value)
+          delete source[name]
   findItem:(source,key,value)->
     if typeof key is 'string' and typeof value isnt 'undefined'
       target = {}

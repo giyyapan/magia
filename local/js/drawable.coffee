@@ -15,7 +15,7 @@ class window.Drawable extends Suzaku.EventEmitter
     @renderData = null
     @onshow = true
     @transform =
-      opacity:1
+      opacity:null
       translateX:0
       translateY:0
       translateZ:0
@@ -42,7 +42,7 @@ class window.Drawable extends Suzaku.EventEmitter
       this[name] = f
   onDraw:(context,tickDelay)->
     @_handleAnimate tickDelay
-    for name,value of @transform when value isnt null
+    for name,value of @transform
       @realValue[name] = value
     context.save()
     @emit "render",this
@@ -98,8 +98,8 @@ class window.Drawable extends Suzaku.EventEmitter
     @drawQueue.after = []
     @drawQueue.before = []
   drawQueueRemove:(drawable)->
-    return if Utils.removeItem drawable,@drawQueue.after
-    Utils.removeItem drawable,@drawQueue.before
+    return if Utils.removeItem @drawQueue.after,drawable
+    Utils.removeItem @drawQueue.before,drawable if @drawQueue.before
   drawQueueAdd:->
     @drawQueueAddAfter.apply this,arguments
   drawQueueAddAfter:->
@@ -125,6 +125,9 @@ class window.Drawable extends Suzaku.EventEmitter
       else arr.push a
     item = null for item in @_animates
     @_animates = arr
+  setCallback:(time,callback)->
+    return console.error "need a callback func" if not callback
+    @animate (->),time,"linear",callback
   animate:(func,time="normal",easing,callback)->
     #1:func or obj,time,easing,callback
     #2:func or obj,time,callback
@@ -138,9 +141,9 @@ class window.Drawable extends Suzaku.EventEmitter
       func = @_generateAnimateFunc obj
     if typeof time is "string"
       switch time
-        when "fast" then time = 200
-        when "normal" then time = 350
-        when "slow" then time = 600
+        when "fast" then time = GameConfig.speedValue.fast
+        when "normal" then time = GameConfig.speedValue.normal
+        when "slow" then time = GameConfig.speedValue.slow
     if typeof easing is "string"
       easing = Animate.easing[easing]
     @_animates.push
@@ -177,6 +180,17 @@ Animate =
     linear:(time,sumDelay,tickDelay)->
       p = sumDelay/time
       return (-Math.cos(p*Math.PI)/2+0.5)
+    expoIn:(d,t)->
+      return Math.pow( 2, 10 * (t/d - 1) )
+    expoOut:(d,t)->
+      return ( -Math.pow( 2, -10 * t/d ) + 1 )
+    expoInOut:(d,t)->
+    	t = t/(d/2)
+    	if (t < 1)
+        return Math.pow( 2, 10 * (t - 1) )/2
+      else
+        t = t - 1
+      	return (-Math.pow( 2, -10 * t) + 2 )/2
   funcs:
     shake:(time,callback)->
       x = @x

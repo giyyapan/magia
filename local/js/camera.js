@@ -17,6 +17,7 @@
       this.defaultY = this.y;
       this.degree = 45;
       this.secondCanvas = $("#secondCanvas").get(0);
+      this.defaultReferenceZ = 0;
       this.followData = null;
     }
 
@@ -32,31 +33,40 @@
     };
 
     Camera.prototype._handleFollow = function() {
-      var s, x, y;
       if (!this.followData) {
         return;
       }
+      return this.setCenter(this.followData.target.x, this.followData.target.y, this.followData.z);
+    };
+
+    Camera.prototype.setCenter = function(x, y, z) {
+      var s;
       s = Utils.getSize();
-      x = this.getOffsetPositionX(this.x + s.width / 2 - this.followData.target.x, this.followData.z);
-      y = this.getOffsetPositionY(this.y + s.height / 2 - this.followData.target.y, this.followData.z);
-      console.log(x, y);
+      if (!z) {
+        z = this.defaultReferenceZ;
+      }
+      x = this.getOffsetPositionX(s.width / 2 - x, z);
+      y = this.getOffsetPositionY(s.height / 2 - y, z);
       this.x = -x;
       return this.y = -y;
     };
 
-    Camera.prototype.lookAt = function(target, z, time, callback) {
+    Camera.prototype.lookAt = function(target, time, scale, z, callback) {
       var s, x, y;
+      if (!z) {
+        z = this.defaultReferenceZ;
+      }
       s = Utils.getSize();
-      x = this.getOffsetPositionX(this.x + s.width / 2 - target.x, z);
-      y = this.getOffsetPositionY(this.y + s.height / 2 - target.y, z);
+      x = this.getOffsetPositionX(s.width / 2 - target.x, z);
+      y = this.getOffsetPositionY(s.height / 2 - target.y, z);
       this.moveTo(-x, -y, time, callback);
-      return this.scaleTo(s.width / target.width * 0.48, time, callback);
+      return this.scaleTo(scale || s.width / target.width * 0.48, time, callback);
     };
 
     Camera.prototype.scaleTo = function(scale, time) {
       return this.animate({
         scale: scale
-      }, time, "swing");
+      }, time, "expoOut");
     };
 
     Camera.prototype.moveTo = function(x, y, time, callback) {
@@ -69,7 +79,7 @@
       return this.animate({
         x: x,
         y: y
-      }, time, "swing", callback);
+      }, time, "expoOut", callback);
     };
 
     Camera.prototype.getOffsetPositionX = function(x, reference) {

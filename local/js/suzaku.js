@@ -937,58 +937,28 @@
       return source.splice(index, 1);
     },
     removeItem: function(source, target, value) {
-      var found, index, item, keyname, keyvalue, name, _i, _j, _len, _len1;
+      var index, item, name, _i, _len, _results, _results1;
       if (source instanceof Array) {
-        if (typeof value === "undefined") {
-          if (typeof target === 'number') {
-            source.splice(target, 1);
-            return true;
+        _results = [];
+        for (index = _i = 0, _len = source.length; _i < _len; index = ++_i) {
+          item = source[index];
+          if (item === target) {
+            _results.push(Utils.removeItemByIndex(source, index));
+          }
+        }
+        return _results;
+      } else {
+        _results1 = [];
+        for (name in source) {
+          item = source[name];
+          if (target === item || (typeof target === "string" && item[target] === value)) {
+            _results1.push(delete source[name]);
           } else {
-            for (index = _i = 0, _len = source.length; _i < _len; index = ++_i) {
-              item = source[index];
-              if (Utils.compare(item, target)) {
-                source.splice(index, 1);
-                return true;
-              }
-            }
-          }
-        } else if (typeof target === "string") {
-          for (index = _j = 0, _len1 = source.length; _j < _len1; index = ++_j) {
-            item = source[index];
-            if (item[target] && Utils.compare(item[target], value) === true) {
-              return Utils.removeItem(source, index);
-            }
+            _results1.push(void 0);
           }
         }
+        return _results1;
       }
-      if (typeof source === 'object' && typeof value === "undefined") {
-        if (typeof target === 'string' || typeof target === 'number') {
-          delete source[target];
-          return true;
-        }
-        if (typeof target === 'object') {
-          for (name in source) {
-            item = source[name];
-            if (item === target) {
-              return Utils.removeItem(source, name);
-            }
-            found = true;
-            for (keyname in target) {
-              keyvalue = target[keyname];
-              if (Utils.compare(item[keyname], keyvalue)) {
-                continue;
-              } else {
-                found = false;
-                break;
-              }
-            }
-            if (found) {
-              return Utils.removeItem(source, name);
-            }
-          }
-        }
-      }
-      return false;
     },
     findItem: function(source, key, value) {
       var found, item, keyname, keyvalue, name, target;

@@ -21,7 +21,7 @@
         _this.db = new Database();
         _this.player = new Player(null, _this.db);
         $("#loadingPage").slideUp("fast");
-        _this.switchStage("area", "forest");
+        _this.switchStage("home");
         return _this.startGameLoop();
       });
     }

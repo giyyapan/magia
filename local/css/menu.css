@@ -1,3 +1,12 @@
+.menu-isolation-layer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(20, 20, 20, 0.2);
+  z-index: 100;
+}
 .double-border {
   box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
   border: 2px solid #2a1d0f;
@@ -26,7 +35,13 @@
   margin-top: 30px;
   margin-left: 40px;
 }
+.item-details-box .content-wrapper {
+  width: 560px;
+  margin-top: 30px;
+  margin-left: 40px;
+}
 .item-details-box .head {
+  text-align: left;
   display: inline-block;
 }
 .item-details-box .head .right {
@@ -96,6 +111,7 @@
 .details-content-wrapper .header-flag {
   width: 100%;
   height: 32px;
+  background: url('/img/menu/backpack-flag-bg.png') no-repeat;
   text-align: center;
   display: inline-block;
 }
@@ -214,22 +230,19 @@
 }
 .button-holder {
   width: 510px;
-  height: 250px;
   margin: 30px 0px 0px 30px;
 }
 .button-holder button {
-  float: left;
   margin-right: 40px;
-  width: 190px;
-  height: 80px;
-  display: block;
+  width: 180px;
+  padding: 20px;
+  display: inline-block;
   box-shadow: -2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
   border: 2px solid #2a1d0f;
   border-radius: 10px;
   background: #907352;
+  padding: 13px;
 }
 .button-holder button img {
   width: 70px;
-  height: 34px;
-  margin: 22px 0px 0px 60px;
 }

@@ -17,14 +17,14 @@
 
     return ThingListWidget;
 
-  })(Suzaku.Widget);
+  })(Widget);
 
   window.Things = (function(_super) {
     __extends(Things, _super);
 
     function Things(name, data, type) {
       Things.__super__.constructor.call(this);
-      this.data = this.originData = data;
+      this.originData = data;
       this.name = name;
       this.dspName = data.name;
       this.type = type;
@@ -37,7 +37,7 @@
 
     return Things;
 
-  })(Suzaku.EventEmitter);
+  })(EventEmitter);
 
   window.PlayerItem = (function(_super) {
     __extends(PlayerItem, _super);
@@ -54,24 +54,12 @@
   window.PlayerSupplies = (function(_super) {
     __extends(PlayerSupplies, _super);
 
-    function PlayerSupplies(name, originData, specificData) {
+    function PlayerSupplies(name, originData, traitValue) {
       PlayerSupplies.__super__.constructor.call(this, name, data, "supplies");
-      this.specificData = specificData;
+      this.traitValue = traitValue;
     }
 
     return PlayerSupplies;
-
-  })(Things);
-
-  window.PlayerMaterial = (function(_super) {
-    __extends(PlayerMaterial, _super);
-
-    function PlayerMaterial(name, originData, specificData) {
-      PlayerMaterial.__super__.constructor.call(this, name, data, "material");
-      this.specificData = specificData;
-    }
-
-    return PlayerMaterial;
 
   })(Things);
 

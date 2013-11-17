@@ -16,7 +16,8 @@ class Magia
       @player = new Player null,@db
       $("#loadingPage").slideUp "fast"
       #@switchStage "start"
-      @switchStage "area","forest"
+      #@switchStage "area","forest"
+      @switchStage "home"
       @startGameLoop()
   switchStage:(stage,data)->
     console.log "init stage:",stage

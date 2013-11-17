@@ -255,7 +255,7 @@ class window.Area extends Stage
     @backpackMenu = new Backpack game,"gatherArea"
     @enterPlace "entry"
     #@initBattlefield(["qq","qq"])
-    @initBattlefield(["qq","qq","qq"])
+    #@initBattlefield(["qq","qq","qq"])
     #@initBattlefield(["qq","qq","qq","qq","qq"])
   initBattlefield:(monsters)->
     data =

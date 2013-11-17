@@ -15,6 +15,7 @@
       this.setRate("normal");
       this.currentDelay = 0;
       this.currentDelay = 0;
+      this.paused = false;
     }
 
     Clock.prototype.setRate = function(value) {
@@ -41,7 +42,11 @@
       _results = [];
       while (this.currentDelay > this.frameDelay) {
         this.currentDelay -= this.frameDelay;
-        _results.push(this.emit("next"));
+        if (!this.paused) {
+          _results.push(this.emit("next"));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     };

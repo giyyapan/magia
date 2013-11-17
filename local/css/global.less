@@ -12,6 +12,7 @@
 		-khtml-user-select: none;
 		-moz-user-select: moz-none;
 		-ms-user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .transition(@time:.2s,@timingFunc:linear){
 		-webkit-transition:@time @timingFunc;
@@ -20,7 +21,12 @@
 		transition:@time @timingFunc;
 }
 *{
-		font-family: "微软雅黑"
+		font-family: "微软雅黑";
+		.no-user-select;
+}
+hr{
+		margin:0;
+		border:none;
 }
 p{
 		margin: 0;
@@ -37,22 +43,12 @@ ul{
 }
 
 template{display:none;}
-.no-user-select{
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    -khtml-user-select: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
 button,a{
 		cursor:pointer;
 		&:active{
 				border:none;
 				outline:0;
 		}
-}
-body, canvas, div {
-		.no-user-select;
 }
 body{
 		background-color:#222 !important;

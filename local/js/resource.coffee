@@ -21,7 +21,7 @@ window.Imgs =
   homeDown:'home_down.jpg'
   homeUp:'home_up.jpg'
 window.Sprites =
-  test:"test"
+  qq:"qq"
   
 window.Templates = [
   "start-menu"
@@ -90,7 +90,7 @@ class window.ResourceManager extends Suzaku.EventEmitter
     ajaxManager = new Suzaku.AjaxManager
     self = this
     for img in @imgs
-      console.log img
+      #console.log img
       i = new Image()
       i.src = @imgPath+img.src
       i.name = img.name

@@ -24,7 +24,7 @@
       this.renderData = null;
       this.onshow = true;
       this.transform = {
-        opacity: 1,
+        opacity: null,
         translateX: 0,
         translateY: 0,
         translateZ: 0,
@@ -71,9 +71,7 @@
       _ref = this.transform;
       for (name in _ref) {
         value = _ref[name];
-        if (value !== null) {
-          this.realValue[name] = value;
-        }
+        this.realValue[name] = value;
       }
       context.save();
       this.emit("render", this);
@@ -172,10 +170,12 @@
     };
 
     Drawable.prototype.drawQueueRemove = function(drawable) {
-      if (Utils.removeItem(drawable, this.drawQueue.after)) {
+      if (Utils.removeItem(this.drawQueue.after, drawable)) {
         return;
       }
-      return Utils.removeItem(drawable, this.drawQueue.before);
+      if (this.drawQueue.before) {
+        return Utils.removeItem(this.drawQueue.before, drawable);
+      }
     };
 
     Drawable.prototype.drawQueueAdd = function() {
@@ -241,6 +241,13 @@
       return this._animates = arr;
     };
 
+    Drawable.prototype.setCallback = function(time, callback) {
+      if (!callback) {
+        return console.error("need a callback func");
+      }
+      return this.animate((function() {}), time, "linear", callback);
+    };
+
     Drawable.prototype.animate = function(func, time, easing, callback) {
       var obj;
       if (time == null) {
@@ -263,13 +270,13 @@
       if (typeof time === "string") {
         switch (time) {
           case "fast":
-            time = 200;
+            time = GameConfig.speedValue.fast;
             break;
           case "normal":
-            time = 350;
+            time = GameConfig.speedValue.normal;
             break;
           case "slow":
-            time = 600;
+            time = GameConfig.speedValue.slow;
         }
       }
       if (typeof easing === "string") {
@@ -347,6 +354,21 @@
         var p;
         p = sumDelay / time;
         return -Math.cos(p * Math.PI) / 2 + 0.5;
+      },
+      expoIn: function(d, t) {
+        return Math.pow(2, 10 * (t / d - 1));
+      },
+      expoOut: function(d, t) {
+        return -Math.pow(2, -10 * t / d) + 1;
+      },
+      expoInOut: function(d, t) {
+        t = t / (d / 2);
+        if (t < 1) {
+          return Math.pow(2, 10 * (t - 1)) / 2;
+        } else {
+          t = t - 1;
+        }
+        return (-Math.pow(2, -10 * t) + 2) / 2;
       }
     },
     funcs: {

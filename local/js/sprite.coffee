@@ -10,6 +10,8 @@ class window.Sprite extends Drawable
     @currentMove = null
     @currentFrame = 0
     @initSprite()
+    @width = @spriteData.frames[0].frame.w
+    @height = @spriteData.frames[0].frame.h
     @defaultMovement = "normal"
     @useMovement "normal",true
     @currentFrame = (@currentMove.startFrame - 1) + Math.round(Math.random() * @currentMove.length)

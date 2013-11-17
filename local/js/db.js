@@ -32,7 +32,6 @@
       this.towns = new SubDB("towns");
       this.things = {
         items: new SubDB("things-items"),
-        materials: new SubDB("things-meterials"),
         supplies: new SubDB("things-supplies")
       };
       this.rules = new SubDB("rules");
@@ -57,6 +56,10 @@
           battlefieldBg: {
             bfForestMain: {
               z: 1000,
+              anchor: {
+                x: 150,
+                y: 0
+              },
               main: true
             },
             bfForestFloat: {
@@ -219,23 +222,51 @@
           arttribute: ["plants"]
         }
       };
-      this.things.supplies.data = {
+      return this.things.supplies.data = {
         healPotion: {
           name: "治疗药剂",
           description: "有治疗效果的药剂",
+          traitName: "heal",
+          active: {
+            name: "治疗术",
+            description: "回复一定数量的生命值",
+            type: "heal",
+            sprite: null,
+            heal: 100
+          },
+          defense: {
+            name: "回复结界",
+            description: "制造一个结界，在受到攻击时回复生命值",
+            type: "flipOver",
+            sprite: "null",
+            turn: 5,
+            heal: 40
+          },
           img: null
         },
         firePotion: {
           name: "火焰药剂",
-          img: null
-        }
-      };
-      return this.things.materials.data = {
-        magicLiquid: {
-          name: "魔法溶液"
-        },
-        magicPowder: {
-          name: "魔法粉尘"
+          img: null,
+          description: "有火焰效果的药剂",
+          active: {
+            name: "火球术",
+            description: "释放火球对单体目标进行攻击",
+            type: "attack",
+            sprite: null,
+            damage: {
+              normal: 80,
+              fire: 100
+            }
+          },
+          defense: {
+            name: "火焰陷阱",
+            description: "使用火焰包围身体，在受到攻击时对敌人造成火焰伤害",
+            type: "flipOver",
+            turn: 5,
+            damage: {
+              fire: 80
+            }
+          }
         }
       };
     };
@@ -252,7 +283,7 @@
       this.monsters.data = {
         qq: {
           name: "QQ",
-          sprite: Res.sprites.test,
+          sprite: Res.sprites.qq,
           icon: null,
           basicData: {
             hp: 1000,
@@ -273,11 +304,11 @@
               }
             }
           },
-          anchor: "321,290",
+          anchor: "270,240",
           movements: {
             normal: "0,6",
-            move: "7,14",
-            attack: "15,21:4,6",
+            move: "7,15",
+            attack: "16,23:4,6",
             cast: "0,6"
           },
           drop: {
