@@ -1,9 +1,9 @@
 {
-    "name": "MagiaH",
+    "name": "MagiaHosted",
     "version": "0.1.0",
     "version_code": "1",
     "type": "web",
-    "package": "com.uniquestudio.magiaH",
+    "package": "com.uniquestudio.magiahosted",
     "minimum_runtime_version": "0.1.0",
     "description": "magia hosted",
     "developer": {
