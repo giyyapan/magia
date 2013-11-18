@@ -97,15 +97,15 @@ class window.Drawable extends Suzaku.EventEmitter
   clearDrawQueue:->
     @drawQueue.after = []
     @drawQueue.before = []
-  drawQueueRemove:(drawable)->
+  drawQueueRemove:(target)->
     arr1 = []
-    arr1.push d for d in @drawQueue.after when d isnt drawable
+    arr1.push d for d in @drawQueue.after when d isnt target
     @drawQueue.after = arr1
     if arr1.length isnt @drawQueue.after.length then return
     if not @drawQueue.before then return
     arr2 = []
-    arr2.push d for d in @drawQueue.before when d isnt drawable
-    @drawable.before = arr2
+    arr2.push d for d in @drawQueue.before when d isnt target
+    @drawQueue.before = arr2
   drawQueueAdd:->
     @drawQueueAddAfter.apply this,arguments
   drawQueueAddAfter:->

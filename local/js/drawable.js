@@ -169,13 +169,13 @@
       return this.drawQueue.before = [];
     };
 
-    Drawable.prototype.drawQueueRemove = function(drawable) {
+    Drawable.prototype.drawQueueRemove = function(target) {
       var arr1, arr2, d, _i, _j, _len, _len1, _ref, _ref1;
       arr1 = [];
       _ref = this.drawQueue.after;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         d = _ref[_i];
-        if (d !== drawable) {
+        if (d !== target) {
           arr1.push(d);
         }
       }
@@ -190,11 +190,11 @@
       _ref1 = this.drawQueue.before;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
         d = _ref1[_j];
-        if (d !== drawable) {
+        if (d !== target) {
           arr2.push(d);
         }
       }
-      return this.drawable.before = arr2;
+      return this.drawQueue.before = arr2;
     };
 
     Drawable.prototype.drawQueueAdd = function() {
