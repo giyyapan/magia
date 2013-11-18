@@ -183,6 +183,9 @@
       if (arr1.length !== this.drawQueue.after.length) {
         return;
       }
+      if (!this.drawQueue.before) {
+        return;
+      }
       arr2 = [];
       _ref1 = this.drawQueue.before;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {

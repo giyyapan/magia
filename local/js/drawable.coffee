@@ -102,6 +102,7 @@ class window.Drawable extends Suzaku.EventEmitter
     arr1.push d for d in @drawQueue.after when d isnt drawable
     @drawQueue.after = arr1
     if arr1.length isnt @drawQueue.after.length then return
+    if not @drawQueue.before then return
     arr2 = []
     arr2.push d for d in @drawQueue.before when d isnt drawable
     @drawable.before = arr2
