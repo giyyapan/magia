@@ -10,7 +10,7 @@
         "name": "giyyapan",
         "url": ""
      },
-    "launch_url": "115.29.37.10:8001/index.html",
+    "launch_url": "http://115.29.37.10:8001/index.html",
     "fullscreen": "true",
 		"orientation":"landscape",
     "platform": "phone"
