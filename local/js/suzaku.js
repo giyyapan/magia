@@ -91,6 +91,9 @@
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         func = _ref[_i];
+        if (typeof func !== "function") {
+          continue;
+        }
         _results.push(func.apply(this, Array.prototype.slice.call(arguments, 1)));
       }
       return _results;

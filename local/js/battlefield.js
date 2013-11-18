@@ -458,6 +458,9 @@
       return this.fadeOut(1000, function() {
         var m, newArr, _i, _len, _ref;
         _this.bf.mainLayer.drawQueueRemove(_this);
+        _this.draw = function() {
+          return console.log("tick");
+        };
         newArr = [];
         _ref = _this.bf.monsters;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {

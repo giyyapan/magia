@@ -170,12 +170,28 @@
     };
 
     Drawable.prototype.drawQueueRemove = function(drawable) {
-      if (Utils.removeItem(this.drawQueue.after, drawable)) {
+      var arr1, arr2, d, _i, _j, _len, _len1, _ref, _ref1;
+      arr1 = [];
+      _ref = this.drawQueue.after;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        d = _ref[_i];
+        if (d !== drawable) {
+          arr1.push(d);
+        }
+      }
+      this.drawQueue.after = arr1;
+      if (arr1.length !== this.drawQueue.after.length) {
         return;
       }
-      if (this.drawQueue.before) {
-        return Utils.removeItem(this.drawQueue.before, drawable);
+      arr2 = [];
+      _ref1 = this.drawQueue.before;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        d = _ref1[_j];
+        if (d !== drawable) {
+          arr2.push(d);
+        }
       }
+      return this.drawable.before = arr2;
     };
 
     Drawable.prototype.drawQueueAdd = function() {

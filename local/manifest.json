@@ -1,10 +1,10 @@
 {
     "name": "Magia",
-    "version": "1.0.0",
-    "type": "certified",
-    "package": "com.app.magia",
     "version_code": 1,
+    "version": "1.0.0",
     "minimum_runtime_version": "0.0.1",
+    "type": "certified",
+    "package": "com.uniquestudio.magia",
     "description": "a simple game",
     "icons": {
         "96": "/img/item.png"
@@ -17,16 +17,16 @@
    "launch_url": "/index.html",
     "locales": {
        "en": {
-           "name": "Helloworld",
-           "description": "a simple WebApp sample code",
+           "name": "Magia",
+           "description": "Magia the Game",
            "developer": {
-                "name": "NG-WebOS",
+                "name": "giyya",
                 "url": "/index.html"
            }
        },
        "zh-rCN": {
-           "name": "Helloworld",
-           "description": "Magi",
+           "name": "Magia",
+           "description": "Magia the Game",
            "developer": {
                 "name": "NG-WebOS",
                 "url": "/index.html"
@@ -38,5 +38,8 @@
     "platform": "phone",
 		"debug":"on",
     "permissions": {
+				"access":"readwrite",
+				"content_security_policy":"sandbox allow-forms allow-same-origin",
+				"content-src":"XHR"
     }
 }

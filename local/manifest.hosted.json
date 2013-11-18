@@ -1,0 +1,17 @@
+{
+    "name": "MagiaH",
+    "version": "0.1.0",
+    "version_code": "1",
+    "type": "web",
+    "package": "com.uniquestudio.magiaH",
+    "minimum_runtime_version": "0.1.0",
+    "description": "magia hosted",
+    "developer": {
+        "name": "giyyapan",
+        "url": ""
+     },
+    "launch_url": "115.29.37.10:8001/index.html",
+    "fullscreen": "true",
+		"orientation":"landscape",
+    "platform": "phone"
+}

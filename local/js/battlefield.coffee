@@ -258,6 +258,8 @@ class BattlefieldMonster extends Sprite
     @speedItem.remove()
     @fadeOut 1000,=>
       @bf.mainLayer.drawQueueRemove this
+      @draw = ->
+        console.log "tick"
       newArr = []
       for m in @bf.monsters when m isnt this
         newArr.push m

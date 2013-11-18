@@ -48,6 +48,7 @@ class EventEmitter
   emit:(event)->
     return if !@_events[event]
     for func in @_events[event]
+      continue if typeof func isnt "function"
       func.apply this,Array.prototype.slice.call arguments,1
       
 class Widget extends EventEmitter
