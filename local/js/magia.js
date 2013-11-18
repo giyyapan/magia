@@ -117,8 +117,8 @@
       s = {
         screenWidth: window.innerWidth,
         screenHeight: window.innerHeight,
-        width: 1280,
-        height: 720,
+        width: GameConfig.screen.width,
+        height: GameConfig.screen.height,
         scaleX: 1,
         scaleY: 1
       };
