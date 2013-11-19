@@ -1,0 +1,44 @@
+@color-text-white:	#f4dabd;
+@color-text-brown:	#543d26;
+@color-text-black:	#453625;
+@color-text-brown-light: #d7ba97;
+@color-text-brown-dark: #453625;
+@color-text-border: #A58769;
+@color-bg-brown-lv1:	#ad8f6e;
+@color-bg-brown-lv2:	#907352;
+@color-bg-brown-lv3:	#674e34;
+@color-border-black:	#2a1d0f;
+@color-item-bg: #896b4c;
+@color-item-hover: #5d452c;
+.transition(@time:.15s,@timingFunc:linear){
+		-webkit-transition:@time @timingFunc;
+		-o-transition:@time @timingFunc;
+		-ms-transition:@time @timingFunc;
+		transition:@time @timingFunc;
+}
+.text{
+		color:@color-text-brown-light;
+		text-shadow: 0px 2px 0px #3c2f21;
+		font-weight:bold;
+}
+.btn{
+		.text;
+		font-size:23px;
+		background-color:@color-item-bg;
+		border:2px solid #453625;
+		box-shadow:-2px -2px 0px #bca07d inset, 2px 2px 0px #bca07d inset;
+		cursor:pointer;
+		&:hover{
+				background-color:@color-item-hover;
+		}
+}
+.double-border{
+		@border-color:#382a1c;
+		box-shadow:-2px -2px 0px @border-color inset, 2px 2px 0px @border-color inset;
+		border: 5px solid #9a7a56;
+}
+.texture-border{
+		.double-border;
+		background:url("/img/menu/texture-bg.jpg") 0 0 repeat;
+		border-radius: 6px;
+}

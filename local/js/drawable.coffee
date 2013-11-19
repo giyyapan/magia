@@ -120,7 +120,8 @@ class window.Drawable extends Suzaku.EventEmitter
     for a in @_animates
       a.sumDelay += tickDelay
       p = a.easing(a.time,a.sumDelay,a.tickDelay)
-      if p > 0.98
+      a.lastP = p
+      if p > 0.99 or p < a.lastP
         p = 1
         a.end = true
       a.func.call this,p

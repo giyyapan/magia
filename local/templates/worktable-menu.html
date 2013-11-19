@@ -1,0 +1,94 @@
+<section class="menu work-table-wrapper" >
+	<section class="source-box-wrapper" >
+		<h2>原料列表</h2>
+		<div class="source-box" >
+			<ul class="source-list" data-id="source-list" >
+			</ul>
+			<template data-id="source-item-tpl" >
+				<li class="source-item" ><span data-id="number"></span><span data-id="name" >大地结晶</span></li>
+			</template>
+		</div>
+		<a class="exit-btn btn-primary" data-id="exit-btn" >返回房间</a>		
+	</section>
+	<section class="item-details-box-wrapper" data-id="details" >
+		<div class="item-details-box panel">
+			<div class="content-wrapper" >
+				<div class="head">
+					<div class="pic">
+						<img src="img/menu/item-details-icon.png">
+					</div>
+					<div class="right">
+						<div class="name-box">
+							<p class="name">名称</p>
+							<span data-id="name" >鼠尾草</span>
+							<hr />
+						</div>
+						<p class="description">
+							<span data-id="rune-type" ></span>
+							<span data-id="description" >啦啦啦啦啦fuck you</span>
+						</p>
+					</div>
+				</div>
+				<div class="details-content-wrapper">
+					<div class="details-content">
+						<div class="cell traits-box" data-id="traits-box" >
+							<p>属性</p>
+							<ul class="traits-list" data-id="item-traits-list" >
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="button-holder">
+				<a data-id="cancel-btn" class="btn" >取消</a>
+				<a data-id="use-btn" class="btn" >添加</a>
+			</div>
+		</div>			
+	</section>
+	<section class="status-box-wrapper" >
+		<div class="title-box" >
+			<h2>溶液属性</h2>
+		</div>
+		<div class="content" >
+			<div class="traits-box" data-id="traits-box" >
+				<ul data-id="current-traits-list" >
+				</ul> 
+			</div>
+			<div class="avail-reaction-box" >
+				<template data-id="reaction-btn-tpl-2" >
+					<span class="floor" ></span>
+					<span class="source1" ></span>
+					<span class="source2" ></span>
+					<span class="target" ></span>
+				</template>
+			</div>
+		</div>
+		<a class="finish-btn btn-primary" data-id="finish-btn" >装瓶</a>
+	</section>
+	<template data-id="traits-item-tpl" >
+		<li class="traits-item" >
+			<p class="traits-icon life" data-id="type" >命</p>
+			<div class="traits-holder lv1">
+				<span class="lv active" data-id="lv1" >
+					<span class="filled lv1"> </span>
+				</span>
+				<span class="lv" data-id="lv2" >
+					<span class="filled lv2"> </span>
+				</span>
+				<span class="lv" data-id="lv3" >
+					<span class="filled lv3"> </span>
+				</span>
+				<span class="lv" data-id="lv4" >
+					<span class="filled lv4"> </span>
+				</span>
+				<span class="lv" data-id="lv5" >
+					<span class="filled lv5"> </span>
+				</span>
+				<span class="lv" data-id="lv6" >
+					<span class="filled lv6"> </span>
+				</span>
+				<i class="cursor" data-id="cursor" ></i>
+			</div>
+		</li>
+	</template>
+</section>

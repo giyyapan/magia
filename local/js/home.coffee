@@ -24,7 +24,13 @@ class SecondFloor extends Layer
     @menu.UI.downstairs.onclick = =>
       @home.goDown()
   showWorkTable:->
-    workTable = new WorkTable @UI['work-table']
+    worktable = new Worktable @home
+    @onshow = false
+    @home.drawQueueAddAfter worktable
+    worktable.on "close",=>
+      @home.drawQueueRemove worktable
+      @onshow = true
+      @menu.show()
     
 class window.Home extends Stage
   constructor:(game)->

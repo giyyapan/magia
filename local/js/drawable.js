@@ -234,7 +234,8 @@
         a = _ref[_i];
         a.sumDelay += tickDelay;
         p = a.easing(a.time, a.sumDelay, a.tickDelay);
-        if (p > 0.98) {
+        a.lastP = p;
+        if (p > 0.99 || p < a.lastP) {
           p = 1;
           a.end = true;
         }

@@ -67,8 +67,7 @@
 		}
 		.pic{
 				.double-border;
-				width: 120px;
-				height: 120px;
+				padding:5px;
 				display: block;
 				float: left;
 				background: @color-bg-brown-lv2;
@@ -76,8 +75,6 @@
 						height:90px;
 						width: 90px;
 						display: block;
-						margin-left: 16px;
-						margin-top: 16px;
 				}
 		}
 		.name-box{
@@ -135,6 +132,7 @@
 				width: 100%;
 				display: block;
 				border-bottom: 1px dashed @color-text-black;
+				border-top: 1px dashed @color-text-black;
 				font-size: 18px;
 				color: @color-text-black;
 				p{
@@ -168,68 +166,85 @@
 		.traits-list{
 				height: 100%;
 		}
-		.traits-holder{
-				width: 230px;
-				height: 23px;
-				display: block;
-				float: left;
-				margin-left: 20px;
-				border:	1px solid @color-border-black;																				border:	1px solid @color-border-black;									border:	1px solid @color-border-black;
-				border-radius: 5px;
-				position: relative;
-				.traits-cursor{
-						height: 29px;
-						width: 7px;
-						display: block;
-						background: url(../img/menu/backpack-pro-cursor-bg.jpg);
-						position: absolute;
-						top: -3px;
-						left: 2px;
-				}
-		}
-		.traits-lv{
-				height: 100%;
-				display: block;
-				float: left;
-				.filled{
-						float: left;
-						height: 100%;
-				}
-				.not-filled{
-						float: left;
-						height: 100%;
-						width: 100%;
-						background: rgba(0,0,0,0.4);
-				}
-		}
 }
-.traits-list-item{
+.traits-item{
 		padding: 8px 0px 2px 0px;
 		line-height: 24px;
+		margin:10px 0;
 		height: 30px;
 		width: 100%;
 		display: block;
-		p{
+		.traits-icon{
+				margin-left:10px;
 				box-shadow: 0px 1px 0px rgba(255,255,255,0.6) inset;
 				font-size: 18px;
 				color: @color-text-white;
 				text-align: center;
 				width: 23px;
 				height: 23px;
-				display: block;
+				display: inline-block;
+				float:left;
 				border-radius: 5px;
 				border:	1px solid @color-border-black;
 		}
-		.traits-name{
-				&.active{width: 180px;}
+		.traits-holder{
+				margin-right:10px;
+				float:right;
+				width: 230px;
+				height: 23px;
+				display: inline-block;
+				border:	1px solid @color-border-black;
+				border-radius: 5px;
+				position: relative;
+				.cursor{
+						height: 29px;
+						width: 7px;
+						display: block;
+						background: url('/img/menu/backpack-traits-cursor-bg.png');
+						position: absolute;
+						top: -3px;
+						left: 2px;
+				}
 		}
-		.lv1{border-radius: 5px 0px 0px 5px;}
-		.lv6{border-radius: 0px 5px 5px 0px;}
+		.lv{
+				height: 100%;
+				display: block;
+				float: left;
+				width: 10px;
+				position:relative;
+				background: rgba(0,0,0,0.4);
+				.filled{
+						float: left;
+						height: 100%;
+						width:100%;
+				}
+				&.active{
+						width: 180px;
+						.filled{
+								width:20%;
+						}
+				}
+				.lv1{
+						border-radius: 5px 0px 0px 5px;
+				}
+				.lv6{
+						border-radius: 0px 5px 5px 0px;
+				}
+		}
+		.lv1{
+				background: #fff;
+		}
+		.lv2{background: #42e189;}
+		.lv3{background: #1bd6f1;}
+		.lv4{background: #ffd220;}
+		.lv5{background: #ec6334;}
+		.lv6{background: #cd64c0;}
+		.life{background: #59a84c;}
 }
 .button-holder{
 		width: 510px;
 		margin: 30px 0px 0px 30px;
-		button{
+		.btn{
 				margin-right: 40px;
 				width: 180px;
 				padding:20px;

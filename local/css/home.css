@@ -1,0 +1,4 @@
+.text{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold}
+.btn{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;font-size:23px;background-color:#896b4c;border:2px solid #453625;box-shadow:-2px -2px 0 #bca07d inset,2px 2px 0 #bca07d inset;cursor:pointer}.btn:hover{background-color:#5d452c}
+.double-border{box-shadow:-2px -2px 0 #382a1c inset,2px 2px 0 #382a1c inset;border:5px solid #9a7a56}
+.texture-border{box-shadow:-2px -2px 0 #382a1c inset,2px 2px 0 #382a1c inset;border:5px solid #9a7a56;background:url("/img/menu/texture-bg.jpg") 0 0 repeat;border-radius:6px}

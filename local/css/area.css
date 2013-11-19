@@ -12,6 +12,7 @@
 .area-menu .move-arrow {
   position: absolute;
   top: 300px;
+  width: 120px;
 }
 .area-menu #move-left {
   left: 10px;

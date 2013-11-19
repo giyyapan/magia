@@ -49,8 +49,16 @@
     }
 
     SecondFloor.prototype.showWorkTable = function() {
-      var workTable;
-      return workTable = new WorkTable(this.UI['work-table']);
+      var worktable,
+        _this = this;
+      worktable = new Worktable(this.home);
+      this.onshow = false;
+      this.home.drawQueueAddAfter(worktable);
+      return worktable.on("close", function() {
+        _this.home.drawQueueRemove(worktable);
+        _this.onshow = true;
+        return _this.menu.show();
+      });
     };
 
     return SecondFloor;
