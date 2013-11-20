@@ -255,13 +255,16 @@
         console.error("need a target --Suzaku.Widget", target);
       }
       if (target instanceof Widget || target.dom instanceof window.HTMLElement) {
-        return target.dom.appendChild(this.dom);
+        target.dom.appendChild(this.dom);
+        return this;
       }
       if ($ && target instanceof $) {
-        return target.append(this.dom);
+        target.append(this.dom);
+        return this;
       }
       if (typeof target.appendChild === "function") {
-        return target.appendChild(this.dom);
+        target.appendChild(this.dom);
+        return this;
       }
     };
 

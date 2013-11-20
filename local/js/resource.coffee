@@ -36,6 +36,8 @@ window.Templates = [
   "backpack"
   "battlefield-menu"
   "worktable-menu"
+  "item-details-box"
+  "traits-item"
   ]
 window.Css = []
   

@@ -17,7 +17,7 @@ class SpeedItem extends Widget
   setWidgetPosition:(value)->
     @J.css "left",parseInt(value/@maxSpeed*100)+"%"
     
-class SpellSourceItem extends Suzaku.Widget
+class SpellSourceItem extends Widget
   constructor:(tpl,type,menu,data)->
     super tpl
     @type = type
@@ -29,33 +29,22 @@ class SpellSourceItem extends Suzaku.Widget
     @dom.onclick = (evt)=>
       menu.detailsBox.showItemDetails this
       
-class ItemDetailsBox extends Widget
-  constructor:(tpl,bf)->
-    super tpl
+class DetailsBox extends ItemDetailsBox
+  constructor:(bf)->
+    super
     @bf = bf
-    @currentItem = null
     @UI['cancel-btn'].onclick = =>
       @bf.menu.UI['spell-source-box'].J.find("li").removeClass "selected"
       @J.fadeOut 100
   showItemDetails:(item)->
-    console.log "show item details",item
-    @currentItem.J.removeClass "selected" if @currentItem
-    @currentItem = item
-    item.J.addClass "selected"
-    originData = item.originData
-    effectData = item.effectData
+    super item
     switch item.type
       when "active" then t = "激活效果:"
       when "defense" then t = "结界效果:"
     @UI['rune-type'].J.text t
-    @UI.name.J.text originData.name
-    @UI.img.src = originData.img.src if originData.img
     @UI.description.J.text item.effectData.description
-    @initTrait()
-    @J.fadeIn "fast"
     @UI['use-btn'].onclick = =>
       @useItem item
-  initTrait:()->
   useItem:(sourceItem)->
     menu = @bf.menu
     menu.UI['magic-menus'].J.fadeOut 150
@@ -271,7 +260,8 @@ class BattlefieldMenu extends Menu
   constructor:(battlefield,tpl)->
     super tpl
     @bf = battlefield
-    @detailsBox = new ItemDetailsBox @UI['item-details-box'],@bf
+    @detailsBox = new DetailsBox @bf
+    @detailsBox.appendTo @UI['item-details-box-wrapper']
     @initBtns()
   initBtns:->
     @UI['attack-btn'].onclick = (evt)=>
@@ -291,7 +281,7 @@ class BattlefieldMenu extends Menu
     stopPropagation = (evt)-> evt.stopPropagation()
     @UI['spell-select-box'].onclick = stopPropagation
     @UI['spell-source-box'].onclick = stopPropagation
-    @UI['item-details-box'].onclick = stopPropagation
+    @detailsBox.onclick = stopPropagation
   addSpeedItem:(originData)->
     tpl = @UI['speed-item-tpl'].innerHTML
     item = new SpeedItem tpl,originData

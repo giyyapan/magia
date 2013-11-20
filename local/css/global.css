@@ -1,6 +1,7 @@
 .no-user-select{user-select:none;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:moz-none;-ms-user-select:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}
 *{font-family:"微软雅黑";user-select:none;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:moz-none;-ms-user-select:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}
 hr{margin:0;border:none}
+.wrapper{position:relative}
 p{margin:0}
 ul{list-style:none;margin:0;padding:0}
 .double-border{box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px}

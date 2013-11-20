@@ -18,6 +18,22 @@
           name: "firePotion",
           traitValue: 300,
           type: "supplies"
+        }, {
+          name: "scree",
+          number: 10,
+          type: "item"
+        }, {
+          name: "lakeWater",
+          number: 10,
+          type: "item"
+        }, {
+          name: "herbs",
+          number: 10,
+          type: "item"
+        }, {
+          name: "caveMashroom",
+          number: 10,
+          type: "item"
         }
       ],
       storage: [],
@@ -83,6 +99,42 @@
       return console.log(this.backpack);
     };
 
+    Player.prototype.removeThing = function(playerItem, from) {
+      var arr, found, i, length, _i, _j, _len, _len1, _ref, _ref1;
+      if (!from) {
+        if (this.removeThing(playerItem, "backpack")) {
+          return;
+        }
+        return this.removeThing(playerItem, "storage");
+      }
+      found = false;
+      arr = [];
+      switch (from) {
+        case "backpack":
+          length = this.backpack.length;
+          _ref = this.backpack;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            i = _ref[_i];
+            if (playerItem !== i) {
+              arr.push(i);
+            }
+          }
+          this.backpack = arr;
+          return arr.length !== length;
+        case "storage":
+          length = this.storage.length;
+          _ref1 = this.storage;
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            i = _ref1[_j];
+            if (playerItem !== i) {
+              arr.push(i);
+            }
+          }
+          this.storage = arr;
+          return arr.length !== length;
+      }
+    };
+
     Player.prototype.getItem = function(target, dataObj) {
       var item, name, number, originData, theItem, _i, _len;
       if (target == null) {
@@ -110,13 +162,13 @@
     };
 
     Player.prototype.getSupplies = function(target, dataObj) {
-      var item, name, originData;
+      var name, originData, supplies;
       if (target == null) {
         target = "backpack";
       }
       name = dataObj.name;
       originData = dataObj.originData || this.db.things.supplies.get(name);
-      item = new PlayerItem(name, originData);
+      supplies = new PlayerSupplies(name, originData);
       switch (target) {
         case "backpack":
           target = this.backpack;
@@ -124,7 +176,7 @@
         case "storage":
           target = this.storage;
       }
-      target.push(item);
+      target.push(supplies);
       return console.log(this);
     };
 

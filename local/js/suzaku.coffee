@@ -134,12 +134,14 @@ class Widget extends EventEmitter
   appendTo:(target)->
     console.error "need a target --Suzaku.Widget",target if not target
     if target instanceof Widget or target.dom instanceof window.HTMLElement
-      return target.dom.appendChild @dom
+      target.dom.appendChild @dom
+      return this
     if $ and target instanceof $
-      return target.append @dom
+      target.append @dom
+      return this
     if typeof target.appendChild is "function"
-      return target.appendChild @dom
-    
+      target.appendChild @dom
+      return this
           
 class TemplateManager extends EventEmitter
   constructor:()->

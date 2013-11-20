@@ -181,7 +181,6 @@
     };
 
     Database.prototype.initThings = function() {
-      this.things.qualityLevel = [30, 100, 300, 600, 1000, 2000];
       this.things.items.data = {
         scree: {
           name: "小石子",
@@ -198,7 +197,7 @@
         lakeWater: {
           name: "湖水",
           description: "清澈的湖水，含有少量净化所需的元素",
-          traits: ["water:15", "clear:3"]
+          traits: ["water:90", "clear:3"]
         },
         blueRose: {
           name: "蓝玫瑰",
@@ -218,7 +217,7 @@
         caveMashroom: {
           name: "洞穴菇",
           description: "潮湿的山洞里面才会长的蘑菇，随便吃掉的话会中毒",
-          traits: ["poinson:8", "life:5"],
+          traits: ["poison:8", "life:5"],
           arttribute: ["plants"]
         }
       };

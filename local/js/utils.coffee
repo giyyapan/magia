@@ -1,3 +1,14 @@
+window.Dict =
+    QualityLevel:[30,100,200,300,500,800]
+    TraitsName:
+      life:"生命"
+      fire:"火焰"
+      water:"水"
+      wind:"风"
+      earth:"地"
+      poison:"毒药"
+      clear:"净化"
+      
 window.Utils =
   getSize:->
   drawRoundRect:(context,x,y,w,h,r1,r2,r3,r4)->

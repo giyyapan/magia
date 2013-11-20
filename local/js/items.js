@@ -43,8 +43,16 @@
     __extends(PlayerItem, _super);
 
     function PlayerItem(name, originData, number) {
+      var arr, t, _i, _len, _ref;
       PlayerItem.__super__.constructor.call(this, name, originData, "item");
       this.number = number;
+      this.traits = {};
+      _ref = originData.traits;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        t = _ref[_i];
+        arr = t.split(":");
+        this.traits[arr[0]] = parseInt(arr[1]);
+      }
     }
 
     return PlayerItem;
@@ -55,7 +63,7 @@
     __extends(PlayerSupplies, _super);
 
     function PlayerSupplies(name, originData, traitValue) {
-      PlayerSupplies.__super__.constructor.call(this, name, data, "supplies");
+      PlayerSupplies.__super__.constructor.call(this, name, originData, "supplies");
       this.traitValue = traitValue;
     }
 

@@ -1,3 +1,16 @@
+class ThingListItem extends ThingListWidget
+  constructor:(thing)->
+    super thing.originData,thing.number
+    @thing = thing
+    @dom.onclick = =>
+      @emit "select"
+      
+class DetailsBox extends ItemDetailsBox
+  constructor:(backpack)->
+    super
+    @bp = backpack
+    @UI['cancel-btn'].J.hide()
+
 class window.Backpack extends Menu
   constructor:(game,type)->
     super Res.tpls["backpack"]
@@ -5,8 +18,8 @@ class window.Backpack extends Menu
     @player = game.player
     @currentTabName = "items"
     @initThings()
-    @detailBox = new DetailBox @UI["item-detail-box-tpl"].J.html()
-    @detailBox.appendTo @UI['item-details-box-wrapper']
+    @detailsBox = new DetailsBox this
+    @detailsBox.appendTo @UI['item-details-box-wrapper']
     @items = null
     @supplies = null
     @materials = null
@@ -60,7 +73,7 @@ class window.Backpack extends Menu
   selectThing:(w)->
     @J.find("thing-list-item").removeClass "active"
     w.J.addClass "active"
-    @detailBox.showDetail w.thing
+    @detailsBox.showItemDetails w.thing
   freeThings:->
     Utils.free @items,@supplies,@materials,@equipments
     @items = []
@@ -78,18 +91,3 @@ class window.Backpack extends Menu
     @J.slideUp "fast",->
       callback() if callback
       
-class ThingListItem extends ThingListWidget
-  constructor:(thing)->
-    super thing.originData,thing.number
-    @thing = thing
-    @dom.onclick = =>
-      @emit "select"
-      
-class DetailBox extends Suzaku.Widget
-  constructor:(tpl)->
-    super tpl
-  showDetail:(data)->
-    @UI.name.J.text data.originData.name
-    @UI.description.J.text data.originData.description
-
-

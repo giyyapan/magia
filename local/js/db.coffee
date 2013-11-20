@@ -132,8 +132,6 @@ class window.Database extends Suzaku.EventEmitter
             resPoints:["1,1","20,80"]
             movePoints:["entry"]
   initThings:->
-    #quality 1:0-30 2:30-100 3:100-200 4:300-500 5:500-
-    @things.qualityLevel = [30,100,300,600,1000,2000]
     @things.items.data = 
       scree:
         name:"小石子"
@@ -148,7 +146,7 @@ class window.Database extends Suzaku.EventEmitter
       lakeWater:
         name:"湖水"
         description:"清澈的湖水，含有少量净化所需的元素"
-        traits:["water:15","clear:3"]
+        traits:["water:90","clear:3"]
       blueRose:
         name:"蓝玫瑰"
         description:"蓝色的玫瑰，在森林里的背光面会长。得小心它的刺"
@@ -164,7 +162,7 @@ class window.Database extends Suzaku.EventEmitter
       caveMashroom:
         name:"洞穴菇"
         description:"潮湿的山洞里面才会长的蘑菇，随便吃掉的话会中毒"
-        traits:["poinson:8","life:5"]
+        traits:["poison:8","life:5"]
         arttribute:["plants"]
     @things.supplies.data =
       healPotion:

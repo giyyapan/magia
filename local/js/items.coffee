@@ -21,10 +21,14 @@ class window.PlayerItem extends Things
   constructor:(name,originData,number)->
     super name,originData,"item"
     @number = number
-    
+    @traits = {}
+    for t in originData.traits
+      arr = t.split ":"
+      @traits[arr[0]] = parseInt arr[1]
+      
 class window.PlayerSupplies extends Things
   constructor:(name,originData,traitValue)->
-    super name,data,"supplies"
+    super name,originData,"supplies"
     @traitValue = traitValue
     
 class window.PlayerEquipment extends Things

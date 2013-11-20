@@ -5,7 +5,14 @@ playerData =
   assert:
     money:4000
     gem:300
-    backpack:[{name:"healPotion",traitValue:300,type:"supplies"},{name:"firePotion",traitValue:300,type:"supplies"}]
+    backpack:[
+      {name:"healPotion",traitValue:300,type:"supplies"}
+      {name:"firePotion",traitValue:300,type:"supplies"}
+      {name:"scree",number:10,type:"item"}
+      {name:"lakeWater",number:10,type:"item"}
+      {name:"herbs",number:10,type:"item"}
+      {name:"caveMashroom",number:10,type:"item"}
+      ]
     storage:[]
     currentEquipment:
       hat:null
@@ -46,6 +53,23 @@ class window.Player
         when "item" then @getItem target,data
         when "supplies" then @getSupplies target,data
     console.log @backpack
+  removeThing:(playerItem,from)->
+    if not from
+      return if @removeThing playerItem,"backpack"
+      return @removeThing playerItem,"storage"
+    found = false
+    arr = []
+    switch from
+      when "backpack"
+        length = @backpack.length
+        arr.push i for i in @backpack when playerItem isnt i
+        @backpack = arr
+        return arr.length isnt length
+      when "storage"
+        length = @storage.length
+        arr.push i for i in @storage when playerItem isnt i
+        @storage = arr
+        return arr.length isnt length
   getItem:(target="backpack",dataObj)-> #target= backpack/storage 只有item是可堆叠的
     name = dataObj.name
     originData = dataObj.originData or @db.things.items.get name
@@ -61,11 +85,11 @@ class window.Player
   getSupplies:(target="backpack",dataObj)->
     name = dataObj.name
     originData = dataObj.originData or @db.things.supplies.get name
-    item = new PlayerItem(name,originData)
+    supplies = new PlayerSupplies(name,originData)
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage
-    target.push item
+    target.push supplies
     console.log this
   getEquipment:()->
   checkFreeSpace:(target,things)->
