@@ -10,6 +10,7 @@
       TraitsItem.__super__.constructor.call(this, Res.tpls['traits-item']);
       this.traitsName = name;
       this.traitsValue = value;
+      this.lv = 1;
       this.UI.name.J.text(Dict.TraitsName[this.traitsName]);
       this.UI.name.J.addClass(this.traitsName);
       this.changeValue(this.traitsValue);
@@ -25,12 +26,12 @@
           break;
         }
       }
-      this.lv = "lv" + (index + 1);
+      this.lv = parseInt(index + 1);
       this.UI['traits-holder'].J.removeClass("lv1", "lv2", "lv3", "lv4", "lv5", "lv6");
-      this.UI['traits-holder'].J.addClass(this.lv);
+      this.UI['traits-holder'].J.addClass("lv" + this.lv);
       this.J.find(".lv").removeClass("active");
       this.J.find(".filled").css("width", "100%");
-      activeDom = this.UI[this.lv];
+      activeDom = this.UI["lv" + this.lv];
       activeDom.J.addClass("active");
       width = (value - (levelData[index - 1] || 0)) / (levelData[index] - (levelData[index - 1] || 0)) * 100;
       activeDom.J.find(".filled").css("width", "" + (parseInt(width)) + "%");

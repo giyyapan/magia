@@ -4,6 +4,20 @@ class ReactionBox extends Widget
     @menu = menu
     @worktable = menu.worktable
     @traitsItems = {}
+    @reactions = []
+    @reactionBtns = {}
+    @initReactions()
+  initReactions:->
+    for r in @worktable.db.rules.get "reaction"
+      fromTraitsArr = r.split("->")[0].split(",")
+      obj =
+        from:
+          length:fromTraitsArr.length
+        to:r.split("->")[1]
+      for traits in fromTraitsArr 
+        t = traits.split(":")
+        obj.from[t[0]] = parseInt t[1]
+      @reactions.push obj
   putInItem:(playerItem)->
     for name,value of playerItem.traits
       if not @traitsItems[name]
@@ -12,6 +26,30 @@ class ReactionBox extends Widget
         i = @traitsItems[name]
         old = i.traitsValue
         i.changeValue parseInt(value*value/(old+value) + old)
+    @tryReaction()
+  tryReaction:->
+    for r in @reactions
+      avail = 0 #0:not avail 1:not enough 2:avail
+      for name,value of r.from
+        if not @traitsItems[name]
+          avail = 0
+          break
+        if @traitsItems[name].traitsValue >= value
+          if avail = 0 then avail = 2
+        else
+          avail = 1
+      switch avail
+        when 0 then continue
+        when 1 then @addReactionBtn r,false
+        when 2 then @addReactionBtn r,true
+  addReactionBtn:(r,avail)->
+    if @reactionBtns[r.to]
+      @reactionBtns[r.to].update(avail)
+    else
+      tpl = @UI["reaction-btn-tpl-#{r.from.length}"]
+      btn = new ReactionBtn tpl,r,avail
+      btn.appendTo @UI['avail-reaction-box']
+      @reactionBtns[r.to] = btn
       
 class DetailsBox extends ItemDetailsBox
   constructor:(menu)->
@@ -67,6 +105,7 @@ class window.Worktable extends Layer
     super
     @home = home
     @game = home.game
+    @db = @game.db
     @player = @game.player
     @floor = home.secondFloor
     @menu = new WorktableMenu Res.tpls['worktable-menu'],this

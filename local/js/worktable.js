@@ -12,23 +12,98 @@
       this.menu = menu;
       this.worktable = menu.worktable;
       this.traitsItems = {};
+      this.reactions = [];
+      this.reactionBtns = {};
+      this.initReactions();
     }
 
-    ReactionBox.prototype.putInItem = function(playerItem) {
-      var i, name, old, value, _ref, _results;
-      _ref = playerItem.traits;
+    ReactionBox.prototype.initReactions = function() {
+      var fromTraitsArr, obj, r, t, traits, _i, _j, _len, _len1, _ref, _results;
+      _ref = this.worktable.db.rules.get("reaction");
       _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        r = _ref[_i];
+        fromTraitsArr = r.split("->")[0].split(",");
+        obj = {
+          from: {
+            length: fromTraitsArr.length
+          },
+          to: r.split("->")[1]
+        };
+        for (_j = 0, _len1 = fromTraitsArr.length; _j < _len1; _j++) {
+          traits = fromTraitsArr[_j];
+          t = traits.split(":");
+          obj.from[t[0]] = parseInt(t[1]);
+        }
+        _results.push(this.reactions.push(obj));
+      }
+      return _results;
+    };
+
+    ReactionBox.prototype.putInItem = function(playerItem) {
+      var i, name, old, value, _ref;
+      _ref = playerItem.traits;
       for (name in _ref) {
         value = _ref[name];
         if (!this.traitsItems[name]) {
-          _results.push(this.traitsItems[name] = new TraitsItem(name, value).appendTo(this.UI['current-traits-list']));
+          this.traitsItems[name] = new TraitsItem(name, value).appendTo(this.UI['current-traits-list']);
         } else {
           i = this.traitsItems[name];
           old = i.traitsValue;
-          _results.push(i.changeValue(parseInt(value * value / (old + value) + old)));
+          i.changeValue(parseInt(value * value / (old + value) + old));
+        }
+      }
+      return this.tryReaction();
+    };
+
+    ReactionBox.prototype.tryReaction = function() {
+      var avail, name, r, value, _i, _len, _ref, _ref1, _results;
+      _ref = this.reactions;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        r = _ref[_i];
+        avail = 0;
+        _ref1 = r.from;
+        for (name in _ref1) {
+          value = _ref1[name];
+          if (!this.traitsItems[name]) {
+            avail = 0;
+            break;
+          }
+          if (this.traitsItems[name].traitsValue >= value) {
+            if (avail = 0) {
+              avail = 2;
+            }
+          } else {
+            avail = 1;
+          }
+        }
+        switch (avail) {
+          case 0:
+            continue;
+          case 1:
+            _results.push(this.addReactionBtn(r, false));
+            break;
+          case 2:
+            _results.push(this.addReactionBtn(r, true));
+            break;
+          default:
+            _results.push(void 0);
         }
       }
       return _results;
+    };
+
+    ReactionBox.prototype.addReactionBtn = function(r, avail) {
+      var btn, tpl;
+      if (this.reactionBtns[r.to]) {
+        return this.reactionBtns[r.to].update(avail);
+      } else {
+        tpl = this.UI["reaction-btn-tpl-" + r.from.length];
+        btn = new ReactionBtn(tpl, r, avail);
+        btn.appendTo(this.UI['avail-reaction-box']);
+        return this.reactionBtns[r.to] = btn;
+      }
     };
 
     return ReactionBox;
@@ -149,6 +224,7 @@
       Worktable.__super__.constructor.apply(this, arguments);
       this.home = home;
       this.game = home.game;
+      this.db = this.game.db;
       this.player = this.game.player;
       this.floor = home.secondFloor;
       this.menu = new WorktableMenu(Res.tpls['worktable-menu'], this);

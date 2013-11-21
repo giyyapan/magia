@@ -3,6 +3,7 @@ class window.TraitsItem extends Widget
     super Res.tpls['traits-item']
     @traitsName = name
     @traitsValue = value
+    @lv = 1
     @UI.name.J.text Dict.TraitsName[@traitsName]
     @UI.name.J.addClass @traitsName
     @changeValue @traitsValue
@@ -11,12 +12,12 @@ class window.TraitsItem extends Widget
     levelData = Dict.QualityLevel
     for v,index in levelData
       break if value < v
-    @lv = "lv#{index + 1}"
+    @lv = parseInt(index + 1)
     @UI['traits-holder'].J.removeClass "lv1","lv2","lv3","lv4","lv5","lv6"
-    @UI['traits-holder'].J.addClass @lv
+    @UI['traits-holder'].J.addClass "lv#{@lv}"
     @J.find(".lv").removeClass "active"
     @J.find(".filled").css "width","100%"
-    activeDom = @UI[@lv]
+    activeDom = @UI["lv#{@lv}"]
     activeDom.J.addClass "active"
     width = (value - (levelData[index-1] or 0))/(levelData[index]-(levelData[index-1] or 0))*100
     activeDom.J.find(".filled").css "width","#{parseInt width}%"

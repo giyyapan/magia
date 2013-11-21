@@ -31,4 +31,8 @@
 
   window.GameConfig = conf;
 
+  if (!conf.debug) {
+    window.console.log = (function() {});
+  }
+
 }).call(this);

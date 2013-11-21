@@ -24,5 +24,7 @@ if not document.createElement('canvas').getContext
   body.insertBefore dom
 
 window.GameConfig = conf
+if not conf.debug
+  window.console.log = (-> return)
 
         
