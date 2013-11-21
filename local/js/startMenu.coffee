@@ -11,3 +11,4 @@ class window.StartMenu extends Stage
       @game.switchStage "test"
     @menu.show()
     console.log @menu
+

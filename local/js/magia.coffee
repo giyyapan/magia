@@ -14,11 +14,11 @@ class Magia
     @loadResources =>
       @db = new Database()
       @player = new Player null,@db
-      $("#loadingPage").slideUp "fast"
-      #@switchStage "start"
+      $("#loadingPage").slideUp "slow"
+      @switchStage "start"
       #@switchStage "area","forest"
-      @switchStage "home"
-      @startGameLoop()
+      #@switchStage "home"
+      #@startGameLoop()
   switchStage:(stage,data)->
     console.log "init stage:",stage
     switch stage

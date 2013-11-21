@@ -15,7 +15,15 @@ body{text-align:center}
 #UILayer{overflow:hidden}#UILayer .menu{position:fixed;left:0;top:0;width:100%;height:100%;z-index:1}
 .invisible{visibility:hidden}
 .screen{position:fixed;top:0;width:1280px;height:720px}
-#loadingPage{padding-top:150px;background-color:#666;color:#fff;width:100%;height:100%;position:absolute;z-index:9999;top:0;left:0}
+#loadingPage{color:#fff;width:100%;height:100%;position:absolute;z-index:9999;top:0;left:0}
+#start-menu{background:url(../img/start-bg.jpg) no-repeat}#start-menu .logo-holder{width:100%;height:100%;float:right;background:-webkit-gradient(linear, right 70%, left top, from(#000), color-stop(.15, #000), to(rgba(0,0,0,0)));overflow:hidden}#start-menu .logo-holder .real-logo{position:relative;width:100%;height:50%}#start-menu .logo-holder .real-logo .start-logo-bg{position:absolute;right:-108px;bottom:-24px}
+#start-menu .logo-holder .real-logo .start-logo{position:absolute;right:60px;bottom:0}
+#start-menu .logo-holder .real-logo p{width:640px;height:3px;display:block;background:#fff;position:absolute;right:-36px;bottom:35px}
+#start-menu .logo-holder .real-logo button{background:url(../img/start-but.png) no-repeat;width:250px;height:75px;border:none;font-size:25px;color:#fff;font-weight:bold;text-shadow:0 2px 0 #000;right:120px;position:absolute;outline:none;-webkit-transition:-webkit-transform 100ms linear}
+#start-menu .logo-holder .real-logo button:hover{-webkit-transform:scale(1.1)}
+#start-menu .logo-holder .real-logo .start-but-start{bottom:-150px}
+#start-menu .logo-holder .real-logo .start-but-continue{bottom:-15px;display:none}
+#start-menu .logo-holder .real-logo .start-but-new{bottom:-120px;display:none}
 .popup-box-wrapper{width:100%;height:100%;background-color:rgba(20,20,20,0.3);position:absolute;top:0;left:0;z-index:999}.popup-box-wrapper .popup-box{margin:auto;margin-top:50px;width:400px;min-height:300px;background-color:#632a15;padding:30px;color:#fff}
 ::-webkit-scrollbar{width:16px;height:16px}
 ::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment{display:block}
