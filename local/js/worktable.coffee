@@ -1,3 +1,32 @@
+class ReactionBtn extends Widget
+  constructor:(tpl,reaction,avail,reactionBox)->
+    super tpl
+    @J.hide()
+    @reactionBox = reactionBox
+    @avail = avail
+    @reaction = reaction
+    index = 0
+    for name,value of reaction.from
+      index += 1
+      span = @UI["source#{index}"]
+      span.J.addClass name
+      span.J.text Dict.TraitsName[name].split("")[0]
+    @update avail
+    @J.fadeIn "fast"
+    @dom.onclick = =>
+      return if not @avail
+      @reactionBox.react @reaction
+  update:(avail)->
+    @avail = avail
+    if @avail
+      span = @UI.target
+      span.J.show()
+      span.J.removeClass()
+      span.J.addClass "target",@reaction.to
+      span.J.text Dict.TraitsName[@reaction.to].split("")[0]
+    else
+      @UI.target.J.hide()
+      
 class ReactionBox extends Widget
   constructor:(tpl,menu)->
     super tpl
@@ -7,12 +36,13 @@ class ReactionBox extends Widget
     @reactions = []
     @reactionBtns = {}
     @initReactions()
+    console.log @reactions
   initReactions:->
     for r in @worktable.db.rules.get "reaction"
       fromTraitsArr = r.split("->")[0].split(",")
       obj =
-        from:
-          length:fromTraitsArr.length
+        from:{}
+        fromTraitsNumber:fromTraitsArr.length
         to:r.split("->")[1]
       for traits in fromTraitsArr 
         t = traits.split(":")
@@ -30,12 +60,12 @@ class ReactionBox extends Widget
   tryReaction:->
     for r in @reactions
       avail = 0 #0:not avail 1:not enough 2:avail
-      for name,value of r.from
+      for name,lvValue of r.from
         if not @traitsItems[name]
           avail = 0
           break
-        if @traitsItems[name].traitsValue >= value
-          if avail = 0 then avail = 2
+        if @traitsItems[name].lv >= lvValue
+          if avail is 0 then avail = 2
         else
           avail = 1
       switch avail
@@ -43,13 +73,16 @@ class ReactionBox extends Widget
         when 1 then @addReactionBtn r,false
         when 2 then @addReactionBtn r,true
   addReactionBtn:(r,avail)->
+    console.log r,avail
     if @reactionBtns[r.to]
       @reactionBtns[r.to].update(avail)
     else
-      tpl = @UI["reaction-btn-tpl-#{r.from.length}"]
-      btn = new ReactionBtn tpl,r,avail
-      btn.appendTo @UI['avail-reaction-box']
+      tpl = @UI["reaction-btn-tpl-#{r.fromTraitsNumber}"].innerHTML
+      btn = new ReactionBtn tpl,r,avail,this
+      btn.appendTo @UI['avail-reaction-list']
       @reactionBtns[r.to] = btn
+  react:(reaction)->
+    console.log "react",reaction
       
 class DetailsBox extends ItemDetailsBox
   constructor:(menu)->
@@ -71,7 +104,6 @@ class SourceItem extends Widget
     super tpl
     @originData = playerItem.originData
     @playerItem = playerItem
-    console.log this
     @UI.img.src = @originData.img if @UI.img
     @UI.name.J.text @originData.name
     @UI.number.J.text playerItem.number if playerItem.number

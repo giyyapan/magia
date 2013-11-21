@@ -204,19 +204,19 @@ class window.Database extends Suzaku.EventEmitter
             fire:80
   initRules:->
     @rules.data.reaction = [
-      "fire:2,air:1->burn"
-      "burn:3,fire:2,air:lv1->explode"
-      "fire:1,earth:2->iron"
-      "water:1,eath:1->muddy"
-      "water:2,fire:1,air:1->fog"
-      "cold:2,air:2->freeze"
-      "freeze:2,water:2,air:2->snow"
-      "life:2,earth:1->heal"
-      "life:2,water:1->clean"
-      "life:2,fire:1->brave"
-      "iron:3,minus:2->Corrosion"
-      "life:3,spirit:2,air:2->boost"
-      "minus:2,life:2->poison"
+      #"fire:2,air:1->burn"
+      #"burn:3,fire:2,air:1->explode"
+      #"fire:1,earth:2->iron"
+      "water:3,earth:1->muddy"
+      #"water:2,fire:1,air:1->fog"
+      # "cold:2,air:2->freeze"
+      # "freeze:2,water:2,air:2->snow"
+      # "life:2,earth:1->heal"
+      # "life:2,water:1->clean"
+      # "life:2,fire:1->brave"
+      # "iron:3,minus:2->corrosion"#腐蚀
+      # "life:3,spirit:2,air:2->boost"
+      # "minus:2,life:2->poison"
     ]
   initSprites:->
     @monsters.data =

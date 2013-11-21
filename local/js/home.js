@@ -77,6 +77,7 @@
       this.secondFloor = new SecondFloor(this);
       this.camera.render(this.firstFloor, this.secondFloor);
       this.firstFloor.show();
+      this.secondFloor.showWorkTable();
     }
 
     Home.prototype.goUp = function() {

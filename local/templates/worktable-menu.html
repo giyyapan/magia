@@ -24,20 +24,34 @@
 				<ul data-id="current-traits-list" >
 				</ul> 
 			</div>
-			<div class="avail-reaction-box" >
+			<div class="avail-reaction-box" data-id="avail-reaction-box" >
+				<ul data-id="avail-reaction-list" >
+				</ul>
 			</div>
 			<template data-id="reaction-btn-tpl-2" >
-				<span class="floor" ></span>
-				<span class="source1" ></span>
-				<span class="source2" ></span>
-				<span class="target" ></span>
+				<li class="reaction-btn type2">
+					<div class="sources-wrapper" >
+						<div class="sources">
+							<span class="source1 " data-id="source1"></span>
+							<span class="source2 " data-id="source2"></span>
+						</div>
+						<b >?</b>
+					</div>
+					<span class="target" data-id="target" ></span>
+				</li>					
 			</template>
 			<template data-id="reaction-btn-tpl-3" >
-				<span class="floor" ></span>
-				<span class="source1" ></span>
-				<span class="source2" ></span>
-				<span class="source3" ></span>
-				<span class="target" ></span>
+				<li class="reaction-btn type2">
+					<div class="sources-wrapper" >
+						<div class="sources">
+							<span class="source1 " data-id="source1"></span>
+							<span class="source2 " data-id="source2"></span>
+							<span class="source3 " data-id="source2"></span>
+						</div>
+						<b >?</b>
+					</div>
+					<span class="target" data-id="target" ></span>
+				</li>					
 			</template>
 		</div>
 		<a class="finish-btn btn-primary" data-id="finish-btn" >装瓶</a>

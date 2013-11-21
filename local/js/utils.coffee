@@ -6,8 +6,19 @@ window.Dict =
       water:"水"
       wind:"风"
       earth:"地"
-      poison:"毒药"
+      air:"气"
+      minus:"负能量"
+      spirit:"灵能"
+      snow:"雪"
+      explode:"爆炸"
+      burn:"燃烧"
+      poison:"毒"
       clear:"净化"
+      muddy:"泥泞"
+      fog:"雾"
+      iron:"钢"
+      freeze:"霜冻"
+      corrosion:"腐蚀"
       
 window.Utils =
   getSize:->
