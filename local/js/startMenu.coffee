@@ -31,6 +31,9 @@ class window.StartMenu extends Stage
     console.log @menu
     @menu.UI["start-but"].onclick = =>
       @showSubMenu()
+       #audio
+    @menu.UI["start-but"].onmouseover = ->
+      window.myAudio.play "sfxStartCusor"
   showSubMenu:->
     console.log "start-but click"
     @menu.UI["logo-holder"].J.animate {bottom:"100px"},500
@@ -44,6 +47,9 @@ class window.StartMenu extends Stage
         J = $(dom)
         J.css "right","-=150px"
         animateBtn J
+
+   
+
 
 
 

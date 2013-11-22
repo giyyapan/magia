@@ -6,7 +6,7 @@ p{margin:0}
 ul{list-style:none;margin:0;padding:0}
 .double-border{box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px}
 template{display:none}
-button,a{cursor:pointer}button:active,a:active{border:none;outline:0}
+button,a{outline:none;cursor:pointer}button:active,a:active{border:none;outline:0}
 body{background-color:#222 !important}
 button{font-size:18px;padding:10px}
 body{text-align:center}

@@ -45,8 +45,11 @@
       };
       this.menu.show();
       console.log(this.menu);
-      return this.menu.UI["start-but"].onclick = function() {
+      this.menu.UI["start-but"].onclick = function() {
         return _this.showSubMenu();
+      };
+      return this.menu.UI["start-but"].onmouseover = function() {
+        return window.myAudio.play("sfxStartCusor");
       };
     };
 
