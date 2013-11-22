@@ -1,16 +1,21 @@
 <div class="menu" id="start-menu" data-id="start-menu" >
 	<div class="logo-holder">
+		<button data-id="start-but-volume" class="start-but-volume">open</button>
 		<div class="real-logo">
-			<img src="../img/start-logo-bg.png" class="start-logo-bg">
-			<img src="../img/start-logo.png" class="start-logo">
-			<p></p>
-			<button class="start-but-start">开始</button>
-			<button class="start-but-continue">继续游戏</button>
-			<button class="start-but-new">新游戏</button>
+			<div data-id="logo-holder">
+				<img src="../img/start-logo-bg.png" class="start-logo-bg" data-id="logo-bg">
+				<img src="../img/start-logo.png" class="start-logo" data-id="logo-text">
+				<p data-id="logo-line"></p>
+			</div>
+			<button class="start-but-start" data-id="start-but">开始</button>
+			<div data-id="sub-btn-list">
+				<button class="start-but" id="start" data-id="start">继续游戏</button>
+				<button class="start-but" data-id="newgame">新游戏</button>
+				<button class="start-but" id="test" data-id="test">测试关卡</button>
+			</div>
+
 		</div> 
 	</div>
-	<button class="start-menu-btn" id="start" data-id="start"  >开始游戏</button>
-	<button class="start-menu-btn" id="test" data-id="test"  >测试关卡</button>
 	<ul id="sub-btn-list" data-id="sub-btn-list" style="display:none;" >
 	</ul>
 </div> 

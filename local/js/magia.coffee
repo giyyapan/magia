@@ -12,6 +12,7 @@ class Magia
     window.onresize = =>
       @handleDisplaySize()
     @loadResources =>
+      window.myAudio.play "startMenu"
       @db = new Database()
       @player = new Player null,@db
       $("#loadingPage").slideUp "slow"

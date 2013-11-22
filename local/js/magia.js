@@ -18,6 +18,7 @@
         return _this.handleDisplaySize();
       };
       this.loadResources(function() {
+        window.myAudio.play("startMenu");
         _this.db = new Database();
         _this.player = new Player(null, _this.db);
         $("#loadingPage").slideUp("slow");
