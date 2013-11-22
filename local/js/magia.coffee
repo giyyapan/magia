@@ -18,7 +18,7 @@ class Magia
       @switchStage "start"
       #@switchStage "area","forest"
       #@switchStage "home"
-      #@startGameLoop()
+      @startGameLoop()
   switchStage:(stage,data)->
     console.log "init stage:",stage
     switch stage

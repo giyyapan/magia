@@ -102,10 +102,11 @@ class Widget extends EventEmitter
     parent = @dom.parentElement or @dom.parentNode
     parent.removeChild @dom
   before:(target)->
-    if target instanceof Widget
+    if target.dom instanceof HTMLElement
       target = target.dom
     if $ and target instanceof $
       target = target[0]
+    console.log target
     if target instanceof HTMLElement
       target.parentElement.insertBefore @dom,target
     else
@@ -142,6 +143,16 @@ class Widget extends EventEmitter
     if typeof target.appendChild is "function"
       target.appendChild @dom
       return this
+  insertTo:(target)->
+    console.error "need a target --Suzaku.Widget",target if not target
+    fec = target.firstElementChild
+    if target.dom instanceof window.HTMLElement
+      fec = target.dom.firstElementChild
+    if $ and target instanceof $
+      fec = target.get(0).firstElementChild
+    if not fec then return @appendTo target
+    else @before fec
+    return this
           
 class TemplateManager extends EventEmitter
   constructor:()->
@@ -266,6 +277,7 @@ class AjaxManager extends EventEmitter
       req.Suzaku_taskOpt.fail req,textStatus,error if req.Suzaku_taskOpt.fail
       if ajaxMission.finishedNum is ajaxMission.reqs.length
         @emit "finish",ajaxMission.id
+        
 class Api extends EventEmitter
   constructor:(name,params,JAjaxOptions,url,method,errorHandlers)->
     super()
@@ -426,6 +438,16 @@ class KeybordManager extends EventEmitter
         
 window.Suzaku = new Suzaku
 window.Suzaku.Utils = Utils =
+  createQueue:(number,callback)->
+    q = new EventEmitter()
+    timer = 0
+    q.next = ->
+      @emit "next"
+      timer += 1
+      if timer >= number
+        @emit "complete"
+        callback() if callback
+    return q
   localData:(action,key,value)->
     #action = "set,clear,get"
     switch action

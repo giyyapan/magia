@@ -161,9 +161,8 @@ class window.Database extends Suzaku.EventEmitter
         traits:["life:5","earth:20"]
       caveMashroom:
         name:"洞穴菇"
-        description:"潮湿的山洞里面才会长的蘑菇，随便吃掉的话会中毒"
-        traits:["poison:8","life:5"]
-        arttribute:["plants"]
+        description:"潮湿的山洞里面才会长的蘑菇，但是却异常的有火属性"
+        traits:["fire:8","life:5"]
     @things.supplies.data =
       healPotion:
         name:"治疗药剂"
@@ -204,10 +203,10 @@ class window.Database extends Suzaku.EventEmitter
             fire:80
   initRules:->
     @rules.data.reaction = [
-      #"fire:2,air:1->burn"
-      #"burn:3,fire:2,air:1->explode"
-      #"fire:1,earth:2->iron"
-      "water:3,earth:1->muddy"
+      "fire:2,air:1->burn"
+      "burn:3,fire:2,air:1->explode"
+      "fire:1,earth:2->iron"
+      "water:1,earth:1->muddy"
       #"water:2,fire:1,air:1->fog"
       # "cold:2,air:2->freeze"
       # "freeze:2,water:2,air:2->snow"

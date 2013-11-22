@@ -163,13 +163,18 @@ class window.Drawable extends Suzaku.EventEmitter
   _generateAnimateFunc:(obj)->
     dataObj = {}
     for name,targetValue of obj
-      if isNaN targetValue then console.error "invailid value:#{targetValue}" if GameConfig.debug
       arr = name.split(".")
       ref = this
       for n in arr
         ref = ref[n]
       if isNaN ref then console.error "invailid key:#{name},#{n}" if GameConfig.debug
-      dataObj[name] = origin:ref,delta:(targetValue - ref)
+      delta = targetValue - ref
+      if targetValue.indexOf "+=" is 0
+        delta = parseFloat(targetValue.split("+=")[1])
+      if targetValue.indexOf "-=" is 0
+        delta = - parseFloat(targetValue.split("-=")[1])
+      if isNaN delta then console.error "invailid value:#{delta} for #{name}" if GameConfig.debug
+      dataObj[name] = origin:ref,delta:delta
     f = (p)->
       for name,delta of dataObj
         arr = name.split(".")

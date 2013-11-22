@@ -3,6 +3,59 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  window.PopupBox = (function(_super) {
+    __extends(PopupBox, _super);
+
+    function PopupBox(tpl) {
+      var self;
+      tpl = tpl || Res.tpls['popup-box'];
+      PopupBox.__super__.constructor.call(this, tpl);
+      this.box = this.UI.box;
+      this.J.hide();
+      this.box.J.hide();
+      this.UILayer = $(GameConfig.UILayerId);
+      self = this;
+      this.UI['close'].onclick = function() {
+        return self.close();
+      };
+      this.UI['accept'].onclick = function() {
+        return self.accept();
+      };
+    }
+
+    PopupBox.prototype.show = function() {
+      this.appendTo(this.UILayer);
+      this.J.fadeIn("fast");
+      this.box.J.show();
+      return this.box.J.addClass("animate-popup");
+    };
+
+    PopupBox.prototype.close = function() {
+      var self,
+        _this = this;
+      self = this;
+      this.J.fadeOut("fast");
+      return this.box.J.animate({
+        top: "-=30px",
+        opacity: 0
+      }, "fast", function() {
+        _this.box.J.css("top", 0);
+        _this.box.J.removeClass("animate-popup");
+        self.remove();
+        return self = null;
+      });
+    };
+
+    PopupBox.prototype.accept = function() {
+      console.log(this, "accept");
+      this.emit("accept");
+      return this.close();
+    };
+
+    return PopupBox;
+
+  })(Widget);
+
   window.TraitsItem = (function(_super) {
     __extends(TraitsItem, _super);
 

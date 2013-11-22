@@ -1,3 +1,36 @@
+#some often-use widgets hear
+class window.PopupBox extends Widget
+  constructor:(tpl)->
+    tpl = tpl or Res.tpls['popup-box']
+    super tpl
+    @box = @UI.box
+    @J.hide()
+    @box.J.hide()
+    @UILayer = $ GameConfig.UILayerId
+    self = this
+    @UI['close'].onclick = ->
+        self.close()
+    @UI['accept'].onclick = ->
+        self.accept()
+  show:->
+    @appendTo @UILayer
+    @J.fadeIn "fast"
+    @box.J.show()
+    @box.J.addClass "animate-popup"
+  close:->
+    self = this
+    @J.fadeOut "fast"
+    @box.J.animate {top:"-=30px",opacity:0},"fast",=>
+      @box.J.css "top",0
+      @box.J.removeClass "animate-popup"
+      self.remove()
+      self = null
+  accept:->
+    console.log this,"accept"
+    @emit "accept"
+    @close()
+     
+    
 class window.TraitsItem extends Widget
   constructor:(name,value)->
     super Res.tpls['traits-item']

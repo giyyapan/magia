@@ -1,8 +1,26 @@
+class ReactionTraitsItem extends TraitsItem
+  constructor:->
+    super
+    @J.addClass "animate-popup"
+    
+class ReactionConfirmBox extends PopupBox
+  constructor:(reaction)->
+    super null
+    @UI.title.J.text "合成"
+    str = ""
+    for name of reaction.from
+      str += "<span class='traits-icon #{name}'>#{Dict.TraitsName[name]}</span>"
+    targetStr = "<span class=traits-icon '#{name}'>#{Dict.TraitsName[reaction.to]}</span>"
+    s =  "要将#{str}转化成为#{targetStr}吗？"
+    @UI.content.J.html s
+    @UI.close.J.text "取消"
+    @show()
+    
 class ReactionBtn extends Widget
   constructor:(tpl,reaction,avail,reactionBox)->
     super tpl
-    @J.hide()
     @reactionBox = reactionBox
+    @worktable = reactionBox.worktable
     @avail = avail
     @reaction = reaction
     index = 0
@@ -12,10 +30,22 @@ class ReactionBtn extends Widget
       span.J.addClass name
       span.J.text Dict.TraitsName[name].split("")[0]
     @update avail
-    @J.fadeIn "fast"
-    @dom.onclick = =>
+    @J.removeClass "hide"
+    @J.addClass "animate-popup"
+    @dom.onclick = => 
       return if not @avail
-      @reactionBox.react @reaction
+      @reactionBox.react @reaction,=>
+        @J.addClass("animate-popout")
+        @remove()
+  remove:->
+    layer = @worktable
+    scale = 0
+    layer.animate ((p)=>
+      s = scale * (1-p)
+      Utils.setCSS3Attr this,"animate","scale(#{s},#{s})"
+      ),1000,=>
+        delete @reactionBox.reactionBtns[@reaction.to]
+        super
   update:(avail)->
     @avail = avail
     if @avail
@@ -24,8 +54,12 @@ class ReactionBtn extends Widget
       span.J.removeClass()
       span.J.addClass "target",@reaction.to
       span.J.text Dict.TraitsName[@reaction.to].split("")[0]
+      @UI["?"].J.hide()
+      @J.addClass "avail"
     else
+      @J.removeClass "avail"
       @UI.target.J.hide()
+      @UI["?"].J.show()
       
 class ReactionBox extends Widget
   constructor:(tpl,menu)->
@@ -51,10 +85,11 @@ class ReactionBox extends Widget
   putInItem:(playerItem)->
     for name,value of playerItem.traits
       if not @traitsItems[name]
-        @traitsItems[name] = new TraitsItem(name,value).appendTo @UI['current-traits-list']
+        @traitsItems[name] = new ReactionTraitsItem(name,value).insertTo @UI['current-traits-list']
       else
         i = @traitsItems[name]
         old = i.traitsValue
+        console.log i
         i.changeValue parseInt(value*value/(old+value) + old)
     @tryReaction()
   tryReaction:->
@@ -81,9 +116,30 @@ class ReactionBox extends Widget
       btn = new ReactionBtn tpl,r,avail,this
       btn.appendTo @UI['avail-reaction-list']
       @reactionBtns[r.to] = btn
-  react:(reaction)->
+  react:(reaction,callback)->
     console.log "react",reaction
-      
+    value = 0
+    for name of reaction.from
+      value += parseInt @traitsItems[name].traitsValue
+    box = new ReactionConfirmBox reaction
+    box.on "accept",=>
+      value = value/reaction.fromTraitsNumber
+      callback() if callback
+      newTraits = {}
+      newTraits[reaction.to] = value
+      @combineTraitsItems(reaction,newTraits)
+  combineTraitsItems:(reaction,newTraits)->
+    self = this
+    items = []
+    items.push @traitsItems[name] for name of reaction.from
+    for i,index in items
+      targetTop = @UI['traits-box'].offsetTop
+      i.dom.traitsName = i.traitsName
+      i.J.addClass "animate-popout"
+      #i.remove()
+      delete self.traitsItems[this.traitsName]
+    @putInItem traits:newTraits
+        
 class DetailsBox extends ItemDetailsBox
   constructor:(menu)->
     super
@@ -159,3 +215,4 @@ class window.Worktable extends Layer
     @menu.hide()
     @fadeOut 150,=>
       @emit "close"
+

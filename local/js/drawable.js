@@ -313,15 +313,10 @@
     };
 
     Drawable.prototype._generateAnimateFunc = function(obj) {
-      var arr, dataObj, f, n, name, ref, targetValue, _i, _len;
+      var arr, dataObj, delta, f, n, name, ref, targetValue, _i, _len;
       dataObj = {};
       for (name in obj) {
         targetValue = obj[name];
-        if (isNaN(targetValue)) {
-          if (GameConfig.debug) {
-            console.error("invailid value:" + targetValue);
-          }
-        }
         arr = name.split(".");
         ref = this;
         for (_i = 0, _len = arr.length; _i < _len; _i++) {
@@ -333,13 +328,25 @@
             console.error("invailid key:" + name + "," + n);
           }
         }
+        delta = targetValue - ref;
+        if (targetValue.indexOf("+=" === 0)) {
+          delta = parseFloat(targetValue.split("+=")[1]);
+        }
+        if (targetValue.indexOf("-=" === 0)) {
+          delta = -parseFloat(targetValue.split("-=")[1]);
+        }
+        if (isNaN(delta)) {
+          if (GameConfig.debug) {
+            console.error("invailid value:" + delta + " for " + name);
+          }
+        }
         dataObj[name] = {
           origin: ref,
-          delta: targetValue - ref
+          delta: delta
         };
       }
       f = function(p) {
-        var data, delta, index, _j, _len1, _results;
+        var data, index, _j, _len1, _results;
         _results = [];
         for (name in dataObj) {
           delta = dataObj[name];

@@ -194,12 +194,13 @@
     };
 
     Widget.prototype.before = function(target) {
-      if (target instanceof Widget) {
+      if (target.dom instanceof HTMLElement) {
         target = target.dom;
       }
       if ($ && target instanceof $) {
         target = target[0];
       }
+      console.log(target);
       if (target instanceof HTMLElement) {
         return target.parentElement.insertBefore(this.dom, target);
       } else {
@@ -266,6 +267,26 @@
         target.appendChild(this.dom);
         return this;
       }
+    };
+
+    Widget.prototype.insertTo = function(target) {
+      var fec;
+      if (!target) {
+        console.error("need a target --Suzaku.Widget", target);
+      }
+      fec = target.firstElementChild;
+      if (target.dom instanceof window.HTMLElement) {
+        fec = target.dom.firstElementChild;
+      }
+      if ($ && target instanceof $) {
+        fec = target.get(0).firstElementChild;
+      }
+      if (!fec) {
+        return this.appendTo(target);
+      } else {
+        this.before(fec);
+      }
+      return this;
     };
 
     return Widget;
@@ -774,6 +795,22 @@
   window.Suzaku = new Suzaku;
 
   window.Suzaku.Utils = Utils = {
+    createQueue: function(number, callback) {
+      var q, timer;
+      q = new EventEmitter();
+      timer = 0;
+      q.next = function() {
+        this.emit("next");
+        timer += 1;
+        if (timer >= number) {
+          this.emit("complete");
+          if (callback) {
+            return callback();
+          }
+        }
+      };
+      return q;
+    },
     localData: function(action, key, value) {
       var v;
       switch (action) {

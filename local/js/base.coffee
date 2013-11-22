@@ -41,30 +41,3 @@ class window.Menu extends Suzaku.Widget
       callback() if callback
   onDraw:->
     @emit "render",this
-    
-class window.PopupBox extends Suzaku.Widget
-  constructor:(tpl)->
-    super tpl or Res.tpls['popup-box']
-    @box = @UI.box
-    @J.hide()
-    @box.J.hide()
-    @UILayer = $ GameConfig.UILayerId
-    self = this
-    if @UI['close-btn']
-      @UI['close-btn'].onclick = ->
-        self.close()
-    if @UI['accept-btn']
-      @UI['accept-btn'].onclick = ->
-        self.accept()
-  show:->
-    @appendTo @UILayer
-    @J.fadeIn "fast"
-    @box.J.slideDown "fast"
-  close:->
-    self = this
-    @J.fadeOut "fast"
-    @box.J.slideUp "fast",->
-      self.remove()
-      self = null
-  accept:->
-    console.log this,"accept" if window.GameConfig.debug

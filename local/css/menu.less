@@ -17,7 +17,19 @@
 .fire{background: darkred !important;}
 .earth{background: orange !important;}
 .poison{background: black !important;}
-
+.traits-icon{
+		display:inline-block;
+		padding-top:1px;
+		box-shadow: 0px 1px 0px rgba(255,255,255,0.85) inset;
+		font-size: 18px;
+		color: @color-text-white;
+		text-align: center;
+		width:50px;
+		height: 24px;
+		display: inline-block;
+		border-radius: 5px;
+		border:	1px solid @color-border-black;
+}
 .transition(@time:.2s,@timingFunc:ease-out){
 		-webkit-transition:@time @timingFunc;
 		-o-transition:@time @timingFunc;
@@ -41,6 +53,13 @@
 		border: 2px solid @color-border-black;
 		border-radius: 10px;
 }
+.texture-border{
+		.double-border;
+		@p:16px;
+		background:url("/img/menu/texture-bg.jpg") 0 0 repeat;
+		padding:@p;
+		padding-right:(@p + 2);
+}
 .panel-wrapper{
 		.test-border;
 		position:absolute;
@@ -50,7 +69,53 @@
 				height:100%;
 		}
 }
-
+.popup-box-wrapper{
+		width:100%;
+		height:100%;
+		background-color:rgba(20,20,20,0.5);
+		position:absolute;
+		top:0;
+		left:0;
+		z-index:999;
+		.popup-box{
+				.texture-border;
+				position:relative;
+				margin:auto;
+				margin-top:130px;;
+				width:400px;
+				color:white;
+				.inner{
+						.double-border;
+						background-color:#896b4c;
+						min-height:250px;
+						position:relative;
+						.traits-icon{
+								margin:0 2px;
+								height:22px
+						}
+						p{
+								font-size:18px;
+								color:#35230F;
+						}
+						.title{
+								color: #d7ba97;
+								text-shadow: 0 2px 0 #3c2f21;
+								font-weight: bold;
+						}
+						.footer{
+								position:absolute;
+								bottom:0px;
+								width:100%;
+								.btn{
+										border-radius: 10px;
+										width: 115px;
+										padding: 15px;
+										margin: 10px;
+								}
+						}
+				}
+		}
+}
 .item-details-box-wrapper{
 		.double-border;
 		width: 640px;
@@ -166,15 +231,15 @@
 						height: 38px;
 						width: 37px;
 						display: block;
-						&.yes{background: url(../img/menu/backpack-day-yes.png)}
-						&.no{background: url(../img/menu/backpack-day-no.png)}
+						&.yes{background: url('/img/menu/backpack-day-yes.png')}
+						&.no{background: url('/img/menu/backpack-day-no.png')}
 				}
 				.night{
 						height: 38px;
 						width: 37px;
 						display: block;
-						.yes{background: url(../img/menu/backpack-night-yes.png)}
-						.no{background: url(../img/menu/backpack-night-no.png)}
+						.yes{background: url('/img/menu/backpack-night-yes.png')}
+						.no{background: url('/img/menu/backpack-night-no.png')}
 				}
 
 		}
@@ -194,18 +259,9 @@
 		width: 100%;
 		display: block;
 		.traits-icon{
-				display:inline-block;
+				margin:0;
 				margin-left:10px;
-				box-shadow: 0px 1px 0px rgba(255,255,255,0.6) inset;
-				font-size: 18px;
-				color: @color-text-white;
-				text-align: center;
-				width:50px;
-				height: 23px;
-				display: inline-block;
 				float:left;
-				border-radius: 5px;
-				border:	1px solid @color-border-black;
 		}
 		.traits-holder{
 				margin-right:10px;
