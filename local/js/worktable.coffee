@@ -1,3 +1,29 @@
+class ReactionFinishBox extends PopupBox
+  constructor:(@reactionBox,@db)->
+    title = "装瓶"
+    hint = "请选择要保留的属性</br><small>有一些中间属性无法被制作成药剂</small>"
+    super title,hint
+    @UI['content-list'].J.show()
+    @UI['accept'].J.hide()
+    self = this
+    for name,i of @reactionBox.traitsItems
+      if not @db.things.supplies.get "#{i.traitsName}Potion"
+        console.log "no potion for traits#{i.traitsName}"
+        continue
+      item = new TraitsItem(i.traitsName,i.traitsValue)
+      console.log "finish add traits",item
+      item.appendTo @UI['content-list']
+      item.onclick = ->
+        self.chooseTraitsItem this
+    @show()
+  chooseTraitsItem:(item)->
+    name = "#{item.traitsName}Potion"
+    originData = @db.things.supplies.get name
+    newSupplies = new PlayerSupplies name,originData,item.traitsValue
+    @close()
+    @emit "getNewSupplies",newSupplies
+    @close()
+    
 class ReactionTraitsItem extends TraitsItem
   constructor:->
     super
@@ -5,8 +31,7 @@ class ReactionTraitsItem extends TraitsItem
     
 class ReactionConfirmBox extends PopupBox
   constructor:(reaction)->
-    super null
-    @UI.title.J.text "合成"
+    super "合成新属性"
     str = ""
     for name of reaction.from
       str += "<span class='traits-icon #{name}'>#{Dict.TraitsName[name]}</span>"
@@ -70,6 +95,14 @@ class ReactionBox extends Widget
     @reactions = []
     @reactionBtns = {}
     @initReactions()
+    @UI['finish'].onclick = =>
+      box = new ReactionFinishBox this,@worktable.game.db
+      box.on "getNewSupplies",(s)=>
+        for n,i of @traitsItems
+          i.remove()
+        @traitsItems = {}
+        new MsgBox "获得物品","你获得了#{s.dspName}！"
+        @worktable.game.player.getSupplies s
     console.log @reactions
   initReactions:->
     for r in @worktable.db.rules.get "reaction"

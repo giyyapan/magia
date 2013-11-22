@@ -1,14 +1,12 @@
 #some often-use widgets hear
 class window.PopupBox extends Widget
-  constructor:(tpl,title,content)->
-    tpl = tpl or Res.tpls['popup-box']
-    super tpl
+  constructor:(title,content)->
+    super Res.tpls['popup-box']
     @box = @UI.box
     @J.hide()
     @box.J.hide()
-    if title
-      @UI.title.J.text title
-      @UI.content.J.text content
+    @UI.title.J.html title if title
+    @UI.content.J.html content if content
     @UILayer = $ GameConfig.UILayerId
     self = this
     @UI['close'].onclick = ->
@@ -32,7 +30,15 @@ class window.PopupBox extends Widget
     console.log this,"accept"
     @emit "accept"
     @close()
-     
+    
+class MsgBox extends Widget
+  constructor:->
+    super
+    @UI.footer.J.hide()
+    @show()
+    window.setTimeout (->
+      @close()
+      ),2000
     
 class window.TraitsItem extends Widget
   constructor:(name,value)->

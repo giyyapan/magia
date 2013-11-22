@@ -14,7 +14,7 @@
 
     SubDB.prototype.get = function(name) {
       if (typeof this.data[name] === "undefined") {
-        return console.error("Cannot find data name : " + name + " in database " + this.dbName);
+        return console.warn("Cannot find data name : " + name + " in database " + this.dbName);
       } else {
         return this.data[name];
       }
@@ -236,6 +236,29 @@
           defense: {
             name: "回复结界",
             description: "制造一个结界，在受到攻击时回复生命值",
+            type: "flipOver",
+            sprite: "null",
+            turn: 5,
+            heal: 40
+          },
+          img: null
+        },
+        muddyPotion: {
+          name: "泥泞药剂",
+          description: "会让人身上变得粘糊糊的药剂，看起来就很奇怪",
+          traitName: "muddy",
+          active: {
+            name: "泥泞术",
+            description: "降低敌人的行动速度",
+            type: "debuff",
+            sprite: null,
+            debuff: {
+              spd: "*0.8"
+            }
+          },
+          defense: {
+            name: "泥巴护体",
+            description: "生成结界，被攻击到的时候敌人会减速",
             type: "flipOver",
             sprite: "null",
             turn: 5,

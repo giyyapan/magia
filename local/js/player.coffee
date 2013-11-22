@@ -81,15 +81,14 @@ class window.Player
     for theItem in target when theItem.type is "item" and theItem.name is item.name
       return theItem.number += 1
     target.push item
+    @saveData()
     console.log this
-  getSupplies:(target="backpack",dataObj)->
-    name = dataObj.name
-    originData = dataObj.originData or @db.things.supplies.get name
-    supplies = new PlayerSupplies(name,originData)
+  getSupplies:(target="backpack",supplies)->
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage
     target.push supplies
+    @saveData()
     console.log this
   getEquipment:()->
   checkFreeSpace:(target,things)->
