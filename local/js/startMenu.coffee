@@ -20,7 +20,6 @@ class window.StartMenu extends Stage
             @menu.UI["start-but"].J.show().animate
               opacity:"1"
               1000
-
     @menu.UI.start.onclick = =>
       console.log  "start game btn click"
       lastStage = @game.player.data.lastStage
@@ -31,12 +30,21 @@ class window.StartMenu extends Stage
     @menu.show()
     console.log @menu
     @menu.UI["start-but"].onclick = =>
-      console.log "start-but click"
-      @menu.UI["start-but"].J.fadeOut "fast"
-      @menu.UI["sub-btn-list"].J.fadeIn "slow"
-      @menu.UI["logo-holder"].J.animate
-        bottom:"100px"
-        500,->
-          console.log "logo animate finish"
+      @showSubMenu()
+  showSubMenu:->
+    console.log "start-but click"
+    @menu.UI["logo-holder"].J.animate {bottom:"100px"},500
+    @menu.UI["start-but"].J.fadeOut "fast",=>
+      animateBtn = (btnJ)->
+        window.setTimeout (->
+          btnJ.animate {right:"+=150px",opacity:"1"}, 500
+        ),index*60
+      @menu.UI["sub-btn-list"].J.show()
+      for dom,index in @menu.UI["sub-btn-list"].J.find(".start-but")
+        J = $(dom)
+        J.css "right","-=150px"
+        animateBtn J
+
+
 
 

@@ -46,15 +46,37 @@
       this.menu.show();
       console.log(this.menu);
       return this.menu.UI["start-but"].onclick = function() {
-        console.log("start-but click");
-        _this.menu.UI["start-but"].J.fadeOut("fast");
-        _this.menu.UI["sub-btn-list"].J.fadeIn("slow");
-        return _this.menu.UI["logo-holder"].J.animate({
-          bottom: "100px"
-        }, 500, function() {
-          return console.log("logo animate finish");
-        });
+        return _this.showSubMenu();
       };
+    };
+
+    StartMenu.prototype.showSubMenu = function() {
+      var _this = this;
+      console.log("start-but click");
+      this.menu.UI["logo-holder"].J.animate({
+        bottom: "100px"
+      }, 500);
+      return this.menu.UI["start-but"].J.fadeOut("fast", function() {
+        var J, animateBtn, dom, index, _i, _len, _ref, _results;
+        animateBtn = function(btnJ) {
+          return window.setTimeout((function() {
+            return btnJ.animate({
+              right: "+=150px",
+              opacity: "1"
+            }, 500);
+          }), index * 60);
+        };
+        _this.menu.UI["sub-btn-list"].J.show();
+        _ref = _this.menu.UI["sub-btn-list"].J.find(".start-but");
+        _results = [];
+        for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
+          dom = _ref[index];
+          J = $(dom);
+          J.css("right", "-=150px");
+          _results.push(animateBtn(J));
+        }
+        return _results;
+      });
     };
 
     return StartMenu;
