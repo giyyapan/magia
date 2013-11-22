@@ -136,10 +136,14 @@ class ReactionBox extends Widget
       targetTop = @UI['traits-box'].offsetTop
       i.dom.traitsName = i.traitsName
       i.J.addClass "animate-popout"
-      #i.remove()
-      delete self.traitsItems[this.traitsName]
     @putInItem traits:newTraits
-        
+    window.setTimeout (->
+      for i in items
+        i.J.animate {width:0,margin:0},200,->
+          $(this).remove()
+          delete self.traitsItems[this.traitsName]
+      ),400
+      
 class DetailsBox extends ItemDetailsBox
   constructor:(menu)->
     super

@@ -42,7 +42,7 @@ class window.Home extends Stage
     @secondFloor = new SecondFloor this
     @camera.render @firstFloor,@secondFloor
     @firstFloor.show()
-    @secondFloor.showWorkTable()
+    #@secondFloor.showWorkTable()
   goUp:->
     s = Utils.getSize()
     @firstFloor.menu.hide()

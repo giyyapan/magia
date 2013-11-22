@@ -40,41 +40,38 @@ WriteErr = (err,res)->
   res.end(err)
 
 ParseRange = (str, size) ->
-    console.log "fuck"
     if str.indexOf(",") isnt -1
       return
-    range = str.split("-")
+    range = str.replace(/bytes=/, "").split "-"
     start = parseInt(range[0], 10)
     end = parseInt(range[1], 10)
     if isNaN end
-      end = size - 1
-    if isNaN start
-      start = size - end - 1
-    console.log start,end
+      end = parseInt(size - 1)
     if isNaN(start) or isNaN(end) or start > end or end > size
       return false
     return start: start,end: end
 
-WriteFile = (req,realPath,type,res)->
+WriteFile = (req,realPath,type,stats,res)->
   res.setHeader 'Content-Type',config.MIMETypes[type]
-  if req.headers.range then Fs.stat realPath,(err,stats)->
-    if err 
-      return WriteErr err,res
+  if req.headers.range
     range = ParseRange(req.headers["range"], stats.size)
-    console.log range if range
     if range
-      res.setHeader("Content-Range", "bytes " + range.start + "-" + range.end + "/" + stats.size)
-      res.setHeader("Content-Length", (range.end - range.start + 1))
-      raw = Fs.createReadStream realPath,{start: 0,end: range.end}
-      res.writeHead 206,"Partial Content"
+      header = 
+        "Content-Range":"bytes #{range.start}-#{range.end}/#{stats.size}"
+        "Accept-Ranges":"bytes"
+        "Content-Length":(range.end-range.start+1)
+        "Transfer-Encoding":'chunked'
+        #"Connection":"close"
+      res.writeHead 206,header
+      raw = Fs.createReadStream realPath,{start:range.start,end:range.end}
       raw.pipe res
     else 
       res.removeHeader("Content-Length")
-      res.writeHead(416, "req Range Not Satisfiable")
+      res.writeHead 416,"req Range Not Satisfiable"
       res.end()   
   else 
     raw = Fs.createReadStream(realPath)
-    res.writeHead 200,"Ok",
+    res.writeHead 200,"Ok"
     raw.pipe res
 
 MainHandler = (req,res)->
@@ -86,24 +83,24 @@ MainHandler = (req,res)->
   type = if ext then ext.slice(1) else 'unknown'
   Fs.exists realPath,(ans)->
     if ans is no
-      console.log realPath
-      res.writeHead 404,{'Content-Type': 'text/plain'}
+      res.setHeader 'Content-Type','text/plain'
+      res.writeHead 404,"Not Found"
       res.end "404"
       return true
-    if true or ext.match(config.Expires.fileMatch)
+    if true #ext.match(config.Expires.fileMatch)
       expires = new Date()
       expires.setTime(expires.getTime() + config.Expires.maxAge * 1000)
       res.setHeader "Expires", expires.toUTCString()
       res.setHeader "Cache-Control", "max-age=#{config.Expires.maxAge}"
-      Fs.stat realPath, (err, stat)->
+      Fs.stat realPath, (err, stats)->
         if err then return WriteErr err,res
-        lastModified = stat.mtime.toUTCString()
+        lastModified = stats.mtime.toUTCString()
         res.setHeader("Last-Modified", lastModified)
         if lastModified is req.headers['if-modified-since']
-            res.writeHead(304, "Not Modified")
+            res.writeHead 304, "Not Modified"
             res.end()
         else
-          WriteFile req,realPath,type,res
+          WriteFile req,realPath,type,stats,res
     else
       WriteFile req,realPath,type,res
               

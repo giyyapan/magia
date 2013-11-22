@@ -168,13 +168,15 @@ class window.Drawable extends Suzaku.EventEmitter
       for n in arr
         ref = ref[n]
       if isNaN ref then console.error "invailid key:#{name},#{n}" if GameConfig.debug
-      delta = targetValue - ref
-      if targetValue.indexOf "+=" is 0
-        delta = parseFloat(targetValue.split("+=")[1])
-      if targetValue.indexOf "-=" is 0
-        delta = - parseFloat(targetValue.split("-=")[1])
-      if isNaN delta then console.error "invailid value:#{delta} for #{name}" if GameConfig.debug
-      dataObj[name] = origin:ref,delta:delta
+      if typeof targetValue is "string"
+        if targetValue.indexOf "+=" is 0
+          d = parseFloat(targetValue.split("+=")[1])
+        if targetValue.indexOf "-=" is 0
+          d = - parseFloat(targetValue.split("-=")[1])
+      else
+        d = targetValue - ref        
+      if isNaN d then console.error "invailid value:#{d} for #{name}"
+      dataObj[name] = origin:ref,delta:d
     f = (p)->
       for name,delta of dataObj
         arr = name.split(".")

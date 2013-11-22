@@ -1,11 +1,14 @@
 #some often-use widgets hear
 class window.PopupBox extends Widget
-  constructor:(tpl)->
+  constructor:(tpl,title,content)->
     tpl = tpl or Res.tpls['popup-box']
     super tpl
     @box = @UI.box
     @J.hide()
     @box.J.hide()
+    if title
+      @UI.title.J.text title
+      @UI.content.J.text content
     @UILayer = $ GameConfig.UILayerId
     self = this
     @UI['close'].onclick = ->
