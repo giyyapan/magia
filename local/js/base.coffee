@@ -21,22 +21,24 @@ class window.Clock extends Suzaku.EventEmitter
       @currentDelay -= @frameDelay
       if not @paused then @emit "next"
       
-class window.Menu extends Suzaku.Widget
+class window.Menu extends Widget
   constructor:(tpl)->
     super tpl
     @isMenu = yes
     @z = 0
-    @UILayer = $ GameConfig.UILayerId
+    @UILayer =
+      J:$ GameConfig.UILayerId
+      dom:$(GameConfig.UILayerId).get 0
   init:->
-    @UILayer.hide()
-    @UILayer.html ""
+    @UILayer.J.hide()
+    @UILayer.J.html ""
     @appendTo @UILayer 
   show:(callback)->
     @init()
     @J.show()
-    @UILayer.fadeIn "fast",callback
+    @UILayer.J.fadeIn "fast",callback
   hide:(callback)->
-    @UILayer.fadeOut "fast",=>
+    @UILayer.J.fadeOut "fast",=>
       @J.hide()
       callback() if callback
   onDraw:->

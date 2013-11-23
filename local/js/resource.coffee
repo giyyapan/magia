@@ -38,6 +38,7 @@ window.Templates = [
   "worktable-menu"
   "item-details-box"
   "trait-item"
+  "dialog-box"
   ]
 window.Css = []
   

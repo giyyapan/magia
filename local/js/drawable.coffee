@@ -13,6 +13,7 @@ class window.Drawable extends Suzaku.EventEmitter
       x:parseInt @width/2
       y:parseInt @height/2
     @renderData = null
+    @blendQueue = []
     @onshow = true
     @transform =
       opacity:null
@@ -40,6 +41,15 @@ class window.Drawable extends Suzaku.EventEmitter
     @_animates = []
     for name,f of Animate.funcs
       this[name] = f
+  blendWith:(drawable,method)->
+    if not drawable.draw
+      return console.error "invailid drawable",drawable
+    @blendQueue.push
+      drawable:drawable
+      method:method
+  _handleBlender:->
+    if @blendQueue.length is 0
+      return false
   onDraw:(context,tickDelay)->
     @_handleAnimate tickDelay
     for name,value of @transform
@@ -85,10 +95,11 @@ class window.Drawable extends Suzaku.EventEmitter
     return if -@anchor.x >= s.width or -@anchor.y >= s.height
     if @imgData
       i = @imgData
+      img = @_handleBlender() or i.img
       if i.x
-        context.drawImage i.img,i.x,i.y,i.width,i.height,-@anchor.x,-@anchor.y,@width,@height
+        context.drawImage img,i.x,i.y,i.width,i.height,-@anchor.x,-@anchor.y,@width,@height
       else
-        context.drawImage i.img,-@anchor.x,-@anchor.y,@width,@height
+        context.drawImage img,-@anchor.x,-@anchor.y,@width,@height
     else if GameConfig.debug is 2
       context.fillStyle = "black"
       context.fillRect(-50,-50,100,100)
