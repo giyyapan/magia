@@ -1,3 +1,27 @@
+class GatherResultItem extends Widget
+  constructor:(originData,number)->
+    super Res.tpls['thing-list-item']
+    @UI.img.src = originData.img.src if originData.img
+    @UI.name.J.text originData.name
+    @UI.quatity.J.text number
+    @originData = originData
+    
+class GatherResaultBox extends PopupBox
+  constructor:(data)->
+    super()
+    @UI.title.J.text "采集结果"
+    if typeof data is "string"
+      @UI.content.J.text data
+    else
+      @UI.content.J.hide()
+      @UI['content-list'].J.show()
+      for itemResData in data
+        originData = itemResData.gatherItem.originData
+        number = itemResData.number
+        console.log itemResData
+        w = new GatherResultItem originData,number
+        w.appendTo @UI['content-list']
+
 class ResPoint extends Suzaku.Widget
   constructor:(place,tpl,data,index)->
     super tpl
@@ -311,18 +335,3 @@ class window.Area extends Stage
   tick:->
     @currentPlace.tick() if @currentPlace.tick
     
-class GatherResaultBox extends PopupBox
-  constructor:(data)->
-    super()
-    @UI.title.J.text "采集结果"
-    if typeof data is "string"
-      @UI.content.J.text data
-    else
-      @UI.content.J.hide()
-      @UI['content-list'].J.show()
-      for itemResData in data
-        originData = itemResData.gatherItem.originData
-        number = itemResData.number
-        console.log itemResData
-        w = new ThingListWidget originData,number
-        w.appendTo @UI['content-list']
