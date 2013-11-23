@@ -51,6 +51,9 @@
       return this.areas.data = {
         forest: {
           name: "森林",
+          costEnergy: 5,
+          description: "这是一个森林哈哈哈哈哈",
+          summaryImg: "forestEntry",
           x: 0,
           y: 0,
           battlefieldBg: {
@@ -121,6 +124,8 @@
         },
         snowmountain: {
           name: "雪山",
+          costEnergy: 10,
+          description: "雪山里面有雪人，雪人的名字叫耶提",
           x: 0,
           y: 0,
           places: {

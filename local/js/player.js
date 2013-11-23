@@ -62,6 +62,7 @@
       if (!data) {
         this.data = playerData;
       }
+      this.energy = 50;
       this.backpack = [];
       this.storage = [];
       this.initData();

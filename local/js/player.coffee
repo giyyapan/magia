@@ -32,6 +32,7 @@ class window.Player
     @db = db
     @data = data
     @data = playerData if not data
+    @energy = 50
     @backpack = []
     @storage = []
     @initData()
