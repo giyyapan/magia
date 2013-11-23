@@ -12,7 +12,8 @@
       var name, path, resourceContainerDom, _ref, _ref1;
       AudioManager.__super__.constructor.apply(this, arguments);
       this.source = {
-        sfxStartCusor: "sfxStartCusor"
+        sfxStartCusor: "sfxStartCusor",
+        startClick: "startClick"
       };
       this.bgmSource = {
         startMenu: "startMenu",
@@ -49,13 +50,11 @@
     };
 
     AudioManager.prototype.setSound = function(soundName, volume) {
-      var audio, _i, _len, _ref, _results;
+      var audio, _results;
       if (soundName === "all") {
-        _ref = this.audios;
         _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          audio = _ref[_i];
-          _results.push(audio.setVolume(volume));
+        for (audio in this.audios) {
+          _results.push(this.audios[audio].setVolume(volume));
         }
         return _results;
       } else {
@@ -82,12 +81,12 @@
     };
 
     AudioManager.prototype.mute = function() {
-      var audioName, _i, _len, _ref, _results;
-      _ref = this.audios;
+      var audio, _results;
       _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        audioName = _ref[_i];
-        _results.push(this.audios[audioName].stop());
+      for (audio in this.audios) {
+        console.log("hehe");
+        console.log(audio);
+        _results.push(this.audios[audio].stop());
       }
       return _results;
     };
