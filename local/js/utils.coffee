@@ -1,7 +1,8 @@
 window.Dict =
     QualityLevel:[30,100,200,300,500,800]
-    TraitsName:
+    TraitName:
       life:"生命"
+      heal:"治疗"
       fire:"火焰"
       water:"水"
       wind:"风"

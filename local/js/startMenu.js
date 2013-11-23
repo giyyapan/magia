@@ -25,14 +25,13 @@
         _this.menu.UI["logo-bg"].J.animate({
           opacity: "1"
         }, 1500);
-        return _this.menu.UI["logo-text"].J.animate({
+        _this.menu.UI["logo-text"].J.animate({
           opacity: "1",
           right: "+=80px"
-        }, 1500, function() {
-          return _this.menu.UI["start-but"].J.show().animate({
-            opacity: "1"
-          }, 1000);
-        });
+        }, 1500);
+        return _this.menu.UI["start-but"].J.show().animate({
+          opacity: "1"
+        }, 1000);
       });
       this.menu.UI.start.onclick = function() {
         var lastStage;

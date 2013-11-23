@@ -193,6 +193,19 @@
       return parent.removeChild(this.dom);
     };
 
+    Widget.prototype.css3Animate = function(animateClass, waitTime, callback) {
+      var _this = this;
+      this.J.addClass(animateClass);
+      if (!waitTime) {
+        return;
+      }
+      return window.setTimeout((function() {
+        if (callback) {
+          return callback.call(_this);
+        }
+      }), waitTime);
+    };
+
     Widget.prototype.before = function(target) {
       if (target.dom instanceof HTMLElement) {
         target = target.dom;

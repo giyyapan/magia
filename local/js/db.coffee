@@ -205,6 +205,7 @@ class window.Database extends Suzaku.EventEmitter
         name:"火焰药剂"
         img:null
         description:"有火焰效果的药剂"
+        traitName:"fire"
         active:
           name:"火球术"
           description:"释放火球对单体目标进行攻击"

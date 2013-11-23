@@ -13,13 +13,14 @@
 .lv6{background: #cd64c0;}
 
 .life{background: #59a84c !important;}
-.water{background: blue !important;}
+.water{background: #1E72DF !important;}
 .fire{background: darkred !important;}
 .earth{background: orange !important;}
 .poison{background: black !important;}
 .muddy{background: #896b4c !important;}
+.clear{background: #549988 !important;}
 
-.traits-icon{
+.trait-icon{
 		display:inline-block;
 		padding-top:1px;
 		box-shadow: 0px 1px 0px rgba(255,255,255,0.85) inset;
@@ -98,7 +99,7 @@
 										float:left;
 										margin-left:10px;
 								}
-								.traits-icon{
+								.trait-icon{
 										font-size:22px;
 										display:inline-block;
 										margin-left:10px;
@@ -110,7 +111,7 @@
 						background-color:#896b4c;
 						min-height:250px;
 						position:relative;
-						.traits-icon{
+						.trait-icon{
 								margin:0 2px;
 								height:22px
 						}
@@ -272,33 +273,33 @@
 				height: 100%;
 		}
 }
-.traits-item{
+.trait-item{
 		padding: 8px 0px 2px 0px;
 		line-height: 24px;
 		margin:10px 0;
-		height: 30px;
+		height: 20px;
 		width: 100%;
 		display: block;
-		.traits-icon{
+		.trait-icon{
 				margin:0;
+				margin-top:-4px;
 				margin-left:10px;
 				float:left;
 		}
-		.traits-holder{
+		.trait-holder{
 				margin-right:10px;
 				float:right;
 				width: 230px;
-				height: 23px;
+				height: 17px;
 				display: inline-block;
 				border:	1px solid @color-border-black;
 				border-radius: 5px;
 				position: relative;
 				.cursor{
 						.transition;
-						height: 29px;
+						height: 23px;
 						width: 7px;
 						display: block;
-						background: url('/img/menu/backpack-traits-cursor-bg.png');
 						position: absolute;
 						top: -3px;
 						left: 2px;
@@ -309,7 +310,7 @@
 				height: 100%;
 				display: block;
 				float: left;
-				width: 10px;
+				width: 5%;
 				position:relative;
 				background: rgba(0,0,0,0.4);
 				.filled{
@@ -319,7 +320,7 @@
 						width:100%;
 				}
 				&.active{
-						width: 180px;
+						width: 75%;
 						.filled{
 								width:20%;
 						}
