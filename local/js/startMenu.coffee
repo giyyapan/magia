@@ -12,20 +12,24 @@ class window.StartMenu extends Stage
         
     @menu.UI.start.onclick = =>
       console.log  "start game btn click"
+      window.myAudio.play("startClick")
       lastStage = @game.player.data.lastStage
       @game.switchStage lastStage
     @menu.UI.test.onclick = =>
       console.log  "start game btn click"
+      window.myAudio.play("startClick")
       @game.switchStage "test"
     @menu.show()
     console.log @menu
     @menu.UI["start-but"].onclick = =>
       @showSubMenu()
        #audio
-    @menu.UI["start-but"].onmouseover = ->
-      window.myAudio.play "sfxStartCusor"
+    for but in document.getElementsByTagName("button")
+      but.onmouseover = ->
+        window.myAudio.play "sfxStartCusor"
   showSubMenu:->
-    console.log "start-but click"
+    #console.log "start-but click"
+    window.myAudio.play("startClick")
     @menu.UI["logo-holder"].J.animate {bottom:"100px"},500
     @menu.UI["start-but"].J.fadeOut "fast",=>
       animateBtn = (btnJ)->

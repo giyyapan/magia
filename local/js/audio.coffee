@@ -3,6 +3,7 @@ class AudioManager extends EventEmitter
 		super
 		@source = 
 			sfxStartCusor:"sfxStartCusor"
+			startClick:"startClick"
 		@bgmSource=
 			startMenu:"startMenu"
 			home:"home"
@@ -23,8 +24,8 @@ class AudioManager extends EventEmitter
 		@setSound "all",1
 	setSound:(soundName,volume) ->
 		if soundName is "all"
-			for audio in @audios
-				audio.setVolume volume
+			for audio of @audios
+				@audios[audio].setVolume volume
 		else 
 			@audios[soundName].setVolume volume if @audios[soundName]
 	pause:(audioName)->
@@ -38,8 +39,10 @@ class AudioManager extends EventEmitter
 		else
 			console.error "stop-audio" + audioName + "not found "
 	mute:->
-		for audioName in @audios
-			@audios[audioName].stop()
+		for audio of @audios
+			console.log "hehe"
+			console.log audio
+			@audios[audio].stop()
 
 class GameAudio extends EventEmitter
 	constructor:(@name,@sourceName,@container,@isBGM) ->
