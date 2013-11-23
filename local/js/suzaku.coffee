@@ -101,6 +101,12 @@ class Widget extends EventEmitter
   remove:()->
     parent = @dom.parentElement or @dom.parentNode
     parent.removeChild @dom
+  css3Animate:(animateClass,waitTime,callback)->
+    @J.addClass animateClass
+    return if not waitTime
+    window.setTimeout (=>
+      callback.call this if callback
+      ),waitTime
   before:(target)->
     if target.dom instanceof HTMLElement
       target = target.dom

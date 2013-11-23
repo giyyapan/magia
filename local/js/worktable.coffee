@@ -5,26 +5,27 @@ class ReactionFinishBox extends PopupBox
     super title,hint
     @UI['content-list'].J.show()
     @UI['accept'].J.hide()
+    @dom.id = "reaction-finish-box"
     self = this
-    for name,i of @reactionBox.traitsItems
-      if not @db.things.supplies.get "#{i.traitsName}Potion"
-        console.log "no potion for traits#{i.traitsName}"
+    for name,i of @reactionBox.traitItems
+      if not @db.things.supplies.get "#{i.traitName}Potion"
+        console.log "no supplies for trait : #{i.traitName}"
         continue
-      item = new TraitsItem(i.traitsName,i.traitsValue)
-      console.log "finish add traits",item
+      item = new TraitItem(i.traitName,i.traitValue)
+      console.log "finish add trait",item
       item.appendTo @UI['content-list']
-      item.onclick = ->
-        self.chooseTraitsItem this
+      item.dom.widget = item
+      item.dom.onclick = ->
+        self.chooseTraitItem this.widget
     @show()
-  chooseTraitsItem:(item)->
-    name = "#{item.traitsName}Potion"
+  chooseTraitItem:(item)->
+    name = "#{item.traitName}Potion"
     originData = @db.things.supplies.get name
-    newSupplies = new PlayerSupplies name,originData,item.traitsValue
-    @close()
+    newSupplies = new PlayerSupplies name,originData,item.traitValue
     @emit "getNewSupplies",newSupplies
     @close()
     
-class ReactionTraitsItem extends TraitsItem
+class ReactionTraitItem extends TraitItem
   constructor:->
     super
     @J.addClass "animate-popup"
@@ -34,8 +35,8 @@ class ReactionConfirmBox extends PopupBox
     super "合成新属性"
     str = ""
     for name of reaction.from
-      str += "<span class='traits-icon #{name}'>#{Dict.TraitsName[name]}</span>"
-    targetStr = "<span class=traits-icon '#{name}'>#{Dict.TraitsName[reaction.to]}</span>"
+      str += "<span class='trait-icon #{name}'>#{Dict.TraitName[name]}</span>"
+    targetStr = "<span class=trait-icon '#{name}'>#{Dict.TraitName[reaction.to]}</span>"
     s =  "要将#{str}转化成为#{targetStr}吗？"
     @UI.content.J.html s
     @UI.close.J.text "取消"
@@ -53,22 +54,19 @@ class ReactionBtn extends Widget
       index += 1
       span = @UI["source#{index}"]
       span.J.addClass name
-      span.J.text Dict.TraitsName[name].split("")[0]
+      span.J.text Dict.TraitName[name].split("")[0]
     @update avail
     @J.removeClass "hide"
     @J.addClass "animate-popup"
     @dom.onclick = => 
       return if not @avail
       @reactionBox.react @reaction,=>
-        @J.addClass("animate-popout")
-        @remove()
+        @css3Animate "animate-popout",400,->@remove()
   remove:->
     layer = @worktable
     scale = 0
-    layer.animate ((p)=>
-      s = scale * (1-p)
-      Utils.setCSS3Attr this,"animate","scale(#{s},#{s})"
-      ),1000,=>
+    @css3Animate "animate-popout",400,->
+      @J.animate {width:0,height:0,margin:0},200,=>
         delete @reactionBox.reactionBtns[@reaction.to]
         super
   update:(avail)->
@@ -78,7 +76,7 @@ class ReactionBtn extends Widget
       span.J.show()
       span.J.removeClass()
       span.J.addClass "target",@reaction.to
-      span.J.text Dict.TraitsName[@reaction.to].split("")[0]
+      span.J.text Dict.TraitName[@reaction.to].split("")[0]
       @UI["?"].J.hide()
       @J.addClass "avail"
     else
@@ -91,19 +89,21 @@ class ReactionBox extends Widget
     super tpl
     @menu = menu
     @worktable = menu.worktable
-    @traitsItems = {}
+    @traitItems = {}
     @reactions = []
     @reactionBtns = {}
     @initReactions()
-    @UI['finish'].onclick = =>
-      box = new ReactionFinishBox this,@worktable.game.db
-      box.on "getNewSupplies",(s)=>
-        for n,i of @traitsItems
-          i.remove()
-        @traitsItems = {}
-        new MsgBox "获得物品","你获得了#{s.dspName}！"
-        @worktable.game.player.getSupplies s
     console.log @reactions
+    @UI['finish'].onclick = =>
+      @finishReaction()
+  finishReaction:->
+    box = new ReactionFinishBox this,@worktable.game.db
+    box.on "getNewSupplies",(s)=>
+      for n,i of @traitItems
+        i.remove()
+      @traitItems = {}
+      new MsgBox("获得物品","你获得了#{s.dspName}！")
+      @worktable.game.player.getSupplies "backpack",s
   initReactions:->
     for r in @worktable.db.rules.get "reaction"
       fromTraitsArr = r.split("->")[0].split(",")
@@ -111,17 +111,17 @@ class ReactionBox extends Widget
         from:{}
         fromTraitsNumber:fromTraitsArr.length
         to:r.split("->")[1]
-      for traits in fromTraitsArr 
-        t = traits.split(":")
+      for trait in fromTraitsArr 
+        t = trait.split(":")
         obj.from[t[0]] = parseInt t[1]
       @reactions.push obj
   putInItem:(playerItem)->
     for name,value of playerItem.traits
-      if not @traitsItems[name]
-        @traitsItems[name] = new ReactionTraitsItem(name,value).insertTo @UI['current-traits-list']
+      if not @traitItems[name]
+        @traitItems[name] = new ReactionTraitItem(name,value).insertTo @UI['current-traits-list']
       else
-        i = @traitsItems[name]
-        old = i.traitsValue
+        i = @traitItems[name]
+        old = i.traitValue
         console.log i
         i.changeValue parseInt(value*value/(old+value) + old)
     @tryReaction()
@@ -129,10 +129,10 @@ class ReactionBox extends Widget
     for r in @reactions
       avail = 0 #0:not avail 1:not enough 2:avail
       for name,lvValue of r.from
-        if not @traitsItems[name]
+        if not @traitItems[name]
           avail = 0
           break
-        if @traitsItems[name].lv >= lvValue
+        if @traitItems[name].lv >= lvValue
           if avail is 0 then avail = 2
         else
           avail = 1
@@ -153,29 +153,26 @@ class ReactionBox extends Widget
     console.log "react",reaction
     value = 0
     for name of reaction.from
-      value += parseInt @traitsItems[name].traitsValue
+      value += parseInt @traitItems[name].traitValue
     box = new ReactionConfirmBox reaction
     box.on "accept",=>
       value = value/reaction.fromTraitsNumber
       callback() if callback
       newTraits = {}
       newTraits[reaction.to] = value
-      @combineTraitsItems(reaction,newTraits)
-  combineTraitsItems:(reaction,newTraits)->
+      @combineTraitItems(reaction,newTraits)
+  combineTraitItems:(reaction,newTraits)->
     self = this
     items = []
-    items.push @traitsItems[name] for name of reaction.from
+    items.push @traitItems[name] for name of reaction.from
     for i,index in items
       targetTop = @UI['traits-box'].offsetTop
-      i.dom.traitsName = i.traitsName
-      i.J.addClass "animate-popout"
+      i.dom.traitName = i.traitName
+      i.css3Animate "animate-popout",400,->
+        this.J.animate {height:0,margin:0},200,=>
+          @remove()
+          delete self.traitItems[this.traitName]
     @putInItem traits:newTraits
-    window.setTimeout (->
-      for i in items
-        i.J.animate {width:0,margin:0},200,->
-          $(this).remove()
-          delete self.traitsItems[this.traitsName]
-      ),400
       
 class DetailsBox extends ItemDetailsBox
   constructor:(menu)->

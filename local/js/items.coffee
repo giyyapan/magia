@@ -1,10 +1,3 @@
-class window.ThingListWidget extends Widget
-  constructor:(originData,number)->
-    super Res.tpls['thing-list-item']
-    @UI.img.src = originData.img.src if originData.img
-    @UI.name.J.text originData.name
-    @UI.quatity.J.text number
-    
 class window.Things extends EventEmitter
   constructor:(name,data,type)->
     super()
@@ -30,7 +23,10 @@ class window.PlayerSupplies extends Things
   constructor:(name,originData,traitValue)->
     super name,originData,"supplies"
     @traitValue = traitValue
-    
+    @traitName = originData.traitName
+    @traits = {}
+    @traits[originData.traitName] = @traitValue
+        
 class window.PlayerEquipment extends Things
   constructor:->
       

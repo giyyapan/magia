@@ -11,7 +11,7 @@
 .source-box-wrapper .source-list .source-item.selected{background-color:#5d452c}
 .reaction-box-wrapper{position:absolute;width:370px;height:653px;right:11px;top:48px;text-align:center}.reaction-box-wrapper .title-box{box-shadow:-2px -2px 0 #382a1c inset,2px 2px 0 #382a1c inset;border:5px solid #9a7a56;background:url("/img/menu/texture-bg.jpg") 0 0 repeat;border-radius:6px;padding:0;width:99%;border-radius:20px;margin:auto;position:absolute}.reaction-box-wrapper .title-box h2{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;margin:12px}
 .reaction-box-wrapper .content{box-shadow:-2px -2px 0 #382a1c inset,2px 2px 0 #382a1c inset;border:5px solid #9a7a56;background:url("/img/menu/texture-bg.jpg") 0 0 repeat;border-radius:6px;width:92%;margin:auto;margin-top:47px;height:560px;margin-bottom:-15px}
-.reaction-box-wrapper .traits-box{background-color:#674e34;border:2px solid #816c54;box-shadow:inset 0 0 8px #2e1c0e;background-color:#896b4c;margin:5px;height:260px;overflow:auto;overflow-x:hidden;margin-top:33px;margin-bottom:0}.reaction-box-wrapper .traits-box .traits-item{width:326px}
+.reaction-box-wrapper .traits-box{background-color:#674e34;border:2px solid #816c54;box-shadow:inset 0 0 8px #2e1c0e;background-color:#896b4c;margin:5px;height:260px;overflow:auto;overflow-x:hidden;margin-top:33px;margin-bottom:0}.reaction-box-wrapper .traits-box .trait-item{width:326px}
 .reaction-box-wrapper .avail-reaction-box{text-align:left;padding-top:15px;height:236px;overflow:auto}
 .reaction-box-wrapper .reaction-btn{-webkit-transition:.15s linear;-o-transition:.15s linear;-ms-transition:.15s linear;transition:.15s linear;float:left;display:inline-block;width:100px;height:100px;overflow:visible;position:relative;margin:10px;cursor:pointer}.reaction-box-wrapper .reaction-btn.hide{display:none}
 .reaction-box-wrapper .reaction-btn span{-webkit-transition:.15s linear;-o-transition:.15s linear;-ms-transition:.15s linear;transition:.15s linear;opacity:.85;background-color:#444;position:absolute;text-align:center;color:rgba(250,250,250,0.85);font-weight:bold;font-size:18px;padding-top:5px;width:30px;height:25px;border-radius:18px;border:3px solid rgba(250,250,250,0.5);z-index:1}
@@ -29,3 +29,7 @@
 .work-table-wrapper .item-details-box-wrapper .item-details-box .head .right .description{width:253px;text-align:left}
 .work-table-wrapper .item-details-box-wrapper .details-content-wrapper{width:auto;margin:0 10px}
 .work-table-wrapper .item-details-box-wrapper .button-holder{width:100%;margin-top:22px}.work-table-wrapper .item-details-box-wrapper .button-holder .btn{width:140px;padding:10px;margin:10px}
+#reaction-finish-box .popup-box .content-list{margin-bottom:90px}
+#reaction-finish-box .popup-box .trait-item{height:55px}#reaction-finish-box .popup-box .trait-item .trait-icon{display:block;margin:auto;margin-bottom:-17px;float:none;padding:20px;width:200px;cursor:pointer}#reaction-finish-box .popup-box .trait-item .trait-icon:active{box-shadow:inset 0 -1px 3px rgba(20,20,20,0.8)}
+#reaction-finish-box .popup-box .trait-item .trait-holder{margin:auto;float:none;display:block;height:10px;width:158px}
+#reaction-finish-box .popup-box .trait-item .cursor{height:16px}

@@ -83,7 +83,14 @@ class window.Player
     target.push item
     @saveData()
     console.log this
-  getSupplies:(target="backpack",supplies)->
+  getSupplies:(target="backpack",data)->
+    if data instanceof PlayerSupplies
+      supplies = data
+    else
+      name = data.name
+      traitValue = data.traitValue
+      originData = @db.things.supplies.get data.name
+      supplies = new PlayerSupplies name,originData,traitValue
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage

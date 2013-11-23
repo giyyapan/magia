@@ -3,22 +3,6 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  window.ThingListWidget = (function(_super) {
-    __extends(ThingListWidget, _super);
-
-    function ThingListWidget(originData, number) {
-      ThingListWidget.__super__.constructor.call(this, Res.tpls['thing-list-item']);
-      if (originData.img) {
-        this.UI.img.src = originData.img.src;
-      }
-      this.UI.name.J.text(originData.name);
-      this.UI.quatity.J.text(number);
-    }
-
-    return ThingListWidget;
-
-  })(Widget);
-
   window.Things = (function(_super) {
     __extends(Things, _super);
 
@@ -65,6 +49,9 @@
     function PlayerSupplies(name, originData, traitValue) {
       PlayerSupplies.__super__.constructor.call(this, name, originData, "supplies");
       this.traitValue = traitValue;
+      this.traitName = originData.traitName;
+      this.traits = {};
+      this.traits[originData.traitName] = this.traitValue;
     }
 
     return PlayerSupplies;

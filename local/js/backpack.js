@@ -7,10 +7,33 @@
   ThingListItem = (function(_super) {
     __extends(ThingListItem, _super);
 
-    function ThingListItem(thing) {
-      var _this = this;
-      ThingListItem.__super__.constructor.call(this, thing.originData, thing.number);
-      this.thing = thing;
+    function ThingListItem(playerThing) {
+      var originData,
+        _this = this;
+      console.log(playerThing);
+      ThingListItem.__super__.constructor.call(this, Res.tpls['thing-list-item']);
+      originData = playerThing.originData;
+      if (originData.img) {
+        this.UI.img.src = originData.img.src;
+      }
+      this.UI.name.J.text(originData.name);
+      if (playerThing.number) {
+        this.UI.quatity.J.text(playerThing.number);
+      }
+      this.originData = originData;
+      switch (playerThing.type) {
+        case "item":
+          this.playerItem = playerThing;
+          break;
+        case "supplies":
+          this.playerSupplies = playerThing;
+          break;
+        case "equipment":
+          this.playerEquipment = playerThing;
+          break;
+        default:
+          console.error("invailid playerThing type:" + playerThing.type);
+      }
       this.dom.onclick = function() {
         return _this.emit("select");
       };
@@ -18,13 +41,14 @@
 
     return ThingListItem;
 
-  })(ThingListWidget);
+  })(Widget);
 
   DetailsBox = (function(_super) {
     __extends(DetailsBox, _super);
 
     function DetailsBox(backpack) {
       DetailsBox.__super__.constructor.apply(this, arguments);
+      this.dom.id = "item-details-box";
       this.bp = backpack;
       this.UI['cancel-btn'].J.hide();
     }
@@ -40,10 +64,9 @@
       Backpack.__super__.constructor.call(this, Res.tpls["backpack"]);
       this.J.hide();
       this.player = game.player;
-      this.currentTabName = "items";
+      this.detailsBox = new DetailsBox(this).appendTo(this.UI['item-details-box-wrapper']);
+      this.currentTabName = "item";
       this.initThings();
-      this.detailsBox = new DetailsBox(this);
-      this.detailsBox.appendTo(this.UI['item-details-box-wrapper']);
       this.items = null;
       this.supplies = null;
       this.materials = null;
@@ -99,24 +122,21 @@
     Backpack.prototype.switchTab = function(tabName) {
       var arr, item, self, thing, _i, _len, _results;
       this.UI['item-list'].J.html("");
+      this.detailsBox.J.fadeOut("fast");
       self = this;
-      this.UI['type-switch'].J.find(".tab").removeClass("active");
+      this.UI['type-switch'].J.find(".tab").removeClass("selected");
       switch (tabName) {
-        case "items":
+        case "item":
           arr = this.items;
-          this.UI['item-tab'].J.addClass("active");
+          this.UI['item-tab'].J.addClass("selected");
           break;
         case "supplies":
           arr = this.supplies;
-          this.UI['supplies-tab'].J.addClass("active");
+          this.UI['supplies-tab'].J.addClass("selected");
           break;
-        case "materials":
-          arr = this.materials;
-          this.UI['materials-tab'].J.addClass("active");
-          break;
-        case "equipments":
+        case "equipment":
           arr = this.equipments;
-          this.UI['equipments-tab'].J.addClass("active");
+          this.UI['equipments-tab'].J.addClass("selected");
           break;
         default:
           console.error("wrong type", tabName);
@@ -137,10 +157,10 @@
       return _results;
     };
 
-    Backpack.prototype.selectThing = function(w) {
-      this.J.find("thing-list-item").removeClass("active");
-      w.J.addClass("active");
-      return this.detailsBox.showItemDetails(w.thing);
+    Backpack.prototype.selectThing = function(item) {
+      this.J.find("thing-list-item").removeClass("selected");
+      console.log(item);
+      return this.detailsBox.showItemDetails(item);
     };
 
     Backpack.prototype.freeThings = function() {

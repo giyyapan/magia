@@ -1,13 +1,24 @@
-class ThingListItem extends ThingListWidget
-  constructor:(thing)->
-    super thing.originData,thing.number
-    @thing = thing
+class ThingListItem extends Widget
+  constructor:(playerThing)->
+    console.log playerThing
+    super Res.tpls['thing-list-item']
+    originData = playerThing.originData
+    @UI.img.src = originData.img.src if originData.img
+    @UI.name.J.text originData.name
+    @UI.quatity.J.text playerThing.number if playerThing.number
+    @originData = originData
+    switch playerThing.type
+      when "item" then @playerItem = playerThing
+      when "supplies" then @playerSupplies = playerThing
+      when "equipment" then @playerEquipment = playerThing
+      else console.error "invailid playerThing type:#{playerThing.type}"
     @dom.onclick = =>
       @emit "select"
       
 class DetailsBox extends ItemDetailsBox
   constructor:(backpack)->
     super
+    @dom.id = "item-details-box"
     @bp = backpack
     @UI['cancel-btn'].J.hide()
 
@@ -16,10 +27,9 @@ class window.Backpack extends Menu
     super Res.tpls["backpack"]
     @J.hide()
     @player = game.player
-    @currentTabName = "items"
+    @detailsBox = new DetailsBox(this).appendTo @UI['item-details-box-wrapper']
+    @currentTabName = "item"
     @initThings()
-    @detailsBox = new DetailsBox this
-    @detailsBox.appendTo @UI['item-details-box-wrapper']
     @items = null
     @supplies = null
     @materials = null
@@ -47,21 +57,19 @@ class window.Backpack extends Menu
     @switchTab tabName
   switchTab:(tabName)->
     @UI['item-list'].J.html ""
+    @detailsBox.J.fadeOut "fast"
     self = this
-    @UI['type-switch'].J.find(".tab").removeClass "active"
+    @UI['type-switch'].J.find(".tab").removeClass "selected"
     switch tabName
-      when "items"
+      when "item"
         arr = @items
-        @UI['item-tab'].J.addClass "active"
+        @UI['item-tab'].J.addClass "selected"
       when "supplies"
         arr = @supplies
-        @UI['supplies-tab'].J.addClass "active"
-      when "materials"
-        arr = @materials
-        @UI['materials-tab'].J.addClass "active"
-      when "equipments"
+        @UI['supplies-tab'].J.addClass "selected"
+      when "equipment"
         arr = @equipments
-        @UI['equipments-tab'].J.addClass "active"
+        @UI['equipments-tab'].J.addClass "selected"
       else console.error "wrong type",tabName
     console.log arr
     return if not arr
@@ -70,10 +78,10 @@ class window.Backpack extends Menu
       item.appendTo @UI['item-list']
       item.on "select",->
         self.selectThing this
-  selectThing:(w)->
-    @J.find("thing-list-item").removeClass "active"
-    w.J.addClass "active"
-    @detailsBox.showItemDetails w.thing
+  selectThing:(item)->
+    @J.find("thing-list-item").removeClass "selected"
+    console.log item
+    @detailsBox.showItemDetails item
   freeThings:->
     Utils.free @items,@supplies,@materials,@equipments
     @items = []

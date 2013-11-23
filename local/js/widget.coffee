@@ -21,42 +21,45 @@ class window.PopupBox extends Widget
   close:->
     self = this
     @J.fadeOut "fast"
-    @box.J.animate {top:"-=30px",opacity:0},"fast",=>
-      @box.J.css "top",0
-      @box.J.removeClass "animate-popup"
-      self.remove()
+    @box.J.animate {top:"-=30px",opacity:0},"fast",->
+      self.box.J.css "top",0
+      self.box.J.removeClass "animate-popup"
+      self.J.remove()
       self = null
   accept:->
     console.log this,"accept"
     @emit "accept"
     @close()
     
-class MsgBox extends Widget
-  constructor:->
+class window.MsgBox extends PopupBox
+  constructor:(title,content,autoRemove=false)->
     super
-    @UI.footer.J.hide()
+    if autoRemove 
+      @UI.footer.J.hide()
+      window.setTimeout (=>
+        @close()
+        ),1000
+    else
+      @UI.accept.J.hide()
     @show()
-    window.setTimeout (->
-      @close()
-      ),2000
     
-class window.TraitsItem extends Widget
+class window.TraitItem extends Widget
   constructor:(name,value)->
-    super Res.tpls['traits-item']
-    @traitsName = name
-    @traitsValue = value
+    super Res.tpls['trait-item']
+    @traitName = name
+    @traitValue = value
     @lv = 1
-    @UI.name.J.text Dict.TraitsName[@traitsName]
-    @UI.name.J.addClass @traitsName
-    @changeValue @traitsValue
+    @UI.name.J.text Dict.TraitName[@traitName]
+    @UI.name.J.addClass @traitName
+    @changeValue @traitValue
   changeValue:(value)->
-    @traitsValue = value
+    @traitValue = value
     levelData = Dict.QualityLevel
     for v,index in levelData
       break if value < v
     @lv = parseInt(index + 1)
-    @UI['traits-holder'].J.removeClass "lv1","lv2","lv3","lv4","lv5","lv6"
-    @UI['traits-holder'].J.addClass "lv#{@lv}"
+    @UI['trait-holder'].J.removeClass "lv1","lv2","lv3","lv4","lv5","lv6"
+    @UI['trait-holder'].J.addClass "lv#{@lv}"
     @J.find(".lv").removeClass "active"
     @J.find(".filled").css "width","100%"
     activeDom = @UI["lv#{@lv}"]
@@ -79,10 +82,11 @@ class window.ItemDetailsBox extends Widget
     @UI.img.src = item.originData.img.src if item.originData.img
     @UI.description.J.text item.originData.description
     @initTraits item.playerItem
+    @initTraits item.playerSupplies
     @J.fadeIn "fast"
     @UI['content'].J.fadeIn 100
-  initTraits:(itemData)->
-    return if not itemData.traits
+  initTraits:(thingData)->
+    return if not thingData or not thingData.traits
     @UI['traits-list'].J.html ""
-    for name,value of itemData.traits
-      new TraitsItem(name,value).appendTo @UI['traits-list']
+    for name,value of thingData.traits
+      new TraitItem(name,value).appendTo @UI['traits-list']

@@ -31,7 +31,7 @@
     qq: "qq"
   };
 
-  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu", "worktable-menu", "item-details-box", "traits-item"];
+  window.Templates = ["start-menu", "home-1st-floor", "home-2nd-floor", "world-map", "popup-box", "test-menu", "area-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu", "worktable-menu", "item-details-box", "trait-item"];
 
   window.Css = [];
 
