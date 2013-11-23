@@ -3,7 +3,6 @@ class MapPoint extends Widget
     super tpl
     @UI["map-summary-name"].innerHTML = data.name
     
-
 class window.WorldMap extends Stage
   constructor:(game)->
     super()
@@ -36,5 +35,3 @@ class window.WorldMap extends Stage
       game.switchStage "area","forest"
     @menu.UI.snowmountain.onclick = ->
       game.switchStage "area","snowmountain"
-
-    
