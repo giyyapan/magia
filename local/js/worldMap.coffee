@@ -1,8 +1,7 @@
 class MapPoint extends Widget
   constructor:(tpl,data)->
     super tpl
-    @UI.name.innerHTML = data.name
-    @UI.description.innerHTML = data.description
+    @UI["map-summary-name"].innerHTML = data.name
     
 
 class window.WorldMap extends Stage
@@ -16,15 +15,16 @@ class window.WorldMap extends Stage
     forestData = @db.areas.get "forest"
     forestData.description
 
+    @menu = new Menu Res.tpls['world-map']
     for name in ["forest","snowmountain"]
       data = @db.areas.get name
       imgName = data.summaryImg
       img = window.Res.imgs[imgName]
-      newItem = new MapPoint @UI['map-point-tpl'].innerHTML,data
-      newItem.appendTo @UI['map-point-box']
+      console.log @UI
+      newItem = new MapPoint @menu.UI['map-point-tpl'].innerHTML,data
+      newItem.appendTo @menu.UI['map-summary-holder']
 
     map.setImg Res.imgs.worldMap
-    @menu = new Menu Res.tpls['world-map']
     console.log @menu
     @menu.show()
     @drawQueueAddAfter map,@menu

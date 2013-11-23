@@ -16,7 +16,10 @@ class Magia
       @db = new Database()
       @player = new Player null,@db
       $("#loadingPage").slideUp "slow"
-      @switchStage "start"
+      #@switchStage "start"
+      window.myAudio.stop "startMenu"
+      window.myAudio.play "home"
+      @switchStage "worldMap"
       #@switchStage "area","forest"
       #@switchStage "home"
       @startGameLoop()
