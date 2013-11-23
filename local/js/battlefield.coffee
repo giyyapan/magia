@@ -18,12 +18,13 @@ class SpeedItem extends Widget
     @J.css "left",parseInt(value/@maxSpeed*100)+"%"
     
 class SpellSourceItem extends Widget
-  constructor:(tpl,type,menu,data)->
+  constructor:(tpl,type,menu,playerSupplies)->
     super tpl
     @type = type
-    @originData = data.originData
+    @playerSupplies = playerSupplies
+    @originData = playerSupplies.originData
     @effectData = @originData[type]
-    @traitValue = data.traitValue
+    @traitValue = playerSupplies.traitValue
     @UI.img.src = @originData.img
     @UI.name.J.text @originData.name
     @dom.onclick = (evt)=>
