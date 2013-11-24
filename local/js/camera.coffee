@@ -81,6 +81,10 @@ class window.Camera extends Drawable
     self = this
     size = Utils.getSize()
     for d in arguments
+      if d instanceof HTMLElement or d instanceof $
+        z = d.z or @defaultReferenceZ
+        d = new Menu d
+        d.z = z
       if d.onDraw
         if d.isMenu
           d.on "render",->
@@ -121,6 +125,7 @@ class window.Camera extends Drawable
       r.scaleX *= sX
       r.scaleY *= sY
   _renderMenu:(m,s)->
+    if not m.z then m.z = @defaultReferenceZ
     if not m.renderData
       m.renderData =
         z:m.z - 1

@@ -1,16 +1,34 @@
 <div class="menu home-menu" >
 	<link rel="stylesheet" href="css/home.css" type="text/css" />
-	<a class="move-arrow" id="move-left" data-id="move-left" >
-		<img src="img/menu/arrow-left.png"></img>
-	</a>
-	<a class="move-arrow" id="move-right" data-id="move-right" >
-		<img src="img/menu/arrow-right.png">
-	</a>
+	<div class="move-arrow-box" >
+		<a class="move-arrow" id="move-left" data-id="move-left" >
+			<img src="img/menu/arrow-left.png"></img>
+		</a>
+		<a class="move-arrow" id="move-right" data-id="move-right" >
+			<img src="img/menu/arrow-right.png">
+		</a>
+	</div>
+	<section class="sub-menu-layer wrapper" data-id="sub-menu-layer" style="display:none;" >
+		<div class="sub-menu-box" >
+			<h1 data-id="title" ></h1>
+			<div class="sub-btn-box" data-id="sub-btn-box" >
+			</div>
+		</div>
+		<template data-id="sub-btn-tpl" >
+			<a class="sub-btn btn" >
+				<span data-id="name" ></span>
+			</a>
+		</template>
+	</section>
 	<div class="function-btn-box" data-id="function-btn-box" >
 	</div>
 	<template data-id="function-btn-tpl" >
-		<a class="btn function-btn" >
-			<p data-id="name" ></p>
+		<a class="function-btn" >
+			<div class="dialog-mark animate-dialog-mark" >
+				<span data-id="dot1" class="dot dot1" >.</span>
+				<span data-id="dot2" class="dot dot2" >.</span>
+				<span data-id="dot3" class="dot dot3" >.</span>
+			</div>
 		</a>
 	</template>
 </div>

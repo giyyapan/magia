@@ -36,15 +36,20 @@ class EventEmitter
     return f
   off:(event,listener)->
     if typeof listener is "function"
+      if not @_events[event]
+        console.warn "no events named #{event} --Suzaku.EventEmitter"
+        return false
       for func in @_events[event]
         if func is listener
           Utils.removeItem @_events[event],func
-          return
+          return true
       console.error "cannot find listener #{listener} of #{event}-- Suzaku.EventEmitter"
     else
+      return false if not @_events[event]
       for func in @_events[event]
         func = null
       delete @_events[event]
+      return true
   emit:(event)->
     return if !@_events[event]
     for func in @_events[event]

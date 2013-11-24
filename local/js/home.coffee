@@ -1,10 +1,39 @@
+class SubMenu extends Widget
+  constructor:(tpl,menu)->
+    super tpl
+    @menu = menu
+    @dom.onclick = =>
+      @J.fadeOut "fast"
+  setTitle:(title)->
+    @UI.title.J.text title
+  addBtn:(name,btnCode)->
+    btn = new Widget @UI['sub-btn-tpl'].innerHTML
+    btn.UI.name.J.text name
+    btn.appendTo @UI['sub-btn-box']
+    btn.dom.onclick = (evt)=>
+      evt.stopPropagation()
+      @menu.emit "activeSubMenu",btnCode
+      
 class HomeMenu extends Menu
   constructor:(floor)->
     super Res.tpls['home-menu']
     @floor = floor
-  addFunctionBtn:(name,x,y,width,height,callback)->
-    console.log "add function btn"
-    
+    @subMenu = new SubMenu @UI['sub-menu-layer'],this
+  addFunctionBtn:(name,x,y,callback)->
+    btn = new Widget @UI['function-btn-tpl'].innerHTML
+    btn.appendTo @UI['function-btn-box']
+    btn.name = name
+    btn.J.css left:"#{x}px",top:"#{y}px"
+    btn.dom.onclick = ->
+      callback() if callback
+  showSubMenu:(title)->
+    @off "activeSubMenu"
+    @subMenu.UI['sub-btn-box'].J.html ""
+    @subMenu.setTitle title
+    for name,index in arguments when index > 0
+      @subMenu.addBtn name,index
+    @subMenu.J.fadeIn "fast"
+      
 class Floor extends Layer
   constructor:(home)->
     super 0,0
@@ -16,6 +45,8 @@ class Floor extends Layer
     @currentX = 0
     @initMenu()
     @initLayers()
+    @initFunctionBtns()
+  initFunctionBtns:->
   initLayers:->
   initMenu:->
     s = Utils.getSize()
@@ -69,6 +100,16 @@ class FirstFloor extends Floor
     @layers =
       main:main
       float:float
+  initFunctionBtns:->
+    @camera.render @menu.UI['function-btn-box']
+    @menu.addFunctionBtn "上楼",173,20,=>
+      console.log "上楼"
+    @menu.addFunctionBtn "猫",1548,425,=>
+      @menu.showSubMenu "猫","调戏","对话"
+      @menu.on "activeSubMenu",(buttonCode)->
+        switch buttonCode
+          when 1 then alert "调戏你妹啊！"
+          when 2 then alert "喵喵喵"
   show:->
     @fadeIn "fast"
     @menu.show()
