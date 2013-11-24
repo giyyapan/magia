@@ -91,7 +91,7 @@ class window.Backpack extends Menu
   show:(callback)->
     @init()
     @initThings()
-    @UILayer.fadeIn "fast",callback
+    @UILayer.J.fadeIn "fast",callback
     @J.slideDown "fast",->
       callback() if callback
   hide:(callback)->

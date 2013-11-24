@@ -22,6 +22,7 @@
         y: parseInt(this.height / 2)
       };
       this.renderData = null;
+      this.blendQueue = [];
       this.onshow = true;
       this.transform = {
         opacity: null,
@@ -64,6 +65,22 @@
         _results.push(this[name] = f);
       }
       return _results;
+    };
+
+    Drawable.prototype.blendWith = function(drawable, method) {
+      if (!drawable.draw) {
+        return console.error("invailid drawable", drawable);
+      }
+      return this.blendQueue.push({
+        drawable: drawable,
+        method: method
+      });
+    };
+
+    Drawable.prototype._handleBlender = function() {
+      if (this.blendQueue.length === 0) {
+        return false;
+      }
     };
 
     Drawable.prototype.onDraw = function(context, tickDelay) {
@@ -144,7 +161,7 @@
     };
 
     Drawable.prototype.draw = function(context) {
-      var i, s;
+      var i, img, s;
 
       if (!this.onshow) {
         return;
@@ -155,10 +172,11 @@
       }
       if (this.imgData) {
         i = this.imgData;
+        img = this._handleBlender() || i.img;
         if (i.x) {
-          return context.drawImage(i.img, i.x, i.y, i.width, i.height, -this.anchor.x, -this.anchor.y, this.width, this.height);
+          return context.drawImage(img, i.x, i.y, i.width, i.height, -this.anchor.x, -this.anchor.y, this.width, this.height);
         } else {
-          return context.drawImage(i.img, -this.anchor.x, -this.anchor.y, this.width, this.height);
+          return context.drawImage(img, -this.anchor.x, -this.anchor.y, this.width, this.height);
         }
       } else if (GameConfig.debug === 2) {
         context.fillStyle = "black";

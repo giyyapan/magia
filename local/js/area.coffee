@@ -250,7 +250,10 @@ class Place extends Layer
   addMovePoint:(moveTarget,index)->
     area = @area
     item = new Suzaku.Widget @relativeMenu.UI['move-point-tpl'].innerHTML
-    item.UI.target.J.text moveTarget
+    if moveTarget is "exit"
+      item.UI.target.J.text "离开"
+    else
+      item.UI.target.J.text @area.originData.places[moveTarget].name
     item.dom.target = moveTarget
     item.J.addClass "mp-"+moveTarget
     item.appendTo @relativeMenu.UI['move-point-box']
@@ -276,6 +279,7 @@ class window.Area extends Stage
     @game = game
     @name = areaName
     @data = game.db.areas.get areaName
+    @originData = @data
     @backpackMenu = new Backpack game,"gatherArea"
     @enterPlace "entry"
     #@initBattlefield(["qq","qq"])
