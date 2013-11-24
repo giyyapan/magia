@@ -1,4 +1,8 @@
 window.Imgs =
+  summaryForest:  'worldMap/map-summary-forest.jpg'
+  summarySnow:  'worldMap/map-summary-snowmountain.jpg'
+  summaryHome:  'worldMap/map-summary-home.jpg'
+  summaryShop:  'worldMap/map-summary-shop.jpg'
   buttonCenter:'button_center.png'
   item:'item.png'
   forestEntry:'forest-entry.jpg'

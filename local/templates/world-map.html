@@ -1,20 +1,10 @@
-<div class="menu world-map">
+<div class="menu world-map" data-id="map-menu">
 	<link rel="stylesheet" href="css/worldMap.css" type="text/css" />
+	<div class="bg-summary" data-id="bg-summary"></div>
 	<div data-id="map-point-box"  >
 		
 	</div>
-	<button class="map-point" data-id="forest" >
-		<p data-id="name" >森林</p>
-	</button>
-	<button class="map-point" data-id="snowmountain" >
-		<p data-id="name" >雪山</p>
-	</button>
-	<button class="map-point" data-id="town" >
-		<p data-id="name" >城镇</p>
-	</button>
-	<button class="map-point" data-id="home" >
-		<p data-id="name" >回家</p>
-	</button>
+	
 	<div class="map-summary-holder" data-id="map-summary-holder">
 		<template data-id="map-point-tpl" >
 			<div class="map-summary">
@@ -23,8 +13,41 @@
 			</div>
 		</template>
 	</div>
+		<div class="info-holder">
+			<span class="time" data-id="time">11yue3ri</span>
+			<span class="day" data-id="day-night">zhou</span>
+			<span class="energy" data-id="energy">50dian</span>
+		</div>
 		<p class="border lt"></p>
 		<p class="border rt"></p>
 		<p class="border lb"></p>
 		<p class="border rb"></p>
+	<template data-id="map-popBig-tpl">
+		<div class="map-popBig-wrapper">
+			<div class="popBig animate-popup" data-id="popBig">
+				<p class="title" data-id="title">回家</p>
+				<div class="header-flag" data-id="header-flag">
+					<img src="/img/menu/backpack-flag-details.png">
+				</div>
+				<div class="description" data-id="description">dsakjdkjaslkjks</div>
+				<div class="bottom-holder">
+					<div class="left">
+						<div class="name-box">
+							<p class="name">危险度</p>
+							<span data-id="danger-level">湖水</span>
+							<hr>
+						</div>
+						<div class="name-box">
+							<p class="name">耗体力</p>
+							<span data-id="cost-energy">5dian</span>
+							<hr>
+						</div>
+					</div>
+					<div class="btn-holder">
+						<a data-id="enter-btn" class="entry-btn">进入</a>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</template>
 </div> 

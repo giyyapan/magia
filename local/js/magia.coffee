@@ -12,26 +12,31 @@ class Magia
     window.onresize = =>
       @handleDisplaySize()
     @loadResources =>
-      window.myAudio.play "startMenu"
+      #window.myAudio.play "startMenu"
       @db = new Database()
       @player = new Player null,@db
       $("#loadingPage").slideUp "slow"
-      #@switchStage "start"
-      window.myAudio.stop "startMenu"
-      window.myAudio.play "home"
-      @switchStage "worldMap"
+      @switchStage "start"
+      #window.myAudio.stop "startMenu"
+      #window.myAudio.play "home"
+      #@switchStage "worldMap"
       #@switchStage "area","forest"
       #@switchStage "home"
       @startGameLoop()
   switchStage:(stage,data)->
     console.log "init stage:",stage
     switch stage
-      when "start" then s = new StartMenu this,data
-      when "home" then s = new Home this,data
+      when "start" 
+        s = new StartMenu this,data
+        window.myAudio.play "startMenu"
+      when "home" 
+        s = new Home this,data
+        window.myAudio.play "home"
       when "test" then s = new TestStage this,data
       when "town" then s = new Town this,data
       when "area" then s = new Area this,data
       when "worldMap" then s = new WorldMap this,data
+      else console.error "invailid stage:#{stage}"
     if @currentStage
       @currentStage.hide =>
         @currentStage = s

@@ -14,7 +14,15 @@ class AudioManager extends EventEmitter
 		for name,path of @bgmSource
 			@audios[name] = new GameAudio name,path,resourceContainer,true
 	play:(audioName)->
-		if @audios[audioName]
+		if @audios[audioName].isBGM
+			console.log "BGM!!!"
+			for audio of @audios
+				if @audios[audio].isBGM
+					console.log audio
+					@audios[audio].stop()
+			@audios[audioName].play()
+		else if @audios[audioName].isBGM is false
+			console.log "not BGM"
 			@audios[audioName].play()
 		else
 			console.error "not found audio"

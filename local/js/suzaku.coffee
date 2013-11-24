@@ -106,6 +106,7 @@ class Widget extends EventEmitter
     return if not waitTime
     window.setTimeout (=>
       callback.call this if callback
+      @J.removeClass animateClass
       ),waitTime
   before:(target)->
     if target.dom instanceof HTMLElement
@@ -468,7 +469,7 @@ window.Suzaku.Utils = Utils =
         if not v then return null
         try
           return JSON.parse(v)
-        catch
+        catch err
           return v
       when "clear","remove"
         window.localStorage.removeItem name

@@ -1,0 +1,25 @@
+.double-border{box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px}
+.round-conrer-bg{-webkit-border-image:url(/img/worldMap/border-bg.png) 26 26 round;background:#674e34;border:26px solid;color:#d7ba97;text-shadow:0 2px 0 #3c2f21}
+.menu{height:100%;background:url(/img/worldMap/map-bg.jpg) no-repeat;position:relative}.menu .border{position:absolute;width:105px;height:105px;display:block;background:url(/img/worldMap/border.png)}
+.menu .lt{left:0;top:0;background-position:0 0}
+.menu .rt{right:0;top:0;background-position-x:105px}
+.menu .lb{left:0;bottom:0;background-position:0 105px}
+.menu .rb{right:0;bottom:0;background-position:105px 105px}
+.texture-border{border:none;border-image:url(/img/worldMap/border-bg.png) 26 26 round;border-width:26px}
+.world-map{height:100%;background:url(/img/worldMap/map-bg.jpg) no-repeat;position:relative}.world-map .round-conrer-bg{border:none;border-image:url(/img/worldMap/border-bg.png) 26 26 round;border-width:26px;background:#674e34;color:#d7ba97;text-shadow:0 2px 0 #3c2f21}
+.world-map .info-holder{width:250px;height:54px;padding:10px;box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;background:#543d26;position:absolute;left:60px;top:0}.world-map .info-holder span{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-size:20px;font-weight:bold}
+.world-map .info-holder .energy{position:absolute;width:200px;bottom:5px;left:12px}
+.world-map .info-holder .day{margin-left:20px}
+.world-map .info-holder .time{margin-left:37px}
+.world-map .map-summary-holder{width:100%;height:300px;overflow:hidden;margin-top:230px;margin-left:90px}.world-map .map-summary-holder .map-summary{width:200px;height:200px;margin-right:30px;float:left;cursor:pointer;border-radius:10px;border:none;border-image:url(/img/worldMap/border-bg.png) 26 26 round;border-width:26px;background:#674e34;color:#d7ba97;text-shadow:0 2px 0 #3c2f21}.world-map .map-summary-holder .map-summary .map-name{font-weight:bold;font-size:35px}
+.world-map .map-summary-holder .map-summary .map-summary-pic{height:120px;background:#5f5f5f;border-radius:10px;width:180px;display:inline-block;margin-top:19px;border:4px solid #a8855d;box-shadow:0 1px 7px #000 inset}
+.world-map .map-summary-holder .map-summary:hover{background:#33271b}
+.world-map .map-popBig-wrapper{position:absolute;left:0;top:0;width:100%;height:100%;background-color:rgba(20,20,20,0.5)}.world-map .map-popBig-wrapper .popBig{width:740px;height:450px;border:none;border-image:url(/img/worldMap/border-bg.png) 26 26 round;border-width:26px;background:#674e34;color:#d7ba97;text-shadow:0 2px 0 #3c2f21;position:absolute;top:90px;left:226px;text-align:center}
+.world-map .map-popBig-wrapper .title{font-size:40px}
+.world-map .map-popBig-wrapper .header-flag{width:69%;height:32px;background:url('/img/menu/backpack-flag-bg.png') no-repeat;text-align:center;display:inline-block;margin:20px 0 20px 0}.world-map .map-popBig-wrapper .header-flag img{margin-top:5px}
+.world-map .map-popBig-wrapper .description{width:80%;height:160px;margin-bottom:20px;margin-left:10%;font-size:20px;text-align:start}
+.world-map .map-popBig-wrapper .bottom-holder{width:86%;margin-left:7%}.world-map .map-popBig-wrapper .bottom-holder .left{float:left}.world-map .map-popBig-wrapper .bottom-holder .left .name-box{width:340px;height:40px;display:block;position:relative;color:#543d26;font-size:20px;text-align:center;line-height:39px;margin-bottom:30px}.world-map .map-popBig-wrapper .bottom-holder .left .name-box .name{width:80px;height:40px;border-radius:5px;background:#907352;float:left;text-shadow:none;color:#2e2113}
+.world-map .map-popBig-wrapper .bottom-holder .left .name-box span{color:#f4dabd;position:relative;float:left;margin-left:30px;font-weight:bolder}
+.world-map .map-popBig-wrapper .bottom-holder .left .name-box hr{display:block;height:2px;width:98%;position:absolute;bottom:0;left:2px;background:#907352}
+.world-map .map-popBig-wrapper .bottom-holder .btn-holder{float:left;position:relative}.world-map .map-popBig-wrapper .bottom-holder .btn-holder .entry-btn{background:#896b4c;display:block;box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;width:220px;height:103px;line-height:103px;font-size:50px;margin-left:60px}
+.world-map .map-popBig-wrapper .bottom-holder .btn-holder .entry-btn:hover{background:#543d26}
