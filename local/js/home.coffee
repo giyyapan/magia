@@ -1,28 +1,85 @@
-class FirstFloor extends Layer
+class HomeMenu extends Menu
+  constructor:(floor)->
+    super Res.tpls['home-menu']
+    @floor = floor
+  addFunctionBtn:(name,x,y,width,height,callback)->
+    console.log "add function btn"
+    
+class Floor extends Layer
   constructor:(home)->
-    super
+    super 0,0
     @home = home
-    @menu = new Menu Res.tpls["home-1st-floor"]
-    @setImg Res.imgs.homeDown
-    @menu.UI.upstairs.onclick = =>
-      @home.goUp()
-    @menu.UI.exit.onclick = =>
-      @home.exit()
+    @camera = new Camera()
+    @mainBg = null
+    @drawQueueAdd @camera
+    @layers = {}
+    @currentX = 0
+    @initMenu()
+    @initLayers()
+  initLayers:->
+  initMenu:->
+    s = Utils.getSize()
+    @menu = new HomeMenu
+    moveCallback = ()=>
+      x = @currentX
+      delete @camera.lock
+      if x is 0
+        @menu.UI['move-left'].J.fadeOut 130
+      else
+        @menu.UI['move-left'].J.fadeIn 130
+      if x is (@mainBg.width - s.width)
+        @menu.UI['move-right'].J.fadeOut 130
+      else
+        @menu.UI['move-right'].J.fadeIn 130
+    @menu.UI['move-right'].onclick = (evt)=>
+      evt.stopPropagation()
+      console.log "right"
+      @camera.lock = true
+      @currentX += 400
+      if @currentX > @mainBg.width - s.width then @currentX = @mainBg.width - s.width
+      x = @camera.getOffsetPositionX @currentX,@mainBg
+      if x > @mainBg.width then x = @mainBg.width
+      @camera.animate {x:x},"normal",->
+        moveCallback()
+    @menu.UI['move-left'].onclick = (evt)=>
+      evt.stopPropagation()
+      console.log "left"
+      @camera.lock = true
+      @currentX -= 400
+      if @currentX < 0 then @currentX = 0
+      x = @camera.getOffsetPositionX @currentX,@mainBg
+      @camera.animate {x:x},"normal",->
+        moveCallback()
+    
+class FirstFloor extends Floor
+  constructor:->
+    super
+    @currentX = 400
+    @camera.x = @camera.getOffsetPositionX @currentX,@mainBg
+  initLayers:->
+    main = new Layer Res.imgs.homeDownMain
+    float = new Layer Res.imgs.homeDownFloat
+    @mainBg = main
+    main.z = 300
+    float.z = 0 
+    float.fixToBottom()
+    float.x = 1000
+    @camera.render main,float
+    @camera.defaultReferenceZ = main.z
+    @layers =
+      main:main
+      float:float
   show:->
     @fadeIn "fast"
     @menu.show()
     
-class SecondFloor extends Layer
-  constructor:(home)->
-    super
-    @home = home
-    @y = - Utils.getSize().height
-    @menu = new Menu Res.tpls["home-2nd-floor"]
-    @setImg Res.imgs.homeUp
-    @menu.UI['work-table'].onclick = =>
-      @showWorkTable()
-    @menu.UI.downstairs.onclick = =>
-      @home.goDown()
+class SecondFloor extends Floor
+  initLayers:->
+    main = new Layer Res.imgs.homeDown
+    @mainBg = main
+    @layers =
+      main:main
+    @camera.render main
   showWorkTable:->
     worktable = new Worktable @home
     @onshow = false
@@ -36,25 +93,12 @@ class window.Home extends Stage
   constructor:(game)->
     super()
     @game = game
-    @camera = new Camera()
-    @drawQueueAddAfter @camera
     @firstFloor = new FirstFloor this
     @secondFloor = new SecondFloor this
-    @camera.render @firstFloor,@secondFloor
+    @drawQueueAdd @firstFloor,@secondFloor
     @firstFloor.show()
-    #@secondFloor.showWorkTable()
   goUp:->
-    s = Utils.getSize()
-    @firstFloor.menu.hide()
-    @firstFloor.animate {y:s.height},"normal"
-    @secondFloor.animate {y:0},"normal",=>
-      @secondFloor.menu.show()
   goDown:->
-    s = Utils.getSize()
-    @secondFloor.menu.hide()
-    @secondFloor.animate {y:-s.height},"normal"
-    @firstFloor.animate {y:0},"normal",=>
-      @firstFloor.menu.show()
   exit:->
     @clearDrawQueue()
     @game.switchStage "worldMap"

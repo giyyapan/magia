@@ -22,15 +22,15 @@ window.Imgs =
   layer5:'layer5.png'
   layer6:'layer6.png'
   worldMap:'map.gif'
-  homeDown:'home_down.jpg'
+  homeDownMain:'home-down-main.jpg'
+  homeDownFloat:"home-down-float.png"
   homeUp:'home_up.jpg'
 window.Sprites =
   qq:"qq"
   
 window.Templates = [
   "start-menu"
-  "home-1st-floor"
-  "home-2nd-floor"
+  "home-menu"
   "world-map"
   "popup-box"
   "test-menu"

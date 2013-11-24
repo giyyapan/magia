@@ -33,6 +33,7 @@ class window.Database extends Suzaku.EventEmitter
         description:"这是一个森林哈哈哈哈哈"
         summaryImg:"summaryForest"
         dangerLevel:'低'
+        summaryBg:'forestEntry'
         x:0,y:0
         battlefieldBg:
           bfForestMain:
@@ -92,6 +93,7 @@ class window.Database extends Suzaku.EventEmitter
         description:"雪山里面有雪人，雪人的名字叫耶提"
         summaryImg:'summarySnow'
         dangerLevel:  "中"
+        summaryBg:'snowmountainEntryBg'
         x:0,y:0
         places:
           entry:
@@ -143,24 +145,14 @@ class window.Database extends Suzaku.EventEmitter
         costEnergy: 0
         dangerLevel:'很安全'
         summaryImg:'summaryHome'
-        places:
-          entry:
-            name:"客厅"
-            bg:
-              homeDown:
-                fixToBottom:true
+        summaryBg:''
       shop:
         name:'商店'
         description:'这儿没什么好客厅东西而且都很贵'
         costEnergy: 0
         summaryImg: 'summaryShop'
         dangerLevel:'很安全'
-        places:
-          entry:
-            name:'商店'
-            bg:
-              shopBg:
-                fixToBottom: true
+        summaryBg:''
 
   initThings:->
     @things.items.data = 

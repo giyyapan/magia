@@ -101,6 +101,7 @@ class window.Drawable extends Suzaku.EventEmitter
       else
         context.drawImage img,-@anchor.x,-@anchor.y,@width,@height
     else if GameConfig.debug is 2
+      return
       context.fillStyle = "black"
       context.fillRect(-50,-50,100,100)
       context.fillStyle = "darkred"
