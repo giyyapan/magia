@@ -3,4 +3,6 @@
 .area-menu .move-arrow{position:absolute;top:300px;width:120px}
 .area-menu #move-left{left:10px}
 .area-menu #move-right{right:10px}
+.area-menu .move-point{display:inline-block;width:110px;height:110px}.area-menu .move-point img{margin-bottom:-67px}
+.area-menu .move-point span{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;display:inline-block;width:100%}
 .area-menu .res-point img{width:80px;height:auto}
