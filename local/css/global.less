@@ -17,12 +17,11 @@
 		-ms-user-select: none;
     -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
-.transition(@time:.2s,@timingFunc:linear){
-		-webkit-transition:@time @timingFunc;
-		-o-transition:@time @timingFunc;
-		-moz-transition:@time @timingFunc;
-		-ms-transition:@time @timingFunc;
-		transition:@time @timingFunc;
+.transition(@time:.15s,@timingFunc:linear,@property:all){
+		-webkit-transition:@property @time @timingFunc;
+		-o-transition:@property @time @timingFunc;
+		-ms-transition:@property @time @timingFunc;
+		transition:@property @time @timingFunc;
 }
 *{
 		font-family: "微软雅黑";

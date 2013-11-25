@@ -52,6 +52,7 @@ class window.Drawable extends Suzaku.EventEmitter
       return false
   onDraw:(context,tickDelay)->
     @_handleAnimate tickDelay
+    return if not @onshow
     for name,value of @transform
       @realValue[name] = value
     context.save()
@@ -90,7 +91,6 @@ class window.Drawable extends Suzaku.EventEmitter
     @height = img.height if not @height
     return this
   draw:(context)->
-    return if not @onshow
     s = Utils.getSize()
     return if -@anchor.x >= s.width or -@anchor.y >= s.height
     if @imgData
@@ -129,6 +129,7 @@ class window.Drawable extends Suzaku.EventEmitter
       console.error "#{d} is not drawable" if not d.onDraw
       @drawQueue.before.push d 
   _handleAnimate:(tickDelay)->
+    return if @_animates.length is 0
     for a in @_animates
       a.sumDelay += tickDelay
       p = a.easing(a.time,a.sumDelay,a.tickDelay)
@@ -138,12 +139,17 @@ class window.Drawable extends Suzaku.EventEmitter
         a.end = true
       a.func.call this,p
     arr = []
+    old = @_animates
     for a in @_animates
+      if not a.end
+        arr.push a
+    @_animates = arr
+    for a in old #这样做是为了防止callback中添加新的动画被一并删除了
       if a.end
         a.callback() if a.callback
-      else arr.push a
-    item = null for item in @_animates
-    @_animates = arr
+    for item,index in old
+      old[index] = null
+    return true
   setCallback:(time,callback)->
     return console.error "need a callback func" if not callback
     @animate (->),time,"linear",callback
@@ -181,10 +187,10 @@ class window.Drawable extends Suzaku.EventEmitter
         ref = ref[n]
       if isNaN ref then console.error "invailid key:#{name},#{n}" if GameConfig.debug
       if typeof targetValue is "string"
-        if targetValue.indexOf "+=" is 0
-          d = parseFloat(targetValue.split("+=")[1])
-        if targetValue.indexOf "-=" is 0
-          d = - parseFloat(targetValue.split("-=")[1])
+        if targetValue.indexOf("+=")> -1
+          d = parseFloat(targetValue.replace("+=",""))
+        if targetValue.indexOf("-=")> -1
+          d = - parseFloat(targetValue.replace("-=",""))
       else
         d = targetValue - ref        
       if isNaN d then console.error "invailid value:#{d} for #{name}"

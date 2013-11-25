@@ -10,11 +10,11 @@
 @color-border-black:	#2a1d0f;
 @color-item-bg: #896b4c;
 @color-item-hover: #5d452c;
-.transition(@time:.15s,@timingFunc:linear){
-		-webkit-transition:@time @timingFunc;
-		-o-transition:@time @timingFunc;
-		-ms-transition:@time @timingFunc;
-		transition:@time @timingFunc;
+.transition(@time:.15s,@timingFunc:linear,@property:all){
+		-webkit-transition:@property @time @timingFunc;
+		-o-transition:@property @time @timingFunc;
+		-ms-transition:@property @time @timingFunc;
+		transition:@property @time @timingFunc;
 }
 .transform-origin(@x,@y){
 		transform-origin:@x @y;

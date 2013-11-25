@@ -4,6 +4,7 @@
 
   conf = {
     debug: 2,
+    noSound: true,
     showFPS: true,
     frameRate: 60,
     canvasId: "#gameCanvas",

@@ -96,19 +96,14 @@ class Magia
     else
       targetHeight = s.screenHeight
       targetWidth = targetHeight/s.height * s.width
-    console.log targetHeight
-    console.log targetWidth
     w = Utils.sliceNumber targetWidth/s.width,3
     h = Utils.sliceNumber targetHeight/s.height,3
     s.scaleX = w
     s.scaleY = h
     J = $(".screen")
-    console.log s.screenWidth,targetWidth
-    console.log parseInt((s.screenWidth-targetWidth)/2)
     J.css "left",parseInt((s.screenWidth-targetWidth)/2)+"px"
     Utils.setCSS3Attr J,"transform","scale(#{w},#{h})"
     Utils.setCSS3Attr J,"transform-origin","#{0}px 0"
-    console.log @canvas.dom
   loadResources:(callback)->
     loadingPage = new Suzaku.Widget "#loadingPage"
     rm = new ResourceManager()

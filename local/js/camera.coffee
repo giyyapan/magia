@@ -28,6 +28,9 @@ class window.Camera extends Drawable
     y = @getOffsetPositionY (s.height/2 - y),z
     @x = -x
     @y = -y
+  lookAtInsideBorder:(target,border,scale,callback)->
+    z = border.z or @defaultReferenceZ
+    
   lookAt:(target,time,scale,z,callback)->
     if not z then z = @defaultReferenceZ
     s = Utils.getSize()

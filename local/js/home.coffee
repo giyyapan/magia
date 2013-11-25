@@ -3,36 +3,55 @@ class SubMenu extends Widget
     super tpl
     @menu = menu
     @dom.onclick = =>
-      @J.fadeOut "fast"
+      @hide()
   setTitle:(title)->
     @UI.title.J.text title
+  hide:->
+    @J.fadeOut "fast"
+    @emit "hide"
+  show:->
+    @J.fadeIn "fast"
+    @emit "show"
   addBtn:(name,btnCode)->
     btn = new Widget @UI['sub-btn-tpl'].innerHTML
     btn.UI.name.J.text name
     btn.appendTo @UI['sub-btn-box']
     btn.dom.onclick = (evt)=>
       evt.stopPropagation()
+      @hide()
       @menu.emit "activeSubMenu",btnCode
       
 class HomeMenu extends Menu
   constructor:(floor)->
     super Res.tpls['home-menu']
     @floor = floor
+    @functionBtns = []
     @subMenu = new SubMenu @UI['sub-menu-layer'],this
+    @subMenu.on "hide",=>
+      @showFunctionBtns()
+  showFunctionBtns:->
+    for btn in @functionBtns
+      btn.J.removeClass "animate-popout"
+      btn.css3Animate "animate-popup"
+  hideFunctionBtns:->
+    for btn in @functionBtns
+      btn.J.addClass "animate-popout"
   addFunctionBtn:(name,x,y,callback)->
     btn = new Widget @UI['function-btn-tpl'].innerHTML
+    @functionBtns.push btn
     btn.appendTo @UI['function-btn-box']
     btn.name = name
     btn.J.css left:"#{x}px",top:"#{y}px"
     btn.dom.onclick = ->
       callback() if callback
   showSubMenu:(title)->
+    @hideFunctionBtns()
     @off "activeSubMenu"
     @subMenu.UI['sub-btn-box'].J.html ""
     @subMenu.setTitle title
     for name,index in arguments when index > 0
       @subMenu.addBtn name,index
-    @subMenu.J.fadeIn "fast"
+    @subMenu.show()
       
 class Floor extends Layer
   constructor:(home)->
@@ -42,26 +61,31 @@ class Floor extends Layer
     @mainBg = null
     @drawQueueAdd @camera
     @layers = {}
-    @currentX = 0
     @initMenu()
     @initLayers()
     @initFunctionBtns()
+    @init()
+  init:->
+    @currentX = 0
+    @camera.reset()
+    @menu.show()
+    @menu.showFunctionBtns()
   initFunctionBtns:->
   initLayers:->
   initMenu:->
     s = Utils.getSize()
-    @menu = new HomeMenu
+    @menu = new HomeMenu Res.tpls['home-menu']
     moveCallback = ()=>
       x = @currentX
       delete @camera.lock
       if x is 0
-        @menu.UI['move-left'].J.fadeOut 130
+        @menu.UI['move-left'].J.removeClass("animate-popup").addClass "animate-popout"
       else
-        @menu.UI['move-left'].J.fadeIn 130
+        @menu.UI['move-left'].J.removeClass("animate-popout").addClass "animate-popup"
       if x is (@mainBg.width - s.width)
-        @menu.UI['move-right'].J.fadeOut 130
+        @menu.UI['move-right'].J.removeClass("animate-popup").addClass "animate-popout"
       else
-        @menu.UI['move-right'].J.fadeIn 130
+        @menu.UI['move-right'].J.removeClass("animate-popout").addClass "animate-popup"
     @menu.UI['move-right'].onclick = (evt)=>
       evt.stopPropagation()
       console.log "right"
@@ -70,7 +94,7 @@ class Floor extends Layer
       if @currentX > @mainBg.width - s.width then @currentX = @mainBg.width - s.width
       x = @camera.getOffsetPositionX @currentX,@mainBg
       if x > @mainBg.width then x = @mainBg.width
-      @camera.animate {x:x},"normal",->
+      @camera.animate {x:x},300,"swing",->
         moveCallback()
     @menu.UI['move-left'].onclick = (evt)=>
       evt.stopPropagation()
@@ -79,7 +103,7 @@ class Floor extends Layer
       @currentX -= 400
       if @currentX < 0 then @currentX = 0
       x = @camera.getOffsetPositionX @currentX,@mainBg
-      @camera.animate {x:x},"normal",->
+      @camera.animate {x:x},300,"swing",->
         moveCallback()
     
 class FirstFloor extends Floor
@@ -103,10 +127,17 @@ class FirstFloor extends Floor
   initFunctionBtns:->
     @camera.render @menu.UI['function-btn-box']
     @menu.addFunctionBtn "上楼",173,20,=>
-      console.log "上楼"
+      @menu.hideFunctionBtns()
+      @home.goUp()
+    @menu.addFunctionBtn "卧室",1154,98,=>
+      @menu.showSubMenu "卧室","换衣服","睡觉"
+      @menu.on "activeSubMenu",(buttonCode)=>
+        switch buttonCode
+          when 1 then console.log "换衣服"
+          when 2 then alert "zzz"
     @menu.addFunctionBtn "猫",1548,425,=>
       @menu.showSubMenu "猫","调戏","对话"
-      @menu.on "activeSubMenu",(buttonCode)->
+      @menu.on "activeSubMenu",(buttonCode)=>
         switch buttonCode
           when 1 then alert "调戏你妹啊！"
           when 2 then alert "喵喵喵"
@@ -115,21 +146,34 @@ class FirstFloor extends Floor
     @menu.show()
     
 class SecondFloor extends Floor
+  constructor:->
+    super
+    @onshow = false
   initLayers:->
-    main = new Layer Res.imgs.homeDown
+    main = new Layer Res.imgs.homeUp
     @mainBg = main
     @layers =
       main:main
     @camera.render main
+  initFunctionBtns:->
+    @menu.addFunctionBtn "工作台",180,140,=>
+      @menu.showSubMenu "工作台","素材加工"
+      @menu.on "activeSubMenu",(buttonCode)=>
+        switch buttonCode
+          when 1 then @showWorkTable()
+    @menu.addFunctionBtn "下楼",706,120,=>
+      @menu.hideFunctionBtns()
+      @home.goDown()
   showWorkTable:->
     worktable = new Worktable @home
-    @onshow = false
-    @home.drawQueueAddAfter worktable
+    @mainBg.onshow = false
+    @drawQueueAdd worktable
     worktable.on "close",=>
-      @home.drawQueueRemove worktable
-      @onshow = true
-      @menu.show()
-    
+      @drawQueueRemove worktable
+      console.log "close"
+      @mainBg.onshow = true
+      @init()
+      
 class window.Home extends Stage
   constructor:(game)->
     super()
@@ -138,8 +182,30 @@ class window.Home extends Stage
     @secondFloor = new SecondFloor this
     @drawQueueAdd @firstFloor,@secondFloor
     @firstFloor.show()
-  goUp:->
   goDown:->
+    @secondFloor.camera.animate x:200,y:-50,scale:1.4,200,=>
+      @secondFloor.camera.animate x:"-=50",y:"+=50",330,"expoOut",=>
+        @secondFloor.fadeOut 350
+        @secondFloor.camera.animate x:"-=50",y:"+=50",330,"expoOut",=>
+          @secondFloor.camera.animate x:"-=50",y:"+=50",330,"expoOut",=>
+            @secondFloor.onshow = false
+            @firstFloor.onshow = true
+            @firstFloor.y = +300
+            @firstFloor.transform.opacity = 0
+            @firstFloor.animate {"transform.opacity":1,y:0},500,"expoOut"
+            @firstFloor.init()
+  goUp:->
+    @firstFloor.camera.animate x:-250,y:-50,scale:1.4,200,=>
+      @firstFloor.camera.animate x:"+=50",y:"-=50",330,"expoOut",=>
+        @firstFloor.fadeOut 350
+        @firstFloor.camera.animate x:"+=50",y:"-=50",330,"expoOut",=>
+          @firstFloor.camera.animate x:"+=50",y:"-=50",330,"expoOut",=>
+            @firstFloor.onshow = false
+            @secondFloor.onshow = true
+            @secondFloor.y = -300
+            @secondFloor.transform.opacity = 0
+            @secondFloor.animate {"transform.opacity":1,y:0},500,"expoOut"
+            @secondFloor.init()
   exit:->
     @clearDrawQueue()
     @game.switchStage "worldMap"
