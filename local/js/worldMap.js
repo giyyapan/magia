@@ -27,21 +27,21 @@
       };
       this.UI['enter-btn'].onclick = function() {
         var nowEnergy;
-        console.log(name);
-        if (name === 'home') {
-          return _this.game.switchStage(name);
-        } else if (name === 'shop') {
-          return true;
-        } else {
-          nowEnergy = _this.game.player.energy;
-          if (nowEnergy < data.costEnergy) {
-            _this.css3Animate.call(_this.costEnergy, "animate-warning", 550);
-            return _this.costEnergy.innerHTML = "" + data.costEnergy + "(您的体力不足！！)";
-          } else {
-            _this.game.switchStage("area", name);
-            _this.game.player.energy -= data.costEnergy;
-            return _this.game.player.saveData();
-          }
+        switch (name) {
+          case "home":
+            return _this.game.switchStage("home");
+          case "shop":
+            return _this.game.switchStage("shop");
+          default:
+            nowEnergy = _this.game.player.energy;
+            if (nowEnergy < data.costEnergy) {
+              _this.css3Animate.call(_this.costEnergy, "animate-warning", 550);
+              return _this.costEnergy.innerHTML = "" + data.costEnergy + "(您的体力不足！！)";
+            } else {
+              _this.game.switchStage("area", name);
+              _this.game.player.energy -= data.costEnergy;
+              return _this.game.player.saveData();
+            }
         }
       };
     }
@@ -58,13 +58,10 @@
       MapPoint.__super__.constructor.call(this, tpl);
       this.menu = menu;
       this.UI["map-summary-name"].innerHTML = data.name;
-      console.log(data.summaryImg.src);
       this.UI["map-summary-pic"].J.css("background", "url(" + Res.imgs[data.summaryImg].src + ")");
-      console.log(this.dom);
       this.dom.onclick = function() {
         var myPopBig;
         myPopBig = new popBig(_this.menu.UI['map-popBig-tpl'].innerHTML, data, game, name);
-        console.log(_this.menu);
         return myPopBig.appendTo(_this.menu);
       };
     }
@@ -98,7 +95,7 @@
       } else {
         this.menu.UI["day-night"].innerHTML = "夜";
       }
-      _ref = ["home", "forest", "snowmountain", "shop"];
+      _ref = ["home", "shop", "forest", "snowmountain"];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         name = _ref[_i];
         data = this.db.areas.get(name);

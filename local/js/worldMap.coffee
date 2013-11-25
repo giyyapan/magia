@@ -14,32 +14,27 @@ class popBig extends Widget
     @UI['popBig'].onclick = (evt)=>
       evt.stopPropagation()
     @UI['enter-btn'].onclick = =>
-      console.log name
-      if name is 'home' 
-        @game.switchStage name
-      else if name is 'shop'
-        return true
-      else
-        nowEnergy = @game.player.energy
-        if nowEnergy < data.costEnergy
-          @css3Animate.call @costEnergy,"animate-warning",550
-          @costEnergy.innerHTML = "#{data.costEnergy}(您的体力不足！！)"
+      switch name
+        when "home" then @game.switchStage "home"
+        when "shop" then @game.switchStage "shop"
         else
-          @game.switchStage "area",name
-          @game.player.energy -= data.costEnergy
-          @game.player.saveData()
+          nowEnergy = @game.player.energy
+          if nowEnergy < data.costEnergy
+            @css3Animate.call @costEnergy,"animate-warning",550
+            @costEnergy.innerHTML = "#{data.costEnergy}(您的体力不足！！)"
+          else
+            @game.switchStage "area",name
+            @game.player.energy -= data.costEnergy
+            @game.player.saveData()
       
 class MapPoint extends Widget
   constructor:(tpl,data,menu,game,name)->
     super tpl
     @menu = menu
     @UI["map-summary-name"].innerHTML = data.name
-    console.log data.summaryImg.src
     @UI["map-summary-pic"].J.css "background", "url(#{Res.imgs[data.summaryImg].src})"
-    console.log @dom
     @dom.onclick = =>
       myPopBig = new popBig @menu.UI['map-popBig-tpl'].innerHTML,data,game,name
-      console.log @menu
       myPopBig.appendTo @menu
 
 class window.WorldMap extends Stage
@@ -63,7 +58,7 @@ class window.WorldMap extends Stage
       @menu.UI["day-night"].innerHTML = "昼"
     else
       @menu.UI["day-night"].innerHTML = "夜"
-    for name in ["home","forest","snowmountain","shop"]
+    for name in ["home","shop","forest","snowmountain"]
       data = @db.areas.get name
       imgName = data.summaryImg
       img = window.Res.imgs[imgName]

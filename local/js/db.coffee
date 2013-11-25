@@ -1,4 +1,4 @@
-class SubDB extends Suzaku.EventEmitter
+class window.SubDB extends EventEmitter
   constructor:(name)->
     @dbName = name
     @data = {}
@@ -8,7 +8,7 @@ class SubDB extends Suzaku.EventEmitter
     else
       return @data[name]
   
-class window.Database extends Suzaku.EventEmitter
+class window.Database extends EventEmitter
   constructor:->
     @areas = new SubDB "areas"
     @towns = new SubDB "towns"
@@ -18,12 +18,13 @@ class window.Database extends Suzaku.EventEmitter
     @rules = new SubDB "rules"
     @monsters = new SubDB "sprites-monsters"
     @spriteItems = new SubDB "sprites-items"
+    @characters = new SubDB "characters"
     @tasks = new SubDB "tasks"
     @storys = new SubDB "storys"
     @initAreas()
+    @initCharacters()
     @initThings()
     @initRules()
-    @initSprites()
   initAreas:->
     s = Utils.getSize()
     @areas.data =
@@ -140,18 +141,18 @@ class window.Database extends Suzaku.EventEmitter
             resPoints:["1,1","20,80"]
             movePoints:["entry"]
       home:
-        name:"家中"
-        description:'home sweet home!!!'
+        name:"魔女宅邸"
+        description:'传说中的魔女——艾丽西亚的祖母留下的大房子。有宽敞的客厅和完善的工作设施，在这个地方应该可以尽情施展自己的才能了吧！'
         costEnergy: 0
-        dangerLevel:'很安全'
+        dangerLevel:'安全'
         summaryImg:'summaryHome'
         summaryBg:''
       shop:
-        name:'商店'
-        description:'这儿没什么好客厅东西而且都很贵'
+        name:'绯红魔法店'
+        description:'这儿没什么好东西而且都很贵，不过附近好像也就只有这个地方愿意收购魔法物品了...真是太惨了'
         costEnergy: 0
         summaryImg: 'summaryShop'
-        dangerLevel:'很安全'
+        dangerLevel:'安全'
         summaryBg:''
 
   initThings:->
@@ -260,6 +261,14 @@ class window.Database extends Suzaku.EventEmitter
       "life:3,spirit:2,air:2->boost"
       "minus:2,life:2->poison"
     ]
+  initCharacters:->
+    @characters.data =
+      player:
+        name:"艾丽西亚"
+        dialogPic:""
+      cat:
+        name:"琪琪"
+        dialogPic:""
   initSprites:->
     @monsters.data =
       qq:
