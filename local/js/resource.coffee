@@ -21,7 +21,6 @@ window.Imgs =
   layer4:'layer4.png'
   layer5:'layer5.png'
   layer6:'layer6.png'
-  worldMap:'map.gif'
   homeDownMain:'home-down-main.jpg'
   homeDownFloat:"home-down-float.png"
   homeUp:'home_up.jpg'

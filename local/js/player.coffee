@@ -1,53 +1,78 @@
 playerData =
   name:"Nola"
   lastStage:"home"
-  level:1
-  assert:
-    money:4000
-    gem:300
-    backpack:[
-      {name:"healPotion",traitValue:300,type:"supplies"}
-      {name:"firePotion",traitValue:300,type:"supplies"}
-      {name:"scree",number:10,type:"item"}
-      {name:"lakeWater",number:10,type:"item"}
-      {name:"herbs",number:10,type:"item"}
-      {name:"caveMashroom",number:10,type:"item"}
-      ]
-    storage:[]
-    currentEquipment:
-      hat:null
-      clothes:null
-      belt:null
-      shose:null
-  ability:
+  money:4000
+  energy:50
+  backpack:[
+    {name:"healPotion",traitValue:300,type:"supplies"}
+    {name:"firePotion",traitValue:300,type:"supplies"}
+    {name:"scree",number:10,type:"item"}
+    {name:"lakeWater",number:10,type:"item"}
+    {name:"herbs",number:10,type:"item"}
+    {name:"caveMashroom",number:10,type:"item"}
+    ]
+  storage:[]
+  equipments:[]
+  currentEquipments:
+    hat:"bigginerHat"#hp
+    weapon:"begginerStaff"#atk
+    clothes:"bigginerRobe"#def
+    shose:"bigginerShose"#spd
+    other:null
+  basicStatusValue:
     hp:300
     mp:300
     atk:20
-    def:30
+    normalDef:30
+    fireDef:0
+    waterDef:0
+    earthDef:0
+    airDef:0
+    spiritDef:0
+    minusDef:0
+    luk:0
     spd:8
-    luk:10
     
 class window.Player
-  constructor:(data,db)->
+  constructor:(db)->
     @db = db
-    @data = data
-    @data = playerData if not data
-    @energy = 40
+    @data = Utils.localData "get","playerData"
+    dataKey = Utils.localData "get","dataKey"
+    if not @data or Utils.getKey(JSON.stringify(@data)) isnt parseInt(dataKey)
+      @data = playerData
+      @initData()
+      @saveData()
+    else
+      @initData()
+  initData:()->
+    @statusValue = @data.basicData
+    @money = @data.money
+    @energy = @data.energy
+    @lastStage = @data.lastStage
+    @equipments = []
+    for name in @data.equipments
+      @equipments.push new PlayerEquipment @db,name
+    @currentEquipments = {}
+    for part,equipmentName in @data.currentEquipments 
+      @currentEquipments[part] = new PlayerEquipment equipmentName
     @backpack = []
     @storage = []
-    @initData()
-    for name of @data
-      this[name] = @data[name]
-  initData:()->
-    @initThingsFrom "backpack",@data.assert.backpack
-    @initThingsFrom "storage",@data.assert.storage
+    @initThingsFrom "backpack",@data.backpack
+    @initThingsFrom "storage",@data.storage
+    @updateStatusValue()
+  updateStatusValue:->
+    for name,value of @basicStatusValue
+      @statusValue[name] = value
+    for part,equip in @currentEquipments
+      for name of @statusValue
+        @statusValue[name] += equip.statusValue[name] if equip.statusValue[name]
   initThingsFrom:(originType,data)->
     switch originType
       when "backpack"
-        origin = @data.assert.backpack
+        origin = @data.backpack
         target = @backpack
       when "storage"
-        origin = @data.assert.storage
+        origin = @data.storage
         target = @storage
     for data in origin
       switch data.type
@@ -73,9 +98,8 @@ class window.Player
         return arr.length isnt length
   getItem:(target="backpack",dataObj)-> #target= backpack/storage 只有item是可堆叠的
     name = dataObj.name
-    originData = dataObj.originData or @db.things.items.get name
     number = dataObj.number
-    item = new PlayerItem(name,originData,number)
+    item = new PlayerItem @db,name,number
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage
@@ -90,8 +114,8 @@ class window.Player
     else
       name = data.name
       traitValue = data.traitValue
-      originData = @db.things.supplies.get data.name
-      supplies = new PlayerSupplies name,originData,traitValue
+      remainCount = data.remainCount
+      supplies = new PlayerSupplies @db,name,traitValue,remainCount
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage
@@ -102,4 +126,28 @@ class window.Player
   checkFreeSpace:(target,things)->
     return true
   saveData:->
-      
+    backpack = []
+    for thing in @backpack
+      backpack.push thing.getData()
+    storage = []
+    for thing in @storage
+      storage.push thing.getData()
+    equipments = []
+    for e in @equipments
+      equipments.push e.getData()
+    currentEquipments = {}
+    for part,equip of @currentEquipments
+      currentEquipments[part] = equip.getData()
+    data =
+      lastStage:"home"
+      money:@money
+      energy:@energy
+      statusValue:@basicData
+      lastStage:@lastStage
+      basicStatusValue:@basicStatusValue
+      backpack:backpack
+      storage:storage
+      equipments:equipments
+      currentEquipments:currentEquipments
+    Utils.localData "save","playerData",data
+    Utils.localData "save","dataKey",Utils.getKey(JSON.stringify(data))

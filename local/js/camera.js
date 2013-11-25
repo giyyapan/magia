@@ -112,6 +112,9 @@
     };
 
     Camera.prototype.draw = function(context) {
+      if (this.transform.opacity !== null) {
+        context.globalAlpha = this.transform.opacity;
+      }
       context.fillStyle = "black";
       return context.drawImage(this.secondCanvas, -parseInt(this.secondCanvas.width / 2 * this.scale), -parseInt(this.secondCanvas.height / 2 * this.scale), this.secondCanvas.width * this.scale, this.secondCanvas.height * this.scale);
     };

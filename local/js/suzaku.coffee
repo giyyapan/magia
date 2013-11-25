@@ -460,7 +460,7 @@ window.Suzaku.Utils = Utils =
         @emit "complete"
         callback() if callback
     return q
-  localData:(action,key,value)->
+  localData:(action,name,value)->
     #action = "set,clear,get"
     switch action
       when "set","save"

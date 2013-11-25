@@ -14,7 +14,7 @@ class Magia
     @loadResources =>
       #window.myAudio.play "startMenu"
       @db = new Database()
-      @player = new Player null,@db
+      @player = new Player @db
       $("#loadingPage").slideUp "slow"
       @switchStage "start"
       #window.myAudio.stop "startMenu"

@@ -45,7 +45,11 @@ window.Utils =
     obj["-ms-#{name}"] = value
     obj["-moz-#{name}"] = value
     J.css obj
-      
+  getKey:(s)->
+    sum = 0
+    for c,index in s
+      sum += s.charCodeAt index
+    return parseInt(sum << 3 | 555 % 10000)
 for name of Suzaku.Utils
   window.Utils[name] = Suzaku.Utils[name]
 

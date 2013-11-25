@@ -61,6 +61,8 @@ class window.Camera extends Drawable
     @draw context
     context.restore()
   draw:(context)->
+    if @transform.opacity isnt null
+      context.globalAlpha = @transform.opacity
     context.fillStyle = "black"
     context.drawImage(@secondCanvas,
       -parseInt(@secondCanvas.width/2*@scale),-parseInt(@secondCanvas.height/2*@scale),

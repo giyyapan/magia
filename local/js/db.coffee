@@ -266,7 +266,7 @@ class window.Database extends Suzaku.EventEmitter
         name:"QQ"
         sprite:Res.sprites.qq
         icon:null
-        basicData:
+        statusValue:
           hp:1000
           def:30
           spd:30

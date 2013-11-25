@@ -20,8 +20,7 @@ class ReactionFinishBox extends PopupBox
     @show()
   chooseTraitItem:(item)->
     name = "#{item.traitName}Potion"
-    originData = @db.things.supplies.get name
-    newSupplies = new PlayerSupplies name,originData,item.traitValue
+    newSupplies = new PlayerSupplies @db,name,item.traitValue,null
     @emit "getNewSupplies",newSupplies
     @close()
     
@@ -109,7 +108,7 @@ class ReactionBox extends Widget
       fromTraitsArr = r.split("->")[0].split(",")
       obj =
         from:{}
-        fromTraitsNumber:fromTraitsArr.length
+        fromTraitsCount:fromTraitsArr.length
         to:r.split("->")[1]
       for trait in fromTraitsArr 
         t = trait.split(":")
@@ -145,7 +144,7 @@ class ReactionBox extends Widget
     if @reactionBtns[r.to]
       @reactionBtns[r.to].update(avail)
     else
-      tpl = @UI["reaction-btn-tpl-#{r.fromTraitsNumber}"].innerHTML
+      tpl = @UI["reaction-btn-tpl-#{r.fromTraitsCount}"].innerHTML
       btn = new ReactionBtn tpl,r,avail,this
       btn.appendTo @UI['avail-reaction-list']
       @reactionBtns[r.to] = btn
@@ -156,7 +155,7 @@ class ReactionBox extends Widget
       value += parseInt @traitItems[name].traitValue
     box = new ReactionConfirmBox reaction
     box.on "accept",=>
-      value = value/reaction.fromTraitsNumber
+      value = value/reaction.fromTraitsCount
       callback() if callback
       newTraits = {}
       newTraits[reaction.to] = value

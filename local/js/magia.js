@@ -19,7 +19,7 @@
       };
       this.loadResources(function() {
         _this.db = new Database();
-        _this.player = new Player(null, _this.db);
+        _this.player = new Player(_this.db);
         $("#loadingPage").slideUp("slow");
         _this.switchStage("start");
         return _this.startGameLoop();

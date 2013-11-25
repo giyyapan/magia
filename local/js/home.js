@@ -12,6 +12,7 @@
       SubMenu.__super__.constructor.call(this, tpl);
       this.menu = menu;
       this.dom.onclick = function() {
+        _this.menu.showFunctionBtns();
         return _this.hide();
       };
     }
@@ -37,9 +38,19 @@
       btn.UI.name.J.text(name);
       btn.appendTo(this.UI['sub-btn-box']);
       return btn.dom.onclick = function(evt) {
+        var data;
         evt.stopPropagation();
-        _this.hide();
-        return _this.menu.emit("activeSubMenu", btnCode);
+        data = {
+          autohide: true,
+          showFunctionBtns: true
+        };
+        _this.menu.emit("activeSubMenu", btnCode, data);
+        if (data.autohide) {
+          _this.hide();
+        }
+        if (data.showFunctionBtns) {
+          return _this.menu.showFunctionBtns();
+        }
       };
     };
 
@@ -51,14 +62,10 @@
     __extends(HomeMenu, _super);
 
     function HomeMenu(floor) {
-      var _this = this;
       HomeMenu.__super__.constructor.call(this, Res.tpls['home-menu']);
       this.floor = floor;
       this.functionBtns = [];
       this.subMenu = new SubMenu(this.UI['sub-menu-layer'], this);
-      this.subMenu.on("hide", function() {
-        return _this.showFunctionBtns();
-      });
     }
 
     HomeMenu.prototype.showFunctionBtns = function() {
@@ -143,7 +150,9 @@
       return this.menu.showFunctionBtns();
     };
 
-    Floor.prototype.initFunctionBtns = function() {};
+    Floor.prototype.initFunctionBtns = function() {
+      return this.camera.render(this.menu.UI['function-btn-box']);
+    };
 
     Floor.prototype.initLayers = function() {};
 
@@ -236,10 +245,19 @@
 
     FirstFloor.prototype.initFunctionBtns = function() {
       var _this = this;
-      this.camera.render(this.menu.UI['function-btn-box']);
+      FirstFloor.__super__.initFunctionBtns.apply(this, arguments);
       this.menu.addFunctionBtn("上楼", 173, 20, function() {
-        _this.menu.hideFunctionBtns();
-        return _this.home.goUp();
+        _this.menu.showSubMenu("楼梯", "上楼");
+        return _this.menu.on("activeSubMenu", function(buttonCode, data) {
+          data.showFunctionBtns = false;
+          return _this.home.goUp();
+        });
+      });
+      this.menu.addFunctionBtn("玄关", 580, 600, function() {
+        _this.menu.showSubMenu("玄关", "出门");
+        return _this.menu.on("activeSubMenu", function(buttonCode) {
+          return _this.home.exit();
+        });
       });
       this.menu.addFunctionBtn("卧室", 1154, 98, function() {
         _this.menu.showSubMenu("卧室", "换衣服", "睡觉");
@@ -294,6 +312,7 @@
 
     SecondFloor.prototype.initFunctionBtns = function() {
       var _this = this;
+      SecondFloor.__super__.initFunctionBtns.apply(this, arguments);
       this.menu.addFunctionBtn("工作台", 180, 140, function() {
         _this.menu.showSubMenu("工作台", "素材加工");
         return _this.menu.on("activeSubMenu", function(buttonCode) {
@@ -304,8 +323,11 @@
         });
       });
       return this.menu.addFunctionBtn("下楼", 706, 120, function() {
-        _this.menu.hideFunctionBtns();
-        return _this.home.goDown();
+        _this.menu.showSubMenu("楼梯", "下楼");
+        return _this.menu.on("activeSubMenu", function(buttonCode, data) {
+          data.showFunctionBtns = false;
+          return _this.home.goDown();
+        });
       });
     };
 

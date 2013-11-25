@@ -4,7 +4,7 @@ class SpeedItem extends Widget
     @speedGage = 80
     @maxSpeed = 100
     @hp = 300
-    @speed = originData.basicData.spd
+    @speed = originData.statusValue.spd
     #@icon = originData.icon
   tick:(tickDelay)->
     @speedGage += tickDelay/1000*@speed
@@ -70,13 +70,13 @@ class BattlefieldPlayer extends Sprite
   constructor:(battlefield,x,y,playerData,originData)->
     super x,y,originData
     @playerData = playerData
-    @basicData = originData.basicData
-    for name,value of originData.basicData
+    @statusValue = originData.statusValue
+    for name,value of originData.statusValue
       this[name] = value
     @bf= battlefield
     @transform.scaleX = -1;
     @lifeBar = new Widget @bf.menu.UI['life-bar']
-    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@basicData.hp}"
+    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
     @speedItem = battlefield.menu.addSpeedItem originData
     @speedItem.on "active",=>
       @act()
@@ -134,8 +134,8 @@ class BattlefieldPlayer extends Sprite
   onBuff:(effect)->
   onHeal:(value)->
     @hp += value
-    if @hp > @basicData.hp
-      @hp = @basicData.hp
+    if @hp > @statusValue.hp
+      @hp = @statusValue.hp
     @updateLifeBar "heal"
   onAttack:(from,damage)->
     #console.log "player onattack,damage:",damage
@@ -154,8 +154,8 @@ class BattlefieldPlayer extends Sprite
       J.addClass "damage"
       @setCallback 100,=>
         J.removeClass("damage")
-    J.css "width","#{parseInt(@hp/@basicData.hp*100)}%"
-    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@basicData.hp}"
+    J.css "width","#{parseInt(@hp/@statusValue.hp*100)}%"
+    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
   draw:(context,tickDelay)->
     super context,tickDelay
     context.fillRect(-10,-10,20,20);
@@ -189,11 +189,11 @@ class BattlefieldMonster extends Sprite
   constructor:(battlefield,x,y,originData)->
     super x,y,originData
     @bf = battlefield
-    @basicData = originData.basicData
+    @statusValue = originData.statusValue
     @originData = originData
-    for name,value of originData.basicData
+    for name,value of originData.statusValue
       this[name] = value
-    @maxHp = @basicData.hp
+    @maxHp = @statusValue.hp
     @lifeBar = new MonsterLifeBar this
     @drawQueueAddAfter @lifeBar
     @speedItem = battlefield.menu.addSpeedItem originData

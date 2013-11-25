@@ -37,10 +37,9 @@
     }
 
     ReactionFinishBox.prototype.chooseTraitItem = function(item) {
-      var name, newSupplies, originData;
+      var name, newSupplies;
       name = "" + item.traitName + "Potion";
-      originData = this.db.things.supplies.get(name);
-      newSupplies = new PlayerSupplies(name, originData, item.traitValue);
+      newSupplies = new PlayerSupplies(this.db, name, item.traitValue, null);
       this.emit("getNewSupplies", newSupplies);
       return this.close();
     };
@@ -200,7 +199,7 @@
         fromTraitsArr = r.split("->")[0].split(",");
         obj = {
           from: {},
-          fromTraitsNumber: fromTraitsArr.length,
+          fromTraitsCount: fromTraitsArr.length,
           to: r.split("->")[1]
         };
         for (_j = 0, _len1 = fromTraitsArr.length; _j < _len1; _j++) {
@@ -274,7 +273,7 @@
       if (this.reactionBtns[r.to]) {
         return this.reactionBtns[r.to].update(avail);
       } else {
-        tpl = this.UI["reaction-btn-tpl-" + r.fromTraitsNumber].innerHTML;
+        tpl = this.UI["reaction-btn-tpl-" + r.fromTraitsCount].innerHTML;
         btn = new ReactionBtn(tpl, r, avail, this);
         btn.appendTo(this.UI['avail-reaction-list']);
         return this.reactionBtns[r.to] = btn;
@@ -292,7 +291,7 @@
       box = new ReactionConfirmBox(reaction);
       return box.on("accept", function() {
         var newTraits;
-        value = value / reaction.fromTraitsNumber;
+        value = value / reaction.fromTraitsCount;
         if (callback) {
           callback();
         }

@@ -3,6 +3,7 @@ class SubMenu extends Widget
     super tpl
     @menu = menu
     @dom.onclick = =>
+      @menu.showFunctionBtns()
       @hide()
   setTitle:(title)->
     @UI.title.J.text title
@@ -18,8 +19,10 @@ class SubMenu extends Widget
     btn.appendTo @UI['sub-btn-box']
     btn.dom.onclick = (evt)=>
       evt.stopPropagation()
-      @hide()
-      @menu.emit "activeSubMenu",btnCode
+      data = autohide:true,showFunctionBtns:true
+      @menu.emit "activeSubMenu",btnCode,data
+      @hide() if data.autohide
+      @menu.showFunctionBtns() if data.showFunctionBtns
       
 class HomeMenu extends Menu
   constructor:(floor)->
@@ -27,8 +30,6 @@ class HomeMenu extends Menu
     @floor = floor
     @functionBtns = []
     @subMenu = new SubMenu @UI['sub-menu-layer'],this
-    @subMenu.on "hide",=>
-      @showFunctionBtns()
   showFunctionBtns:->
     for btn in @functionBtns
       btn.J.removeClass "animate-popout"
@@ -71,6 +72,7 @@ class Floor extends Layer
     @menu.show()
     @menu.showFunctionBtns()
   initFunctionBtns:->
+    @camera.render @menu.UI['function-btn-box']
   initLayers:->
   initMenu:->
     s = Utils.getSize()
@@ -125,10 +127,16 @@ class FirstFloor extends Floor
       main:main
       float:float
   initFunctionBtns:->
-    @camera.render @menu.UI['function-btn-box']
+    super
     @menu.addFunctionBtn "上楼",173,20,=>
-      @menu.hideFunctionBtns()
-      @home.goUp()
+      @menu.showSubMenu "楼梯","上楼"
+      @menu.on "activeSubMenu",(buttonCode,data)=>
+        data.showFunctionBtns = false
+        @home.goUp()
+    @menu.addFunctionBtn "玄关",580,600,=>
+      @menu.showSubMenu "玄关","出门"
+      @menu.on "activeSubMenu",(buttonCode)=>
+        @home.exit()
     @menu.addFunctionBtn "卧室",1154,98,=>
       @menu.showSubMenu "卧室","换衣服","睡觉"
       @menu.on "activeSubMenu",(buttonCode)=>
@@ -156,14 +164,17 @@ class SecondFloor extends Floor
       main:main
     @camera.render main
   initFunctionBtns:->
+    super
     @menu.addFunctionBtn "工作台",180,140,=>
       @menu.showSubMenu "工作台","素材加工"
       @menu.on "activeSubMenu",(buttonCode)=>
         switch buttonCode
           when 1 then @showWorkTable()
     @menu.addFunctionBtn "下楼",706,120,=>
-      @menu.hideFunctionBtns()
-      @home.goDown()
+      @menu.showSubMenu "楼梯","下楼"
+      @menu.on "activeSubMenu",(buttonCode,data)=>
+        data.showFunctionBtns = false
+        @home.goDown()
   showWorkTable:->
     worktable = new Worktable @home
     @mainBg.onshow = false

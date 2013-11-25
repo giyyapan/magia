@@ -49,13 +49,9 @@ class window.WorldMap extends Stage
     map = new Layer()
     @player = @game.player
     @db = @game.db
-
     @menu = new Menu Res.tpls['world-map']
-    map.setImg Res.imgs.worldMap
-    #console.log @menu
     @menu.show()
     @drawQueueAddAfter map,@menu
-
     nowEnergy = @player.energy
     myDate = new Date()
     nowMon = myDate.getMonth()
@@ -67,9 +63,6 @@ class window.WorldMap extends Stage
       @menu.UI["day-night"].innerHTML = "昼"
     else
       @menu.UI["day-night"].innerHTML = "夜"
-
-
-
     for name in ["home","forest","snowmountain","shop"]
       data = @db.areas.get name
       imgName = data.summaryImg
