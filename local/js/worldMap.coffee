@@ -53,7 +53,7 @@ class window.WorldMap extends Stage
     nowDay = myDate.getDate()
     nowHours = myDate.getHours()
     @menu.UI["energy"].innerHTML = "体力:" + nowEnergy
-    @menu.UI["time"].innerHTML = "#{nowMon}月#{nowDay}日"
+    @menu.UI["time"].innerHTML = "#{nowMon+1} 月 #{nowDay} 日"
     if nowHours >0 and nowHours <20
       @menu.UI["day-night"].innerHTML = "昼"
     else

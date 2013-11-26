@@ -19,7 +19,7 @@ class Magia
       @switchStage "start"
       #window.myAudio.stop "startMenu"
       #window.myAudio.play "home"
-      #@switchStage "worldMap"
+      @switchStage "worldMap"
       #@switchStage "area","forest"
       #@switchStage "home"
       @startGameLoop()

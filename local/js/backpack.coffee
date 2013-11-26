@@ -44,11 +44,11 @@ class window.Backpack extends Menu
       self.switchTab $(this).attr "value"
   initThings:(type="gatherArea")->
     @freeThings()
-    #type = gatherArea or town
     tabName = @currentTabName
     if type is "gatherArea"
       source = @player.backpack
     for thing in @player.backpack
+      console.log thing
       switch thing.type
         when "item" then @items.push thing
         when "supplies" then @supplies.push thing

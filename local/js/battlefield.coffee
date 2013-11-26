@@ -46,25 +46,25 @@ class DetailsBox extends ItemDetailsBox
     @UI.description.J.text item.effectData.description
     @UI['use-btn'].onclick = =>
       @useItem item
-  useItem:(sourceItem)->
+  useItem:(sourceItemWidget)->
     menu = @bf.menu
     menu.UI['magic-menus'].J.fadeOut 150
-    if sourceItem.type is "active"
-      switch sourceItem.effectData.type
+    if sourceItemWidget.type is "active"
+      switch sourceItemWidget.effectData.type
         when "attack" or "debuff"
           menu.hideActionBtns()
           menu.showTargetSelect "magic",
             cancel:=>
               menu.showActionBtns()
               menu.UI['magic-menus'].J.fadeIn 150
-            success:(target)=>@bf.player.castSpell sourceItem,target
+            success:(target)=>@bf.player.castSpell sourceItemWidget,target
         when "areaAttack"
-          @bf.player.castSpell sourceItem,@bf.monsters
+          @bf.player.castSpell sourceItemWidget,@bf.monsters
         when "buff","heal"
-          @bf.player.castSpell sourceItem,@bf.player
-        else console.error "invailid item active type#{sourceItem.effectData.type}"
+          @bf.player.castSpell sourceItemWidget,@bf.player
+        else console.error "invailid item active type#{sourceItemWidget.effectData.type}"
     else
-      @bf.player.castSpell sourceItem,@bf.player
+      @bf.player.castSpell sourceItemWidget,@bf.player
         
 class BattlefieldPlayer extends Sprite
   constructor:(battlefield,x,y,playerData,originData)->
@@ -117,18 +117,21 @@ class BattlefieldPlayer extends Sprite
           @useMovement @defaultMovement,true
           @bf.paused = false
   defense:->
-  castSpell:(sourceItem,target)->
+  castSpell:(sourceItemWidget,target)->
     console.log "cast spell to ",target
+    sourceItemWidget.playerSupplies.remainCount -= 1
+    if sourceItemWidget.playerSupplies.remainCount < 0
+      @playerData.removeThing playerSupplies
     callback = =>
       @bf.setView "normal"
       @bf.paused = false
-    if sourceItem.type is "active"
-      switch sourceItem.effectData.type
-        when "attack" then target.onAttack this,sourceItem.effectData.damage
-        when "heal" then target.onHeal sourceItem.effectData.heal
-        when "buff" then target.onBuff sourceItem.effectData.buff
+    if sourceItemWidget.type is "active"
+      switch sourceItemWidget.effectData.type
+        when "attack" then target.onAttack this,sourceItemWidget.effectData.damage
+        when "heal" then target.onHeal sourceItemWidget.effectData.heal
+        when "buff" then target.onBuff sourceItemWidget.effectData.buff
     else
-      target.addFlipOverEffect sourceItem.effectData
+      target.addFlipOverEffect sourceItemWidget.effectData
     callback()
   addFlipOverEffect:(effect)->
   onBuff:(effect)->
@@ -244,12 +247,9 @@ class BattlefieldMonster extends Sprite
     return if @dead
     @dead = true
     @animateClock.paused = true
-    console.log @speedItem
     @speedItem.remove()
     @fadeOut 1000,=>
       @bf.mainLayer.drawQueueRemove this
-      @draw = ->
-        console.log "tick"
       newArr = []
       for m in @bf.monsters when m isnt this
         newArr.push m
@@ -346,7 +346,6 @@ class BattlefieldMenu extends Menu
       else return console.error "invailid type:#{type}"
     self = this
     tpl = @UI['item-tpl'].innerHTML
-    console.log tpl
     @UI['spell-source-list'].J.html ""
     for i in @bf.player.playerData.backpack
       if not i.originData[type] then continue

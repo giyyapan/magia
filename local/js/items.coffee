@@ -15,7 +15,7 @@ class window.Things extends EventEmitter
 class window.PlayerItem extends Things
   constructor:(db,name,number)->
     originData = db.things.items.get name
-    super name,"item"
+    super name,originData,"item"
     @number = number
     @traits = {}
     for t in originData.traits
@@ -26,6 +26,7 @@ class window.PlayerItem extends Things
       
 class window.PlayerSupplies extends Things
   constructor:(db,name,traitValue,remainCount)->
+    console.log db.things
     originData = db.things.supplies.get name
     super name,originData,"supplies"
     @remainCount = remainCount or 5

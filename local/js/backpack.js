@@ -105,6 +105,7 @@
       _ref = this.player.backpack;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         thing = _ref[_i];
+        console.log(thing);
         switch (thing.type) {
           case "item":
             this.items.push(thing);

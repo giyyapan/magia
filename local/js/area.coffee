@@ -37,7 +37,7 @@ class ResPoint extends Suzaku.Widget
     @UI.name.J.text @pointText
     @dom.number = index+1
     @J.addClass "gp#{index+1}"
-    @J.css position:"absolute",left:data.split(",")[0]+"px",top:data.split(",")[1]+"px",
+    @J.css left:data.split(",")[0]+"px",top:data.split(",")[1]+"px",
     @dom.onclick = (evt)=>
       evt.stopPropagation()
       @emit "active",@active()

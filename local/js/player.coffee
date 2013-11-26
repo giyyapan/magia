@@ -44,8 +44,8 @@ class window.Player
       @saveData()
     else
       @initData()
+    @energy = 50
   initData:()->
-    @statusValue = @data.basicData
     @money = @data.money
     @energy = @data.energy
     @lastStage = @data.lastStage
@@ -61,6 +61,8 @@ class window.Player
     @initThingsFrom "storage",@data.storage
     @updateStatusValue()
   updateStatusValue:->
+    @basicStatusValue = @data.basicStatusValue
+    @statusValue = {}
     for name,value of @basicStatusValue
       @statusValue[name] = value
     for part,equip in @currentEquipments
@@ -78,7 +80,6 @@ class window.Player
       switch data.type
         when "item" then @getItem target,data
         when "supplies" then @getSupplies target,data
-    console.log @backpack
   removeThing:(playerItem,from)->
     if not from
       return if @removeThing playerItem,"backpack"
@@ -107,7 +108,6 @@ class window.Player
       return theItem.number += 1
     target.push item
     @saveData()
-    console.log this
   getSupplies:(target="backpack",data)->
     if data instanceof PlayerSupplies
       supplies = data
@@ -121,7 +121,6 @@ class window.Player
       when "storage" then target = @storage
     target.push supplies
     @saveData()
-    console.log this
   getEquipment:()->
   checkFreeSpace:(target,things)->
     return true

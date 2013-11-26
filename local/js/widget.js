@@ -139,6 +139,12 @@
     }
 
     ItemDetailsBox.prototype.showItemDetails = function(item) {
+      if (item.playerSupplies) {
+        this.UI['remain-count-hint'].J.show();
+        this.UI['remain-count'].innerHTML = "" + item.playerSupplies.remainCount + "/5";
+      } else {
+        this.UI['remain-count-hint'].J.hide();
+      }
       this.UI['content'].J.hide();
       if (this.currentItem) {
         this.currentItem.J.removeClass("selected");

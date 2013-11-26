@@ -32,11 +32,11 @@ class HomeMenu extends Menu
     @subMenu = new SubMenu @UI['sub-menu-layer'],this
   showFunctionBtns:->
     for btn in @functionBtns
-      btn.J.removeClass "animate-popout"
+      btn.J.removeClass "animate-pophide"
       btn.css3Animate "animate-popup"
   hideFunctionBtns:->
     for btn in @functionBtns
-      btn.J.addClass "animate-popout"
+      btn.J.addClass "animate-pophide"
   addFunctionBtn:(name,x,y,callback)->
     btn = new Widget @UI['function-btn-tpl'].innerHTML
     @functionBtns.push btn
@@ -81,13 +81,13 @@ class Floor extends Layer
       x = @currentX
       delete @camera.lock
       if x is 0
-        @menu.UI['move-left'].J.removeClass("animate-popup").addClass "animate-popout"
+        @menu.UI['move-left'].J.removeClass("animate-popup").addClass "animate-pophide"
       else
-        @menu.UI['move-left'].J.removeClass("animate-popout").addClass "animate-popup"
+        @menu.UI['move-left'].J.removeClass("animate-pophide").addClass "animate-popup"
       if x is (@mainBg.width - s.width)
-        @menu.UI['move-right'].J.removeClass("animate-popup").addClass "animate-popout"
+        @menu.UI['move-right'].J.removeClass("animate-popup").addClass "animate-pophide"
       else
-        @menu.UI['move-right'].J.removeClass("animate-popout").addClass "animate-popup"
+        @menu.UI['move-right'].J.removeClass("animate-pophide").addClass "animate-popup"
     @menu.UI['move-right'].onclick = (evt)=>
       evt.stopPropagation()
       console.log "right"

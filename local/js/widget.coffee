@@ -74,6 +74,11 @@ class window.ItemDetailsBox extends Widget
     super Res.tpls['item-details-box'] 
     @currentItem = null
   showItemDetails:(item)->
+    if item.playerSupplies
+      @UI['remain-count-hint'].J.show()
+      @UI['remain-count'].innerHTML = "#{item.playerSupplies.remainCount}/5"
+    else
+      @UI['remain-count-hint'].J.hide()
     @UI['content'].J.hide()
     @currentItem.J.removeClass "selected" if @currentItem
     @currentItem = item

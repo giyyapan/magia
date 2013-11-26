@@ -70,7 +70,6 @@
       this.dom.number = index + 1;
       this.J.addClass("gp" + (index + 1));
       this.J.css({
-        position: "absolute",
         left: data.split(",")[0] + "px",
         top: data.split(",")[1] + "px"
       }, this.dom.onclick = function(evt) {

@@ -4,6 +4,7 @@ class window.Drawable extends Suzaku.EventEmitter
     @x = x or 0
     @y = y or 0
     @z = null
+    @secondCanvas = null
     @offsetSize = true
     @imgData = null
     @width = width or null
@@ -44,26 +45,44 @@ class window.Drawable extends Suzaku.EventEmitter
   blendWith:(drawable,method)->
     if not drawable.draw
       return console.error "invailid drawable",drawable
+    @secondCanvas = $("#secondCanvas").get(0) if not @secondCanvas
     @blendQueue.push
       drawable:drawable
       method:method
-  _handleBlender:->
-    if @blendQueue.length is 0
-      return false
-  onDraw:(context,tickDelay)->
-    @_handleAnimate tickDelay
+  onDraw:(context,timeDelay)->
+    @_handleAnimate timeDelay
     return if not @onshow
     for name,value of @transform
       @realValue[name] = value
+    if @blendQueue.length > 0
+      @onDrawBlend context,timeDelay
+    else
+      @onDrawNormal context,timeDelay
+  onDrawBlend:(content,timeDelay)->
+    tempContext = @secondCanvas.getContext
+    tempContext.clearRect 0,0,@width,@height
+    for item in @drawQueue.before
+      item.onDraw tempContext,0
+    @draw context if @draw
+    for item in @drawQueue.after
+      item.onDraw tempContext,0
+    @_handleBlend tempContext,realContext
+    #接受图片数据，并调用normal的ondraw去正式绘制
+  onDrawNormal:(context,timeDelay)->
     context.save()
     @emit "render",this
     @_handleTransform context
     for item in @drawQueue.before
-      item.onDraw context,tickDelay
+      item.onDraw context,timeDelay
     @draw context if @draw
     for item in @drawQueue.after
-      item.onDraw context,tickDelay
+      item.onDraw context,timeDelay
     context.restore()
+  _handleBlend:(tempContext,realContext)->
+    # 已经将图像画到第二画不
+    # 先取出图像信息
+    # 依次将blend队列中的图像画出，取出他们的图像信息并且进行混合
+    # 将结果绘制到真实画布
   _handleTransform:(context)->
     r = @realValue
     x = r.translateX + @x
@@ -95,7 +114,7 @@ class window.Drawable extends Suzaku.EventEmitter
     return if -@anchor.x >= s.width or -@anchor.y >= s.height
     if @imgData
       i = @imgData
-      img = @_handleBlender() or i.img
+      img = i.img
       if i.x
         context.drawImage img,i.x,i.y,i.width,i.height,-@anchor.x,-@anchor.y,@width,@height
       else

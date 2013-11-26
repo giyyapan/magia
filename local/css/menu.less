@@ -19,7 +19,11 @@
 .poison{background: black !important;}
 .muddy{background: #896b4c !important;}
 .clear{background: #549988 !important;}
-
+.text{
+		color:#d7ba97;
+		text-shadow: 0px 2px 0px #3c2f21;
+		font-weight:bold;
+}
 .trait-icon{
 		display:inline-block;
 		padding-top:1px;
@@ -153,6 +157,7 @@
 		margin:auto;
 		height:455px;
 		background: @color-bg-brown-lv1;
+		color: @color-text-black;
 		.content-wrapper{
 				width:auto;
 				margin:auto;
@@ -164,11 +169,14 @@
 						float: left;
 						margin-left: 50px;
 				}
+				.remain-count-hint{
+						margin-top: 10px;
+						font-size: 18px;
+				}
 				.description{
 						width: 340px;
 						margin-top: 10px;
 						font-size: 18px;
-						color: @color-text-black;
 						display: block;
 				}
 		}
@@ -339,16 +347,18 @@
 		width:100%;
 		bottom:10px;
 		position:absolute;
-		.btn{
-				padding: 15px;
-				margin: 15px;
-				width: 180px;
-				display: inline-block;
-				.double-border;
-				background: @color-bg-brown-lv2;
-				img{
-						width: 70px;
-				}
+}
+.btn{
+		.text;
+		font-size:23px;
+		padding: 15px;
+		margin: 15px;
+		width: 180px;
+		display: inline-block;
+		.double-border;
+		background: @color-bg-brown-lv2;
+		&:hover{
+				background-color:#5d452c;
 		}
 }
 .dialog-box-wrapper{

@@ -24,3 +24,6 @@
 .item-details-box-wrapper#item-details-box{display:block;height:486px;width:620px;margin-left:19px;margin-top:19px}.item-details-box-wrapper#item-details-box .item-details-box{margin:auto;width:auto}
 .item-details-box-wrapper#item-details-box .details-content-wrapper{margin:13px auto}
 .item-details-box-wrapper#item-details-box .button-holder .btn{padding:15px;margin:10px}
+.item-details-box-wrapper#item-details-box .trait-item .trait-icon{padding:4px}
+.item-details-box-wrapper#item-details-box .trait-item .trait-holder{margin-top:2px;width:370px;height:22px}
+.item-details-box-wrapper#item-details-box .trait-item .cursor{height:29px}
