@@ -218,5 +218,7 @@ class window.Home extends Stage
             @secondFloor.animate {"transform.opacity":1,y:0},500,"expoOut"
             @secondFloor.init()
   exit:->
-    @clearDrawQueue()
-    @game.switchStage "worldMap"
+    @firstFloor.fadeOut "slow"
+    @fadeOut "slow",=>
+      @clearDrawQueue()
+      @game.switchStage "worldMap"

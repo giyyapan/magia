@@ -40,14 +40,16 @@ class window.Drawable extends Suzaku.EventEmitter
       y:parseInt y
   _initAnimate:->
     @_animates = []
-    for name,f of Animate.funcs
+    for name,f of Drawable.Animate.funcs
       this[name] = f
-  blendWith:(drawable,method)->
-    if not drawable.draw
-      return console.error "invailid drawable",drawable
+  blendWith:(blendImg,method)->
+    if not blendImg instanceof BlendImg
+      return console.error "invailid blendImg",blendImg
+    if not method
+      return console.error "no method!"
     @secondCanvas = $("#secondCanvas").get(0) if not @secondCanvas
     @blendQueue.push
-      drawable:drawable
+      blendImg:blendImg
       method:method
   onDraw:(context,timeDelay)->
     @_handleAnimate timeDelay
@@ -58,16 +60,19 @@ class window.Drawable extends Suzaku.EventEmitter
       @onDrawBlend context,timeDelay
     else
       @onDrawNormal context,timeDelay
-  onDrawBlend:(content,timeDelay)->
-    tempContext = @secondCanvas.getContext
+  onDrawBlend:(context,timeDelay)->
+    realContext = context
+    tempContext = @secondCanvas.getContext "2d"
     tempContext.clearRect 0,0,@width,@height
     for item in @drawQueue.before
       item.onDraw tempContext,0
-    @draw context if @draw
+    @draw tempContext if @draw
     for item in @drawQueue.after
       item.onDraw tempContext,0
-    @_handleBlend tempContext,realContext
-    #接受图片数据，并调用normal的ondraw去正式绘制
+    @currentImgData = tempContext.getImageData 0,0,@width,@height
+    for b in @blendQueue
+      @currentImgData = @_handleBlend tempContext,@currentImgData,b
+    @onDrawNormal(realContext,timeDelay)
   onDrawNormal:(context,timeDelay)->
     context.save()
     @emit "render",this
@@ -78,11 +83,36 @@ class window.Drawable extends Suzaku.EventEmitter
     for item in @drawQueue.after
       item.onDraw context,timeDelay
     context.restore()
-  _handleBlend:(tempContext,realContext)->
-    # 已经将图像画到第二画不
-    # 先取出图像信息
-    # 依次将blend队列中的图像画出，取出他们的图像信息并且进行混合
-    # 将结果绘制到真实画布
+  _handleBlend:(tempContext,currentImgData,blendQueueItem)->
+    blendData = blendQueueItem.blendImg.getData tempContext
+    switch blendQueueItem.method
+      when "overlay","linearLight" then blendFunc = Drawable.BlendMethod[blendQueueItem.method]
+      else return console.error "invailid blend method #{blendQueueItem.method}"
+    blendImgDataPixars = blendData.imgData.data
+    currentImgDataPixars = currentImgData.data
+    for x in [0 .. blendData.imgData.width]
+      for y in [0 .. blendData.imgData.height]
+        blendImgIndex = (x + y * blendData.imgData.width) * 4
+        currentImgIndex = ((x + blendData.x) + (y + blendData.y) * currentImgData.width) * 4
+        pcr = currentImgDataPixars[currentImgIndex]
+        pcg = currentImgDataPixars[currentImgIndex+1]
+        pcb = currentImgDataPixars[currentImgIndex+2]
+        pca = currentImgDataPixars[currentImgIndex+3]
+        pbr = blendImgDataPixars[blendImgIndex]
+        pbg = blendImgDataPixars[blendImgIndex+1]
+        pbb = blendImgDataPixars[blendImgIndex+2]
+        pba = blendImgDataPixars[blendImgIndex+3]
+        if pcr is undefined or pbr is undefined
+          continue
+        p = blendFunc pcr,pcg,pcb,pca,pbr,pbg,pbb,pba
+        currentImgDataPixars[currentImgIndex] = p.r
+        currentImgDataPixars[currentImgIndex+1] = p.g
+        currentImgDataPixars[currentImgIndex+2] = p.b
+        # currentImgDataPixars[currentImgIndex] = pbr
+        # currentImgDataPixars[currentImgIndex+1] = pbg
+        # currentImgDataPixars[currentImgIndex+2] = pbb
+        currentImgDataPixars[currentImgIndex+3] = p.a
+    return currentImgData
   _handleTransform:(context)->
     r = @realValue
     x = r.translateX + @x
@@ -114,11 +144,15 @@ class window.Drawable extends Suzaku.EventEmitter
     return if -@anchor.x >= s.width or -@anchor.y >= s.height
     if @imgData
       i = @imgData
-      img = i.img
-      if i.x
-        context.drawImage img,i.x,i.y,i.width,i.height,-@anchor.x,-@anchor.y,@width,@height
+      if @currentImgData
+        context.putImageData @currentImgData,0,0,-@anchor.x,-@anchor.y,@width,@height
+        @currentImgData = null
       else
-        context.drawImage img,-@anchor.x,-@anchor.y,@width,@height
+        img = i.img
+        if i.x
+          context.drawImage img,i.x,i.y,i.width,i.height,-@anchor.x,-@anchor.y,@width,@height
+        else
+          context.drawImage img,-@anchor.x,-@anchor.y,@width,@height
     else if GameConfig.debug is 2
       return
       context.fillStyle = "black"
@@ -189,7 +223,7 @@ class window.Drawable extends Suzaku.EventEmitter
         when "normal" then time = GameConfig.speedValue.normal
         when "slow" then time = GameConfig.speedValue.slow
     if typeof easing is "string"
-      easing = Animate.easing[easing]
+      easing = Drawable.Animate.easing[easing]
     @_animates.push
       func:func
       time:time
@@ -224,7 +258,21 @@ class window.Drawable extends Suzaku.EventEmitter
         data = dataObj[name]
         ref[n] = data.origin + data.delta * p
     return f
-Animate =
+Drawable.BlendMethod =
+  linearLight:(r1,g1,b1,a1,r2,g2,b2,a2)->
+    a = a2/255
+    # r2 = parseInt((1 - a ) * r1 + a * r2)
+    # g2 = parseInt((1 - a ) * g1 + a * g2)
+    # b2 = parseInt((1 - a ) * b1 + a * b2)
+    r = parseInt Math.min(255, Math.max(0, (r2 + 2 * r1) - 1))
+    g = parseInt Math.min(255, Math.max(0, (g2 + 2 * g1) - 1))
+    b = parseInt Math.min(255, Math.max(0, (b2 + 2 * b1) - 1))
+    p =
+      r:parseInt((1 - a ) * r1 + a * r)
+      g:parseInt((1 - a ) * g1 + a * g)
+      b:parseInt((1 - a ) * b1 + a * b)
+      a:a1
+Drawable.Animate =
   easing:
     swing:(time,sumDelay)->
       return p = sumDelay/time
@@ -289,3 +337,19 @@ class window.Stage extends Drawable
   draw:->
   tick:->
     
+class window.BlendImg extends Drawable
+  constructor:(source,x,y,width,height)->
+    super x,y,width,height
+    if typeof source is "string"
+      @type = "color"
+    else
+      @type = "img"
+    @source = source
+  getData:(context)->
+    context.clearRect 0,0,@width,@height
+    if @type is "color"
+      context.fillStyle = @source
+      context.fillRect 0,0,@width,@height
+    else
+      context.drawImage @source,0,0,width,data
+    return {x:@x,y:@y,imgData:context.getImageData(0,0,@width,@height)}

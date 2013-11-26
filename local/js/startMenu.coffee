@@ -9,7 +9,6 @@ class window.StartMenu extends Stage
         @menu.UI["logo-bg"].J.animate opacity:"1",1500
         @menu.UI["logo-text"].J.animate {opacity:"1",right:"+=80px"},1500
         @menu.UI["start-but"].J.show().animate opacity:"1",1000
-        
     @menu.UI.start.onclick = =>
       console.log  "start game btn click"
       window.myAudio.play("startClick")

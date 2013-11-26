@@ -12,7 +12,7 @@ conf =
   speedValue:
     fast:200
     normal:350
-    slow:600
+    slow:800
 if not document.createElement('canvas').getContext
   dom = document.createElement('div')
   dom.innerHTML = '<h2>Your browser does not support HTML5 canvas!</h2>' +

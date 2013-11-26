@@ -11,6 +11,9 @@ playerData =
     {name:"herbs",number:10,type:"item"}
     {name:"caveMashroom",number:10,type:"item"}
     ]
+  relationships:
+    luna:0
+    dirak:0
   storage:[]
   equipments:[]
   currentEquipments:
@@ -36,6 +39,7 @@ playerData =
 class window.Player
   constructor:(db)->
     @db = db
+    Utils.localData "clear","playerData"
     @data = Utils.localData "get","playerData"
     dataKey = Utils.localData "get","dataKey"
     if not @data or Utils.getKey(JSON.stringify(@data)) isnt parseInt(dataKey)
@@ -48,6 +52,7 @@ class window.Player
   initData:()->
     @money = @data.money
     @energy = @data.energy
+    @relationships = @data.relationships
     @lastStage = @data.lastStage
     @equipments = []
     for name in @data.equipments

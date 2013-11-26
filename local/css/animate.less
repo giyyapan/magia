@@ -119,6 +119,18 @@
 		35%{-webkit-transform:scale(1.2);}
 		70%{-webkit-transform:scale(1);}
 }
+@-webkit-keyframes Jump{
+		@dy:-10px;
+		0%{.transform(translateY(0));}
+		50%{.transform(translateY(@dy));}
+		100%{.transform(translateY(0));}
+}
+@-webkit-keyframes Jump{
+		@dy:-10px;
+		0%{-webkit-transform:translateY(0);}
+		50%{-webkit-transform:translateY(@dy);}
+		100%{-webkit-transform:translateY(0);}
+}
 .animate(@name,@time:.2s,@timingFunc:linear){
     animation:@name @time @timingFunc;
     -webkit-animation: @name @time @timingFunc;  
@@ -126,6 +138,10 @@
 .animate-infinity(@name:Popup,@time:5s,@timingFunc:linear){
     animation:@name @time @timingFunc infinite;
     -webkit-animation: @name @time @timingFunc infinite;
+}
+.animate-delay(@time:.5s){
+    animation-delay:@time;
+    -webkit-animation-delay:@time;
 }
 .animate-popup{
     .animate(Popup,.3s,ease-in-out);
@@ -146,7 +162,7 @@
     .animate(Warning,0.5s,ease-in-out);
 }
 .animate-scale-in-out{
-		.animate-infinity(Scale-in-out,1.5s,linear)
+		.animate-infinity(Scale-in-out,1.5s,linear);
 }
 .animate-dialog-mark{
 		@t:3s;
@@ -154,4 +170,8 @@
 		.dot1{.animate-infinity(Dialog-mark-dot1,@t,@timing);}
 		.dot2{.animate-infinity(Dialog-mark-dot2,@t,@timing);}
 		.dot3{.animate-infinity(Dialog-mark-dot3,@t,@timing);}
+}
+.animate-jump-infinity{
+		.animate-infinity(Jump,1s,ease-in-out);
+		.animate-delay(.5s);
 }

@@ -122,7 +122,7 @@ class window.AreasDB extends SubDB
         dangerLevel:'安全'
         summaryImg:'summaryHome'
         summaryBg:''
-      shop:
+      magicItemShop:
         name:'绯红魔法店'
         description:'这儿没什么好东西而且都很贵，不过附近好像也就只有这个地方愿意收购魔法物品了...真是太惨了'
         costEnergy: 0

@@ -46,6 +46,8 @@
 .trait-item .lv .lv1{border-radius:5px 0 0 5px}
 .trait-item .lv .lv6{border-radius:0 5px 5px 0}
 .button-holder{width:100%;bottom:10px;position:absolute}
-.btn{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;font-size:23px;padding:15px;margin:15px;width:180px;display:inline-block;box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;background:#907352}.btn:hover{background-color:#5d452c}
-.dialog-box-wrapper{z-index:9999;z-index:999999;position:fixed;width:100%;height:100%;bottom:0;left:0}.dialog-box-wrapper .dialog-box{position:absolute;bottom:0;width:100%}
-.dialog-box-wrapper .content-wrapper{position:absolute;bottom:0;width:100%;height:300px;border:1px solid #000;background-color:rgba(255,255,255,0.5)}
+.btn{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;font-size:23px;padding:20px;margin:15px;width:180px;display:inline-block;box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;background:#907352}.btn:hover{background-color:#5d452c}
+.dialog-box-wrapper{position:fixed;width:100%;height:100%;bottom:0;left:0}.dialog-box-wrapper.top{z-index:9999;z-index:999999}
+.dialog-box-wrapper .dialog-box{position:absolute;bottom:0;left:0;width:100%}
+.dialog-box-wrapper .content-wrapper{position:absolute;bottom:0;width:100%;background:url(/img/menu/dialog-bg.png) no-repeat;height:209px;color:#553e26}.dialog-box-wrapper .content-wrapper .content{font-size:24px;margin:auto;margin-top:38px;width:59%;height:131px;text-align:left;position:relative}.dialog-box-wrapper .content-wrapper .content .speaker{margin-left:-58px}
+.dialog-box-wrapper .content-wrapper .content .continue-hint{position:absolute;right:-75px;bottom:-8px;cursor:pointer}.dialog-box-wrapper .content-wrapper .content .continue-hint img{position:relative;top:5px}

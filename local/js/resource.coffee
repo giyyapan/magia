@@ -11,6 +11,7 @@ window.Imgs =
   snowmountainEntryBg:'snowmountain-entry-bg.jpg'
   snowmountainEntryMain:'snowmountain-entry-main.png'
   snowmountainEntryFloat:'snowmountain-entry-float.png'
+  startBg:"start-bg.jpg"
   forest2:'forest2.jpg'
   forest3:'forest3.jpg'
   bfForestMain:'bf-forest-main.jpg'
@@ -21,9 +22,12 @@ window.Imgs =
   layer4:'layer4.png'
   layer5:'layer5.png'
   layer6:'layer6.png'
+  magicShopBg:'magic-shop-bg.jpg'
   homeDownMain:'home-down-main.jpg'
   homeDownFloat:"home-down-float.png"
   homeUp:'home_up.jpg'
+  dialogContinueHint:'menu/dialog-continue-hint.png'
+  dialogBg:'menu/dialog-bg.png'
 window.Sprites =
   qq:"qq"
   
@@ -34,6 +38,7 @@ window.Templates = [
   "popup-box"
   "test-menu"
   "area-menu"
+  "shop-menu"
   "area-relative-menu"
   "thing-list-item"
   "backpack"

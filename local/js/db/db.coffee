@@ -12,7 +12,7 @@ class window.Database extends Suzaku.EventEmitter
   constructor:->
     @areas = new AreasDB()
     @things = new ThingsDB()
-    console.log @things
+    @shops = new ShopsDB()
     @rules = new SubDB "rules"
     @monsters = new SubDB "sprites-monsters"
     @spriteItems = new SubDB "sprites-items"
@@ -44,7 +44,16 @@ class window.Database extends Suzaku.EventEmitter
         name:"艾丽西亚"
         dialogPic:""
       cat:
+        description:""
         name:"琪琪"
+        dialogPic:""
+      luna:
+        name:"露娜"
+        description:"绯红魔法店的掌柜"
+        dialogPic:""
+      dirak:
+        name:"狄拉克"
+        description:"武器店的老板"
         dialogPic:""
   initSprites:->
     @monsters.data =

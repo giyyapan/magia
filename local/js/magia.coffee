@@ -16,11 +16,12 @@ class Magia
       @db = new Database()
       @player = new Player @db
       $("#loadingPage").slideUp "slow"
-      @switchStage "start"
+      #@switchStage "start"
       #window.myAudio.stop "startMenu"
       #window.myAudio.play "home"
-      @switchStage "worldMap"
+      #@switchStage "worldMap"
       #@switchStage "area","forest"
+      @switchStage "shop","magicItemShop"
       #@switchStage "home"
       @startGameLoop()
   switchStage:(stage,data)->
@@ -33,8 +34,8 @@ class Magia
         s = new Home this,data
         window.myAudio.play "home"
       when "test" then s = new TestStage this,data
-      when "town" then s = new Town this,data
       when "area" then s = new Area this,data
+      when "shop" then s = new Shop this,data
       when "worldMap" then s = new WorldMap this,data
       else console.error "invailid stage:#{stage}"
     if @currentStage
