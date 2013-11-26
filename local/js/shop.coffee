@@ -3,13 +3,18 @@ class ShopMenu extends Menu
     @shop = shop
     super Res.tpls['shop-menu']
     @detailsBox = new ItemDetailsBox().appendTo @UI['right-section']
-    @UI['welcome-traid'].onclick = -> shop.traid()
+    @UI['welcome-traid'].onclick = => @initTraid()
     @UI['welcome-conversation'].onclick = -> shop.conversation()
     @UI['welcome-exit'].onclick = -> shop.exit()
     @show()
   showWelcomOptions:->
     @UI['welcome-options'].J.fadeIn "fast"
-
+  hideWelcomOptions:->
+    @UI['welcome-options'].J.fadeOut "fast"
+  initTraid:->
+    @hideWelcomOptions()
+    @UI['left-section'].J.fadeIn "fast"
+    
 class window.Shop extends Stage
   constructor:(game,name)->
     super game
@@ -21,13 +26,17 @@ class window.Shop extends Stage
     @menu = new ShopMenu this
     @initWelcomDialog()
   exit:->
-    @menu.J.fadeOut "fast"
+    @menu.hideWelcomOptions()
     @dialogBox.display text:@originData.exitText,nostop:true,=>
       @dialogBox.hide =>
         @bg.fadeOut "fast",=>
           @game.switchStage "worldMap"
   conversation:->
-  traid:->
+    console.log "conversation"
+    @menu.hideWelcomOptions()
+    text = @getDataByRelationship @originData.conversations
+    @dialogBox.display text:text,=>
+      @menu.showWelcomOptions()
   getDataByRelationship:(from)->
     found = null
     for required,data of from

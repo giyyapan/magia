@@ -10,7 +10,7 @@ class window.ShopsDB extends SubDB
         exitText:"下次再来哟～❤"
         welcomeText:
           0:"啊呀，欢迎光临～"
-        dialogs:
+        conversations:
           0:"最近货源有些不好弄呢，我都在工会登记了好几个任务了。|最近的魔法师都懒得很呢～ | 啊，我可不是在说你哟呵呵呵呵"
           100:"多亏你的帮忙店里多了很多东西呢～真是太谢谢啦~"
         sellableType:"supplies"

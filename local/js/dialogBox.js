@@ -12,6 +12,7 @@
         alwaysontop = false;
       }
       DialogBox.__super__.constructor.call(this, Res.tpls['dialog-box']);
+      this.onshow = false;
       this.displayInterval = null;
       this.displayLock = false;
       if (alwaysontop) {
@@ -55,6 +56,11 @@
       if (!data.text || this.displayLock) {
         return;
       }
+      if (!this.onshow) {
+        this.show(function() {
+          return _this.display(data, callback);
+        });
+      }
       if (data.nostop === void 0) {
         data.nostop = false;
       }
@@ -80,6 +86,7 @@
             delay = 3;
           }
           switch (arr[index]) {
+            case "|":
             case "|":
               c = "</br>";
               break;
@@ -114,6 +121,13 @@
 
     DialogBox.prototype.show = function(callback) {
       var _this = this;
+      if (this.onshow) {
+        if (callback) {
+          callback();
+        }
+        return;
+      }
+      this.onshow = true;
       this.J.hide();
       this.appendTo(this.UILayer.dom);
       return this.J.fadeIn("fast", function() {
@@ -125,6 +139,7 @@
 
     DialogBox.prototype.hide = function(callback) {
       var _this = this;
+      this.onshow = false;
       return this.css3Animate.call(this.UI['content-wrapper'], "animate-pophide", function() {
         try {
           _this.remove();

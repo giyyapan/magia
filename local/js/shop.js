@@ -8,11 +8,12 @@
     __extends(ShopMenu, _super);
 
     function ShopMenu(shop) {
+      var _this = this;
       this.shop = shop;
       ShopMenu.__super__.constructor.call(this, Res.tpls['shop-menu']);
       this.detailsBox = new ItemDetailsBox().appendTo(this.UI['right-section']);
       this.UI['welcome-traid'].onclick = function() {
-        return shop.traid();
+        return _this.initTraid();
       };
       this.UI['welcome-conversation'].onclick = function() {
         return shop.conversation();
@@ -25,6 +26,15 @@
 
     ShopMenu.prototype.showWelcomOptions = function() {
       return this.UI['welcome-options'].J.fadeIn("fast");
+    };
+
+    ShopMenu.prototype.hideWelcomOptions = function() {
+      return this.UI['welcome-options'].J.fadeOut("fast");
+    };
+
+    ShopMenu.prototype.initTraid = function() {
+      this.hideWelcomOptions();
+      return this.UI['left-section'].J.fadeIn("fast");
     };
 
     return ShopMenu;
@@ -47,7 +57,7 @@
 
     Shop.prototype.exit = function() {
       var _this = this;
-      this.menu.J.fadeOut("fast");
+      this.menu.hideWelcomOptions();
       return this.dialogBox.display({
         text: this.originData.exitText,
         nostop: true
@@ -60,9 +70,18 @@
       });
     };
 
-    Shop.prototype.conversation = function() {};
-
-    Shop.prototype.traid = function() {};
+    Shop.prototype.conversation = function() {
+      var text,
+        _this = this;
+      console.log("conversation");
+      this.menu.hideWelcomOptions();
+      text = this.getDataByRelationship(this.originData.conversations);
+      return this.dialogBox.display({
+        text: text
+      }, function() {
+        return _this.menu.showWelcomOptions();
+      });
+    };
 
     Shop.prototype.getDataByRelationship = function(from) {
       var data, found, required;
