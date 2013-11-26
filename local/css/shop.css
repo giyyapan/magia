@@ -1,2 +1,5 @@
-.shop-menu .left-section{position:absolute;left:0;top:10px}.shop-menu .left-section .function-switch{width:50px}
-.shop-menu .welcome-option-box{width:90%;text-align:center;margin:auto;margin-top:200px}.shop-menu .welcome-option-box .btn{display:block;margin:auto;margin-top:30px}
+.shop-menu .left-section{position:absolute;left:0;top:10px}.shop-menu .left-section .traid-mode-switch{width:50px}.shop-menu .left-section .traid-mode-switch .btn{width:35px;font-weight:normal;font-size:30px;margin-bottom:-10px}
+.shop-menu .left-section .player-money{text-align:left;font-weight:bold;font-size:28px;margin-left:20px;margin-bottom:5px}
+.shop-menu .left-section .item-list-wrapper{position:absolute;left:77px;top:11px}.shop-menu .left-section .item-list-wrapper .item-list{width:345px;height:490px}
+.shop-menu .left-section .item-list-wrapper .end-traid{margin-bottom:0}
+.shop-menu .service-option-box{width:90%;text-align:center;margin:auto;margin-top:200px}.shop-menu .service-option-box .btn{display:block;margin:auto;margin-top:30px}

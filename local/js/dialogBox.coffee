@@ -9,6 +9,7 @@ class window.DialogBox extends Menu
       if @displayLock
         @endDisplay()
       else
+        @UI['continue-hint'].J.fadeOut "fast"
         @emit "next"
   setCharacter:(name,position)->
     console.log "set character"
@@ -18,9 +19,12 @@ class window.DialogBox extends Menu
   endDisplay:(nostop)->
     window.clearInterval @displayInterval
     @displayLock = false
-    @UI.text.innerHTML = @currentDisplayData.text
+    text = @currentDisplayData.text
+    text = text.replace /\|/g,"</br>"
+    text = text.replace /`/g,""
+    @UI.text.innerHTML = text
     if nostop then @emit "next"
-    else @UI['continue-hint'].J.show()
+    else @UI['continue-hint'].J.fadeIn "fast"
   display:(data,callback)->
     console.log data.text
     return if not data.text or @displayLock
@@ -29,8 +33,8 @@ class window.DialogBox extends Menu
     if data.nostop is undefined
       data.nostop = false
     @setSpeaker data.speaker
-    @UI['continue-hint'].J.hide()
-    @once "next",callback
+    @UI['continue-hint'].J.fadeOut "fast"
+    @once "next",callback if callback
     @displayLock = true
     @currentDisplayData = data
     arr = data.text.split ""
@@ -46,7 +50,7 @@ class window.DialogBox extends Menu
       if index < arr.length
         if index is arr.length - 1 then delay = 3
         switch arr[index]
-          when "|","|"then c = "</br>"
+          when "|","|" then c = "</br>"
           when "`" then c = ""
           when ",","，"
             delay = 3 if index isnt (arr.length - 1)
@@ -55,11 +59,11 @@ class window.DialogBox extends Menu
             delay = 3 if index isnt (arr.length - 1)
             c = arr[index]
           else c = arr[index]
-        @UI.text.innerHTML += arr[index]
+        @UI.text.innerHTML += c
         index += 1
       else
         @endDisplay data.nostop
-      ),80
+      ),60
   show:(callback)->
     #@UILayer.J.find("menu").fadeOut "fast"
     if @onshow

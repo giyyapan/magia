@@ -56,7 +56,7 @@ class window.Camera extends Drawable
     @_handleFollow()
     @_handleAnimate tickDelay
     context.save()
-    context.translate parseInt(@width/2),parseInt(@height/2)
+    context.translate (@width/2) >> 0,(@height/2) >> 0
     @preRender tickDelay
     @draw context
     context.restore()
@@ -65,13 +65,13 @@ class window.Camera extends Drawable
       context.globalAlpha = @transform.opacity
     context.fillStyle = "black"
     context.drawImage(@secondCanvas,
-      -parseInt(@secondCanvas.width/2*@scale),-parseInt(@secondCanvas.height/2*@scale),
+      -(@secondCanvas.width/2*@scale) >> 0,-(@secondCanvas.height/2*@scale) >> 0,
       @secondCanvas.width*@scale,@secondCanvas.height*@scale)
     #context.fillRect(-10*@scale,-10*@scale,20*@scale,20*@scale)
   preRender:(tickDelay)->
     s = Utils.getSize()
-    w = parseInt s.width / @scale
-    h = parseInt s.height / @scale
+    w = s.width / @scale >> 0
+    h = s.height / @scale >> 0
     @secondCanvas.width = w
     @secondCanvas.height = h
     context = @secondCanvas.getContext "2d"
@@ -149,10 +149,10 @@ class window.Camera extends Drawable
     rd.y = y
     rd.rotate = @transform.rotate
     rd.scale = @scale
-    originX = parseInt(-x + s.width/2)
-    originY = parseInt(-y + s.height/2)
+    originX = (-x + s.width/2) >> 0
+    originY = (-y + s.height/2) >> 0
     Utils.setCSS3Attr m.J,"transform-origin","#{originX}px #{originY}px"
-    value = "translate(#{parseInt x}px,#{parseInt y}px) "
+    value = "translate(#{x >> 0}px,#{y >> 0}px) "
     value += "rotate(#{@transform.rotate}deg) "
     value += "scale(#{@scale},#{@scale}) "
     Utils.setCSS3Attr m.J,"transform",value

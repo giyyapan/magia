@@ -29,6 +29,8 @@ class EventEmitter
     @_events[event].push callback
     return callback
   once:(event,callback)->
+    if not callback
+      return console.error "need a callback！ --Suzaku.EventEmitter"
     f = =>
       @off event,f
       callback.apply this,arguments
@@ -465,6 +467,17 @@ window.Suzaku.Utils = Utils =
         @emit "complete"
         callback() if callback
     return q
+  random:->
+    if arguments.length is 1
+      if arguments[0] instanceof Array
+        length = arguments[0].length
+        index = Math.floor(Math.random() * length)
+        return arguments[0][index]
+      else return arguments[0]
+    else
+      length = arguments.length
+      index = Math.floor(Math.random() * length)
+      return arguments[index]
   localData:(action,name,value)->
     #action = "set,clear,get"
     switch action

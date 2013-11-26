@@ -5,6 +5,8 @@
 @color-bg-brown-lv2:	#907352;
 @color-bg-brown-lv3:	#674e34;
 @color-border-black:	#2a1d0f;
+@color-item-bg: #896b4c;
+@color-item-hover: #5d452c;
 .lv1{background: #fff;}
 .lv2{background: #42e189;}
 .lv3{background: #1bd6f1;}
@@ -23,6 +25,9 @@
 		color:#d7ba97;
 		text-shadow: 0px 2px 0px #3c2f21;
 		font-weight:bold;
+}
+.top{
+		z-index:9999 !important;
 }
 .trait-icon{
 		display:inline-block;
@@ -66,6 +71,11 @@
 		background:url("/img/menu/texture-bg.jpg") 0 0 repeat;
 		padding:@p;
 		padding-right:(@p + 2);
+}
+.inner-panel{
+		background-color:#674e34;
+		border:2px solid #816c54;
+		box-shadow: inset 0 0 8px #2E1C0E;
 }
 .panel-wrapper{
 		.test-border;
@@ -348,6 +358,9 @@
 		bottom:10px;
 		position:absolute;
 }
+.selected{
+		background-color:@color-item-hover;
+}
 .btn{
 		.text;
 		font-size:23px;
@@ -360,17 +373,16 @@
 		&:hover{
 				background-color:#5d452c;
 		}
+		&.selected{
+				background-color:@color-item-hover;
+		}
 }
 .dialog-box-wrapper{
 		position:fixed;
 		width:100%;
-		height:100%;
+		z-index:900;
 		bottom:0;
 		left:0;
-		&.top{
-				z-index:9999;
-				z-index:999999;
-		}
 		.dialog-box{
 				position:absolute;
 				bottom:0;

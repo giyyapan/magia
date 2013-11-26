@@ -1,28 +1,32 @@
 <section class="menu shop-menu" >
 	<link rel="stylesheet" href="css/shop.css" type="text/css" />
 	<section class="left-section" data-id="left-section" style="display:none;" >
-		<div class="function-switch">
-			<a data-id="playerBuy btn" >购买</a>
-			<a data-id="playerSell btn" >出售</a>
+		<div class="traid-mode-switch">
+			<a data-id="player-buy-mode" class="btn" >购</br>买</a>
+			<a data-id="player-sell-mode" class="btn" >出</br>售</a>
 		</div>
 		<div class="item-list-wrapper texture-border" >
-			<h1 data-id="function-title" class="text" ></h1>
-			<ul class="item-list" data-id="item-list" >
+			<p class="player-money text" >
+				$ <span data-id="player-money"></span>
+			</p>
+			<ul class="item-list inner-panel" data-id="item-list" >
 			</ul>
+			<a class="end-traid btn" data-id="end-traid" >结束</a>
 			<template data-id="item-list-item" >
 				<li class="item-list" >
 					<span data-id="name" class="text" ></span>
 				</li>
 			</template>
 		</div>
+
 	</section>
 	<section class="right-section" data-id="right-section" >
 	</section>
-	<section class="welcome-option-wrapper popup-box-wrapper" data-id="welcome-options" style="display:none;" >
-		<div class="welcome-option-box" >
-			<a data-id="welcome-traid" class="btn animate-popup" >交易</a>
-			<a data-id="welcome-conversation" class="btn animate-popup" >对话</a>
-			<a data-id="welcome-exit" class="btn animate-popup" >离开</a>
+	<section class="service-option-wrapper popup-box-wrapper" data-id="service-options" style="display:none;" >
+		<div class="service-option-box" >
+			<a data-id="service-traid" class="btn animate-popup" >交易</a>
+			<a data-id="service-conversation" class="btn animate-popup" >对话</a>
+			<a data-id="exit" class="btn animate-popup" >离开</a>
 		</div>
 	</section>
 </section>

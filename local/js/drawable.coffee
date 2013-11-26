@@ -108,9 +108,6 @@ class window.Drawable extends Suzaku.EventEmitter
         currentImgDataPixars[currentImgIndex] = p.r
         currentImgDataPixars[currentImgIndex+1] = p.g
         currentImgDataPixars[currentImgIndex+2] = p.b
-        # currentImgDataPixars[currentImgIndex] = pbr
-        # currentImgDataPixars[currentImgIndex+1] = pbg
-        # currentImgDataPixars[currentImgIndex+2] = pbb
         currentImgDataPixars[currentImgIndex+3] = p.a
     return currentImgData
   _handleTransform:(context)->
@@ -124,7 +121,7 @@ class window.Drawable extends Suzaku.EventEmitter
     if r.scaleY is null then r.scaleY = r.scale or 1
     #console.log r.scaleX,r.scaleY,x,y
     context.scale r.scaleX,r.scaleY
-    context.translate parseInt(x),parseInt(y)
+    context.translate x >> 0,y >> 0
     context.rotate r.rotate if r.rotate
   setImg:(img,resX,resY,resWidth,resHeight)->
     if img not instanceof Image
@@ -158,7 +155,7 @@ class window.Drawable extends Suzaku.EventEmitter
       context.fillStyle = "black"
       context.fillRect(-50,-50,100,100)
       context.fillStyle = "darkred"
-      context.fillText("#{parseInt @anchor.x},#{parseInt @anchor.y}",0,100)
+      context.fillText("#{@anchor.x >> 0},#{@anchor.y >> 0}",0,100)
   clearDrawQueue:->
     @drawQueue.after = []
     @drawQueue.before = []
@@ -261,16 +258,16 @@ class window.Drawable extends Suzaku.EventEmitter
 Drawable.BlendMethod =
   linearLight:(r1,g1,b1,a1,r2,g2,b2,a2)->
     a = a2/255
-    # r2 = parseInt((1 - a ) * r1 + a * r2)
-    # g2 = parseInt((1 - a ) * g1 + a * g2)
-    # b2 = parseInt((1 - a ) * b1 + a * b2)
-    r = parseInt Math.min(255, Math.max(0, (r2 + 2 * r1) - 1))
-    g = parseInt Math.min(255, Math.max(0, (g2 + 2 * g1) - 1))
-    b = parseInt Math.min(255, Math.max(0, (b2 + 2 * b1) - 1))
+    # r2 = ((1 - a ) * r1 + a * r2) >> 0
+    # g2 = ((1 - a ) * g1 + a * g2) >> 0
+    # b2 = ((1 - a ) * b1 + a * b2) >> 0
+    r = Math.min(255, Math.max(0, (r2 + 2 * r1) - 1)) >> 0
+    g = Math.min(255, Math.max(0, (g2 + 2 * g1) - 1)) >> 0
+    b = Math.min(255, Math.max(0, (b2 + 2 * b1) - 1)) >> 0
     p =
-      r:parseInt((1 - a ) * r1 + a * r)
-      g:parseInt((1 - a ) * g1 + a * g)
-      b:parseInt((1 - a ) * b1 + a * b)
+      r:((1 - a ) * r1 + a * r) >> 0
+      g:((1 - a ) * g1 + a * g) >> 0
+      b:((1 - a ) * b1 + a * b) >> 0
       a:a1
 Drawable.Animate =
   easing:

@@ -109,7 +109,7 @@
       this._handleFollow();
       this._handleAnimate(tickDelay);
       context.save();
-      context.translate(parseInt(this.width / 2), parseInt(this.height / 2));
+      context.translate((this.width / 2) >> 0, (this.height / 2) >> 0);
       this.preRender(tickDelay);
       this.draw(context);
       return context.restore();
@@ -120,15 +120,15 @@
         context.globalAlpha = this.transform.opacity;
       }
       context.fillStyle = "black";
-      return context.drawImage(this.secondCanvas, -parseInt(this.secondCanvas.width / 2 * this.scale), -parseInt(this.secondCanvas.height / 2 * this.scale), this.secondCanvas.width * this.scale, this.secondCanvas.height * this.scale);
+      return context.drawImage(this.secondCanvas, -(this.secondCanvas.width / 2 * this.scale) >> 0, -(this.secondCanvas.height / 2 * this.scale) >> 0, this.secondCanvas.width * this.scale, this.secondCanvas.height * this.scale);
     };
 
     Camera.prototype.preRender = function(tickDelay) {
       var context, h, item, s, w, _i, _len, _ref;
 
       s = Utils.getSize();
-      w = parseInt(s.width / this.scale);
-      h = parseInt(s.height / this.scale);
+      w = s.width / this.scale >> 0;
+      h = s.height / this.scale >> 0;
       this.secondCanvas.width = w;
       this.secondCanvas.height = h;
       context = this.secondCanvas.getContext("2d");
@@ -252,10 +252,10 @@
       rd.y = y;
       rd.rotate = this.transform.rotate;
       rd.scale = this.scale;
-      originX = parseInt(-x + s.width / 2);
-      originY = parseInt(-y + s.height / 2);
+      originX = (-x + s.width / 2) >> 0;
+      originY = (-y + s.height / 2) >> 0;
       Utils.setCSS3Attr(m.J, "transform-origin", "" + originX + "px " + originY + "px");
-      value = "translate(" + (parseInt(x)) + "px," + (parseInt(y)) + "px) ";
+      value = "translate(" + (x >> 0) + "px," + (y >> 0) + "px) ";
       value += "rotate(" + this.transform.rotate + "deg) ";
       value += "scale(" + this.scale + "," + this.scale + ") ";
       return Utils.setCSS3Attr(m.J, "transform", value);
