@@ -18,7 +18,7 @@ class Magia
       @db = new Database()
       @player = new Player @db
       @missionManager = new MissionManager this
-      @storyManager = new MissionManager this
+      @storyManager = new StoryManager this
       $("#loadingPage").slideUp "slow"
       #@switchStage "start"
       #window.AudioManager.stop "startMenu"

@@ -23,7 +23,7 @@
         _this.db = new Database();
         _this.player = new Player(_this.db);
         _this.missionManager = new MissionManager(_this);
-        _this.storyManager = new MissionManager(_this);
+        _this.storyManager = new StoryManager(_this);
         $("#loadingPage").slideUp("slow");
         _this.switchStage("guild");
         return _this.startGameLoop();

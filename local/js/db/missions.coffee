@@ -11,7 +11,7 @@ class window.MissionsDB extends SubDB
         reward:
           money:100
         request:
-          getSupplies:"firePotion","muddyPotion"
+          getSupplies:"firePotion,muddyPotion"
       luna1:
         after:"fistMission"
         name:"魔法物品店老板娘？"

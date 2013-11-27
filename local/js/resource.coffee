@@ -48,6 +48,7 @@ window.Templates = [
   "item-details-box"
   "trait-item"
   "dialog-box"
+  "story"
   ]
 window.Css = []
   
