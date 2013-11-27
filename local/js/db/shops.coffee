@@ -16,6 +16,11 @@ class window.ShopsDB extends SubDB
           100:"多亏你的帮忙店里多了很多东西呢～真是太谢谢啦~"
         sellableType:"supplies"
         playerSellPrice:["0:0.5","100:0.55","500:0.6","1000:0.65"]
+        buyableType:"supplies"
         buyableItems:
-          0:"healPotion,firePotion,muddyPotion"
+          0:[
+            {name:"healPotion",traitValue:50}
+            {name:"firePotion",traitValue:50}
+            {name:"muddyPotion",traitValue:50}
+            ]
         playerBuyPrice:["0:1","100:0.9","500:0.8"]

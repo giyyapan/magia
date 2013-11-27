@@ -12,13 +12,13 @@ class Magia
     window.onresize = =>
       @handleDisplaySize()
     @loadResources =>
-      #window.myAudio.play "startMenu"
+      #window.AudioManager.play "startMenu"
       @db = new Database()
       @player = new Player @db
       $("#loadingPage").slideUp "slow"
       #@switchStage "start"
-      #window.myAudio.stop "startMenu"
-      #window.myAudio.play "home"
+      #window.AudioManager.stop "startMenu"
+      #window.AudioManager.play "home"
       #@switchStage "worldMap"
       #@switchStage "area","forest"
       @switchStage "shop","magicItemShop"
@@ -29,10 +29,10 @@ class Magia
     switch stage
       when "start" 
         s = new StartMenu this,data
-        window.myAudio.play "startMenu"
+        window.AudioManager.play "startMenu"
       when "home" 
         s = new Home this,data
-        window.myAudio.play "home"
+        window.AudioManager.play "home"
       when "test" then s = new TestStage this,data
       when "area" then s = new Area this,data
       when "shop" then s = new Shop this,data

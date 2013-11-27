@@ -34,11 +34,12 @@ class window.PopupBox extends Widget
 class window.MsgBox extends PopupBox
   constructor:(title,content,autoRemove=false)->
     super
-    if autoRemove 
+    if autoRemove
+      if autoRemove is true then autoRemove = 1000
       @UI.footer.J.hide()
       window.setTimeout (=>
         @close()
-        ),1000
+        ),autoRemove
     else
       @UI.accept.J.hide()
     @show()
@@ -74,6 +75,7 @@ class window.ItemDetailsBox extends Widget
     super Res.tpls['item-details-box'] 
     @currentItem = null
   showItemDetails:(item)->
+    #item used to be item
     if item.playerSupplies
       @UI['remain-count-hint'].J.show()
       @UI['remain-count'].innerHTML = "#{item.playerSupplies.remainCount}/5"
@@ -95,3 +97,20 @@ class window.ItemDetailsBox extends Widget
     @UI['traits-list'].J.html ""
     for name,value of thingData.traits
       new TraitItem(name,value).appendTo @UI['traits-list']
+      
+class window.ListItem extends Widget
+  constructor:(tpl,playerThing)->
+    super tpl
+    return if not playerThing
+    @name = playerThing.name
+    @dspName = playerThing.dspName
+    @originData = playerThing.originData
+    switch playerThing.type
+      when "item" then @playerItem = playerThing
+      when "supplies" then @playerSupplies = playerThing
+      when "equipment" then @playerEquipment = playerThing
+      else console.error "invailid type",playerThing.type
+    @dom.onclick = =>
+      #AudioManager.play "startClick"
+      @active() if @active
+  active:null

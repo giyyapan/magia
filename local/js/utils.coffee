@@ -20,6 +20,10 @@ window.Dict =
       iron:"钢"
       freeze:"霜冻"
       corrosion:"腐蚀"
+    TraitLevel:
+      1:"life,fire,wind,air,earth"
+      2:"heal,minus,spirit,snow,poison,clear,fog,iron"
+      3:"explode,burn,freeze,corrosion"
       
 window.Utils =
   getSize:->

@@ -13,10 +13,11 @@ class window.Things extends EventEmitter
     return name:@name,type:@type
       
 class window.PlayerItem extends Things
-  constructor:(db,name,number)->
+  constructor:(db,name,data)->
+    if not data.number then console.error "invailid data:no number"
     originData = db.things.items.get name
     super name,originData,"item"
-    @number = number
+    @number = data.number
     @traits = {}
     for t in originData.traits
       arr = t.split ":"
@@ -25,12 +26,12 @@ class window.PlayerItem extends Things
     return name:@name,type:@type,number:@number
       
 class window.PlayerSupplies extends Things
-  constructor:(db,name,traitValue,remainCount)->
-    console.log db.things
+  constructor:(db,name,data)->
+    if not data.traitValue then console.error "need trait value"
     originData = db.things.supplies.get name
     super name,originData,"supplies"
-    @remainCount = remainCount or 5
-    @traitValue = traitValue
+    @remainCount = data.remainCount or 5
+    @traitValue = data.traitValue
     @traitName = originData.traitName
     @traits = {}
     @traits[originData.traitName] = @traitValue
@@ -38,7 +39,7 @@ class window.PlayerSupplies extends Things
     return name:@name,type:@type,remainCount:@remainCount,traitValue:@traitValue
         
 class window.PlayerEquipment extends Things
-  constructor:(db,name)->
+  constructor:(db,name,data)->
     originData = db.things.equipments.get name
     super name,originData,"equipment"
     @statusValue = originData.statusValue

@@ -62,8 +62,8 @@ class window.Player
       @currentEquipments[part] = new PlayerEquipment equipmentName
     @backpack = []
     @storage = []
-    @initThingsFrom "backpack",@data.backpack
-    @initThingsFrom "storage",@data.storage
+    @initThingsFrom "backpack"
+    @initThingsFrom "storage"
     @updateStatusValue()
   updateStatusValue:->
     @basicStatusValue = @data.basicStatusValue
@@ -73,7 +73,7 @@ class window.Player
     for part,equip in @currentEquipments
       for name of @statusValue
         @statusValue[name] += equip.statusValue[name] if equip.statusValue[name]
-  initThingsFrom:(originType,data)->
+  initThingsFrom:(originType)->
     switch originType
       when "backpack"
         origin = @data.backpack
@@ -81,10 +81,10 @@ class window.Player
       when "storage"
         origin = @data.storage
         target = @storage
-    for data in origin
-      switch data.type
-        when "item" then @getItem target,data
-        when "supplies" then @getSupplies target,data
+    for itemData in origin
+      switch itemData.type
+        when "item" then @getItem target,itemData
+        when "supplies" then @getSupplies target,itemData
   removeThing:(playerItem,from)->
     if not from
       return if @removeThing playerItem,"backpack"
@@ -105,7 +105,7 @@ class window.Player
   getItem:(target="backpack",dataObj)-> #target= backpack/storage 只有item是可堆叠的
     name = dataObj.name
     number = dataObj.number
-    item = new PlayerItem @db,name,number
+    item = new PlayerItem @db,name,number:number
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage
@@ -118,9 +118,7 @@ class window.Player
       supplies = data
     else
       name = data.name
-      traitValue = data.traitValue
-      remainCount = data.remainCount
-      supplies = new PlayerSupplies @db,name,traitValue,remainCount
+      supplies = new PlayerSupplies @db,name,data
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage

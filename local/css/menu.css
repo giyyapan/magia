@@ -12,12 +12,16 @@
 .muddy{background:#896b4c !important}
 .clear{background:#549988 !important}
 .text{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold}
+.money{color:#ebd389}
 .top{z-index:9999 !important}
 .trait-icon{padding-top:1px;box-shadow:0 1px 0 rgba(255,255,255,0.85) inset;font-size:18px;color:#f4dabd;text-align:center;width:50px;height:24px;display:inline-block;border-radius:5px;border:1px solid #2a1d0f}
 .menu-isolation-layer{width:100%;height:100%;position:absolute;top:0;left:0;background-color:rgba(20,20,20,0.2);z-index:100}
+.list-item{color:#543d26;cursor:pointer;font-size:23px;border-bottom:2px solid #674e34;padding:20px;border-radius:0;width:auto;display:block;margin:0;padding:15px}.list-item .number{float:right;margin-left:-30px}
+.list-item:hover{background-color:#bba287}
+.list-item.selected{background:#907352;color:#f4dabd}
 .double-border{box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px}
 .texture-border{box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;background:url("/img/menu/texture-bg.jpg") 0 0 repeat;padding:16px;padding-right:18px}
-.inner-panel{background-color:#674e34;border:2px solid #816c54;box-shadow:inset 0 0 8px #2e1c0e}
+.inner-panel{background-color:#ad8f6e;border:2px solid #2a1d0f;box-shadow:inset 0 0 8px rgba(46,28,14,0.15)}
 .panel-wrapper{position:absolute}.panel-wrapper .panel{width:100%;height:100%}
 .popup-box-wrapper{width:100%;height:100%;background-color:rgba(20,20,20,0.5);position:absolute;top:0;left:0;z-index:999}.popup-box-wrapper .popup-box{box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;background:url("/img/menu/texture-bg.jpg") 0 0 repeat;padding:16px;padding-right:18px;position:relative;margin:auto;margin-top:130px;width:400px;color:#fff}.popup-box-wrapper .popup-box ul{text-align:left;margin:auto 30px;position:relative}.popup-box-wrapper .popup-box ul li{margin-bottom:15px}.popup-box-wrapper .popup-box ul li .icon{width:40px;height:40px;float:left;margin-left:10px}
 .popup-box-wrapper .popup-box ul li .trait-icon{font-size:22px;display:inline-block;margin-left:10px}
@@ -32,9 +36,10 @@
 .item-details-box .head .description{width:340px;margin-top:10px;font-size:18px;display:block}
 .item-details-box .pic{box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;padding:5px;display:block;float:left;background:#907352}.item-details-box .pic img{height:90px;width:90px;display:block}
 .item-details-box .name-box{width:340px;height:40px;display:block;position:relative;color:#543d26;font-size:20px;text-align:center;line-height:39px}.item-details-box .name-box .name{width:80px;height:40px;border-radius:5px;background:#907352;float:left}
-.item-details-box .name-box span{position:relative;float:left;margin-left:30px;font-weight:bolder}
+.item-details-box .name-box .name-text{position:relative;float:left;margin-left:30px;font-weight:bolder}
+.item-details-box .name-box .price{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;color:#ebd389}
 .item-details-box .name-box hr{display:block;height:2px;width:98%;position:absolute;bottom:0;left:2px;background:#907352}
-.details-content-wrapper{width:513px;margin:13px auto}.details-content-wrapper .header-flag{width:100%;height:32px;background:url('/img/menu/backpack-flag-bg.png') no-repeat;text-align:center;display:inline-block}.details-content-wrapper .header-flag img{margin-top:5px}
+.details-content-wrapper{width:513px;margin:13px auto}.details-content-wrapper .header-flag{width:100%;height:31px;background:url('/img/menu/backpack-flag-bg.png') no-repeat;text-align:center;display:inline-block}.details-content-wrapper .header-flag img{margin-top:5px}
 .details-content{width:100%;height:200px;display:block}.details-content .cell{width:100%;display:block;border-bottom:1px dashed #453625;border-top:1px dashed #453625;font-size:18px;color:#453625}.details-content .cell p{float:left;margin-left:10px}
 .details-content .gather-info{height:40px;line-height:40px}.details-content .gather-info .day{height:38px;width:37px;display:block}.details-content .gather-info .day.yes{background:url('/img/menu/backpack-day-yes.png')}
 .details-content .gather-info .day.no{background:url('/img/menu/backpack-day-no.png')}
@@ -48,8 +53,8 @@
 .trait-item .lv .lv1{border-radius:5px 0 0 5px}
 .trait-item .lv .lv6{border-radius:0 5px 5px 0}
 .button-holder{width:100%;bottom:10px;position:absolute}
-.selected{background-color:#5d452c}
-.btn{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;font-size:23px;padding:20px;margin:15px;width:180px;display:inline-block;box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;background:#907352}.btn:hover{background-color:#5d452c}
+.selected{background:#907352;color:#f4dabd}
+.btn{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;box-shadow:-2px -2px 0 #ae8f6b inset,2px 2px 0 #ae8f6b inset;border:2px solid #2a1d0f;border-radius:10px;cursor:pointer;font-size:23px;padding:20px;margin:15px;width:180px;display:inline-block;background:#907352}.btn:hover{background-color:#bba287;color:#e4ccae}
 .btn.selected{background-color:#5d452c}
 .dialog-box-wrapper{position:fixed;width:100%;z-index:900;bottom:0;left:0}.dialog-box-wrapper .dialog-box{position:absolute;bottom:0;left:0;width:100%}
 .dialog-box-wrapper .content-wrapper{position:absolute;bottom:0;width:100%;background:url(/img/menu/dialog-bg.png) no-repeat;height:209px;color:#553e26}.dialog-box-wrapper .content-wrapper .content{font-size:24px;margin:auto;margin-top:38px;width:59%;height:131px;text-align:left;position:relative}.dialog-box-wrapper .content-wrapper .content .speaker{margin-left:-58px}

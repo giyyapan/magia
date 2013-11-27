@@ -1,4 +1,4 @@
-class AudioManager extends EventEmitter
+class GameAudioManager extends EventEmitter
   constructor: ->
     super
     @source = 
@@ -97,6 +97,4 @@ class GameAudio extends EventEmitter
       soundDom.pause()
     
     
-window.myAudio = new AudioManager()
-#window.myAudio.play "startMenu"
-#window.myAudio.play "sfxStartCusor"
+window.AudioManager = new GameAudioManager()

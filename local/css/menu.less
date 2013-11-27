@@ -1,12 +1,14 @@
 @color-text-white:	#f4dabd;
 @color-text-brown:	#543d26;
 @color-text-black:	#453625;
+@color-money:#EBD389;
 @color-bg-brown-lv1:	#ad8f6e;
 @color-bg-brown-lv2:	#907352;
 @color-bg-brown-lv3:	#674e34;
 @color-border-black:	#2a1d0f;
 @color-item-bg: #896b4c;
-@color-item-hover: #5d452c;
+@color-item-hover:#bba287;
+@color-item-selected: #5d452c;
 .lv1{background: #fff;}
 .lv2{background: #42e189;}
 .lv3{background: #1bd6f1;}
@@ -25,6 +27,9 @@
 		color:#d7ba97;
 		text-shadow: 0px 2px 0px #3c2f21;
 		font-weight:bold;
+}
+.money{
+		color:@color-money;
 }
 .top{
 		z-index:9999 !important;
@@ -60,6 +65,29 @@
 .test-border{
 		//border:1px solid @color-bg-brown-lv3;
 }
+.list-item{
+		color:#543d26;
+		cursor:pointer;
+		font-size:23px;
+		border-bottom: 2px solid #674e34;
+		padding: 20px;
+		border-radius:0;
+		width:auto;
+		display:block;
+		margin:0;
+		padding:15px;
+		.number{
+				float:right;
+				margin-left:-30px;
+		}
+		&:hover{
+				background-color:@color-item-hover;
+		}
+		&.selected{
+				background: @color-bg-brown-lv2;
+				color: @color-text-white;
+		}
+}
 .double-border{
 		box-shadow:-2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
 		border: 2px solid @color-border-black;
@@ -73,9 +101,9 @@
 		padding-right:(@p + 2);
 }
 .inner-panel{
-		background-color:#674e34;
-		border:2px solid #816c54;
-		box-shadow: inset 0 0 8px #2E1C0E;
+		background-color:#ad8f6e;
+		border:2px solid #2a1d0f;
+		box-shadow:inset 0 0 8px rgba(46, 28, 14, 0.15)
 }
 .panel-wrapper{
 		.test-border;
@@ -218,11 +246,15 @@
 						background: @color-bg-brown-lv2;
 						float: left;
 				}
-				span{
+				.name-text{
 						position: relative;
 						float: left;
 						margin-left: 30px;
 						font-weight: bolder;
+				}
+				.price{
+						.text;
+						.money;
 				}
 				hr{
 						display: block;
@@ -240,7 +272,7 @@
 		margin: 13px auto;
 		.header-flag{
 				width: 100%;
-				height: 32px;
+				height: 31px;
 				background: url('/img/menu/backpack-flag-bg.png') no-repeat;
 				text-align: center;
 				display: inline-block;
@@ -359,22 +391,25 @@
 		position:absolute;
 }
 .selected{
-		background-color:@color-item-hover;
+		background: @color-bg-brown-lv2;
+		color: @color-text-white;
 }
 .btn{
 		.text;
+		.double-border;
+		cursor:pointer;
 		font-size:23px;
 		padding: 20px;
 		margin: 15px;
 		width: 180px;
 		display: inline-block;
-		.double-border;
 		background: @color-bg-brown-lv2;
 		&:hover{
-				background-color:#5d452c;
+				background-color:@color-item-hover;
+				color:#E4CCAE;
 		}
 		&.selected{
-				background-color:@color-item-hover;
+				background-color:@color-item-selected;
 		}
 }
 .dialog-box-wrapper{

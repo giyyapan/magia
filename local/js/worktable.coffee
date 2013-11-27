@@ -20,7 +20,7 @@ class ReactionFinishBox extends PopupBox
     @show()
   chooseTraitItem:(item)->
     name = "#{item.traitName}Potion"
-    newSupplies = new PlayerSupplies @db,name,item.traitValue,null
+    newSupplies = new PlayerSupplies @db,name,traitValue:item.traitValue
     @emit "getNewSupplies",newSupplies
     @close()
     
