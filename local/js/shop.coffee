@@ -48,6 +48,7 @@ class ShopMenu extends Menu
     @show()
   showServiceOptions:->
     @UI['left-section'].J.fadeOut "fast"
+    @detailsBox.J.fadeOut "fast"
     @UI['service-options'].J.fadeIn "fast"
   hideServiceOptions:->
     @UI['service-options'].J.fadeOut "fast"

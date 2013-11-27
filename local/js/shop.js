@@ -103,6 +103,7 @@
 
     ShopMenu.prototype.showServiceOptions = function() {
       this.UI['left-section'].J.fadeOut("fast");
+      this.detailsBox.J.fadeOut("fast");
       return this.UI['service-options'].J.fadeIn("fast");
     };
 
