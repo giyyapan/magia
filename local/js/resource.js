@@ -39,7 +39,7 @@
     qq: "qq"
   };
 
-  window.Templates = ["start-menu", "home-menu", "world-map", "popup-box", "test-menu", "area-menu", "shop-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu", "worktable-menu", "item-details-box", "trait-item", "dialog-box"];
+  window.Templates = ["start-menu", "home-menu", "world-map", "popup-box", "test-menu", "area-menu", "shop-menu", "guild-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu", "worktable-menu", "item-details-box", "trait-item", "dialog-box"];
 
   window.Css = [];
 

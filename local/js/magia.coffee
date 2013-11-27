@@ -7,6 +7,8 @@ class Magia
     @handleDisplaySize()
     @km = new Suzaku.KeybordManager()
     @player = null
+    @missionManager = null
+    @storyManager = null
     @db = null
     window.Key = @km.init()
     window.onresize = =>
@@ -15,13 +17,16 @@ class Magia
       #window.AudioManager.play "startMenu"
       @db = new Database()
       @player = new Player @db
+      @missionManager = new MissionManager this
+      @storyManager = new MissionManager this
       $("#loadingPage").slideUp "slow"
       #@switchStage "start"
       #window.AudioManager.stop "startMenu"
       #window.AudioManager.play "home"
       #@switchStage "worldMap"
       #@switchStage "area","forest"
-      @switchStage "shop","magicItemShop"
+      #@switchStage "shop","magicItemShop"
+      @switchStage "guild" 
       #@switchStage "home"
       @startGameLoop()
   switchStage:(stage,data)->
@@ -36,6 +41,8 @@ class Magia
       when "test" then s = new TestStage this,data
       when "area" then s = new Area this,data
       when "shop" then s = new Shop this,data
+      when "guild" then s = new Guild this,data
+      when "story" then s = new StoryStage this,data
       when "worldMap" then s = new WorldMap this,data
       else console.error "invailid stage:#{stage}"
     if @currentStage

@@ -4,7 +4,7 @@ class window.AreasDB extends SubDB
     s = Utils.getSize()
     @data =
       forest:
-        name:"森林"
+        name:"雾之森"
         costEnergy:5
         description:"这是一个森林哈哈哈哈哈"
         summaryImg:"summaryForest"
@@ -116,7 +116,7 @@ class window.AreasDB extends SubDB
             resPoints:["1,1","20,80"]
             movePoints:["entry"]
       home:
-        name:"魔女宅邸"
+        name:"魔女宅"
         description:'传说中的魔女——艾丽西亚的祖母留下的大房子。有宽敞的客厅和完善的工作设施，在这个地方应该可以尽情施展自己的才能了吧！'
         costEnergy: 0
         dangerLevel:'安全'
@@ -129,3 +129,18 @@ class window.AreasDB extends SubDB
         summaryImg: 'summaryShop'
         dangerLevel:'安全'
         summaryBg:''
+      equipmentShop:
+        name:'奇迹裁缝'
+        description:'出售魔法师用的服装和法杖'
+        costEnergy: 0
+        summaryImg: 'summaryShop'
+        dangerLevel:'安全'
+        summaryBg:''
+      adventurerGuild:
+        name:'冒险者协会'
+        description:'冒险者协会在这个城镇的分会，附件的人都会来这里提交委托'
+        costEnergy: 0
+        summaryImg: 'summaryShop'
+        dangerLevel:'安全'
+        summaryBg:''
+

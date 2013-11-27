@@ -12,6 +12,8 @@
       this.handleDisplaySize();
       this.km = new Suzaku.KeybordManager();
       this.player = null;
+      this.missionManager = null;
+      this.storyManager = null;
       this.db = null;
       window.Key = this.km.init();
       window.onresize = function() {
@@ -20,8 +22,10 @@
       this.loadResources(function() {
         _this.db = new Database();
         _this.player = new Player(_this.db);
+        _this.missionManager = new MissionManager(_this);
+        _this.storyManager = new MissionManager(_this);
         $("#loadingPage").slideUp("slow");
-        _this.switchStage("shop", "magicItemShop");
+        _this.switchStage("guild");
         return _this.startGameLoop();
       });
     }
@@ -47,6 +51,12 @@
           break;
         case "shop":
           s = new Shop(this, data);
+          break;
+        case "guild":
+          s = new Guild(this, data);
+          break;
+        case "story":
+          s = new StoryStage(this, data);
           break;
         case "worldMap":
           s = new WorldMap(this, data);

@@ -46,7 +46,7 @@ class window.PlayerSupplies extends Things
           return parseInt level
     return 1
   _getPrice:->
-    p = @traitValue * 1
+    p = @traitValue * 3
     for i in [1..@traitLevel]
       p *= 1.5
     return p

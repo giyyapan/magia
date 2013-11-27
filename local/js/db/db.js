@@ -27,15 +27,18 @@
     __extends(Database, _super);
 
     function Database() {
+      var name;
       this.areas = new AreasDB();
       this.things = new ThingsDB();
       this.shops = new ShopsDB();
+      this.missions = new MissionsDB();
       this.rules = new SubDB("rules");
       this.monsters = new SubDB("sprites-monsters");
       this.spriteItems = new SubDB("sprites-items");
       this.characters = new SubDB("characters");
-      this.tasks = new SubDB("tasks");
-      this.storys = new SubDB("storys");
+      for (name in ["AreasDB", "ThingsDB", "MissionsDB"]) {
+        delete window[name];
+      }
       this.initCharacters();
       this.initSprites();
       this.initRules();

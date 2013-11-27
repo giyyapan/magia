@@ -39,6 +39,7 @@ window.Templates = [
   "test-menu"
   "area-menu"
   "shop-menu"
+  "guild-menu"
   "area-relative-menu"
   "thing-list-item"
   "backpack"

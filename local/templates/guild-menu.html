@@ -1,0 +1,49 @@
+<section class="menu guild-menu" >
+	<link rel="stylesheet" href="css/shop.css" type="text/css" />
+	<section class="mission-box" data-id="mission-box" style="display:none;" >
+		<div class="mission-type-switch" >
+			<a data-id="current-mission" class="btn" >当前</a>
+			<a data-id="completed-mission" class="btn" >完成</a>
+		</div>
+		<div class="mission-list-wrapper" >
+			<ul class="mission-list" data-id="mission-list" >
+			</ul>
+			<a data-id="end-mission" class="btn" >结束</a>
+			<template data-id="mission-list-item-tpl" >
+				<li class="mission-list-item" >
+					<img src="/img/menu/mission-item-bg.png"  class="bg" />
+					<span data-id="status" class="status" >进行中</span>
+					<span data-id="type" class="sub-title" >主线任务</span>
+					<span data-id="name" class="name" >露娜的烦恼1</span>
+				</li>
+			</template>
+		</div>
+		<div class="mission-details-box-wrapper texture-border" data-id="mission-details-box" >
+			<div class="mission-details-box" >
+				<h2 data-id="title" >任务名称</h2>
+				<p class="description" >任务描述</p>
+				<img src="/img/menu/mission-completed-mark.png" class="completed-mark" data-id="completed-mark" />
+				<div class="details-flag-box" >
+					<img class="bg" src="/img/menu/backpack-flag-bg.png"  />
+					<img class="fg" src="/img/menu/backpack-flag-details.png"/>
+				</div>
+				<ul class="details-content-list" data-id="details-content-list-item" >
+				</ul>
+				<a class="btn" data-id="active-btn" >接受/完成</a>
+				<template data-id="content-list-item-tpl"  >
+					<li >
+						<span data-id="type" class="type" ></span>
+						<span data-id="content" class="content" ></span>
+					</li>
+				</template>
+			</div>
+		</div>
+	</section>
+	<section class="service-option-wrapper popup-box-wrapper" data-id="service-options" style="display:none;" >
+		<div class="service-option-box" >
+			<a data-id="service-mission" class="btn animate-popup" >任务</a>
+			<a data-id="service-conversation" class="btn animate-popup" >对话</a>
+			<a data-id="exit" class="btn animate-popup" >离开</a>
+		</div>
+	</section>
+</section>

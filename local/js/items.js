@@ -101,7 +101,7 @@
 
     PlayerSupplies.prototype._getPrice = function() {
       var i, p, _i, _ref;
-      p = this.traitValue * 1;
+      p = this.traitValue * 3;
       for (i = _i = 1, _ref = this.traitLevel; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
         p *= 1.5;
       }

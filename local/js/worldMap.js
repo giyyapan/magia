@@ -32,7 +32,10 @@
             case "home":
               return _this.game.switchStage("home");
             case "magicItemShop":
-              return _this.game.switchStage("shop", "magicItemShop");
+            case "equipmentShop":
+              return _this.game.switchStage("shop", name);
+            case "adventurerGuild":
+              return _this.game.switchStage("guild");
             default:
               nowEnergy = _this.game.player.energy;
               if (nowEnergy < data.costEnergy) {
@@ -60,7 +63,7 @@
       MapPoint.__super__.constructor.call(this, tpl);
       this.menu = menu;
       this.UI["map-summary-name"].innerHTML = data.name;
-      this.UI["map-summary-pic"].J.css("background", "url(" + Res.imgs[data.summaryImg].src + ")");
+      this.UI["map-summary-pic"].src = Res.imgs[data.summaryImg].src;
       this.dom.onclick = function() {
         var myPopBig;
         myPopBig = new popBig(_this.menu.UI['map-popBig-tpl'].innerHTML, data, woldMap, name);
@@ -97,7 +100,7 @@
       } else {
         this.menu.UI["day-night"].innerHTML = "夜";
       }
-      _ref = ["home", "magicItemShop", "forest", "snowmountain"];
+      _ref = ["home", "adventurerGuild", "magicItemShop", "equipmentShop", "forest", "snowmountain"];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         name = _ref[_i];
         data = this.db.areas.get(name);

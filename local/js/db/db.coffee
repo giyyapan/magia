@@ -13,12 +13,13 @@ class window.Database extends Suzaku.EventEmitter
     @areas = new AreasDB()
     @things = new ThingsDB()
     @shops = new ShopsDB()
+    @missions = new MissionsDB()
     @rules = new SubDB "rules"
     @monsters = new SubDB "sprites-monsters"
     @spriteItems = new SubDB "sprites-items"
     @characters = new SubDB "characters"
-    @tasks = new SubDB "tasks"
-    @storys = new SubDB "storys"
+    for name of ["AreasDB","ThingsDB","MissionsDB"]
+      delete window[name]
     @initCharacters()
     @initSprites()
     @initRules()

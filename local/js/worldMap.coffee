@@ -17,7 +17,8 @@ class popBig extends Widget
       @woldMap.menu.J.fadeOut "slow",=>
         switch name
           when "home" then @game.switchStage "home"
-          when "magicItemShop" then @game.switchStage "shop","magicItemShop"
+          when "magicItemShop","equipmentShop" then @game.switchStage "shop",name
+          when "adventurerGuild" then @game.switchStage "guild"
           else
             nowEnergy = @game.player.energy
             if nowEnergy < data.costEnergy
@@ -33,7 +34,7 @@ class MapPoint extends Widget
     super tpl
     @menu = menu
     @UI["map-summary-name"].innerHTML = data.name
-    @UI["map-summary-pic"].J.css "background", "url(#{Res.imgs[data.summaryImg].src})"
+    @UI["map-summary-pic"].src = Res.imgs[data.summaryImg].src
     @dom.onclick = =>
       myPopBig = new popBig @menu.UI['map-popBig-tpl'].innerHTML,data,woldMap,name
       myPopBig.appendTo @menu
@@ -59,7 +60,7 @@ class window.WorldMap extends Stage
       @menu.UI["day-night"].innerHTML = "昼"
     else
       @menu.UI["day-night"].innerHTML = "夜"
-    for name in ["home","magicItemShop","forest","snowmountain"]
+    for name in ["home","adventurerGuild","magicItemShop","equipmentShop","forest","snowmountain"]
       data = @db.areas.get name
       imgName = data.summaryImg
       img = window.Res.imgs[imgName]
