@@ -39,7 +39,7 @@ playerData =
 class window.Player
   constructor:(db)->
     @db = db
-    Utils.localData "clear","playerData"
+    #Utils.localData "clear","playerData"
     @data = Utils.localData "get","playerData"
     dataKey = Utils.localData "get","dataKey"
     if not @data or Utils.getKey(JSON.stringify(@data)) isnt parseInt(dataKey)
@@ -147,6 +147,7 @@ class window.Player
       statusValue:@basicData
       lastStage:@lastStage
       basicStatusValue:@basicStatusValue
+      relationships:@relationships
       backpack:backpack
       storage:storage
       equipments:equipments

@@ -9,6 +9,7 @@
     function Things(name, data, type) {
       Things.__super__.constructor.call(this);
       this.originData = data;
+      this.price = this.originData.price;
       this.name = name;
       this.dspName = data.name;
       this.type = type;
@@ -72,12 +73,40 @@
       }
       originData = db.things.supplies.get(name);
       PlayerSupplies.__super__.constructor.call(this, name, originData, "supplies");
-      this.remainCount = data.remainCount || 5;
+      this.maxRemainCount = 5;
+      this.remainCount = data.remainCount || this.maxRemainCount;
       this.traitValue = data.traitValue;
       this.traitName = originData.traitName;
       this.traits = {};
+      this.traitLevel = this._getTraitLevel();
       this.traits[originData.traitName] = this.traitValue;
+      this.price = this._getPrice();
     }
+
+    PlayerSupplies.prototype._getTraitLevel = function() {
+      var level, name, traits, _i, _len, _ref, _ref1;
+      _ref = Dict.TraitLevel;
+      for (level in _ref) {
+        traits = _ref[level];
+        _ref1 = traits.split(",");
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          name = _ref1[_i];
+          if (this.traitName === name) {
+            return parseInt(level);
+          }
+        }
+      }
+      return 1;
+    };
+
+    PlayerSupplies.prototype._getPrice = function() {
+      var i, p, _i, _ref;
+      p = this.traitValue * 1;
+      for (i = _i = 1, _ref = this.traitLevel; 1 <= _ref ? _i <= _ref : _i >= _ref; i = 1 <= _ref ? ++_i : --_i) {
+        p *= 1.5;
+      }
+      return p;
+    };
 
     PlayerSupplies.prototype.getData = function() {
       return {

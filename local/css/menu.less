@@ -23,16 +23,46 @@
 .poison{background: black !important;}
 .muddy{background: #896b4c !important;}
 .clear{background: #549988 !important;}
+.money{color:@color-money;}
 .text{
 		color:#d7ba97;
 		text-shadow: 0px 2px 0px #3c2f21;
 		font-weight:bold;
 }
-.money{
-		color:@color-money;
+.double-border{
+		box-shadow:-2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
+		border: 2px solid @color-border-black;
+		border-radius: 10px;
 }
-.top{
-		z-index:9999 !important;
+.texture-border{
+		.double-border;
+		@p:16px;
+		background:url("/img/menu/texture-bg.jpg") 0 0 repeat;
+		padding:@p;
+		padding-right:(@p + 2);
+}
+.button-holder{
+		width:100%;
+		bottom:10px;
+		position:absolute;
+}
+.btn{
+		.text;
+		.double-border;
+		cursor:pointer;
+		font-size:23px;
+		padding: 20px;
+		margin: 15px;
+		width: 180px;
+		display: inline-block;
+		background: @color-bg-brown-lv2;
+		&:hover{
+				background-color:@color-item-hover;
+				color:#E4CCAE;
+		}
+		&.selected{
+				background-color:@color-item-selected;
+		}
 }
 .trait-icon{
 		display:inline-block;
@@ -62,9 +92,6 @@
 		background-color:rgba(20,20,20,0.2);
 		z-index:100;
 }
-.test-border{
-		//border:1px solid @color-bg-brown-lv3;
-}
 .list-item{
 		color:#543d26;
 		cursor:pointer;
@@ -88,28 +115,14 @@
 				color: @color-text-white;
 		}
 }
-.double-border{
-		box-shadow:-2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
-		border: 2px solid @color-border-black;
-		border-radius: 10px;
-}
-.texture-border{
-		.double-border;
-		@p:16px;
-		background:url("/img/menu/texture-bg.jpg") 0 0 repeat;
-		padding:@p;
-		padding-right:(@p + 2);
-}
 .inner-panel{
 		background-color:#ad8f6e;
 		border:2px solid #2a1d0f;
 		box-shadow:inset 0 0 8px rgba(46, 28, 14, 0.15)
 }
 .panel-wrapper{
-		.test-border;
 		position:absolute;
 		.panel{
-				.test-border;
 				width:100%;
 				height:100%;
 		}
@@ -383,33 +396,6 @@
 				.lv6{
 						border-radius: 0px 5px 5px 0px;
 				}
-		}
-}
-.button-holder{
-		width:100%;
-		bottom:10px;
-		position:absolute;
-}
-.selected{
-		background: @color-bg-brown-lv2;
-		color: @color-text-white;
-}
-.btn{
-		.text;
-		.double-border;
-		cursor:pointer;
-		font-size:23px;
-		padding: 20px;
-		margin: 15px;
-		width: 180px;
-		display: inline-block;
-		background: @color-bg-brown-lv2;
-		&:hover{
-				background-color:@color-item-hover;
-				color:#E4CCAE;
-		}
-		&.selected{
-				background-color:@color-item-selected;
 		}
 }
 .dialog-box-wrapper{

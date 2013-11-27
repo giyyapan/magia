@@ -39,7 +39,7 @@
       return this.UI.speaker.J.text("" + speaker + ":");
     };
 
-    DialogBox.prototype.endDisplay = function(nostop) {
+    DialogBox.prototype.endDisplay = function() {
       var text;
       window.clearInterval(this.displayInterval);
       this.displayLock = false;
@@ -47,7 +47,7 @@
       text = text.replace(/\|/g, "</br>");
       text = text.replace(/`/g, "");
       this.UI.text.innerHTML = text;
-      if (nostop) {
+      if (this.nostop) {
         return this.emit("next");
       } else {
         return this.UI['continue-hint'].J.fadeIn("fast");
@@ -57,8 +57,11 @@
     DialogBox.prototype.display = function(data, callback) {
       var arr, currentDelay, delay, index,
         _this = this;
+      if (this.displayLock) {
+        this.endDisplay();
+      }
       console.log(data.text);
-      if (!data.text || this.displayLock) {
+      if (!data.text) {
         return;
       }
       if (!this.onshow) {
@@ -66,8 +69,10 @@
           return _this.display(data, callback);
         });
       }
-      if (data.nostop === void 0) {
-        data.nostop = false;
+      if (data.nostop) {
+        this.nostop = true;
+      } else {
+        this.nostop = false;
       }
       this.setSpeaker(data.speaker);
       this.UI['continue-hint'].J.fadeOut("fast");
@@ -121,7 +126,7 @@
           _this.UI.text.innerHTML += c;
           return index += 1;
         } else {
-          return _this.endDisplay(data.nostop);
+          return _this.endDisplay();
         }
       }), 60);
     };

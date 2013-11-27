@@ -109,13 +109,12 @@ class Widget extends EventEmitter
     parent = @dom.parentElement or @dom.parentNode
     parent.removeChild @dom
   css3Animate:(animateClass,waitTime,callback)->
+    @J.addClass animateClass
     if not waitTime or typeof waitTime is "function"
       callback = waitTime
       s = window.getComputedStyle @dom
-      waitTime = s.webkitAnimationDelay or s.animationDelay
-      waitTime += 30
-    @J.addClass animateClass
-    return if not waitTime
+      waitTime = s.webkitAnimationDuration or s.animationDuration
+      waitTime = parseInt((waitTime.replace("s",""))*1000+30)
     window.setTimeout (=>
       callback.call this if callback
       @J.removeClass animateClass

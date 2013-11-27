@@ -138,9 +138,11 @@
     }
 
     ItemDetailsBox.prototype.showItemDetails = function(item) {
+      var t;
       if (item.playerSupplies) {
         this.UI['remain-count-hint'].J.show();
-        this.UI['remain-count'].innerHTML = "" + item.playerSupplies.remainCount + "/5";
+        t = "" + item.playerSupplies.remainCount + "/" + item.playerSupplies.maxRemainCount;
+        this.UI['remain-count'].J.text(t);
       } else {
         this.UI['remain-count-hint'].J.hide();
       }
@@ -176,6 +178,11 @@
       return _results;
     };
 
+    ItemDetailsBox.prototype.hide = function() {
+      this.J.fadeOut("fast");
+      return this.currentItem.J.removeClass("selected");
+    };
+
     return ItemDetailsBox;
 
   })(Widget);
@@ -192,6 +199,8 @@
       this.name = playerThing.name;
       this.dspName = playerThing.dspName;
       this.originData = playerThing.originData;
+      this.playerThing = playerThing;
+      this.type = playerThing.type;
       switch (playerThing.type) {
         case "item":
           this.playerItem = playerThing;

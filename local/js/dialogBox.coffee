@@ -16,22 +16,23 @@ class window.DialogBox extends Menu
   setSpeaker:(speaker)->
     return if not speaker
     @UI.speaker.J.text "#{speaker}:"
-  endDisplay:(nostop)->
+  endDisplay:()->
     window.clearInterval @displayInterval
     @displayLock = false
     text = @currentDisplayData.text
     text = text.replace /\|/g,"</br>"
     text = text.replace /`/g,""
     @UI.text.innerHTML = text
-    if nostop then @emit "next"
+    if @nostop then @emit "next"
     else @UI['continue-hint'].J.fadeIn "fast"
   display:(data,callback)->
+    if @displayLock then @endDisplay()
     console.log data.text
-    return if not data.text or @displayLock
+    return if not data.text
     if not @onshow
       @show => @display(data,callback)
-    if data.nostop is undefined
-      data.nostop = false
+    if data.nostop then @nostop = true
+    else @nostop = false
     @setSpeaker data.speaker
     @UI['continue-hint'].J.fadeOut "fast"
     @once "next",callback if callback
@@ -62,7 +63,7 @@ class window.DialogBox extends Menu
         @UI.text.innerHTML += c
         index += 1
       else
-        @endDisplay data.nostop
+        @endDisplay()
       ),60
   show:(callback)->
     #@UILayer.J.find("menu").fadeOut "fast"

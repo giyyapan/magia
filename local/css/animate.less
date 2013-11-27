@@ -131,6 +131,16 @@
 		50%{-webkit-transform:translateY(@dy);}
 		100%{-webkit-transform:translateY(0);}
 }
+@-webkit-keyframes Pop{
+		0%{.transform(scale(1));}
+		50%{.transform(scale(1.2));}
+		100%{.transform(scale(1));}
+}
+@-webkit-keyframes Pop{
+		0%{-webkit-transform:scale(1);}
+		50%{-webkit-transform:scale(1.2);}
+		100%{-webkit-transform:scale(1);}
+}
 .animate(@name,@time:.2s,@timingFunc:linear){
     animation:@name @time @timingFunc;
     -webkit-animation: @name @time @timingFunc;  
@@ -142,6 +152,9 @@
 .animate-delay(@time:.5s){
     animation-delay:@time;
     -webkit-animation-delay:@time;
+}
+.animate-pop{
+    .animate(Pop,.2s,ease-in-out);
 }
 .animate-popup{
     .animate(Popup,.3s,ease-in-out);

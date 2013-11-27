@@ -6,30 +6,59 @@ class ShopItemDetailsBox extends ItemDetailsBox
     @UI['cancel-btn'].onclick = =>
       @J.fadeOut "fast"
       w.J.removeClass "selected" for w in @menu.listItems
-  showItemDetails:(type,item)->
-    console.log item
+  showItemDetails:(mode,item)->
     super item
-    @UI['price'].J.text "$ 100"
-    switch type
+    basicPrice = item.playerThing.price
+    switch mode
       when "playerBuy"
+        price = basicPrice * parseFloat(@shop.getDataByRelationship "playerBuyPrice") >> 0
+        @UI.price.J.text "$#{price}"
+        if price > @shop.player.money then @css3Animate.call @UI.price,"animate-warning"
         @UI['use-btn'].J.text "购买"
         @UI['use-btn'].onclick = =>
-          @playerBuyItem item
+          @playerBuyItem item,price
       when "playerSell"
+        console.log basicPrice,@shop.getDataByRelationship "playerSellPrice"
+        price = basicPrice * parseFloat(@shop.getDataByRelationship "playerSellPrice") >> 0
+        @UI.price.J.text "$#{price}"
         @UI['use-btn'].J.text "出售"
         @UI['use-btn'].onclick = =>
-          @playerSellItem item
-  playerBuyItem:(item)->
-  playerSellItem:(item)->
+          @playerSellItem item,price
+  playerBuyItem:(item,price)->
+    player = @shop.player
+    if price > player.money
+      @css3Animate.call @UI.price,"animate-warning"
+      return new MsgBox "购买失败","我的钱好像不够.."
+    player.money -= price
+    @menu.updateMoney()
+    switch item.type
+      when "item" then player.getItem "backpack",item.playerItem
+      when "supplies" then player.getSupplies "backpack",item.playerSupplies
+      when "equipment" then player.getEquipment "backpack",item.playerEquipment
+      else console.error "invailid type",item.type
+    player.saveData()
+    new MsgBox "购买成功","获得了一个 #{item.dspName}",420
+  playerSellItem:(item,price)->
+    player = @shop.player
+    player.money += price
+    @menu.updateMoney()
+    if item.playerItem and item.playerItem.number > 1
+      item.playerItem.number -= 1
+    else
+      player.removeThing item.playerThing
+      @hide()
+      @menu.removeListItem item
+    player.saveData()
+    new MsgBox "出售成功","获得了一个 #{item.dspName}",420
             
 class ShopListItem extends ListItem
-  constructor:(tpl,type,playerThing,menu)->
+  constructor:(tpl,mode,playerThing,menu)->
     super tpl,playerThing
     @menu = menu
-    @type = type
+    @mode = mode
     @UI.name.J.text @dspName
   active:->
-    @menu.detailsBox.showItemDetails @type,this
+    @menu.detailsBox.showItemDetails @mode,this
     
 class ShopMenu extends Menu
   constructor:(shop)->
@@ -46,6 +75,15 @@ class ShopMenu extends Menu
       @shop.showServiceDialog()
       @showServiceOptions()
     @show()
+  removeListItem:(item)->
+    newArr = []
+    for i in @listItems 
+      if i isnt item
+        newArr.push i
+      else
+        i.J.slideUp "fast",->
+          $(this).remove()
+    @listItems = newArr
   showServiceOptions:->
     @UI['left-section'].J.fadeOut "fast"
     @detailsBox.J.fadeOut "fast"
@@ -60,6 +98,7 @@ class ShopMenu extends Menu
   updateMoney:->
     @UI['player-money'].J.text @shop.player.money
   playerSellMode:->
+    @detailsBox.J.fadeOut "fast"
     @UI['left-section'].J.fadeIn "fast"
     @UI['player-sell-mode'].J.addClass "selected"
     @UI['player-buy-mode'].J.removeClass "selected"
@@ -70,6 +109,7 @@ class ShopMenu extends Menu
     @addItems "playerSell",items
   playerBuyMode:->
     console.log "fuck"
+    @detailsBox.J.fadeOut "fast"
     @UI['left-section'].J.fadeIn "fast"
     @UI['player-buy-mode'].J.addClass "selected"
     @UI['player-sell-mode'].J.removeClass "selected"
@@ -116,6 +156,9 @@ class window.Shop extends Stage
       @showServiceDialog()
       @menu.showServiceOptions()
   getDataByRelationship:(from)->
+    if typeof from is "string"
+      from = @originData[from]
+    if not from then return console.error "invailid from",from
     found = null
     for required,data of from
       if parseInt(required) <= @relationship
@@ -123,8 +166,8 @@ class window.Shop extends Stage
       else
         break
     return found
-  showServiceDialog:->
-    @dialogBox.display text:Utils.random @originData.waitText
+  showServiceDialog:()->
+    @dialogBox.display text:Utils.random(@originData.waitText),nostop:true
   initWelcomDialog:->
     @dialogBox = new DialogBox()
     @dialogBox.show()

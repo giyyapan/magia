@@ -25,28 +25,74 @@
       };
     }
 
-    ShopItemDetailsBox.prototype.showItemDetails = function(type, item) {
-      var _this = this;
-      console.log(item);
+    ShopItemDetailsBox.prototype.showItemDetails = function(mode, item) {
+      var basicPrice, price,
+        _this = this;
       ShopItemDetailsBox.__super__.showItemDetails.call(this, item);
-      this.UI['price'].J.text("$ 100");
-      switch (type) {
+      basicPrice = item.playerThing.price;
+      switch (mode) {
         case "playerBuy":
+          price = basicPrice * parseFloat(this.shop.getDataByRelationship("playerBuyPrice")) >> 0;
+          this.UI.price.J.text("$" + price);
+          if (price > this.shop.player.money) {
+            this.css3Animate.call(this.UI.price, "animate-warning");
+          }
           this.UI['use-btn'].J.text("购买");
           return this.UI['use-btn'].onclick = function() {
-            return _this.playerBuyItem(item);
+            return _this.playerBuyItem(item, price);
           };
         case "playerSell":
+          console.log(basicPrice, this.shop.getDataByRelationship("playerSellPrice"));
+          price = basicPrice * parseFloat(this.shop.getDataByRelationship("playerSellPrice")) >> 0;
+          this.UI.price.J.text("$" + price);
           this.UI['use-btn'].J.text("出售");
           return this.UI['use-btn'].onclick = function() {
-            return _this.playerSellItem(item);
+            return _this.playerSellItem(item, price);
           };
       }
     };
 
-    ShopItemDetailsBox.prototype.playerBuyItem = function(item) {};
+    ShopItemDetailsBox.prototype.playerBuyItem = function(item, price) {
+      var player;
+      player = this.shop.player;
+      if (price > player.money) {
+        this.css3Animate.call(this.UI.price, "animate-warning");
+        return new MsgBox("购买失败", "我的钱好像不够..");
+      }
+      player.money -= price;
+      this.menu.updateMoney();
+      switch (item.type) {
+        case "item":
+          player.getItem("backpack", item.playerItem);
+          break;
+        case "supplies":
+          player.getSupplies("backpack", item.playerSupplies);
+          break;
+        case "equipment":
+          player.getEquipment("backpack", item.playerEquipment);
+          break;
+        default:
+          console.error("invailid type", item.type);
+      }
+      player.saveData();
+      return new MsgBox("购买成功", "获得了一个 " + item.dspName, 420);
+    };
 
-    ShopItemDetailsBox.prototype.playerSellItem = function(item) {};
+    ShopItemDetailsBox.prototype.playerSellItem = function(item, price) {
+      var player;
+      player = this.shop.player;
+      player.money += price;
+      this.menu.updateMoney();
+      if (item.playerItem && item.playerItem.number > 1) {
+        item.playerItem.number -= 1;
+      } else {
+        player.removeThing(item.playerThing);
+        this.hide();
+        this.menu.removeListItem(item);
+      }
+      player.saveData();
+      return new MsgBox("出售成功", "获得了一个 " + item.dspName, 420);
+    };
 
     return ShopItemDetailsBox;
 
@@ -55,15 +101,15 @@
   ShopListItem = (function(_super) {
     __extends(ShopListItem, _super);
 
-    function ShopListItem(tpl, type, playerThing, menu) {
+    function ShopListItem(tpl, mode, playerThing, menu) {
       ShopListItem.__super__.constructor.call(this, tpl, playerThing);
       this.menu = menu;
-      this.type = type;
+      this.mode = mode;
       this.UI.name.J.text(this.dspName);
     }
 
     ShopListItem.prototype.active = function() {
-      return this.menu.detailsBox.showItemDetails(this.type, this);
+      return this.menu.detailsBox.showItemDetails(this.mode, this);
     };
 
     return ShopListItem;
@@ -101,6 +147,23 @@
       this.show();
     }
 
+    ShopMenu.prototype.removeListItem = function(item) {
+      var i, newArr, _i, _len, _ref;
+      newArr = [];
+      _ref = this.listItems;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        i = _ref[_i];
+        if (i !== item) {
+          newArr.push(i);
+        } else {
+          i.J.slideUp("fast", function() {
+            return $(this).remove();
+          });
+        }
+      }
+      return this.listItems = newArr;
+    };
+
     ShopMenu.prototype.showServiceOptions = function() {
       this.UI['left-section'].J.fadeOut("fast");
       this.detailsBox.J.fadeOut("fast");
@@ -124,6 +187,7 @@
 
     ShopMenu.prototype.playerSellMode = function() {
       var items, playerThing, sellableType, _i, _len, _ref;
+      this.detailsBox.J.fadeOut("fast");
       this.UI['left-section'].J.fadeIn("fast");
       this.UI['player-sell-mode'].J.addClass("selected");
       this.UI['player-buy-mode'].J.removeClass("selected");
@@ -142,6 +206,7 @@
     ShopMenu.prototype.playerBuyMode = function() {
       var ItemClass, data, itemData, items, _i, _len, _ref;
       console.log("fuck");
+      this.detailsBox.J.fadeOut("fast");
       this.UI['left-section'].J.fadeIn("fast");
       this.UI['player-buy-mode'].J.addClass("selected");
       this.UI['player-sell-mode'].J.removeClass("selected");
@@ -230,6 +295,12 @@
 
     Shop.prototype.getDataByRelationship = function(from) {
       var data, found, required;
+      if (typeof from === "string") {
+        from = this.originData[from];
+      }
+      if (!from) {
+        return console.error("invailid from", from);
+      }
       found = null;
       for (required in from) {
         data = from[required];
@@ -244,7 +315,8 @@
 
     Shop.prototype.showServiceDialog = function() {
       return this.dialogBox.display({
-        text: Utils.random(this.originData.waitText)
+        text: Utils.random(this.originData.waitText),
+        nostop: true
       });
     };
 

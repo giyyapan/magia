@@ -67,7 +67,6 @@
     function Player(db) {
       var dataKey;
       this.db = db;
-      Utils.localData("clear", "playerData");
       this.data = Utils.localData("get", "playerData");
       dataKey = Utils.localData("get", "dataKey");
       if (!this.data || Utils.getKey(JSON.stringify(this.data)) !== parseInt(dataKey)) {
@@ -286,6 +285,7 @@
         statusValue: this.basicData,
         lastStage: this.lastStage,
         basicStatusValue: this.basicStatusValue,
+        relationships: this.relationships,
         backpack: backpack,
         storage: storage,
         equipments: equipments,

@@ -2,6 +2,7 @@ class window.Things extends EventEmitter
   constructor:(name,data,type)->
     super()
     @originData = data
+    @price = @originData.price
     @name = name
     @dspName = data.name
     @type = type
@@ -30,11 +31,25 @@ class window.PlayerSupplies extends Things
     if not data.traitValue then console.error "need trait value"
     originData = db.things.supplies.get name
     super name,originData,"supplies"
-    @remainCount = data.remainCount or 5
+    @maxRemainCount = 5
+    @remainCount = data.remainCount or @maxRemainCount
     @traitValue = data.traitValue
     @traitName = originData.traitName
     @traits = {}
+    @traitLevel = @_getTraitLevel()
     @traits[originData.traitName] = @traitValue
+    @price = @_getPrice()
+  _getTraitLevel:->
+    for level,traits of Dict.TraitLevel
+      for name in traits.split ","
+        if @traitName is name
+          return parseInt level
+    return 1
+  _getPrice:->
+    p = @traitValue * 1
+    for i in [1..@traitLevel]
+      p *= 1.5
+    return p
   getData:->
     return name:@name,type:@type,remainCount:@remainCount,traitValue:@traitValue
         

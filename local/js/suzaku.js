@@ -207,15 +207,12 @@
     Widget.prototype.css3Animate = function(animateClass, waitTime, callback) {
       var s,
         _this = this;
+      this.J.addClass(animateClass);
       if (!waitTime || typeof waitTime === "function") {
         callback = waitTime;
         s = window.getComputedStyle(this.dom);
-        waitTime = s.webkitAnimationDelay || s.animationDelay;
-        waitTime += 30;
-      }
-      this.J.addClass(animateClass);
-      if (!waitTime) {
-        return;
+        waitTime = s.webkitAnimationDuration || s.animationDuration;
+        waitTime = parseInt((waitTime.replace("s", "")) * 1000 + 30);
       }
       return window.setTimeout((function() {
         if (callback) {

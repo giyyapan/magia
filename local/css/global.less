@@ -5,8 +5,36 @@
 @color-bg-brown-lv2:	#907352;
 @color-bg-brown-lv3:	#674e34;
 @color-border-black:	#2a1d0f;
-.btn{
-		display:inline-block;
+template{display:none;}
+button,a{
+	outline: none;
+		cursor:pointer;
+		&:active{outline:0;}
+}
+*{
+		font-family: "微软雅黑";
+		.no-user-select;
+}
+button{
+		font-size:18px;
+		padding:10px;
+}
+body{
+		text-align:center;
+		background-color:#222 !important;
+}
+hr{
+		margin:0;
+		border:none;
+}
+p{
+		margin: 0;
+}
+ul{
+		overflow:auto;
+		list-style: none;
+		margin: 0;
+		padding: 0;
 }
 .no-user-select{
 		user-select:none;
@@ -23,48 +51,12 @@
 		-ms-transition:@property @time @timingFunc;
 		transition:@property @time @timingFunc;
 }
-*{
-		font-family: "微软雅黑";
-		.no-user-select;
-}
-hr{
-		margin:0;
-		border:none;
-}
-.wrapper{
-		position:relative;
-}
-p{
-		margin: 0;
-}
-ul{
-		list-style: none;
-		margin: 0;
-		padding: 0;
-}
-.double-border{
-		box-shadow:-2px -2px 0px #ae8f6b inset, 2px 2px 0px #ae8f6b inset;
-		border: 2px solid @color-border-black;
-		border-radius: 10px;
-}
-
-template{display:none;}
-button,a{
-	outline: none;
-		cursor:pointer;
-		&:active{
-				outline:0;
-		}
-}
-body{
-		background-color:#222 !important;
-}
-button{
-		font-size:18px;
-		padding:10px;
-}
-body{
-		text-align:center;
+.top{z-index:9999 !important;}
+.ib{display:inline-block;}
+.wrapper{position:relative;}
+.selected{
+		background: @color-bg-brown-lv2;
+		color: @color-text-white;
 }
 #gameCanvas{
 		//border:1px solid white;

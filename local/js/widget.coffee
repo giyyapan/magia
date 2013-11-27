@@ -78,7 +78,8 @@ class window.ItemDetailsBox extends Widget
     #item used to be item
     if item.playerSupplies
       @UI['remain-count-hint'].J.show()
-      @UI['remain-count'].innerHTML = "#{item.playerSupplies.remainCount}/5"
+      t = "#{item.playerSupplies.remainCount}/#{item.playerSupplies.maxRemainCount}"
+      @UI['remain-count'].J.text t
     else
       @UI['remain-count-hint'].J.hide()
     @UI['content'].J.hide()
@@ -97,6 +98,9 @@ class window.ItemDetailsBox extends Widget
     @UI['traits-list'].J.html ""
     for name,value of thingData.traits
       new TraitItem(name,value).appendTo @UI['traits-list']
+  hide:->
+    @J.fadeOut "fast"
+    @currentItem.J.removeClass "selected"
       
 class window.ListItem extends Widget
   constructor:(tpl,playerThing)->
@@ -105,6 +109,8 @@ class window.ListItem extends Widget
     @name = playerThing.name
     @dspName = playerThing.dspName
     @originData = playerThing.originData
+    @playerThing = playerThing
+    @type = playerThing.type
     switch playerThing.type
       when "item" then @playerItem = playerThing
       when "supplies" then @playerSupplies = playerThing
