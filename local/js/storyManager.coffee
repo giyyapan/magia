@@ -17,6 +17,8 @@ class window.StoryStage extends Stage
     console.log line
     if not line
       return @storyEnd()
+    if line.indexOf("<!") is 0 #for comment
+      return @nextStep()
     if line.indexOf(">") is 0
       return @switchBg.apply this,line.replace(">","").split " "
     if line.indexOf("@") is 0
@@ -82,7 +84,8 @@ class window.StoryStage extends Stage
       when "end"
         @endData = 
           type:a[1]
-          content:a[2]
+          name:a[2]
+          data:a[3]
       else console.error "invailid command name :",commandName
     @nextStep()
     return true
@@ -122,7 +125,7 @@ class window.StoryManager extends EventEmitter
     # 剧情格式
     # 剧情名 ***name
     # 切换角色 @name position（left/right/center）
-    # 切换场景 >type（img/color） content（imgname/colorText） animateName animateTime
+    # 切换场景 >type（img/color） name（imgname/colorText） animateName animateTime
     # 运行其他命令 :commandName arguments
     # 包括 animate sound battle startMission completeMission unlockarea end
     @game = game
@@ -145,11 +148,15 @@ class window.StoryManager extends EventEmitter
     @game.saveStage()
     stage = @game.switchStage "story",storyData
     stage.on "storyEnd",(endData)=>
-      if not endData then @game.restoreStage()
-      @game.popSavedStage()
-      switch endData.type
-        when "stage"
-          @game.switchStage endData.content
-        when "story"
-          @showStory endData.content
-        else console.error "invailid story end data type",endData.type
+      @storyEnd name,endData
+  storyEnd:(name,endData)->
+    @game.player.completedStorys[name] = true
+    @game.player.saveData()
+    if not endData then @game.restoreStage()
+    @game.popSavedStage()
+    switch endData.type
+      when "stage"
+        @game.switchStage endData.name,endData.data
+      when "story"
+        @showStory endData.name
+      else console.error "invailid story end data type",endData.type

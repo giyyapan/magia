@@ -156,7 +156,7 @@ class window.Drawable extends Suzaku.EventEmitter
         else
           context.drawImage img,-@anchor.x,-@anchor.y,@width,@height
     else if @fillColor
-      context.fillStyle = @drawColor
+      context.fillStyle = @fillColor
       context.fillRect(-@anchor.x,-@anchor.y,@width,@height)
   clearDrawQueue:->
     @drawQueue.after = []

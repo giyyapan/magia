@@ -2,6 +2,8 @@ class window.SubDB extends Suzaku.EventEmitter
   constructor:(name)->
     @dbName = name
     @data = {}
+  getAll:->
+    return @data
   get:(name)->
     if typeof @data[name] is "undefined"
       console.warn "Cannot find data name : #{name} in database #{@dbName}"
@@ -18,7 +20,7 @@ class window.Database extends Suzaku.EventEmitter
     @monsters = new SubDB "sprites-monsters"
     @spriteItems = new SubDB "sprites-items"
     @characters = new SubDB "characters"
-    for name of ["AreasDB","ThingsDB","MissionsDB"]
+    for name of ["AreasDB","ThingsDB","MissionsDB","ShopsDB"]
       delete window[name]
     @initCharacters()
     @initSprites()

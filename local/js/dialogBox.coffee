@@ -121,10 +121,10 @@ class window.DialogBox extends Menu
           when "|","|" then c = "</br>"
           when "`" then c = ""
           when ",","，"
-            delay = 3 if index isnt (arr.length - 1)
+            delay = 2 if index isnt (arr.length - 1)
             c = arr[index]
           when "!","！","。"
-            delay = 3 if index isnt (arr.length - 1)
+            delay = 2 if index isnt (arr.length - 1)
             c = arr[index]
           else c = arr[index]
         @UI.text.innerHTML += c

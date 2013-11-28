@@ -11,8 +11,9 @@ playerData =
     {name:"herbs",number:10,type:"item"}
     {name:"caveMashroom",number:10,type:"item"}
     ]
-  completedMissions:[]
-  completedStorys:[]
+  currentMissions:{}
+  completedMissions:{}
+  completedStorys:{}
   relationships:
     luna:0
     dirak:0
@@ -62,6 +63,7 @@ class window.Player
     @relationships = @data.relationships
     @lastStage = @data.lastStage
     @completedStorys = @completedStorys
+    @currentMission = @currentMission
     @completedMissions = @completedMissions
     @equipments = []
     for name in @data.equipments
@@ -156,6 +158,7 @@ class window.Player
       statusValue:@basicData
       lastStage:@lastStage
       completedStorys:@completedStorys
+      currentMissions:@currentMissions
       completedMissions:@completedMissions
       basicStatusValue:@basicStatusValue
       relationships:@relationships

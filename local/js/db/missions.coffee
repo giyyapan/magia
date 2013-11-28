@@ -2,29 +2,45 @@ class window.MissionsDB extends SubDB
   constructor:->
     super "missions"
     @data =
+      theGuild:
+        name:"冒险者公会"
+        from:null
+        description:"（在森林救了我们的大叔好像自称是冒险者公会的管理员？虽然不知道那是什么玩意，但是还是先去看看再说吧～）"
+        catHint:""
+        start:
+          unlockarea:"guild"
+        request:
+          visit:"guild"
       firstMission:
-        name:"见习魔女"
+        after:"theGuild"
+        name:"作为冒险者出道！"
         from:"dirac"
         description:"想让村里的各位愿意和你交流，首先要证明自己！|用雾之森的外围的素材制作一些药剂看看吧！让我们知道你是个真正的魔法师！"
         catHint:""
-        completeStory:"firstMissionComplete"
+        start:
+          unlockarea:"forest"
+        end:
+          story:"firstMissionComplete"
         reward:
           money:100
         request:
           getSupplies:"firePotion,muddyPotion"
       luna1:
-        after:"fistMission"
         name:"魔法物品店老板娘？"
         from:"luna"
         description:"哎呀，你就是那个新来的魔女吧～？|我是在镇上开店的露娜～来我的店里看看"
+        after:"firstMission"
+        start:
+          unlockarea:"magicItemShop"
         request:
           visit:"shop magicItemShop"
           text:"到露娜的商店里去拜会她"
         reward:
           money:50
+        end:
+          story:"meetLuna"
         autoComplete:true
         catHint:""
-        completeStory:"meetLuna"
       luna2:
         after:"luna1"
         name:"药剂是需要素材的！"
