@@ -49,6 +49,7 @@ class window.DialogBox extends Menu
   setCharacter:(name,options)->
     console.log "set character",name,options
     data = @db.characters.get name
+    dspName = data.name
     @currentCharacter = @characters[name]
     for type,value of options
       switch type
@@ -65,7 +66,9 @@ class window.DialogBox extends Menu
         when "effect"
           if not @currentCharacter then return console.error "no such character",name
           @currentCharacter.useEffect value
-    @setSpeaker data.name
+          if value is "shadow"
+            dspName = "???"
+    @setSpeaker dspName
   setSpeaker:(speaker)->
     return if not speaker
     @UI.speaker.J.text "#{speaker}:"

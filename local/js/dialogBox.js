@@ -92,9 +92,10 @@
     }
 
     DialogBox.prototype.setCharacter = function(name, options) {
-      var data, type, value;
+      var data, dspName, type, value;
       console.log("set character", name, options);
       data = this.db.characters.get(name);
+      dspName = data.name;
       this.currentCharacter = this.characters[name];
       for (type in options) {
         value = options[type];
@@ -119,9 +120,12 @@
               return console.error("no such character", name);
             }
             this.currentCharacter.useEffect(value);
+            if (value === "shadow") {
+              dspName = "???";
+            }
         }
       }
-      return this.setSpeaker(data.name);
+      return this.setSpeaker(dspName);
     };
 
     DialogBox.prototype.setSpeaker = function(speaker) {
