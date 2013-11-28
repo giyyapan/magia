@@ -28,7 +28,10 @@
     };
 
     DialogCharacter.prototype.getOut = function(type) {
-      return this.J.fadeOut;
+      var _this = this;
+      return this.J.fadeOut("fast", function() {
+        return _this.remove();
+      });
     };
 
     DialogCharacter.prototype.getIn = function(position) {
@@ -114,7 +117,7 @@
             }
             this.currentCharacter.getOut(value);
             delete this.characters[name];
-            break;
+            return;
           case "effect":
             if (!this.currentCharacter) {
               return console.error("no such character", name);
@@ -151,8 +154,7 @@
     };
 
     DialogBox.prototype.display = function(data, callback) {
-      var text,
-        _this = this;
+      var _this = this;
       if (this.displayLock) {
         this.endDisplay();
       }
@@ -177,18 +179,17 @@
       }
       this.displayLock = true;
       this.currentDisplayData = data;
-      text = data.text;
-      if (text.indexOf("!!") === 0 || text.indexOf("！！") === 0) {
+      if (data.text.indexOf("!!") === 0 || data.text.indexOf("！！") === 0) {
         this.css3Animate("animate-pop");
         if (this.currentCharacter) {
           this.currentCharacter.css3Animate("animate-pop");
         }
-        text = text.replace("!!", "").replace("！！", "");
+        data.text = data.text.replace("!!", "").replace("！！", "");
       }
       if (this.currentCharacter) {
         this.currentCharacter.J.addClass("speaking");
       }
-      return this.setDisplayInterval(text);
+      return this.setDisplayInterval(data.text);
     };
 
     DialogBox.prototype.setDisplayInterval = function(text) {

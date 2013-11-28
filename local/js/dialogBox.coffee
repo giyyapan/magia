@@ -12,7 +12,8 @@ class DialogCharacter extends Widget
       when "shadow"
         @UI.img.J.addClass "shadow"
   getOut:(type)->
-    @J.fadeOut 
+    @J.fadeOut "fast",=>
+      @remove()
   getIn:(position)->
     @position = position
     if not position
@@ -63,6 +64,7 @@ class window.DialogBox extends Menu
           if not @currentCharacter then return console.error "no such character",name
           @currentCharacter.getOut value
           delete @characters[name]
+          return
         when "effect"
           if not @currentCharacter then return console.error "no such character",name
           @currentCharacter.useEffect value
@@ -95,14 +97,13 @@ class window.DialogBox extends Menu
     @once "next",callback if callback
     @displayLock = true
     @currentDisplayData = data
-    text = data.text
-    if text.indexOf("!!") is 0 or text.indexOf("！！") is 0
+    if data.text.indexOf("!!") is 0 or data.text.indexOf("！！") is 0
       @css3Animate "animate-pop"
       @currentCharacter.css3Animate "animate-pop" if @currentCharacter
-      text = text.replace("!!","").replace("！！","")
+      data.text = data.text.replace("!!","").replace("！！","")
     if @currentCharacter
       @currentCharacter.J.addClass "speaking"
-    @setDisplayInterval text
+    @setDisplayInterval data.text
   setDisplayInterval:(text)->
     arr = text.split ""
     index = 0
