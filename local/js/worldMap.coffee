@@ -9,7 +9,7 @@ class popBig extends Widget
     @costEnergy = @UI['cost-energy']
     @costEnergy.innerHTML = data.costEnergy
     @dom.onclick = =>
-      @css3Animate "animate-pophide",400,=>
+      @css3Animate "animate-pophide",=>
         @remove()
     @UI['popBig'].onclick = (evt)=>
       evt.stopPropagation()
@@ -22,7 +22,7 @@ class popBig extends Widget
           else
             nowEnergy = @game.player.energy
             if nowEnergy < data.costEnergy
-              @css3Animate.call @costEnergy,"animate-warning",550
+              @css3Animate.call @costEnergy,"animate-warning"
               @costEnergy.innerHTML = "#{data.costEnergy}(您的体力不足！！)"
             else
               @game.switchStage "area",name

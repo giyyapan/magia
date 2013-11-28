@@ -6,7 +6,7 @@
   window.PopupBox = (function(_super) {
     __extends(PopupBox, _super);
 
-    function PopupBox(title, content) {
+    function PopupBox(title, content, acceptCallbcak) {
       var self;
       PopupBox.__super__.constructor.call(this, Res.tpls['popup-box']);
       this.box = this.UI.box;
@@ -26,7 +26,19 @@
       this.UI['accept'].onclick = function() {
         return self.accept();
       };
+      if (acceptCallbcak) {
+        this.on("accept", acceptCallbcak);
+        this.show();
+      }
     }
+
+    PopupBox.prototype.setCloseText = function(t) {
+      return this.UI.close.J.text(t);
+    };
+
+    PopupBox.prototype.setAcceptText = function(t) {
+      return this.UI.accept.J.text(t);
+    };
 
     PopupBox.prototype.show = function() {
       this.appendTo(this.UILayer);
@@ -37,6 +49,7 @@
 
     PopupBox.prototype.close = function() {
       var self;
+      this.emit("close");
       self = this;
       this.J.fadeOut("fast");
       return this.box.J.animate({

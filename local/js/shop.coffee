@@ -169,7 +169,7 @@ class window.Shop extends Stage
   showServiceDialog:()->
     @dialogBox.display text:Utils.random(@originData.waitText),nostop:true
   initWelcomDialog:->
-    @dialogBox = new DialogBox()
+    @dialogBox = new DialogBox @game
     @dialogBox.show()
     text = @getDataByRelationship @originData.welcomeText
     @dialogBox.display text:text,speaker:@originData.npcName,nostop:true,=>

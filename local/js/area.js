@@ -511,27 +511,24 @@
     }
 
     Area.prototype.initBattlefield = function(monsters) {
-      var battlefield, data,
+      var bf, data,
         _this = this;
       data = {
         monsters: monsters,
         bg: this.data.battlefieldBg
       };
-      battlefield = new window.Battlefield(this.game, data);
-      this.hide(function() {
-        _this.game.currentStage = battlefield;
-        return battlefield.show();
-      });
-      battlefield.on("win", function() {
-        _this.show();
-        _this.game.currentStage = _this;
+      this.game.saveStage();
+      bf = this.game.switchStage("battle", data);
+      console.log(bf);
+      bf.on("win", function() {
+        console.log("fuck win");
+        _this.game.restoreStage();
         _this.emit("battleWin");
         _this.currentPlace.emit("battleWin");
         return _this.currentPlace.menu.show();
       });
-      return battlefield.on("lose", function() {
-        _this.show();
-        _this.game.currentStage = _this;
+      return bf.on("lose", function() {
+        _this.game.restoreStage();
         _this.emit("battleLose");
         _this.currentPlace.emit("battleLose");
         return _this.currentPlace.menu.show();

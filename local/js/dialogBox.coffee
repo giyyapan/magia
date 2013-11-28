@@ -1,18 +1,71 @@
+class DialogCharacter extends Widget
+  constructor:(tpl,name,data)->
+    super tpl
+    @name = name
+    img = Res.imgs[data.dialogPic]
+    @UI.img.src = img.src if img
+    @position = null
+  useEffect:(name)->
+    switch name
+      when "none"
+        @UI.img.J.removeClass()
+      when "shadow"
+        @UI.img.J.addClass "shadow"
+  getOut:(type)->
+    @J.fadeOut 
+  getIn:(position)->
+    @position = position
+    if not position
+      if @name is "player" then position = "left"
+      else position = "right"
+    @J.addClass "left","right","center"
+    @J.fadeIn "fast"
+    switch position
+      when "left","l"
+        @J.addClass "left"
+      when "right","r"
+        @J.addClass "right"
+      when "center","c"
+        @J.addClass "center"
+        
 class window.DialogBox extends Menu
-  constructor:(alwaysontop=false)->
+  constructor:(game,alwaysontop=false)->
     super Res.tpls['dialog-box']
+    @game = game
+    @db = game.db
     @onshow = false
     @displayInterval = null
     @displayLock = false
+    @characters = {}
+    @currentCharacter = null
     if alwaysontop then @J.addClass "top"
     @UI['content-wrapper'].onclick = =>
       if @displayLock
         @endDisplay()
       else
         @UI['continue-hint'].J.fadeOut "fast"
+        @currentCharacter.J.removeClass "speaking" if @currentCharacter
         @emit "next"
-  setCharacter:(name,position)->
-    console.log "set character"
+  setCharacter:(name,options)->
+    console.log "set character",name,options
+    data = @db.characters.get name
+    @currentCharacter = @characters[name]
+    for type,value of options
+      switch type
+        when "in"
+          if not @characters[name]
+            @characters[name] = new DialogCharacter @UI['character-tpl'].innerHTML,name,data
+          @currentCharacter = @characters[name]
+          @currentCharacter.getIn value 
+          @currentCharacter.appendTo @UI['character-section']
+        when "out"
+          if not @currentCharacter then return console.error "no such character",name
+          @currentCharacter.getOut value
+          delete @characters[name]
+        when "effect"
+          if not @currentCharacter then return console.error "no such character",name
+          @currentCharacter.useEffect value
+    @setSpeaker data.name
   setSpeaker:(speaker)->
     return if not speaker
     @UI.speaker.J.text "#{speaker}:"
@@ -27,10 +80,11 @@ class window.DialogBox extends Menu
     else @UI['continue-hint'].J.fadeIn "fast"
   display:(data,callback)->
     if @displayLock then @endDisplay()
-    console.log data.text
     return if not data.text
     if not @onshow
       @show => @display(data,callback)
+      return
+    #console.error "dialogBox Display:",data.text
     if data.nostop then @nostop = true
     else @nostop = false
     @setSpeaker data.speaker
@@ -38,7 +92,16 @@ class window.DialogBox extends Menu
     @once "next",callback if callback
     @displayLock = true
     @currentDisplayData = data
-    arr = data.text.split ""
+    text = data.text
+    if text.indexOf("!!") is 0 or text.indexOf("！！") is 0
+      @css3Animate "animate-pop"
+      @currentCharacter.css3Animate "animate-pop" if @currentCharacter
+      text = text.replace("!!","").replace("！！","")
+    if @currentCharacter
+      @currentCharacter.J.addClass "speaking"
+    @setDisplayInterval text
+  setDisplayInterval:(text)->
+    arr = text.split ""
     index = 0
     @UI.text.innerHTML = ""
     delay = 0
@@ -72,11 +135,15 @@ class window.DialogBox extends Menu
       return
     @onshow = true
     @J.hide()
+    @J.find(".character-box").hide()
     @appendTo @UILayer.dom
+    @J.find(".character-box").fadeIn 200
     @J.fadeIn "fast",=>
       callback() if callback
   hide:(callback)->
+    return if not @onshow
     @onshow = false
+    @J.find(".character-box").fadeOut 200
     @css3Animate.call @UI['content-wrapper'],"animate-pophide",=>
       try @remove()
       callback() if callback

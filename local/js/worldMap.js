@@ -18,7 +18,7 @@
       this.costEnergy = this.UI['cost-energy'];
       this.costEnergy.innerHTML = data.costEnergy;
       this.dom.onclick = function() {
-        return _this.css3Animate("animate-pophide", 400, function() {
+        return _this.css3Animate("animate-pophide", function() {
           return _this.remove();
         });
       };
@@ -39,7 +39,7 @@
             default:
               nowEnergy = _this.game.player.energy;
               if (nowEnergy < data.costEnergy) {
-                _this.css3Animate.call(_this.costEnergy, "animate-warning", 550);
+                _this.css3Animate.call(_this.costEnergy, "animate-warning");
                 return _this.costEnergy.innerHTML = "" + data.costEnergy + "(您的体力不足！！)";
               } else {
                 _this.game.switchStage("area", name);

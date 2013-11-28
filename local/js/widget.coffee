@@ -1,6 +1,6 @@
 #some often-use widgets hear
 class window.PopupBox extends Widget
-  constructor:(title,content)->
+  constructor:(title,content,acceptCallbcak)->
     super Res.tpls['popup-box']
     @box = @UI.box
     @J.hide()
@@ -13,12 +13,20 @@ class window.PopupBox extends Widget
         self.close()
     @UI['accept'].onclick = ->
         self.accept()
+    if acceptCallbcak
+      @on "accept",acceptCallbcak
+      @show()
+  setCloseText:(t)->
+    @UI.close.J.text t
+  setAcceptText:(t)->
+    @UI.accept.J.text t
   show:->
     @appendTo @UILayer
     @J.fadeIn "fast"
     @box.J.show()
     @box.J.addClass "animate-popup"
   close:->
+    @emit "close"
     self = this
     @J.fadeOut "fast"
     @box.J.animate {top:"-=30px",opacity:0},"fast",->

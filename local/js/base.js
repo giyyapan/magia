@@ -10,12 +10,14 @@
   window.Clock = (function(_super) {
     __extends(Clock, _super);
 
-    function Clock() {
-      Clock.__super__.constructor.apply(this, arguments);
-      this.setRate("normal");
-      this.currentDelay = 0;
+    function Clock(rate, callback) {
+      Clock.__super__.constructor.call(this, null);
+      this.setRate(rate || "normal");
       this.currentDelay = 0;
       this.paused = false;
+      if (callback) {
+        this.on("next", callback);
+      }
     }
 
     Clock.prototype.setRate = function(value) {

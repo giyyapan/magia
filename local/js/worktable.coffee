@@ -60,11 +60,11 @@ class ReactionBtn extends Widget
     @dom.onclick = => 
       return if not @avail
       @reactionBox.react @reaction,=>
-        @css3Animate "animate-popout",400,->@remove()
+        @css3Animate "animate-popout",->@remove()
   remove:->
     layer = @worktable
     scale = 0
-    @css3Animate "animate-popout",400,->
+    @css3Animate "animate-popout",->
       @J.animate {width:0,height:0,margin:0},200,=>
         delete @reactionBox.reactionBtns[@reaction.to]
         super
@@ -167,7 +167,7 @@ class ReactionBox extends Widget
     for i,index in items
       targetTop = @UI['traits-box'].offsetTop
       i.dom.traitName = i.traitName
-      i.css3Animate "animate-popout",400,->
+      i.css3Animate "animate-popout",->
         this.J.animate {height:0,margin:0},200,=>
           @remove()
           delete self.traitItems[this.traitName]

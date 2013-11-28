@@ -51,16 +51,16 @@ class window.Drawable extends Suzaku.EventEmitter
     @blendQueue.push
       blendImg:blendImg
       method:method
-  onDraw:(context,timeDelay)->
-    @_handleAnimate timeDelay
+  onDraw:(context,tickDelay)->
+    @_handleAnimate tickDelay
     return if not @onshow
     for name,value of @transform
       @realValue[name] = value
     if @blendQueue.length > 0
-      @onDrawBlend context,timeDelay
+      @onDrawBlend context,tickDelay
     else
-      @onDrawNormal context,timeDelay
-  onDrawBlend:(context,timeDelay)->
+      @onDrawNormal context,tickDelay
+  onDrawBlend:(context,tickDelay)->
     realContext = context
     tempContext = @secondCanvas.getContext "2d"
     tempContext.clearRect 0,0,@width,@height
@@ -72,16 +72,16 @@ class window.Drawable extends Suzaku.EventEmitter
     @currentImgData = tempContext.getImageData 0,0,@width,@height
     for b in @blendQueue
       @currentImgData = @_handleBlend tempContext,@currentImgData,b
-    @onDrawNormal(realContext,timeDelay)
-  onDrawNormal:(context,timeDelay)->
+    @onDrawNormal(realContext,tickDelay)
+  onDrawNormal:(context,tickDelay)->
     context.save()
     @emit "render",this
     @_handleTransform context
     for item in @drawQueue.before
-      item.onDraw context,timeDelay
+      item.onDraw context,tickDelay
     @draw context if @draw
     for item in @drawQueue.after
-      item.onDraw context,timeDelay
+      item.onDraw context,tickDelay
     context.restore()
   _handleBlend:(tempContext,currentImgData,blendQueueItem)->
     blendData = blendQueueItem.blendImg.getData tempContext
@@ -123,6 +123,11 @@ class window.Drawable extends Suzaku.EventEmitter
     context.scale r.scaleX,r.scaleY
     context.translate x >> 0,y >> 0
     context.rotate r.rotate if r.rotate
+  clearImg:->
+    @imgData = null
+  drawColor:(color)->
+    @clearImg()
+    @fillColor = color
   setImg:(img,resX,resY,resWidth,resHeight)->
     if img not instanceof Image
       console.error "need a img to set!",this
@@ -150,12 +155,9 @@ class window.Drawable extends Suzaku.EventEmitter
           context.drawImage img,i.x,i.y,i.width,i.height,-@anchor.x,-@anchor.y,@width,@height
         else
           context.drawImage img,-@anchor.x,-@anchor.y,@width,@height
-    else if GameConfig.debug is 2
-      return
-      context.fillStyle = "black"
-      context.fillRect(-50,-50,100,100)
-      context.fillStyle = "darkred"
-      context.fillText("#{@anchor.x >> 0},#{@anchor.y >> 0}",0,100)
+    else if @fillColor
+      context.fillStyle = @drawColor
+      context.fillRect(-@anchor.x,-@anchor.y,@width,@height)
   clearDrawQueue:->
     @drawQueue.after = []
     @drawQueue.before = []
@@ -321,6 +323,7 @@ class window.Layer extends Drawable
     super img
     @width = img.width
     @height = img.height
+    console.log img,this
     return this
     
 class window.Stage extends Drawable

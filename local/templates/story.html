@@ -1,16 +1,17 @@
-***story1
-#black
-@nobody l
+***start1
+>color black fadeIn slow
+@player in:left effect:shadow
 这个地方我们是不是来过呀？
-#forestEntry fadeIn slow
+>img forestEntry fadeIn slow
+>img forestEntry lookaround
 :sound home
-@nobody r
-呃....这个附件的景色....|好像....|是有点眼熟...
-:aniamte shake
-啊！那只松鼠！|刚才见到过的！
-@player
-诶！我也看见了！我们又回到刚才的地方了！
-@cat
+@cat in:right effect:shadow
+呃....这个附近的景色....|好像....|是有点眼熟...
+:animate shake
+!!啊！艾丽西亚你看那只松鼠！|刚才见到过的！
+@player effect:none
+!!诶！我也看见了！我们又回到刚才的地方了奇奇！
+@cat effect:none
 快看看你奶奶给你寄的地图啦，这森林都出不去今晚就得跪在这里了！
 你啊，虽说从没出过远门，但是这样连森林都走不出，还说什么成为世界第一的魔女呀！简直是在逗大爷笑嘛！
 @player
@@ -20,20 +21,29 @@
 什么啊，这不是挺清楚的么～|地图这种东西果然就是要一开始就拿出来啊哈哈哈哈
 @player
 .....（你不也没想到么..）
+@player out
+@cat out
+@nobody
+.````.`````.`````.`````
 :animate shake
-呀！！
-@cat
-喵呜！|怎么回事啊，大惊小怪的！
+@player in:right
+!!呀！！
+@cat in:right
+!!喵呜！|怎么回事啊，大惊小怪的！
 :animate shake
 @player
-我好像踩到什么粘粘的东西了！好恶心！
-不不不它扑上来了！
+我好像踩到什么```粘粘的东西了！好恶心！
+不不不不它扑上来了！
 @cat
-喂喂喂你干什么|别拿我挡在前面行不行！
-:battle slime story2
+喂喂喂你干什么|别拿我挡在前面啊！
+:animate shake
+>color white fadeIn fast
+:battle forest qq nolose
+:end story start2
 
-***story2
-@player
+***start2
+>img forestEntry
+@player in:left
 呼...
 @cat
 这玩意是史莱姆吧？你来一趟森林只碰到个这家伙算是运气好的!|真是的，就这种货色你都要把我扔过去，来条龙你直接把我当恭品献上去得了！
@@ -41,5 +51,4 @@
 ......（诶这是个好办法？省得你这么烦人）
 @cat
 行了行了块走吧|天黑前得出去才行
-
-
+:end stage home

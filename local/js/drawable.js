@@ -82,9 +82,9 @@
       });
     };
 
-    Drawable.prototype.onDraw = function(context, timeDelay) {
+    Drawable.prototype.onDraw = function(context, tickDelay) {
       var name, value, _ref;
-      this._handleAnimate(timeDelay);
+      this._handleAnimate(tickDelay);
       if (!this.onshow) {
         return;
       }
@@ -94,13 +94,13 @@
         this.realValue[name] = value;
       }
       if (this.blendQueue.length > 0) {
-        return this.onDrawBlend(context, timeDelay);
+        return this.onDrawBlend(context, tickDelay);
       } else {
-        return this.onDrawNormal(context, timeDelay);
+        return this.onDrawNormal(context, tickDelay);
       }
     };
 
-    Drawable.prototype.onDrawBlend = function(context, timeDelay) {
+    Drawable.prototype.onDrawBlend = function(context, tickDelay) {
       var b, item, realContext, tempContext, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
       realContext = context;
       tempContext = this.secondCanvas.getContext("2d");
@@ -124,10 +124,10 @@
         b = _ref2[_k];
         this.currentImgData = this._handleBlend(tempContext, this.currentImgData, b);
       }
-      return this.onDrawNormal(realContext, timeDelay);
+      return this.onDrawNormal(realContext, tickDelay);
     };
 
-    Drawable.prototype.onDrawNormal = function(context, timeDelay) {
+    Drawable.prototype.onDrawNormal = function(context, tickDelay) {
       var item, _i, _j, _len, _len1, _ref, _ref1;
       context.save();
       this.emit("render", this);
@@ -135,7 +135,7 @@
       _ref = this.drawQueue.before;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
-        item.onDraw(context, timeDelay);
+        item.onDraw(context, tickDelay);
       }
       if (this.draw) {
         this.draw(context);
@@ -143,7 +143,7 @@
       _ref1 = this.drawQueue.after;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
         item = _ref1[_j];
-        item.onDraw(context, timeDelay);
+        item.onDraw(context, tickDelay);
       }
       return context.restore();
     };
@@ -213,6 +213,15 @@
       }
     };
 
+    Drawable.prototype.clearImg = function() {
+      return this.imgData = null;
+    };
+
+    Drawable.prototype.drawColor = function(color) {
+      this.clearImg();
+      return this.fillColor = color;
+    };
+
     Drawable.prototype.setImg = function(img, resX, resY, resWidth, resHeight) {
       if (!(img instanceof Image)) {
         console.error("need a img to set!", this);
@@ -253,12 +262,9 @@
             return context.drawImage(img, -this.anchor.x, -this.anchor.y, this.width, this.height);
           }
         }
-      } else if (GameConfig.debug === 2) {
-        return;
-        context.fillStyle = "black";
-        context.fillRect(-50, -50, 100, 100);
-        context.fillStyle = "darkred";
-        return context.fillText("" + (this.anchor.x >> 0) + "," + (this.anchor.y >> 0), 0, 100);
+      } else if (this.fillColor) {
+        context.fillStyle = this.drawColor;
+        return context.fillRect(-this.anchor.x, -this.anchor.y, this.width, this.height);
       }
     };
 
@@ -572,6 +578,7 @@
       Layer.__super__.setImg.call(this, img);
       this.width = img.width;
       this.height = img.height;
+      console.log(img, this);
       return this;
     };
 

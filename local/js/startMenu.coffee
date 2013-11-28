@@ -2,9 +2,20 @@ class window.StartMenu extends Stage
   constructor:(game)->
     super game
     @menu = new Menu Res.tpls['start-menu']
+    bg = new Layer Res.imgs.startBg
+    @bgLight = new Layer Res.imgs.startBgLight
+    @drawQueueAdd bg,@bgLight
     @initMenu()
+    @changeBgClock = new Clock "fast",=>
+      @changeBgClock.paused = true
+      @bgLight.animate {"transform.opacity":Math.random()},200,=>
+        @changeBgClock.paused = false
+  tick:(tickDelay)->
+    @changeBgClock.tick tickDelay
   initMenu: ->
     $(".logo-holder").animate opacity:"1",1000
+    if not @game.player.loadData()
+      @menu.UI.start.J.hide()
     @menu.UI["logo-line"].J.animate width:"+=620px",800,=>
         @menu.UI["logo-bg"].J.animate opacity:"1",1500
         @menu.UI["logo-text"].J.animate {opacity:"1",right:"+=80px"},1500
@@ -14,15 +25,20 @@ class window.StartMenu extends Stage
       AudioManager.play("startClick")
       lastStage = @game.player.data.lastStage
       @game.switchStage lastStage
+    @menu.UI.newgame.onclick = =>
+      console.log  "new game btn click"
+      AudioManager.play("startClick")
+      if @game.player.loadData()
+        new PopupBox "警告","重新开始游戏将会清除你当前的所有数据</br>确定要继续吗？",=>
+          @game.player.newData()
+          @game.storyManager.showStory "start1"
     @menu.UI.test.onclick = =>
-      console.log  "start game btn click"
+      console.log  "test btn click"
       AudioManager.play("startClick")
       @game.switchStage "test"
-    @menu.show()
-    console.log @menu
     @menu.UI["start-but"].onclick = =>
       @showSubMenu()
-       #audio
+    @menu.show()
     for but in document.getElementsByTagName("button")
       but.onmouseover = ->
         AudioManager.play "sfxStartCusor"

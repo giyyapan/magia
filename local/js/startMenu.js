@@ -7,10 +7,27 @@
     __extends(StartMenu, _super);
 
     function StartMenu(game) {
+      var bg,
+        _this = this;
       StartMenu.__super__.constructor.call(this, game);
       this.menu = new Menu(Res.tpls['start-menu']);
+      bg = new Layer(Res.imgs.startBg);
+      this.bgLight = new Layer(Res.imgs.startBgLight);
+      this.drawQueueAdd(bg, this.bgLight);
       this.initMenu();
+      this.changeBgClock = new Clock("fast", function() {
+        _this.changeBgClock.paused = true;
+        return _this.bgLight.animate({
+          "transform.opacity": Math.random()
+        }, 200, function() {
+          return _this.changeBgClock.paused = false;
+        });
+      });
     }
+
+    StartMenu.prototype.tick = function(tickDelay) {
+      return this.changeBgClock.tick(tickDelay);
+    };
 
     StartMenu.prototype.initMenu = function() {
       var but, _i, _len, _ref, _results,
@@ -18,6 +35,9 @@
       $(".logo-holder").animate({
         opacity: "1"
       }, 1000);
+      if (!this.game.player.loadData()) {
+        this.menu.UI.start.J.hide();
+      }
       this.menu.UI["logo-line"].J.animate({
         width: "+=620px"
       }, 800, function() {
@@ -39,16 +59,25 @@
         lastStage = _this.game.player.data.lastStage;
         return _this.game.switchStage(lastStage);
       };
+      this.menu.UI.newgame.onclick = function() {
+        console.log("new game btn click");
+        AudioManager.play("startClick");
+        if (_this.game.player.loadData()) {
+          return new PopupBox("警告", "重新开始游戏将会清除你当前的所有数据</br>确定要继续吗？", function() {
+            _this.game.player.newData();
+            return _this.game.storyManager.showStory("start1");
+          });
+        }
+      };
       this.menu.UI.test.onclick = function() {
-        console.log("start game btn click");
+        console.log("test btn click");
         AudioManager.play("startClick");
         return _this.game.switchStage("test");
       };
-      this.menu.show();
-      console.log(this.menu);
       this.menu.UI["start-but"].onclick = function() {
         return _this.showSubMenu();
       };
+      this.menu.show();
       _ref = document.getElementsByTagName("button");
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {

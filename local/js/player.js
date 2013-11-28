@@ -34,6 +34,8 @@
         type: "item"
       }
     ],
+    completedMissions: [],
+    completedStorys: [],
     relationships: {
       luna: 0,
       dirak: 0
@@ -65,19 +67,29 @@
 
   window.Player = (function() {
     function Player(db) {
-      var dataKey;
       this.db = db;
-      this.data = Utils.localData("get", "playerData");
-      dataKey = Utils.localData("get", "dataKey");
-      if (!this.data || Utils.getKey(JSON.stringify(this.data)) !== parseInt(dataKey)) {
-        this.data = playerData;
-        this.initData();
-        this.saveData();
-      } else {
-        this.initData();
-      }
       this.energy = 50;
     }
+
+    Player.prototype.loadData = function() {
+      var data, dataKey;
+      dataKey = Utils.localData("get", "dataKey");
+      data = Utils.localData("get", "playerData");
+      console.log("load data", data);
+      if (!data || Utils.getKey(JSON.stringify(data)) !== parseInt(dataKey)) {
+        return false;
+      }
+      this.data = data;
+      this.initData();
+      return true;
+    };
+
+    Player.prototype.newData = function() {
+      this.data = playerData;
+      console.log("new data", this.data);
+      this.initData();
+      return true;
+    };
 
     Player.prototype.initData = function() {
       var equipmentName, name, part, _i, _j, _len, _len1, _ref, _ref1;
@@ -85,6 +97,8 @@
       this.energy = this.data.energy;
       this.relationships = this.data.relationships;
       this.lastStage = this.data.lastStage;
+      this.completedStorys = this.completedStorys;
+      this.completedMissions = this.completedMissions;
       this.equipments = [];
       _ref = this.data.equipments;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -284,6 +298,8 @@
         energy: this.energy,
         statusValue: this.basicData,
         lastStage: this.lastStage,
+        completedStorys: this.completedStorys,
+        completedMissions: this.completedMissions,
         basicStatusValue: this.basicStatusValue,
         relationships: this.relationships,
         backpack: backpack,
@@ -292,7 +308,8 @@
         currentEquipments: currentEquipments
       };
       Utils.localData("save", "playerData", data);
-      return Utils.localData("save", "dataKey", Utils.getKey(JSON.stringify(data)));
+      Utils.localData("save", "dataKey", Utils.getKey(JSON.stringify(data)));
+      return true;
     };
 
     return Player;

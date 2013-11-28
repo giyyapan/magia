@@ -323,7 +323,7 @@
     Shop.prototype.initWelcomDialog = function() {
       var text,
         _this = this;
-      this.dialogBox = new DialogBox();
+      this.dialogBox = new DialogBox(this.game);
       this.dialogBox.show();
       text = this.getDataByRelationship(this.originData.welcomeText);
       return this.dialogBox.display({

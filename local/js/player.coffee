@@ -11,6 +11,8 @@ playerData =
     {name:"herbs",number:10,type:"item"}
     {name:"caveMashroom",number:10,type:"item"}
     ]
+  completedMissions:[]
+  completedStorys:[]
   relationships:
     luna:0
     dirak:0
@@ -39,21 +41,28 @@ playerData =
 class window.Player
   constructor:(db)->
     @db = db
-    #Utils.localData "clear","playerData"
-    @data = Utils.localData "get","playerData"
-    dataKey = Utils.localData "get","dataKey"
-    if not @data or Utils.getKey(JSON.stringify(@data)) isnt parseInt(dataKey)
-      @data = playerData
-      @initData()
-      @saveData()
-    else
-      @initData()
     @energy = 50
+  loadData:->
+    dataKey = Utils.localData "get","dataKey"
+    data = Utils.localData "get","playerData"
+    console.log "load data",data
+    if not data or Utils.getKey(JSON.stringify(data)) isnt parseInt(dataKey)
+      return false
+    @data = data
+    @initData()
+    return true
+  newData:->
+    @data = playerData
+    console.log "new data",@data
+    @initData()
+    return true
   initData:()->
     @money = @data.money
     @energy = @data.energy
     @relationships = @data.relationships
     @lastStage = @data.lastStage
+    @completedStorys = @completedStorys
+    @completedMissions = @completedMissions
     @equipments = []
     for name in @data.equipments
       @equipments.push new PlayerEquipment @db,name
@@ -146,6 +155,8 @@ class window.Player
       energy:@energy
       statusValue:@basicData
       lastStage:@lastStage
+      completedStorys:@completedStorys
+      completedMissions:@completedMissions
       basicStatusValue:@basicStatusValue
       relationships:@relationships
       backpack:backpack
@@ -154,3 +165,4 @@ class window.Player
       currentEquipments:currentEquipments
     Utils.localData "save","playerData",data
     Utils.localData "save","dataKey",Utils.getKey(JSON.stringify(data))
+    return true

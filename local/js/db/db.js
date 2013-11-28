@@ -50,13 +50,17 @@
 
     Database.prototype.initCharacters = function() {
       return this.characters.data = {
+        nobody: {
+          name: "???",
+          dialogPic: ""
+        },
         player: {
           name: "艾丽西亚",
-          dialogPic: ""
+          dialogPic: "playerDialog"
         },
         cat: {
           description: "",
-          name: "琪琪",
+          name: "奇奇",
           dialogPic: ""
         },
         luna: {

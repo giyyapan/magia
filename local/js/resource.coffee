@@ -12,10 +12,12 @@ window.Imgs =
   snowmountainEntryMain:'snowmountain-entry-main.png'
   snowmountainEntryFloat:'snowmountain-entry-float.png'
   startBg:"start-bg.jpg"
+  startBgLight:"start-bg-light.jpg"
   forest2:'forest2.jpg'
   forest3:'forest3.jpg'
   bfForestMain:'bf-forest-main.jpg'
   bfForestFloat:'bf-forest-float.png'
+  playerDialog:'characters/player-dialog.png'
   layer1:'layer1.png'
   layer2:'layer2.png'
   layer3:'layer3.png'

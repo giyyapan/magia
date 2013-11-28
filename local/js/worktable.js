@@ -111,7 +111,7 @@
           return;
         }
         return _this.reactionBox.react(_this.reaction, function() {
-          return _this.css3Animate("animate-popout", 400, function() {
+          return _this.css3Animate("animate-popout", function() {
             return this.remove();
           });
         });
@@ -122,7 +122,7 @@
       var layer, scale;
       layer = this.worktable;
       scale = 0;
-      return this.css3Animate("animate-popout", 400, function() {
+      return this.css3Animate("animate-popout", function() {
         var _this = this;
         return this.J.animate({
           width: 0,
@@ -314,7 +314,7 @@
         i = items[index];
         targetTop = this.UI['traits-box'].offsetTop;
         i.dom.traitName = i.traitName;
-        i.css3Animate("animate-popout", 400, function() {
+        i.css3Animate("animate-popout", function() {
           var _this = this;
           return this.J.animate({
             height: 0,

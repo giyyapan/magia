@@ -9,3 +9,4 @@
 .animate-dialog-mark .dot2{animation:Dialog-mark-dot2 3s ease-in-out infinite;-webkit-animation:Dialog-mark-dot2 3s ease-in-out infinite}
 .animate-dialog-mark .dot3{animation:Dialog-mark-dot3 3s ease-in-out infinite;-webkit-animation:Dialog-mark-dot3 3s ease-in-out infinite}
 .animate-jump-infinity{animation:Jump 1s ease-in-out infinite;-webkit-animation:Jump 1s ease-in-out infinite;animation-delay:.5s;-webkit-animation-delay:.5s}
+.animate-jump{animation:Jump .3s ease-in-out;-webkit-animation:Jump .3s ease-in-out}

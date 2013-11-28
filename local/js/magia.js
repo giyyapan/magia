@@ -11,6 +11,7 @@
       this.UILayer = new Suzaku.Widget("#UILayer");
       this.handleDisplaySize();
       this.km = new Suzaku.KeybordManager();
+      this.savedStageStack = [];
       this.player = null;
       this.missionManager = null;
       this.storyManager = null;
@@ -25,7 +26,9 @@
         _this.missionManager = new MissionManager(_this);
         _this.storyManager = new StoryManager(_this);
         $("#loadingPage").slideUp("slow");
-        _this.switchStage("guild");
+        window.AudioManager.stop("startMenu");
+        window.AudioManager.play("home");
+        _this.switchStage("start");
         return _this.startGameLoop();
       });
     }
@@ -34,61 +37,96 @@
       var s,
         _this = this;
       console.log("init stage:", stage);
-      switch (stage) {
-        case "start":
-          s = new StartMenu(this, data);
-          window.AudioManager.play("startMenu");
-          break;
-        case "home":
-          s = new Home(this, data);
-          window.AudioManager.play("home");
-          break;
-        case "test":
-          s = new TestStage(this, data);
-          break;
-        case "area":
-          s = new Area(this, data);
-          break;
-        case "shop":
-          s = new Shop(this, data);
-          break;
-        case "guild":
-          s = new Guild(this, data);
-          break;
-        case "story":
-          s = new StoryStage(this, data);
-          break;
-        case "worldMap":
-          s = new WorldMap(this, data);
-          break;
-        default:
-          console.error("invailid stage:" + stage);
+      if (typeof stage.tick === "function") {
+        s = stage;
+      } else {
+        switch (stage) {
+          case "start":
+            s = new StartMenu(this, data);
+            window.AudioManager.play("startMenu");
+            break;
+          case "home":
+            s = new Home(this, data);
+            window.AudioManager.play("home");
+            break;
+          case "test":
+            s = new TestStage(this, data);
+            break;
+          case "area":
+            s = new Area(this, data);
+            break;
+          case "shop":
+            s = new Shop(this, data);
+            break;
+          case "guild":
+            s = new Guild(this, data);
+            break;
+          case "story":
+            s = new StoryStage(this, data);
+            break;
+          case "battle":
+            s = new Battlefield(this, data);
+            break;
+          case "worldMap":
+            s = new WorldMap(this, data);
+            break;
+          default:
+            console.error("invailid stage:" + stage);
+        }
       }
       if (this.currentStage) {
-        return this.currentStage.hide(function() {
+        this.currentStage.hide(function() {
           _this.currentStage = s;
           return s.show();
         });
       } else {
         this.currentStage = s;
-        return s.show();
+        s.show();
       }
+      return s;
+    };
+
+    Magia.prototype.clearSavedStage = function() {
+      this.savedStageStack = [];
+      return true;
+    };
+
+    Magia.prototype.popSavedStage = function() {
+      return this.savedStageStack.pop();
+    };
+
+    Magia.prototype.saveStage = function() {
+      return this.savedStageStack.push(this.currentStage);
+    };
+
+    Magia.prototype.restoreStage = function() {
+      if (this.savedStageStack.length === 0) {
+        console.error("restore stage from empty stack!");
+        return false;
+      }
+      this.currentStage = this.savedStageStack.pop();
+      this.currentStage.show();
+      if (this.currentStage.menu) {
+        this.currentStage.menu.show();
+      }
+      return true;
     };
 
     Magia.prototype.startGameLoop = function() {
       var self;
       self = this;
-      return window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(function() {
         self.tick();
         return self = null;
       });
+      return true;
     };
 
     Magia.prototype.tick = function() {
       var context, fps, now, self, tickDelay;
       self = this;
-      this.lastTickTime = this.nowTickTime || 0;
       now = new Date().getTime();
+      this.lastTickTime = this.nowTickTime || now - 5;
       tickDelay = now - this.lastTickTime;
       fps = 1000 / tickDelay;
       if (window.GameConfig.maxFPS && fps > window.GameConfig.maxFPS) {

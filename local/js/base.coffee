@@ -1,12 +1,12 @@
 window.Widget = Suzaku.Widget
 window.EventEmitter = Suzaku.EventEmitter
 class window.Clock extends Suzaku.EventEmitter
-  constructor:->
-    super
-    @setRate "normal"
-    @currentDelay = 0
+  constructor:(rate,callback)->
+    super null
+    @setRate (rate or "normal")
     @currentDelay = 0
     @paused = false
+    if callback then @on "next",callback
   setRate:(value)->
     switch value
       when "normal" then value = 13

@@ -6,6 +6,7 @@ class Magia
     @UILayer = new Suzaku.Widget("#UILayer")
     @handleDisplaySize()
     @km = new Suzaku.KeybordManager()
+    @savedStageStack = []
     @player = null
     @missionManager = null
     @storyManager = null
@@ -20,31 +21,35 @@ class Magia
       @missionManager = new MissionManager this
       @storyManager = new StoryManager this
       $("#loadingPage").slideUp "slow"
-      #@switchStage "start"
-      #window.AudioManager.stop "startMenu"
-      #window.AudioManager.play "home"
+      window.AudioManager.stop "startMenu"
+      window.AudioManager.play "home"
+      @switchStage "start"
       #@switchStage "worldMap"
       #@switchStage "area","forest"
       #@switchStage "shop","magicItemShop"
-      @switchStage "guild" 
+      #@switchStage "guild" 
       #@switchStage "home"
       @startGameLoop()
   switchStage:(stage,data)->
     console.log "init stage:",stage
-    switch stage
-      when "start" 
-        s = new StartMenu this,data
-        window.AudioManager.play "startMenu"
-      when "home" 
-        s = new Home this,data
-        window.AudioManager.play "home"
-      when "test" then s = new TestStage this,data
-      when "area" then s = new Area this,data
-      when "shop" then s = new Shop this,data
-      when "guild" then s = new Guild this,data
-      when "story" then s = new StoryStage this,data
-      when "worldMap" then s = new WorldMap this,data
-      else console.error "invailid stage:#{stage}"
+    if typeof stage.tick is "function"
+      s = stage
+    else
+      switch stage
+        when "start" 
+          s = new StartMenu this,data
+          window.AudioManager.play "startMenu"
+        when "home" 
+          s = new Home this,data
+          window.AudioManager.play "home"
+        when "test" then s = new TestStage this,data
+        when "area" then s = new Area this,data
+        when "shop" then s = new Shop this,data
+        when "guild" then s = new Guild this,data
+        when "story" then s = new StoryStage this,data
+        when "battle" then s = new Battlefield this,data
+        when "worldMap" then s = new WorldMap this,data
+        else console.error "invailid stage:#{stage}"
     if @currentStage
       @currentStage.hide =>
         @currentStage = s
@@ -52,15 +57,32 @@ class Magia
     else
       @currentStage = s
       s.show()
+    return s
+  clearSavedStage:->
+    @savedStageStack = []
+    return true
+  popSavedStage:->
+    return @savedStageStack.pop()
+  saveStage:->
+    return @savedStageStack.push @currentStage
+  restoreStage:->
+    if @savedStageStack.length is 0
+      console.error "restore stage from empty stack!"
+      return false
+    @currentStage = @savedStageStack.pop()
+    @currentStage.show()
+    @currentStage.menu.show() if @currentStage.menu
+    return true
   startGameLoop:->
     self = this
     window.requestAnimationFrame ->
       self.tick()
       self = null
+    return true
   tick:->
     self = this
-    @lastTickTime = @nowTickTime or 0
     now = new Date().getTime()
+    @lastTickTime = @nowTickTime or now - 5
     tickDelay =  now - @lastTickTime
     fps = 1000/tickDelay
     if window.GameConfig.maxFPS and fps > window.GameConfig.maxFPS

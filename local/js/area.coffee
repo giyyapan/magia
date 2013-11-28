@@ -289,19 +289,17 @@ class window.Area extends Stage
     data =
       monsters:monsters
       bg:@data.battlefieldBg
-    battlefield = new window.Battlefield @game,data
-    @hide =>
-      @game.currentStage = battlefield
-      battlefield.show()
-    battlefield.on "win",=>
-      @show()
-      @game.currentStage = this
+    @game.saveStage()
+    bf = @game.switchStage "battle",data
+    console.log bf
+    bf.on "win",=>
+      console.log "fuck win"
+      @game.restoreStage()
       @emit "battleWin"
       @currentPlace.emit "battleWin"
       @currentPlace.menu.show()
-    battlefield.on "lose",=>
-      @show()
-      @game.currentStage = this
+    bf.on "lose",=>
+      @game.restoreStage()
       @emit "battleLose"
       @currentPlace.emit "battleLose"
       @currentPlace.menu.show()
