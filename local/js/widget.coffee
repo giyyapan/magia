@@ -157,9 +157,9 @@ class window.MissionDetailsBox extends Widget
           when "kill"
             for monster,index in value.split(",")
               sum = monster.split('*')[1] or 1
-              dspName = @game.db.monsters.get(monster.split("*")[0]).name
-              console.log mission,monster,mission.incompletedRequests.kill[monster]
-              finished = sum - mission.incompletedRequests.kill[monster]
+              monsterName = monster.split("*")[0]
+              dspName = @game.db.monsters.get(monsterName).name
+              finished = sum - mission.incompletedRequests.kill[monsterName]
               @addContentListItem null,"打败#{sum}只#{dspName} #{finished}/#{sum}"
           when "visit"
             console.log value

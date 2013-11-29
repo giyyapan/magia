@@ -246,7 +246,7 @@
     };
 
     MissionDetailsBox.prototype.initMissionData = function(mission) {
-      var character, data, dspName, finished, index, monster, name, rewardText, sum, thing, value, _ref, _ref1, _results;
+      var character, data, dspName, finished, index, monster, monsterName, name, rewardText, sum, thing, value, _ref, _ref1, _results;
       this.UI.title.J.text(mission.dspName);
       this.UI.description.J.text(mission.data.description.replace(/\|/g, "</br>"));
       this.UI['details-content-list'].J.html("");
@@ -283,9 +283,9 @@
                 for (index = _i = 0, _len = _ref2.length; _i < _len; index = ++_i) {
                   monster = _ref2[index];
                   sum = monster.split('*')[1] || 1;
-                  dspName = this.game.db.monsters.get(monster.split("*")[0]).name;
-                  console.log(mission, monster, mission.incompletedRequests.kill[monster]);
-                  finished = sum - mission.incompletedRequests.kill[monster];
+                  monsterName = monster.split("*")[0];
+                  dspName = this.game.db.monsters.get(monsterName).name;
+                  finished = sum - mission.incompletedRequests.kill[monsterName];
                   _results1.push(this.addContentListItem(null, "打败" + sum + "只" + dspName + " " + finished + "/" + sum));
                 }
                 return _results1;

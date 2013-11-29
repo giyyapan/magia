@@ -47,7 +47,7 @@ class window.MissionsDB extends SubDB
         from:"luna"
         description:"最近史莱姆泛滥，搞得货车进不来，我的货源也没法保证了。本来这些家伙是很弱的怪物，可是大家都觉得它们粘粘的太恶心，没一个愿意清理的，你想办法帮帮我吧～|放心，虽然说是帮忙，但是我会付给你报酬的！"
         requests:
-          kill:"slime*10"
+          kill:"qq*10"
         reward:
           money:200
     
