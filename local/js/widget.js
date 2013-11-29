@@ -265,11 +265,13 @@
             rewardText += "" + value + "G ";
         }
       }
-      this.addContentListItem("奖励", rewardText);
+      if (rewardText) {
+        this.addContentListItem("奖励", rewardText);
+      }
+      this.requestCount = 0;
       if (data.requests.text) {
         return this.addContentListItem("要求", data.requests.text);
       } else {
-        this.addContentListItem("要求");
         _ref1 = data.requests;
         _results = [];
         for (name in _ref1) {
@@ -286,7 +288,7 @@
                   monsterName = monster.split("*")[0];
                   dspName = this.game.db.monsters.get(monsterName).name;
                   finished = sum - mission.incompletedRequests.kill[monsterName];
-                  _results1.push(this.addContentListItem(null, "打败" + sum + "只" + dspName + " " + finished + "/" + sum));
+                  _results1.push(this.addContentListItem("要求", "打败" + sum + "只" + dspName + " " + finished + "/" + sum));
                 }
                 return _results1;
               }).call(this));
@@ -296,9 +298,9 @@
               dspName = this.game.db.areas.get(value).name;
               console.log(mission, mission.incompletedRequests);
               if (mission.incompletedRequests.visit[value]) {
-                _results.push(this.addContentListItem(null, "去往 " + dspName, false));
+                _results.push(this.addContentListItem("要求", "去往 " + dspName, false));
               } else {
-                _results.push(this.addContentListItem(null, "去往 " + dspName, true));
+                _results.push(this.addContentListItem("要求", "去往 " + dspName, true));
               }
               break;
             case "get":
@@ -311,9 +313,9 @@
                   console.log(this.game.db.things.get(thing));
                   dspName = this.game.db.things.get(thing).name;
                   if (mission.incompletedRequests.get[thing]) {
-                    _results1.push(this.addContentListItem(null, "获得 " + dspName, false));
+                    _results1.push(this.addContentListItem("要求", "获得 " + dspName, false));
                   } else {
-                    _results1.push(this.addContentListItem(null, "获得 " + dspName, true));
+                    _results1.push(this.addContentListItem("要求", "获得 " + dspName, true));
                   }
                 }
                 return _results1;
@@ -331,6 +333,12 @@
       var tpl, w;
       if (completedMark == null) {
         completedMark = false;
+      }
+      if (type === "要求") {
+        this.requestCount += 1;
+        if (this.requestCount !== 1) {
+          type = "";
+        }
       }
       tpl = this.UI['content-list-item-tpl'].innerHTML;
       w = new Widget(tpl);

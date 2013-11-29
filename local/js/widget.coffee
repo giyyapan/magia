@@ -147,11 +147,11 @@ class window.MissionDetailsBox extends Widget
     for name,value of data.reward
       switch name
         when "money" then rewardText += "#{value}G "
-    @addContentListItem "奖励",rewardText
+    @addContentListItem "奖励",rewardText if rewardText
+    @requestCount = 0
     if data.requests.text
       @addContentListItem "要求",data.requests.text
     else
-      @addContentListItem "要求"
       for name,value of data.requests
         switch name
           when "kill"
@@ -160,24 +160,27 @@ class window.MissionDetailsBox extends Widget
               monsterName = monster.split("*")[0]
               dspName = @game.db.monsters.get(monsterName).name
               finished = sum - mission.incompletedRequests.kill[monsterName]
-              @addContentListItem null,"打败#{sum}只#{dspName} #{finished}/#{sum}"
+              @addContentListItem "要求","打败#{sum}只#{dspName} #{finished}/#{sum}"
           when "visit"
             console.log value
             dspName = @game.db.areas.get(value).name
             console.log mission,mission.incompletedRequests
             if mission.incompletedRequests.visit[value]
-              @addContentListItem null,"去往 #{dspName}",false
+              @addContentListItem "要求","去往 #{dspName}",false
             else
-              @addContentListItem null,"去往 #{dspName}",true
+              @addContentListItem "要求","去往 #{dspName}",true
           when "get"
             for thing,index in value.split(",")
               console.log @game.db.things.get(thing)
               dspName = @game.db.things.get(thing).name
               if mission.incompletedRequests.get[thing]
-                @addContentListItem null,"获得 #{dspName}",false
+                @addContentListItem "要求","获得 #{dspName}",false
               else
-                @addContentListItem null,"获得 #{dspName}",true
+                @addContentListItem "要求","获得 #{dspName}",true
   addContentListItem:(type,content,completedMark=false)->
+    if type is "要求"
+      @requestCount += 1
+      if @requestCount isnt 1 then type = ""
     tpl = @UI['content-list-item-tpl' ].innerHTML
     w = new Widget tpl
     w.UI.type.J.text type if type

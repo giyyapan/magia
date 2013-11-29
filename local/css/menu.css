@@ -35,6 +35,7 @@
 .mission-details-box-wrapper{color:#d7ba97;text-shadow:0 2px 0 #3c2f21;font-weight:bold;padding:30px;text-shadow:0 3px 0 rgba(20,20,20,0.6)}.mission-details-box-wrapper .title{margin:15px auto;width:350px;font-size:34px;padding:10px;color:#ddc1a4;font-weight:bold;background-color:rgba(0,0,0,0.2);border-radius:8px}
 .mission-details-box-wrapper .description{margin:30px;font-size:21px;line-height:33px;text-shadow:0 3px 0 rgba(0,0,0,0.4)}
 .mission-details-box-wrapper .mission-details-box{position:relative;background-color:#674e34;width:625px;height:535px}
+.mission-details-box-wrapper .content-list-item{margin-top:8px;text-align:left;font-size:24px}.mission-details-box-wrapper .content-list-item .type{color:#f16a6a;margin-left:56px;width:105px;display:inline-block}
 .mission-details-box-wrapper .btn-holder{position:absolute;width:100%;bottom:0;left:0}
 .mission-details-box-wrapper .details-flag-box{width:511px;margin:auto}.mission-details-box-wrapper .details-flag-box .fg{margin-top:3px}
 .mission-details-box-wrapper .details-flag-box .bg{display:block;margin-bottom:-30px}
