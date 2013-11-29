@@ -50,6 +50,7 @@ window.Templates = [
   "item-details-box"
   "trait-item"
   "dialog-box"
+  "mission-details-box"
   "story"
   ]
 window.Css = []

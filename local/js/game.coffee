@@ -27,5 +27,7 @@ if not document.createElement('canvas').getContext
 window.GameConfig = conf
 if not conf.debug
   window.console.log = (-> return)
+  window.console.warn = (-> return)
+  window.console.error = (-> return)
 
         

@@ -136,7 +136,7 @@ class window.AreasDB extends SubDB
         summaryImg: 'summaryShop'
         dangerLevel:'安全'
         summaryBg:''
-      adventurerGuild:
+      guild:
         name:'冒险者协会'
         description:'冒险者协会在这个城镇的分会，附件的人都会来这里提交委托'
         costEnergy: 0

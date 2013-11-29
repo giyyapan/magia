@@ -3,10 +3,13 @@ class window.ThingsDB extends SubDB
     super "things"
     @items = new SubDB "things-items"
     @supplies = new SubDB "things-supplies"
+    @equipment = new SubDB "things-equipments"
     console.log "fuck"
     @initItems()
     @initSupplies()
     console.log @supplies
+  get:(name)->
+    return @items.get(name) or @supplies.get(name) or @equipments.get(name)
   initItems:->
     @items.data = 
       scree:

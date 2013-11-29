@@ -10,11 +10,16 @@
       ThingsDB.__super__.constructor.call(this, "things");
       this.items = new SubDB("things-items");
       this.supplies = new SubDB("things-supplies");
+      this.equipment = new SubDB("things-equipments");
       console.log("fuck");
       this.initItems();
       this.initSupplies();
       console.log(this.supplies);
     }
+
+    ThingsDB.prototype.get = function(name) {
+      return this.items.get(name) || this.supplies.get(name) || this.equipments.get(name);
+    };
 
     ThingsDB.prototype.initItems = function() {
       return this.items.data = {

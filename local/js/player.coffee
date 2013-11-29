@@ -11,9 +11,13 @@ playerData =
     {name:"herbs",number:10,type:"item"}
     {name:"caveMashroom",number:10,type:"item"}
     ]
-  currentMissions:{}
-  completedMissions:{}
-  completedStorys:{}
+  missions:
+    current:{}
+    completed:{}#completed but not reported
+    finished:{}#completed and areported
+  storys:
+    current:null
+    completed:{}
   relationships:
     luna:0
     dirak:0
@@ -39,10 +43,13 @@ playerData =
     luk:0
     spd:8
     
-class window.Player
+class window.Player extends EventEmitter
   constructor:(db)->
+    super null
     @db = db
     @energy = 50
+    if not @loadData()
+      @newData()
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"
@@ -62,9 +69,8 @@ class window.Player
     @energy = @data.energy
     @relationships = @data.relationships
     @lastStage = @data.lastStage
-    @completedStorys = @completedStorys
-    @currentMission = @currentMission
-    @completedMissions = @completedMissions
+    @storys = @data.storys
+    @missions = @data.missions
     @equipments = []
     for name in @data.equipments
       @equipments.push new PlayerEquipment @db,name
@@ -123,6 +129,7 @@ class window.Player
     for theItem in target when theItem.type is "item" and theItem.name is item.name
       return theItem.number += 1
     target.push item
+    @emit "getThing","item",item
     @saveData()
   getSupplies:(target="backpack",data)->
     if data instanceof PlayerSupplies
@@ -134,8 +141,10 @@ class window.Player
       when "backpack" then target = @backpack
       when "storage" then target = @storage
     target.push supplies
+    @emit "getThing","supplies",supplies
     @saveData()
   getEquipment:()->
+    @emit "getThing","equipment",supplies
   checkFreeSpace:(target,things)->
     return true
   saveData:->
@@ -157,9 +166,8 @@ class window.Player
       energy:@energy
       statusValue:@basicData
       lastStage:@lastStage
-      completedStorys:@completedStorys
-      currentMissions:@currentMissions
-      completedMissions:@completedMissions
+      storys:@storys
+      missions:@missions
       basicStatusValue:@basicStatusValue
       relationships:@relationships
       backpack:backpack

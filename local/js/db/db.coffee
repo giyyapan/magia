@@ -64,7 +64,33 @@ class window.Database extends Suzaku.EventEmitter
   initSprites:->
     @monsters.data =
       qq:
-        name:"QQ"
+        name:"企鹅"
+        sprite:Res.sprites.qq
+        icon:null
+        statusValue:
+          hp:1000
+          def:30
+          spd:30
+        skills:
+          attack:
+            damage:
+              normal:30
+              water:10
+          waterball:
+            turn:2
+            damage:
+              water:100
+        anchor:"270,240"
+        movements:
+          normal:"0,6"
+          move:"7,15"
+          attack:"16,23:4,6"
+          cast:"0,6"
+        drop:
+          certain:["bluerose"]
+          random:null
+      slime:
+        name:"史莱姆"
         sprite:Res.sprites.qq
         icon:null
         statusValue:

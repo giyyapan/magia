@@ -1,5 +1,6 @@
-class Magia
+class Magia extends EventEmitter
   constructor:->
+    super null
     @size = null
     @res = null
     @canvas = new Suzaku.Widget("#gameCanvas")
@@ -23,17 +24,18 @@ class Magia
       $("#loadingPage").slideUp "slow"
       window.AudioManager.stop "startMenu"
       window.AudioManager.play "home"
-      @switchStage "start"
+      #@switchStage "start"
       #@switchStage "worldMap"
       #@switchStage "area","forest"
       #@switchStage "shop","magicItemShop"
-      #@switchStage "guild" 
+      @switchStage "guild" 
       #@switchStage "home"
       @startGameLoop()
   switchStage:(stage,data)->
     console.log "init stage:",stage
     if typeof stage.tick is "function"
       s = stage
+      if not stage.stageName then console.warn "not stage name for this stage",stage
     else
       switch stage
         when "start" 
@@ -50,6 +52,8 @@ class Magia
         when "battle" then s = new Battlefield this,data
         when "worldMap" then s = new WorldMap this,data
         else console.error "invailid stage:#{stage}"
+      s.stageName = stage
+      s.switchStageData = data
     if @currentStage
       @currentStage.hide =>
         @currentStage = s
@@ -57,6 +61,7 @@ class Magia
     else
       @currentStage = s
       s.show()
+    @emit "switchStage",s
     return s
   clearSavedStage:->
     @savedStageStack = []
@@ -69,9 +74,7 @@ class Magia
     if @savedStageStack.length is 0
       console.error "restore stage from empty stack!"
       return false
-    @currentStage = @savedStageStack.pop()
-    @currentStage.show()
-    @currentStage.menu.show() if @currentStage.menu
+    @switchStage @popSavedStage()
     return true
   startGameLoop:->
     self = this

@@ -548,7 +548,7 @@ window.Suzaku.Utils = Utils =
       for name,item of target
         newObj[name] = if deepClone then Utils.clone item,true else item
       return newObj
-    return if target
+    return target
   compare:(a,b)->
     if a is b then return true
     if parseInt(a) is parseInt(b) then return true

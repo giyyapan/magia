@@ -721,7 +721,16 @@
     };
 
     Battlefield.prototype.win = function() {
-      this.emit("win");
+      var m, monsters, _i, _len, _ref;
+      monsters = [];
+      _ref = this.monsters;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        m = _ref[_i];
+        monsters.push(m.name);
+      }
+      this.emit("win", {
+        monsters: monsters
+      });
       return console.log("win!!!");
     };
 

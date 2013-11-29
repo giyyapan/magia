@@ -39,11 +39,9 @@
 <!-- 喂喂喂你干什么|别拿我挡在前面啊！ -->
 <!-- :animate shake -->
 <!-- >color white fadeIn fast -->
-<!-- :battle forest qq,qq nolose -->
-:end story start2
-
-***start2
->img forestEntry fadeIn fast
+:battle forest qq nolose
+<!-- :end story start2 -->
+<!-- >img forestEntry fadeIn fast -->
 @player in:left
 呼...
 @cat
@@ -51,5 +49,18 @@
 @player
 ......（诶这是个好办法？省得你这么烦人）
 @cat
-行了行了块走吧|天黑前得出去才行
+行了行了快走吧|天黑前得出去才行
+:startMission theGuild
 :end stage home
+
+***theGuild
+@player in:left
+@cat in:left
+@dirac in:right
+！！哟！来啦？
+@player
+啊|狄拉克先生你好～
+@dirac
+恩，看看任务吧！
+:end
+

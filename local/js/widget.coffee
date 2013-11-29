@@ -109,7 +109,113 @@ class window.ItemDetailsBox extends Widget
   hide:->
     @J.fadeOut "fast"
     @currentItem.J.removeClass "selected"
-      
+    
+class window.MissionDetailsBox extends Widget
+  constructor:(game)->
+    super Res.tpls['mission-details-box']
+    @game = game
+    @UI['active-btn'].onclick = =>
+      @emit "activeMission",@currentWidget.mission,@currentWidget
+  setBtnText:(text)->
+    if not text then @UI['active-btn'].J.fadeOut "fast"
+    @UI['active-btn'].J.text text
+  hide:(callback)->
+    @J.fadeOut "fast",callback
+  updateStatusText:->
+    text = ""
+    switch @currentWidget.mission.status
+      when "current"
+        text = "进行中"
+      when "finished"
+        text = "已结束"
+      when "avail"
+        text = "可接受"
+      when "disable"
+        text = "条件不足"
+      else console.error "invailid status",@currentWidget.mission
+    @UI.status.J.text text
+  initMissionData:(mission)->
+    @UI.title.J.text mission.dspName
+    @UI.description.J.text mission.data.description.replace /\|/g,"</br>"
+    @UI['details-content-list'].J.html ""
+    data = mission.data
+    if data.from
+      character = @game.db.characters.get data.from
+      console.log data.from,@game.db.characters.get data.from
+      @addContentListItem "委托人",character.name
+    rewardText = ""
+    for name,value of data.reward
+      switch name
+        when "money" then rewardText += "#{value}G "
+    @addContentListItem "奖励",rewardText
+    if data.requests.text
+      @addContentListItem "要求",data.requests.text
+    else
+      @addContentListItem "要求"
+      for name,value of data.requests
+        switch name
+          when "kill"
+            for monster,index in value.split(",")
+              sum = monster.split('*')[1] or 1
+              dspName = @game.db.monsters.get(monster.split("*")[0]).name
+              console.log mission,monster,mission.incompletedRequests.kill[monster]
+              finished = sum - mission.incompletedRequests.kill[monster]
+              @addContentListItem null,"打败#{sum}只#{dspName} #{finished}/#{sum}"
+          when "visit"
+            console.log value
+            dspName = @game.db.areas.get(value).name
+            console.log mission,mission.incompletedRequests
+            if mission.incompletedRequests.visit[value]
+              @addContentListItem null,"去往 #{dspName}",false
+            else
+              @addContentListItem null,"去往 #{dspName}",true
+          when "get"
+            for thing,index in value.split(",")
+              console.log @game.db.things.get(thing)
+              dspName = @game.db.things.get(thing).name
+              if mission.incompletedRequests.get[thing]
+                @addContentListItem null,"获得 #{dspName}",false
+              else
+                @addContentListItem null,"获得 #{dspName}",true
+  addContentListItem:(type,content,completedMark=false)->
+    tpl = @UI['content-list-item-tpl' ].innerHTML
+    w = new Widget tpl
+    w.UI.type.J.text type if type
+    w.UI.content.J.text content if content
+    if not completedMark
+      w.UI.completed.J.hide()
+    w.appendTo @UI['details-content-list']
+  showMissionDetails:(widget,callback)->
+    console.log "show mission"
+    if @currentWidget then @currentWidget.J.removeClass "selected"
+    @currentWidget = widget
+    mission = widget.missionData
+    @updateStatusText()
+    @initMissionData mission
+    switch mission.status
+      when "current"
+        if mission.checkComplete()
+          @setBtnText "完成"
+          @UI['active-btn'].onclick = =>
+            mission.complete()
+            @emit "activeMission",mission
+            @hide callback
+        else
+          @setBtnText "关闭"
+          @UI['active-btn'].onclick = =>
+            @hide callback
+      when "avail"
+        @setBtnText "接受"
+        @UI['active-btn'].onclick = =>
+          mission.start()
+          @emit "activeMission",mission
+          @hide callback
+      when "finished"
+        @setBtnText "关闭"
+        @UI['active-btn'].onclick = =>
+          @hide callback
+    @J.fadeIn "fast"
+          
 class window.ListItem extends Widget
   constructor:(tpl,playerThing)->
     super tpl

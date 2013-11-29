@@ -403,7 +403,9 @@ class window.Battlefield extends Stage
     @menu = new BattlefieldMenu this,Res.tpls['battlefield-menu']
     @drawQueueAddAfter @menu
   win:->
-    @emit "win"
+    monsters = []
+    monsters.push m.name for m in @monsters
+    @emit "win",monsters:monsters
     console.log "win!!!"
   lose:->
     @emit "lose"

@@ -1,3 +1,9 @@
+.filter(@value){
+    filter:@value;
+    -webkit-filter:@value;
+    -moz-filter:@value;
+    -o-filter:@value;
+}
 .service-option-box{
 		width:90%;
 		text-align:center;
@@ -57,30 +63,55 @@
 .guild-menu{
 		.mission-list-wrapper{
 				position:absolute;
-				left:50px;
+				left:20px;
 				padding:10px;
 				top:0px;
 				text-align:center;
 				background:url(/img/menu/mission-list-bg.jpg) no-repeat;
 				.mission-list{
-						width:460px;
-						height:700px;
+						width: 468px;
+						height: 615px;
 						margin:auto;
 				}
 				.mission-list-item{
-						.bg{display:block;
-								margin-bottom:-30px;}
+						cursor:pointer;
+						position:relative;
+						text-align:center;
+						color: #362f2d;
+						.bg{
+								display:block;
+								margin:auto;
+								height:100%;
+								width:auto;
+							 }
+						.name{
+								position: absolute;
+								width: 100%;
+								left: 0;
+								top: 37px;
+								font-size: 40px;
+								text-shadow: 3px 3px 0px rgba(20,20,20,0.2);
+								font-weight: bold;
+								color: #362f2d;
+						}
+						.status{
+								position:absolute;
+								left: 54px;
+								top: 11px;
+								font-size: 21px;
+						}
+						.filter(brightness(0.7));
+						&.selected,&:hover{
+								.filter(brightness(1));
+						}
 				}
+		}
+		.mission-type-switch{
+				width:100px;
 		}
 		.mission-details-box-wrapper{
 				position: absolute;
 				right: 20px;
-				.details-flag-box{
-						.bg{
-								display:block;
-								margin-bottom:-30px;
-						}
-				}
+				top:50px;
 		}
-
 }

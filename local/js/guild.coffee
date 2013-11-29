@@ -2,27 +2,32 @@ class MissionListItem extends Widget
   constructor:(tpl,missionData,menu)->
     super tpl
     @menu = menu
+    @missionData = missionData
+    @mission = missionData
+    @UI.name.J.text missionData.dspName
+    switch missionData.status
+      when "current"
+        @type = "进行中"
+      when "finished"
+        @type = "已结束"
+      when "avail"
+        @type = "可接受"
+      when "disable"
+        @type = "条件不足"
+    @UI.status.J.text @type
+    @dom.onclick = =>
+      @menu.detailsBox.showMissionDetails this
 
-class MissionDetailsBox extends Widget
-  constructor:(tpl,menu)->
-    super tpl
-    @menu = menu
-  showMissionDetails:(widget)->
-    data = widget.missionData
-    @UI.title.J.text data.title
-    @UI.description.J.text data.title
-    
 class GuildMenu extends Menu
   constructor:(guild)->
     @guild = guild
+    @game = guild.game
     super Res.tpls['guild-menu']
-    @detailsBox = new MissionDetailsBox @UI['mission-details-box'],this
+    @detailsBox = new MissionDetailsBox(@game).appendTo @UI['mission-box']
     @listItems = []
     @UI['service-mission'].onclick = => @initMissions()
     @UI['service-conversation'].onclick = -> guild.conversation()
     @UI['exit'].onclick = -> guild.exit()
-    @UI['completed-mission'].onclick = => @completedMissionMode()
-    @UI['current-mission'].onclick = => @currentMissionMode()
     @UI['end-mission'].onclick = =>
       @guild.showServiceDialog()
       @showServiceOptions()
@@ -39,26 +44,25 @@ class GuildMenu extends Menu
   initMissions:->
     @hideServiceOptions()
     @guild.dialogBox.hide()
-    @UI['mission-details-box'].J.hide()
+    @detailsBox.J.hide()
     @UI['mission-box'].J.fadeIn "fast"
+    mm = @guild.game.missionManager
+    a1 = mm.getMissions "current"
+    a2 = mm.getMissions "avail"
+    console.log a1,a2
+    @addMissions a1.concat(a2)
   showServiceOptions:->
     @UI['mission-box'].J.fadeOut "fast"
     @UI['service-options'].J.fadeIn "fast"
   hideServiceOptions:->
     @UI['service-options'].J.fadeOut "fast"
-  currentMissionMode:->
-    missions = @guild.missionManager.getMissions "current"
-    @addItems missions
-  completedMissionMode:->
-    missions = @guild.missionManager.getMissions "completed"
-    @addItems missions
-  addItems:(items)->
-    console.log items
+  addMissions:(missions)->
+    console.log "guild add missions",missions
     @listItems = []
-    @UI['item-list'].J.html ""
-    for playerThing in items
-      w = new MissionListItem @UI['list-item-tpl'].innerHTML,playerThing,this
-      w.appendTo @UI['item-list']
+    @UI['mission-list'].J.html ""
+    for m in missions
+      w = new MissionListItem @UI['mission-list-item-tpl'].innerHTML,m,this
+      w.appendTo @UI['mission-list']
       @listItems.push w
     
 class window.Guild extends Shop

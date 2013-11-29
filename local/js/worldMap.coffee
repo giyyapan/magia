@@ -18,7 +18,7 @@ class popBig extends Widget
         switch name
           when "home" then @game.switchStage "home"
           when "magicItemShop","equipmentShop" then @game.switchStage "shop",name
-          when "adventurerGuild" then @game.switchStage "guild"
+          when "guild" then @game.switchStage "guild"
           else
             nowEnergy = @game.player.energy
             if nowEnergy < data.costEnergy
@@ -60,7 +60,7 @@ class window.WorldMap extends Stage
       @menu.UI["day-night"].innerHTML = "昼"
     else
       @menu.UI["day-night"].innerHTML = "夜"
-    for name in ["home","adventurerGuild","magicItemShop","equipmentShop","forest","snowmountain"]
+    for name in ["home","guild","magicItemShop","equipmentShop","forest","snowmountain"]
       data = @db.areas.get name
       imgName = data.summaryImg
       img = window.Res.imgs[imgName]
