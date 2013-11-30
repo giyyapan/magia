@@ -346,7 +346,7 @@
           }
         });
       });
-      return this.menu.addFunctionBtn("下楼", 706, 120, function() {
+      return this.menu.addFunctionBtn("下楼", 956, 220, function() {
         _this.menu.showSubMenu("楼梯", "下楼");
         return _this.menu.on("activeSubMenu", function(buttonCode, data) {
           data.showFunctionBtns = false;

@@ -39,7 +39,7 @@
     guildBg: 'guild-bg.jpg',
     homeDownMain: 'home-down-main.jpg',
     homeDownFloat: "home-down-float.png",
-    homeUp: 'home_up.jpg',
+    homeUp: 'home-up.jpg',
     dialogContinueHint: 'menu/dialog-continue-hint.png',
     dialogBg: 'menu/dialog-bg.png',
     item_earthLow: 'things/earthLow.jpg',

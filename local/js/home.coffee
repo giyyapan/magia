@@ -192,7 +192,7 @@ class SecondFloor extends Floor
       @menu.on "activeSubMenu",(buttonCode)=>
         switch buttonCode
           when 1 then @showWorkTable()
-    @menu.addFunctionBtn "下楼",706,120,=>
+    @menu.addFunctionBtn "下楼",956,220,=>
       @menu.showSubMenu "楼梯","下楼"
       @menu.on "activeSubMenu",(buttonCode,data)=>
         data.showFunctionBtns = false

@@ -14,7 +14,7 @@
         forest: {
           name: "雾之森",
           costEnergy: 5,
-          description: "这是一个森林哈哈哈哈哈",
+          description: "常年被薄雾覆盖的森林，拥有丰富的药材资源和被此吸引的魔兽。林中的湖面下，似乎能看到微弱的光芒……",
           summaryImg: "summaryForest",
           dangerLevel: '低',
           summaryBg: 'forestEntry',
@@ -84,7 +84,7 @@
         snowmountain: {
           name: "雪域",
           costEnergy: 10,
-          description: "雪山里面有雪人，雪人的名字叫耶提",
+          description: "终年积雪的北地。风雪呼啸的冰原上，有着比温暖的南方更为热烈的生命——那个洞窟，传来了声音。",
           summaryImg: 'summarySnow',
           dangerLevel: "中",
           summaryBg: 'snowmountainEntryBg',
