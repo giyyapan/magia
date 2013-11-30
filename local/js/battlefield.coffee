@@ -81,6 +81,7 @@ class BattlefieldPlayer extends Sprite
     @speedItem.on "active",=>
       @act()
   act:->
+    @ondefense = false
     @bf.paused = true
     @bf.camera.lookAt this,400
     @bf.menu.showActionBtns()
@@ -122,6 +123,7 @@ class BattlefieldPlayer extends Sprite
           @useMovement @defaultMovement,true
           @bf.paused = false
   defense:->
+    @ondefense = true
   castSpell:(sourceItemWidget,target)->
     console.log "cast spell to ",target
     sourceItemWidget.playerSupplies.remainCount -= 1

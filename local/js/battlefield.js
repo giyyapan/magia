@@ -147,6 +147,7 @@
     }
 
     BattlefieldPlayer.prototype.act = function() {
+      this.ondefense = false;
       this.bf.paused = true;
       this.bf.camera.lookAt(this, 400);
       return this.bf.menu.showActionBtns();
@@ -213,7 +214,9 @@
       });
     };
 
-    BattlefieldPlayer.prototype.defense = function() {};
+    BattlefieldPlayer.prototype.defense = function() {
+      return this.ondefense = true;
+    };
 
     BattlefieldPlayer.prototype.castSpell = function(sourceItemWidget, target) {
       var callback,

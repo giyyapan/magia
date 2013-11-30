@@ -15,8 +15,6 @@ window.Imgs =
   snowmountainCaveFloat:'snowmountain-cave-float.png'
   startBg:"start-bg.jpg"
   startBgLight:"start-bg-light.jpg"
-  forest2:'forest2.jpg'
-  forest3:'forest3.jpg'
   bfForestMain:'bf-forest-main.jpg'
   bfForestFloat:'bf-forest-float.png'
   bfSnowmountain:'bf-snowmountain.jpg'
