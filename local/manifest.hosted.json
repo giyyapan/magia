@@ -1,20 +1,20 @@
 {
-    "name": "MagiaHosted",
+    "name": "艾丽西亚的魔法工房",
     "version": "0.1.1",
-    "version_code": "1",
+    "version_code":"2",
     "type": "web",
     "package": "com.uniquestudio.magiahosted",
     "minimum_runtime_version": "0.1.0",
-    "description": "magia hosted",
+    "description": "艾丽西亚的魔法工房",
     "developer": {
         "name": "giyyapan",
         "url": ""
      },
 		"icons": {
-				"36": "/img/icon.png",
-				"48": "/img/icon.png",
-				"72": "/img/icon.png",
-				"96": "/img/icon.png"
+				"36": "/img/icon-96.png",
+				"48": "/img/icon-96.png",
+				"72": "/img/icon-96.png",
+				"96": "/img/icon-96.png"
 		},
     "launch_url": "http://115.29.37.10:8001/index.html",
     "fullscreen": "true",
