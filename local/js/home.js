@@ -263,24 +263,45 @@
         });
       });
       this.menu.addFunctionBtn("卧室", 1154, 98, function() {
-        _this.menu.showSubMenu("卧室", "换衣服", "睡觉");
+        _this.menu.showSubMenu("卧室", "睡觉");
         return _this.menu.on("activeSubMenu", function(buttonCode) {
+          var box;
           switch (buttonCode) {
             case 1:
-              return console.log("换衣服");
-            case 2:
-              return alert("zzz");
+              box = new MsgBox("睡觉", "睡觉中");
+              box.hideCloseBtn();
+              _this.layers.float.fadeOut("slow");
+              return _this.mainBg.fadeOut("slow", function() {
+                return _this.setCallback(1000, function() {
+                  return _this.mainBg.fadeIn("slow", function() {
+                    var player;
+                    box.close();
+                    player = _this.game.player;
+                    player.hp = player.statusValue.hp;
+                    player.energy = player.maxEnergy;
+                    return new MsgBox("起床", "你的体力和生命回复了！");
+                  });
+                });
+              });
           }
         });
       });
       return this.menu.addFunctionBtn("猫", 1548, 425, function() {
-        _this.menu.showSubMenu("猫", "调戏", "对话");
+        _this.menu.showSubMenu("猫", "对话");
         return _this.menu.on("activeSubMenu", function(buttonCode) {
+          var box, text;
           switch (buttonCode) {
             case 1:
-              return alert("调戏你妹啊！");
-            case 2:
-              return alert("喵喵喵");
+              box = new DialogBox(_this.game).appendTo(_this.menu);
+              text = Utils.random(["嗯，如果不知道要做什么的话就到冒险者公会去看看吧～", "楼上的工作室可以制作各种各样的药剂。药剂的材料是在野外的各个地图中获得的～", "嗯..现在的游戏不是完整版，所以可以干的事情可能有点少呢...", "如果你出现了bug，不要怪我哦～因为这个游戏的开发时间对于这样庞大的内容来说实在太少了..."]);
+              box.setCharacter("cat", {
+                "in": "r"
+              });
+              return box.display({
+                text: text
+              }, function() {
+                return box.hide();
+              });
           }
         });
       });

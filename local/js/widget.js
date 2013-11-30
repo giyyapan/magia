@@ -381,11 +381,11 @@
       }
       mission.checkComplete();
       this.initMissionData(mission);
-      this.updateStatus(mission);
+      this.updateStatus(mission, callback);
       return this.J.fadeIn("fast");
     };
 
-    MissionDetailsBox.prototype.updateStatus = function(mission) {
+    MissionDetailsBox.prototype.updateStatus = function(mission, callback) {
       var _this = this;
       this.updateStatusText();
       switch (mission.status) {

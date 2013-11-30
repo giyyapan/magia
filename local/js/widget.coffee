@@ -209,9 +209,9 @@ class window.MissionDetailsBox extends Widget
       @currentMission = mission
     mission.checkComplete()
     @initMissionData mission
-    @updateStatus mission
+    @updateStatus mission,callback
     @J.fadeIn "fast"
-  updateStatus:(mission)->
+  updateStatus:(mission,callback)->
     @updateStatusText()
     switch mission.status
       when "current"

@@ -212,6 +212,11 @@
 		.text;
 		padding:30px;
 		text-shadow:0 3px 0 rgba(20,20,20,0.6);
+		&.top{
+				position: absolute;
+				left: 335px;
+				top: 39px;
+		}
 		.title{
 				margin: 15px auto;
 				width: 350px;
@@ -500,6 +505,7 @@
 				width:100%;
 		}
 		.character-section{
+				width:100%;
 				position: absolute;
 				bottom: 165px;
 				.character-box{
@@ -515,11 +521,13 @@
 						&.left{left:115px;}
 						&.right{right:115px;}
 						&.speaking{
+								z-index:10;
 								.filter(brightness(1));
 						}
 				}
 		}
 		.content-wrapper{
+				z-index:20;
 				position:absolute;
 				bottom:0;
 				width:100%;

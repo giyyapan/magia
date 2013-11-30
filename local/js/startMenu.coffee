@@ -14,8 +14,7 @@ class window.StartMenu extends Stage
     @changeBgClock.tick tickDelay
   initMenu: ->
     $(".logo-holder").animate opacity:"1",1000
-    if not @game.player.loadData()
-      @menu.UI.start.J.hide()
+    if not localStorage.playerData then @menu.UI.start.J.hide()
     @menu.UI["logo-line"].J.animate width:"+=620px",800,=>
         @menu.UI["logo-bg"].J.animate opacity:"1",1500
         @menu.UI["logo-text"].J.animate {opacity:"1",right:"+=80px"},1500
@@ -23,15 +22,20 @@ class window.StartMenu extends Stage
     @menu.UI.start.onclick = =>
       console.log  "start game btn click"
       AudioManager.play("startClick")
+      @game.player.loadData()
       lastStage = @game.player.data.lastStage
       @game.switchStage lastStage
     @menu.UI.newgame.onclick = =>
       console.log  "new game btn click"
       AudioManager.play("startClick")
-      if @game.player.loadData()
-        new PopupBox "警告","重新开始游戏将会清除你当前的所有数据</br>确定要继续吗？",=>
-          @game.player.newData()
-          @game.storyManager.showStory "start1"
+      f = =>
+        window.localStorage.clear()
+        @game.player.newData()
+        @game.storyManager.showStory "start1"
+      if window.localStorage.playerData
+        new PopupBox "警告","重新开始游戏将会清除你当前的所有数据</br>确定要继续吗？",f
+      else
+        f()
     @menu.UI.test.onclick = =>
       console.log  "test btn click"
       AudioManager.play("startClick")

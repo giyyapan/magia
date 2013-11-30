@@ -368,8 +368,7 @@
 
     function SourceItem(tpl, menu, playerItem) {
       var _this = this;
-      SourceItem.__super__.constructor.call(this, tpl);
-      this.originData = playerItem.originData;
+      SourceItem.__super__.constructor.call(this, tpl, playerItem);
       this.playerItem = playerItem;
       if (this.UI.img) {
         this.UI.img.src = this.originData.img;
@@ -391,7 +390,7 @@
 
     return SourceItem;
 
-  })(Widget);
+  })(ListItem);
 
   WorktableMenu = (function(_super) {
     __extends(WorktableMenu, _super);

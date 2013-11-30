@@ -68,7 +68,7 @@ class Mission extends EventEmitter
   update:(type,data)->
     ir = @incompletedRequests
     pcr = @player.missions.current[@name] #player completed requests
-    if not pcr then return console.error "player no request data",@name
+    if not pcr then return console.error "player no request data",@name,this
     if not ir[type] then return false
     switch type
       when "kill"
@@ -119,13 +119,13 @@ class Mission extends EventEmitter
     @status = "current"
     @handleStartData()
     @player.saveData()
-    return true
+    return this
   finish:->
     delete @player.missions.current[@name]
     @player.missions.finished[@name] = true
     @status = "finished"
     @handleEndData()
-    @palyer.saveData()
+    @player.saveData()
     return true
   handleEndData:->
     return false if not @data.end
@@ -190,7 +190,6 @@ class window.MissionManager extends EventEmitter
     for name,mission of @missions when mission.status is "current"
       mission.update type,data
     @player.saveData()
-    console.log @player
   startMission:(mission)->
     if typeof mission is "string"
       name = mission

@@ -188,10 +188,9 @@ class DetailsBox extends ItemDetailsBox
       @menu.UI['source-list'].J.find("li").removeClass "selected"
       @J.fadeOut 100
     
-class SourceItem extends Widget
+class SourceItem extends ListItem
   constructor:(tpl,menu,playerItem)->
-    super tpl
-    @originData = playerItem.originData
+    super tpl,playerItem
     @playerItem = playerItem
     @UI.img.src = @originData.img if @UI.img
     @UI.name.J.text @originData.name

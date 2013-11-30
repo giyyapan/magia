@@ -141,17 +141,36 @@ class FirstFloor extends Floor
       @menu.on "activeSubMenu",(buttonCode)=>
         @home.exit()
     @menu.addFunctionBtn "卧室",1154,98,=>
-      @menu.showSubMenu "卧室","换衣服","睡觉"
+      @menu.showSubMenu "卧室","睡觉"
       @menu.on "activeSubMenu",(buttonCode)=>
         switch buttonCode
-          when 1 then console.log "换衣服"
-          when 2 then alert "zzz"
+          when 1
+            box = new MsgBox "睡觉","睡觉中"
+            box.hideCloseBtn()
+            @layers.float.fadeOut "slow"
+            @mainBg.fadeOut "slow",=>
+              @setCallback 1000,=>
+                @mainBg.fadeIn "slow",=>
+                  box.close()
+                  player = @game.player
+                  player.hp = player.statusValue.hp
+                  player.energy = player.maxEnergy
+                  new MsgBox "起床","你的体力和生命回复了！"
     @menu.addFunctionBtn "猫",1548,425,=>
-      @menu.showSubMenu "猫","调戏","对话"
+      @menu.showSubMenu "猫","对话"
       @menu.on "activeSubMenu",(buttonCode)=>
         switch buttonCode
-          when 1 then alert "调戏你妹啊！"
-          when 2 then alert "喵喵喵"
+          when 1
+            box = new DialogBox(@game).appendTo @menu
+            text = Utils.random [
+              "嗯，如果不知道要做什么的话就到冒险者公会去看看吧～"
+              "楼上的工作室可以制作各种各样的药剂。药剂的材料是在野外的各个地图中获得的～"
+              "嗯..现在的游戏不是完整版，所以可以干的事情可能有点少呢..."
+              "如果你出现了bug，不要怪我哦～因为这个游戏的开发时间对于这样庞大的内容来说实在太少了..."
+              ]
+            box.setCharacter "cat",in:"r"
+            box.display text:text,=>
+              box.hide()
   show:->
     @fadeIn "fast"
     @menu.show()

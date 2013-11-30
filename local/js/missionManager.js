@@ -122,7 +122,7 @@
       ir = this.incompletedRequests;
       pcr = this.player.missions.current[this.name];
       if (!pcr) {
-        return console.error("player no request data", this.name);
+        return console.error("player no request data", this.name, this);
       }
       if (!ir[type]) {
         return false;
@@ -218,7 +218,7 @@
       this.status = "current";
       this.handleStartData();
       this.player.saveData();
-      return true;
+      return this;
     };
 
     Mission.prototype.finish = function() {
@@ -226,7 +226,7 @@
       this.player.missions.finished[this.name] = true;
       this.status = "finished";
       this.handleEndData();
-      this.palyer.saveData();
+      this.player.saveData();
       return true;
     };
 
@@ -364,8 +364,7 @@
           mission.update(type, data);
         }
       }
-      this.player.saveData();
-      return console.log(this.player);
+      return this.player.saveData();
     };
 
     MissionManager.prototype.startMission = function(mission) {

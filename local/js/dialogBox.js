@@ -43,7 +43,7 @@
           position = "right";
         }
       }
-      this.J.addClass("left", "right", "center");
+      this.J.removeClass("left", "right", "center");
       this.J.fadeIn("fast");
       switch (position) {
         case "left":
@@ -94,7 +94,18 @@
       };
     }
 
-    DialogBox.prototype.setCharacter = function(name, options) {
+    DialogBox.prototype.clearCharacters = function() {
+      var name, w, _ref;
+      _ref = this.characters;
+      for (name in _ref) {
+        w = _ref[name];
+        w.remove();
+        delete this.characters[name];
+      }
+      return this.currentCharacter = null;
+    };
+
+    DialogBox.prototype.setCharacter = function(name, options, callback) {
       var data, dspName, type, value;
       console.log("set character", name, options);
       data = this.db.characters.get(name);
@@ -160,6 +171,9 @@
         this.endDisplay();
       }
       if (!data.text) {
+        if (callback) {
+          callback();
+        }
         return;
       }
       if (!this.onshow) {
@@ -173,7 +187,9 @@
       } else {
         this.nostop = false;
       }
-      this.setSpeaker(data.speaker);
+      if (data.speaker) {
+        this.setSpeaker(data.speaker);
+      }
       this.UI['continue-hint'].J.fadeOut("fast");
       if (callback) {
         this.once("next", callback);
@@ -243,7 +259,7 @@
         } else {
           return _this.endDisplay();
         }
-      }), 60);
+      }), 40);
     };
 
     DialogBox.prototype.show = function(callback) {

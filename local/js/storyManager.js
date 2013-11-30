@@ -44,6 +44,8 @@
     };
 
     StoryStage.prototype.storyEnd = function() {
+      this.dialogBox.clearCharacters();
+      this.menu.hide();
       return this.emit("storyEnd", this.endData);
     };
 
@@ -132,11 +134,9 @@
           this.initBattle(a[1], a[2], a[3]);
           return true;
         case "startMission":
-          this.startMission(a[1]);
-          break;
+          return this.startMission(a[1]);
         case "completeMission":
-          this.endMission(a[1]);
-          break;
+          return this.endMission(a[1]);
         case "end":
           this.endData = {
             type: a[1],
@@ -149,6 +149,24 @@
       }
       this.nextStep();
       return true;
+    };
+
+    StoryStage.prototype.startMission = function(missionName) {
+      var box, mission,
+        _this = this;
+      mission = this.game.missionManager.startMission(missionName);
+      console.log("start mission");
+      if (!mission) {
+        console.error("no such mission ", missionName);
+        return this.nextStep();
+      } else {
+        box = new MissionDetailsBox(this.game).appendTo(this.menu);
+        box.J.addClass("top");
+        box.showMissionDetails(mission, function() {
+          return _this.nextStep();
+        });
+        return box.setBtnText("确定");
+      }
     };
 
     StoryStage.prototype.showDialog = function(text) {
@@ -248,7 +266,7 @@
       this.game.player.storys.completed[name] = true;
       this.game.player.saveData();
       if (!endData || !endData.type) {
-        this.game.restoreStage();
+        return this.game.restoreStage();
       }
       this.game.popSavedStage();
       switch (endData.type) {

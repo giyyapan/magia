@@ -19,7 +19,7 @@ class DialogCharacter extends Widget
     if not position
       if @name is "player" then position = "left"
       else position = "right"
-    @J.addClass "left","right","center"
+    @J.removeClass "left","right","center"
     @J.fadeIn "fast"
     switch position
       when "left","l"
@@ -47,7 +47,12 @@ class window.DialogBox extends Menu
         @UI['continue-hint'].J.fadeOut "fast"
         @currentCharacter.J.removeClass "speaking" if @currentCharacter
         @emit "next"
-  setCharacter:(name,options)->
+  clearCharacters:->
+    for name,w of @characters
+      w.remove()
+      delete @characters[name]
+    @currentCharacter = null
+  setCharacter:(name,options,callback)->
     console.log "set character",name,options
     data = @db.characters.get name
     dspName = data.name
@@ -87,14 +92,17 @@ class window.DialogBox extends Menu
     else @UI['continue-hint'].J.fadeIn "fast"
   display:(data,callback)->
     if @displayLock then @endDisplay()
-    return if not data.text
+    if not data.text
+      callback() if callback
+      return
     if not @onshow
-      @show => @display(data,callback)
+      @show =>
+        @display(data,callback)
       return
     #console.error "dialogBox Display:",data.text
     if data.nostop then @nostop = true
     else @nostop = false
-    @setSpeaker data.speaker
+    @setSpeaker data.speaker if data.speaker
     @UI['continue-hint'].J.fadeOut "fast"
     @once "next",callback if callback
     @displayLock = true
@@ -133,7 +141,7 @@ class window.DialogBox extends Menu
         index += 1
       else
         @endDisplay()
-      ),60
+      ),40
   show:(callback)->
     #@UILayer.J.find("menu").fadeOut "fast"
     if @onshow

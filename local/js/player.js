@@ -133,11 +133,14 @@
 
     function Player(db) {
       Player.__super__.constructor.call(this, null);
+      this.saveLock = true;
       this.db = db;
       if (!this.loadData()) {
         this.newData();
       }
-      this.energy = 20;
+      this.maxEnergy = 30;
+      this.energy = this.maxEnergy;
+      this.saveLock = false;
     }
 
     Player.prototype.loadData = function() {
@@ -184,7 +187,8 @@
       this.storage = [];
       this.initThingsFrom("backpack");
       this.initThingsFrom("storage");
-      return this.updateStatusValue();
+      this.updateStatusValue();
+      return this.hp = this.statusValue.hp;
     };
 
     Player.prototype.updateStatusValue = function() {
@@ -361,6 +365,9 @@
 
     Player.prototype.saveData = function() {
       var backpack, currentEquipments, data, e, equip, equipments, part, storage, thing, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3;
+      if (this.saveLock) {
+        return;
+      }
       backpack = [];
       _ref = this.backpack;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {

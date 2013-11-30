@@ -27,6 +27,8 @@ class window.StoryStage extends Stage
       return @runCommand.apply this,line.replace(":","").split " "
     @showDialog line
   storyEnd:->
+    @dialogBox.clearCharacters()
+    @menu.hide()
     @emit "storyEnd",@endData
   switchBg:(type,name,animateName,animateTime)->
     console.log "switch bg",type,name
@@ -78,9 +80,9 @@ class window.StoryStage extends Stage
         @initBattle a[1],a[2],a[3]
         return true
       when "startMission"
-        @startMission a[1]
+        return @startMission a[1]
       when "completeMission"
-        @endMission a[1]
+        return @endMission a[1]
       when "end"
         @endData = 
           type:a[1]
@@ -89,6 +91,18 @@ class window.StoryStage extends Stage
       else console.error "invailid command name :",commandName
     @nextStep()
     return true
+  startMission:(missionName)->
+    mission = @game.missionManager.startMission missionName
+    console.log "start mission"
+    if not mission
+      console.error "no such mission ",missionName
+      @nextStep()
+    else
+      box = new MissionDetailsBox(@game).appendTo @menu
+      box.J.addClass "top"
+      box.showMissionDetails mission,=>
+        @nextStep()
+      box.setBtnText "确定"
   showDialog:(text)->
     @dialogBox.display text:text,=>
       @nextStep()
@@ -152,7 +166,8 @@ class window.StoryManager extends EventEmitter
   storyEnd:(name,endData)->
     @game.player.storys.completed[name] = true
     @game.player.saveData()
-    if not endData or not endData.type then @game.restoreStage()
+    if not endData or not endData.type
+      return @game.restoreStage()
     @game.popSavedStage()
     switch endData.type
       when "stage"
@@ -160,3 +175,4 @@ class window.StoryManager extends EventEmitter
       when "story"
         @showStory endData.name
       else console.error "invailid story end data type",endData.type
+    

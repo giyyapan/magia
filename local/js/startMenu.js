@@ -35,7 +35,7 @@
       $(".logo-holder").animate({
         opacity: "1"
       }, 1000);
-      if (!this.game.player.loadData()) {
+      if (!localStorage.playerData) {
         this.menu.UI.start.J.hide();
       }
       this.menu.UI["logo-line"].J.animate({
@@ -56,17 +56,23 @@
         var lastStage;
         console.log("start game btn click");
         AudioManager.play("startClick");
+        _this.game.player.loadData();
         lastStage = _this.game.player.data.lastStage;
         return _this.game.switchStage(lastStage);
       };
       this.menu.UI.newgame.onclick = function() {
+        var f;
         console.log("new game btn click");
         AudioManager.play("startClick");
-        if (_this.game.player.loadData()) {
-          return new PopupBox("警告", "重新开始游戏将会清除你当前的所有数据</br>确定要继续吗？", function() {
-            _this.game.player.newData();
-            return _this.game.storyManager.showStory("start1");
-          });
+        f = function() {
+          window.localStorage.clear();
+          _this.game.player.newData();
+          return _this.game.storyManager.showStory("start1");
+        };
+        if (window.localStorage.playerData) {
+          return new PopupBox("警告", "重新开始游戏将会清除你当前的所有数据</br>确定要继续吗？", f);
+        } else {
+          return f();
         }
       };
       this.menu.UI.test.onclick = function() {

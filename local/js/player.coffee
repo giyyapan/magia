@@ -61,10 +61,13 @@ playerData =
 class window.Player extends EventEmitter
   constructor:(db)->
     super null
+    @saveLock = true
     @db = db
     if not @loadData()
       @newData()
-    @energy = 20
+    @maxEnergy = 30
+    @energy = @maxEnergy
+    @saveLock = false
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"
@@ -97,6 +100,7 @@ class window.Player extends EventEmitter
     @initThingsFrom "backpack"
     @initThingsFrom "storage"
     @updateStatusValue()
+    @hp = @statusValue.hp
   updateStatusValue:->
     @basicStatusValue = @data.basicStatusValue
     @statusValue = {}
@@ -170,6 +174,7 @@ class window.Player extends EventEmitter
   checkFreeSpace:(target,things)->
     return true
   saveData:->
+    return if @saveLock
     backpack = []
     for thing in @backpack
       backpack.push thing.getData()

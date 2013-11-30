@@ -51,7 +51,6 @@ class window.Database extends Suzaku.EventEmitter
         name:"艾丽西亚"
         dialogPic:"playerDialog"
       cat:
-        description:""
         name:"奇奇"
         dialogPic:"catDialog"
       luna:
@@ -65,7 +64,7 @@ class window.Database extends Suzaku.EventEmitter
       dirak:
         name:"狄拉克"
         description:"冒险者公会的管理员"
-        dialogPic:"diracDialog"
+        dialogPic:"dirakDialog"
   initSprites:->
     @monsters.data =
       qq:
