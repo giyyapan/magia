@@ -44,7 +44,7 @@ class window.AreasDB extends SubDB
               "lifeLow"
               "earthLow"]
             monsters:
-              certain:['1:qq,pig,slime']
+              certain:['1:pig,qq,pig']
               random:['2:qq','3:qq']
             movePoints:["exit:345,585","lake:959,355"]
           lake:

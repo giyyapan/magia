@@ -60,7 +60,12 @@ window.Imgs =
 
 window.Sprites =
   qq:"qq"
+  qqIce:"qq-ice"
   pig:"pig"
+  pigDark:"pig2"
+  pigBlue:"pig3"
+  slime:"slime"
+  player:"player"
   
 window.Templates = [
   "start-menu"

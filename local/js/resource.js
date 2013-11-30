@@ -66,7 +66,12 @@
 
   window.Sprites = {
     qq: "qq",
-    pig: "pig"
+    qqIce: "qq-ice",
+    pig: "pig",
+    pigDark: "pig2",
+    pigBlue: "pig3",
+    slime: "slime",
+    player: "player"
   };
 
   window.Templates = ["start-menu", "home-menu", "world-map", "popup-box", "test-menu", "area-menu", "shop-menu", "guild-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu", "worktable-menu", "item-details-box", "trait-item", "dialog-box", "mission-details-box", "story"];

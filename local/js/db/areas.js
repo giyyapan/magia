@@ -57,7 +57,7 @@
               resPoints: ["0,80", "400,500", "800,300", "1000,300"],
               resources: ["earthLow", "earthLow,fireLow", "fireLow", "lifeLow", "earthLow"],
               monsters: {
-                certain: ['1:qq,pig,slime'],
+                certain: ['1:pig,qq,pig'],
                 random: ['2:qq', '3:qq']
               },
               movePoints: ["exit:345,585", "lake:959,355"]

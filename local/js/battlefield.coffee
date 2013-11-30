@@ -67,23 +67,26 @@ class DetailsBox extends ItemDetailsBox
       @bf.player.castSpell sourceItemWidget,@bf.player
         
 class BattlefieldPlayer extends Sprite
-  constructor:(battlefield,x,y,playerData,originData)->
+  constructor:(battlefield,x,y,playerData)->
+    @db = battlefield.db
+    originData = @db.monsters.get "player"
     super x,y,originData
+    console.log this
+    playerData.skills = originData.attack
     @playerData = playerData
-    @statusValue = originData.statusValue
-    for name,value of originData.statusValue
+    @statusValue = playerData.statusValue
+    for name,value of playerData.statusValue
       this[name] = value
     @bf= battlefield
-    @transform.scaleX = -1;
     @lifeBar = new Widget @bf.menu.UI['life-bar']
     @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
-    @speedItem = battlefield.menu.addSpeedItem originData
+    @speedItem = battlefield.menu.addSpeedItem playerData
     @speedItem.on "active",=>
       @act()
   act:->
     @ondefense = false
     @bf.paused = true
-    @bf.camera.lookAt this,400
+    @bf.camera.lookAt {x:@x,y:@y - 150},400,1.7
     @bf.menu.showActionBtns()
   tick:(tickDelay)->
     if not @bf.paused
@@ -96,32 +99,23 @@ class BattlefieldPlayer extends Sprite
     damage = @originData.skills.attack.damage
     @bf.setView "default"
     defaultPos = x:@x,y:@y
-    @useMovement "move",true
-    @animateClock.setRate "fast"
-    @animate {x:target.x-150,y:target.y},800,=>
-      @bf.camera.lookAt target,300,2
-      @animateClock.setRate "normal"
-      @useMovement "attack"
-      listener = @on "keyFrame",(index,length)=>
-        realDamage = {}
-        for name,value of damage
-          realDamage[name] = (value / length)
-        realDamage.normal = 600
-        target.onAttack this,realDamage
-      @once "endMove:attack",=>
-        @bf.setView "normal"
-        @bf.camera.unfollow()
-        @off "keyFrame",listener
-        @transform.scaleX = 1
-        @animateClock.setRate "fast"
-        @useMovement "move",true
-        @animate {x:defaultPos.x,y:defaultPos.y},800,=>
-          @z = -1
-          @bf.mainLayer.sortDrawQueue()
-          @animateClock.setRate "normal"
-          @transform.scaleX = -1
-          @useMovement @defaultMovement,true
-          @bf.paused = false
+    @bf.camera.lookAt {x:@x,y:@y - 150},300,1.7
+    @animateClock.setRate "slow"
+    @useMovement "attack"
+    listener = @on "keyFrame",(index,length)=>
+      realDamage = {}
+      for name,value of damage
+        realDamage[name] = (value / length)
+      realDamage.normal = 600
+      target.onAttack this,realDamage
+    @once "endMove:attack",=>
+      @bf.setView "normal"
+      @bf.camera.unfollow()
+      @off "keyFrame",listener
+      @z = -1
+      @bf.mainLayer.sortDrawQueue()
+      @useMovement @defaultMovement,true
+      @bf.paused = false
   defense:->
     @ondefense = true
   castSpell:(sourceItemWidget,target)->
@@ -168,7 +162,7 @@ class BattlefieldPlayer extends Sprite
     @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
   draw:(context,tickDelay)->
     super context,tickDelay
-    context.fillRect(-10,-10,20,20);
+    #context.fillRect(-10,-10,20,20);
   die:->
     return if @dead
     @dead = true
@@ -250,7 +244,7 @@ class BattlefieldMonster extends Sprite
     @lifeBar.animate value:@hp,100,"swing"
   draw:(context,tickDelay)->
     super context,tickDelay
-    context.fillRect(-10,-10,20,20);
+    #context.fillRect(-10,-10,20,20);
   die:->
     return if @dead
     @dead = true

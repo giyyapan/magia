@@ -87,6 +87,25 @@
 
     Database.prototype.initSprites = function() {
       this.monsters.data = {
+        player: {
+          name: "艾丽西亚",
+          sprite: Res.sprites.player,
+          icon: null,
+          anchor: "190,330",
+          movements: {
+            normal: "0,0",
+            attack: "0,10:10",
+            cast: "0,10:10"
+          },
+          skills: {
+            attack: {
+              damage: {
+                normal: 30,
+                water: 10
+              }
+            }
+          }
+        },
         qq: {
           name: "企鹅",
           sprite: Res.sprites.qq,
@@ -149,7 +168,7 @@
           movements: {
             normal: "0,0",
             move: "0,7",
-            attack: "8,16:11",
+            attack: "8,16:4",
             onattack: "17,17",
             cast: "0,6"
           },
@@ -160,7 +179,7 @@
         },
         slime: {
           name: "史莱姆",
-          sprite: Res.sprites.qq,
+          sprite: Res.sprites.slime,
           icon: null,
           statusValue: {
             hp: 1000,
@@ -181,11 +200,11 @@
               }
             }
           },
-          anchor: "270,240",
+          anchor: "191,180",
           movements: {
-            normal: "0,6",
-            move: "7,15",
-            attack: "16,23:4,6",
+            normal: "0,0",
+            move: "0,6",
+            attack: "7,17:9",
             cast: "0,6"
           },
           drop: {
@@ -195,7 +214,7 @@
         }
       };
       return this.spriteItems.data = {
-        waterball: {
+        fireBall: {
           name: "水球术",
           movements: {
             normal: "",

@@ -1,6 +1,6 @@
 conf =
   debug:2 #0 to turn debug off, 1 for basic debug, and 2 for full debug
-  noSound:true
+  #noSound:true
   showFPS:true
   #maxFPS:30
   frameRate:60

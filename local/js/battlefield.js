@@ -125,22 +125,25 @@
   BattlefieldPlayer = (function(_super) {
     __extends(BattlefieldPlayer, _super);
 
-    function BattlefieldPlayer(battlefield, x, y, playerData, originData) {
-      var name, value, _ref,
+    function BattlefieldPlayer(battlefield, x, y, playerData) {
+      var name, originData, value, _ref,
         _this = this;
+      this.db = battlefield.db;
+      originData = this.db.monsters.get("player");
       BattlefieldPlayer.__super__.constructor.call(this, x, y, originData);
+      console.log(this);
+      playerData.skills = originData.attack;
       this.playerData = playerData;
-      this.statusValue = originData.statusValue;
-      _ref = originData.statusValue;
+      this.statusValue = playerData.statusValue;
+      _ref = playerData.statusValue;
       for (name in _ref) {
         value = _ref[name];
         this[name] = value;
       }
       this.bf = battlefield;
-      this.transform.scaleX = -1;
       this.lifeBar = new Widget(this.bf.menu.UI['life-bar']);
       this.lifeBar.UI['life-text'].J.text("" + (parseInt(this.hp)) + "/" + this.statusValue.hp);
-      this.speedItem = battlefield.menu.addSpeedItem(originData);
+      this.speedItem = battlefield.menu.addSpeedItem(playerData);
       this.speedItem.on("active", function() {
         return _this.act();
       });
@@ -149,7 +152,10 @@
     BattlefieldPlayer.prototype.act = function() {
       this.ondefense = false;
       this.bf.paused = true;
-      this.bf.camera.lookAt(this, 400);
+      this.bf.camera.lookAt({
+        x: this.x,
+        y: this.y - 150
+      }, 400, 1.7);
       return this.bf.menu.showActionBtns();
     };
 
@@ -160,7 +166,7 @@
     };
 
     BattlefieldPlayer.prototype.attack = function(target) {
-      var damage, defaultPos,
+      var damage, defaultPos, listener,
         _this = this;
       this.bf.paused = true;
       this.z = 999;
@@ -172,45 +178,30 @@
         x: this.x,
         y: this.y
       };
-      this.useMovement("move", true);
-      this.animateClock.setRate("fast");
-      return this.animate({
-        x: target.x - 150,
-        y: target.y
-      }, 800, function() {
-        var listener;
-        _this.bf.camera.lookAt(target, 300, 2);
-        _this.animateClock.setRate("normal");
-        _this.useMovement("attack");
-        listener = _this.on("keyFrame", function(index, length) {
-          var name, realDamage, value;
-          realDamage = {};
-          for (name in damage) {
-            value = damage[name];
-            realDamage[name] = value / length;
-          }
-          realDamage.normal = 600;
-          return target.onAttack(_this, realDamage);
-        });
-        return _this.once("endMove:attack", function() {
-          _this.bf.setView("normal");
-          _this.bf.camera.unfollow();
-          _this.off("keyFrame", listener);
-          _this.transform.scaleX = 1;
-          _this.animateClock.setRate("fast");
-          _this.useMovement("move", true);
-          return _this.animate({
-            x: defaultPos.x,
-            y: defaultPos.y
-          }, 800, function() {
-            _this.z = -1;
-            _this.bf.mainLayer.sortDrawQueue();
-            _this.animateClock.setRate("normal");
-            _this.transform.scaleX = -1;
-            _this.useMovement(_this.defaultMovement, true);
-            return _this.bf.paused = false;
-          });
-        });
+      this.bf.camera.lookAt({
+        x: this.x,
+        y: this.y - 150
+      }, 300, 1.7);
+      this.animateClock.setRate("slow");
+      this.useMovement("attack");
+      listener = this.on("keyFrame", function(index, length) {
+        var name, realDamage, value;
+        realDamage = {};
+        for (name in damage) {
+          value = damage[name];
+          realDamage[name] = value / length;
+        }
+        realDamage.normal = 600;
+        return target.onAttack(_this, realDamage);
+      });
+      return this.once("endMove:attack", function() {
+        _this.bf.setView("normal");
+        _this.bf.camera.unfollow();
+        _this.off("keyFrame", listener);
+        _this.z = -1;
+        _this.bf.mainLayer.sortDrawQueue();
+        _this.useMovement(_this.defaultMovement, true);
+        return _this.bf.paused = false;
       });
     };
 
@@ -293,8 +284,7 @@
     };
 
     BattlefieldPlayer.prototype.draw = function(context, tickDelay) {
-      BattlefieldPlayer.__super__.draw.call(this, context, tickDelay);
-      return context.fillRect(-10, -10, 20, 20);
+      return BattlefieldPlayer.__super__.draw.call(this, context, tickDelay);
     };
 
     BattlefieldPlayer.prototype.die = function() {
@@ -440,8 +430,7 @@
     };
 
     BattlefieldMonster.prototype.draw = function(context, tickDelay) {
-      BattlefieldMonster.__super__.draw.call(this, context, tickDelay);
-      return context.fillRect(-10, -10, 20, 20);
+      return BattlefieldMonster.__super__.draw.call(this, context, tickDelay);
     };
 
     BattlefieldMonster.prototype.die = function() {

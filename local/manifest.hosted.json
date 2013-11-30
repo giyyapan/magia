@@ -10,6 +10,12 @@
         "name": "giyyapan",
         "url": ""
      },
+		"icons": {
+				"36": "/img/icon.png",
+				"48": "/img/icon.png",
+				"72": "/img/icon.png",
+				"96": "/img/icon.png"
+		},
     "launch_url": "http://115.29.37.10:8001/index.html",
     "fullscreen": "true",
 		"orientation":"landscape",
