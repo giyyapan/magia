@@ -33,6 +33,7 @@ class MapPoint extends Widget
     super tpl
     @menu = menu
     @UI["map-summary-name"].innerHTML = data.name
+    if not data.summaryImg then console.error "no img for ",data.summaryImg
     @UI["map-summary-pic"].src = Res.imgs[data.summaryImg].src
     @dom.onclick = =>
       myPopBig = new PopBig @menu.UI['map-popBig-tpl'].innerHTML,data,woldMap,name

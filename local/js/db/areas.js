@@ -18,7 +18,6 @@
           description: "常年被薄雾覆盖的森林，拥有丰富的药材资源和被此吸引的魔兽。林中的湖面下，似乎能看到微弱的光芒……",
           summaryImg: "summaryForest",
           dangerLevel: '低',
-          summaryBg: 'forestEntry',
           x: 0,
           y: 0,
           battlefieldBg: {
@@ -88,7 +87,6 @@
           description: "终年积雪的北地。风雪呼啸的冰原上，有着比温暖的南方更为热烈的生命——那个洞窟，传来了声音。",
           summaryImg: 'summarySnow',
           dangerLevel: "中",
-          summaryBg: 'snowmountainEntryBg',
           x: 0,
           y: 0,
           battlefieldBg: {
@@ -161,32 +159,28 @@
           description: '传说中的魔女——艾丽西亚的祖母留下的大房子。有宽敞的客厅和完善的工作设施，在这个地方应该可以尽情施展自己的才能了吧！',
           costEnergy: 0,
           dangerLevel: '安全',
-          summaryImg: 'summaryHome',
-          summaryBg: ''
+          summaryImg: 'summaryHome'
         },
         magicItemShop: {
           name: '绯红魔法店',
           description: '这儿没什么好东西而且都很贵，不过附近好像也就只有这个地方愿意收购魔法物品了...真是太惨了',
           costEnergy: 0,
-          summaryImg: 'summaryShop',
-          dangerLevel: '安全',
-          summaryBg: ''
+          summaryImg: 'summaryItemShop',
+          dangerLevel: '安全'
         },
         equipmentShop: {
           name: '奇迹裁缝',
-          description: '出售魔法师用的服装和法杖',
+          description: '出售魔法师用的服装和法杖,老板娘很风骚呢～',
           costEnergy: 0,
-          summaryImg: 'summaryShop',
-          dangerLevel: '安全',
-          summaryBg: ''
+          summaryImg: 'summaryEquipmentShop',
+          dangerLevel: '安全'
         },
         guild: {
-          name: '冒险者协会',
+          name: '冒险者公会',
           description: '冒险者协会在这个城镇的分会，附件的人都会来这里提交委托',
           costEnergy: 0,
-          summaryImg: 'summaryShop',
-          dangerLevel: '安全',
-          summaryBg: ''
+          summaryImg: 'summaryGuild',
+          dangerLevel: '安全'
         }
       };
     }

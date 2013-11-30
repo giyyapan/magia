@@ -15,7 +15,7 @@
 .action-btns #defense-btn{top:-23px;left:125px}
 .action-btns #magic-btn{top:63px;left:211px}
 .action-btns #escape-btn{bottom:1px;left:242px}
-.speed-bar-box{width:100%;left:0;top:20px;text-align:center}.speed-bar-box .speed-item-list,.speed-bar-box .speed-bar{position:relative;width:980px;margin:auto;border:2px solid transparent}
+.speed-bar-box{width:100%;left:0;top:20px;text-align:center}.speed-bar-box .speed-item-list,.speed-bar-box .speed-bar{position:relative;overflow:auto;width:980px;margin:auto;border:2px solid transparent}
 .speed-bar-box .speed-bar{height:14px;border-radius:7px;border:2px solid #d8b68f;background-color:#d8b68f}.speed-bar-box .speed-bar .speed-bar-inner{display:block;height:10px;border-radius:6px;background-color:#7ae0e9;border:2px solid #274144}
 .speed-bar-box .speed-item-list{left:-30px;overflow:visible}
 .speed-bar-box .speed-item{display:inline-block;width:50px;position:absolute;top:0}.speed-bar-box .speed-item .speed-item-bg{display:inline;width:100%;height:auto}

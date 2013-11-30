@@ -1,4 +1,4 @@
-playerData =
+testPlayerData = 
   name:"Nola"
   lastStage:"home"
   money:4000
@@ -24,6 +24,8 @@ playerData =
     {name:"fireMid",number:10,type:"item"}
     {name:"minusLow",number:10,type:"item"}
     ]
+  unlockedAreas:
+    all:true
   missions:
     current:{}
     completed:{}#completed but not reported
@@ -57,7 +59,48 @@ playerData =
     precision:95
     resistance:10
     spd:8
-    
+
+playerData =
+  name:"Nola"
+  lastStage:"home"
+  money:0
+  energy:30
+  backpack:[]
+  missions:
+    current:{}
+    completed:{}#completed but not reported
+    finished:{}#completed and areported
+  storys:
+    current:null
+    completed:{}
+  relationships:
+    luna:0
+    dirak:0
+    lilith:0
+  unlockedAreas:{}
+  storage:[]
+  equipments:[]
+  currentEquipments:
+    hat:"bigginerHat"#hp
+    weapon:"begginerStaff"#atk
+    clothes:"bigginerRobe"#def
+    shose:"bigginerShose"#spd
+    other:null
+  basicStatusValue:
+    hp:300
+    mp:300
+    atk:20
+    normalDef:30
+    fireDef:0
+    waterDef:0
+    earthDef:0
+    airDef:0
+    spiritDef:0
+    minusDef:0
+    precision:95
+    resistance:10
+    spd:8
+
 class window.Player extends EventEmitter
   constructor:(db)->
     super null
@@ -68,6 +111,8 @@ class window.Player extends EventEmitter
     @maxEnergy = 30
     @energy = @maxEnergy
     @saveLock = false
+    window.fuckmylife = =>
+      @newData testPlayerData 
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"
@@ -75,10 +120,13 @@ class window.Player extends EventEmitter
     if not data or Utils.getKey(JSON.stringify(data)) isnt parseInt(dataKey)
       return false
     @data = data
-    @initData()
+    try
+      @initData()
+    catch err
+      @newData()
     return true
-  newData:->
-    @data = playerData
+  newData:(data)->
+    @data = data or playerData
     console.log "new data",@data
     @initData()
     return true
@@ -86,6 +134,7 @@ class window.Player extends EventEmitter
     @money = @data.money
     @energy = @data.energy
     @relationships = @data.relationships
+    @unlockedAreas = @data.unlockedAreas
     @lastStage = @data.lastStage
     @storys = @data.storys
     @missions = @data.missions
@@ -195,6 +244,7 @@ class window.Player extends EventEmitter
       lastStage:@lastStage
       storys:@storys
       missions:@missions
+      unlockedAreas:@unlockedAreas
       basicStatusValue:@basicStatusValue
       relationships:@relationships
       backpack:backpack

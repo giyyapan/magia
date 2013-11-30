@@ -84,7 +84,7 @@ class BattlefieldPlayer extends Sprite
     @speedItem.on "active",=>
       @act()
   act:->
-    @ondefense = false
+    @isDefensed = false
     @bf.paused = true
     @bf.camera.lookAt {x:@x,y:@y - 150},400,1.7
     @bf.menu.showActionBtns()
@@ -117,7 +117,7 @@ class BattlefieldPlayer extends Sprite
       @useMovement @defaultMovement,true
       @bf.paused = false
   defense:->
-    @ondefense = true
+    @isDefensed = true
   castSpell:(sourceItemWidget,target)->
     console.log "cast spell to ",target
     sourceItemWidget.playerSupplies.remainCount -= 1
@@ -145,6 +145,7 @@ class BattlefieldPlayer extends Sprite
     #console.log "player onattack,damage:",damage
     @bf.camera.shake "fast"
     for type,value of damage
+      if @isDefensed then value = parseInt(value/3)
       @hp -= value
     if @hp <= 0
       @hp = 0
@@ -237,6 +238,8 @@ class BattlefieldMonster extends Sprite
     @bf.camera.shake "fast"
     for name,value of damage
       @hp -= value
+    if @hp <= 1 and bf.data.nolose
+      @hp = 1
     if @hp <= 0
       @lifeBar.animate value:0,100,"swing"
       @die()
@@ -329,6 +332,9 @@ class BattlefieldMenu extends Menu
       item.appendTo @UI['target-select-box']
   handlePlayerDefense:->
     console.log "defense clicked"
+    @hideActionBtns()
+    @bf.setView "default"
+    @bf.player.defense()
   handlePlayerMagic:->
     @UI['spell-source-layer'].J.hide()
     @detailsBox.J.hide()

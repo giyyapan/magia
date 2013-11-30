@@ -7,7 +7,9 @@
     summaryForest: 'worldMap/map-summary-forest.jpg',
     summarySnow: 'worldMap/map-summary-snowmountain.jpg',
     summaryHome: 'worldMap/map-summary-home.jpg',
-    summaryShop: 'worldMap/map-summary-shop.jpg',
+    summaryItemShop: 'worldMap/map-summary-item-shop.jpg',
+    summaryEquipmentShop: 'worldMap/map-summary-equipment-shop.jpg',
+    summaryGuild: 'worldMap/map-summary-guild.jpg',
     forestEntry: 'forest-entry.jpg',
     forestEntryFloat1: 'forest-entry-float.png',
     forestEntryFloat2: 'forest-entry-float2.png',
@@ -61,8 +63,11 @@
     item_spiritLow: 'things/spiritLow.jpg',
     item_spiritMid: 'things/spiritMid.jpg',
     item_timeLow: "things/timeLow.jpg",
-    item_spaceLow: "things/spaceLow.jpg"
+    item_spaceLow: "things/spaceLow.jpg",
+    supplies_icon: "menu/supplies-icon.jpg"
   };
+
+  window.MenuImgs = ["worldMap/map-bg.jpg", "worldMap/border.png", "worldMap/border-bg.png", "menu/items-icon.jpg", "menu/bf-status-box-bg.png", "menu/texture-bg.jpg", "menu/arrow-left.png", "menu/arrow-right.png", "menu/backpack-border-bg.jpg", "menu/backpack-border-fl.png", "menu/backpack-flag-bg.png", "menu/backpack-main-bg.png"];
 
   window.Sprites = {
     qq: "qq",

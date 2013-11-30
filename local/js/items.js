@@ -72,7 +72,7 @@
       originData = db.things.supplies.get(name);
       PlayerSupplies.__super__.constructor.call(this, name, originData, "supplies");
       if (!this.img) {
-        this.img = Res.imgs['item_waterLow'];
+        this.img = Res.imgs['supplies_icon'];
       }
       this.maxRemainCount = 5;
       this.remainCount = data.remainCount || this.maxRemainCount;

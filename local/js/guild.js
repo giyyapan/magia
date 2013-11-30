@@ -15,24 +15,38 @@
       this.missionData = missionData;
       this.mission = missionData;
       this.UI.name.J.text(missionData.dspName);
-      switch (missionData.status) {
+      this.dom.onclick = function() {
+        _this.menu.detailsBox.showMissionDetails(_this);
+        return _this.menu.detailsBox.on("activeMission", function(mission) {
+          if (mission === _this.mission) {
+            return _this.updateStatus();
+          }
+        });
+      };
+      this.updateStatus();
+    }
+
+    MissionListItem.prototype.updateStatus = function() {
+      var _this = this;
+
+      switch (this.missionData.status) {
         case "current":
           this.type = "进行中";
           break;
         case "finished":
           this.type = "已结束";
-          break;
+          this.J.slideUp("fast", function() {
+            return _this.remove();
+          });
+          return;
         case "avail":
           this.type = "可接受";
           break;
         case "disable":
           this.type = "条件不足";
       }
-      this.UI.status.J.text(this.type);
-      this.dom.onclick = function() {
-        return _this.menu.detailsBox.showMissionDetails(_this);
-      };
-    }
+      return this.UI.status.J.text(this.type);
+    };
 
     return MissionListItem;
 

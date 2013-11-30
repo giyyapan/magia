@@ -28,7 +28,7 @@ class window.PlayerSupplies extends Things
     if not data.traitValue then console.error "need trait value"
     originData = db.things.supplies.get name
     super name,originData,"supplies"
-    if not @img then @img = Res.imgs['item_waterLow']
+    if not @img then @img = Res.imgs['supplies_icon']
     @maxRemainCount = 5
     @remainCount = data.remainCount or @maxRemainCount
     @traitValue = data.traitValue

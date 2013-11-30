@@ -64,6 +64,9 @@
       MapPoint.__super__.constructor.call(this, tpl);
       this.menu = menu;
       this.UI["map-summary-name"].innerHTML = data.name;
+      if (!data.summaryImg) {
+        console.error("no img for ", data.summaryImg);
+      }
       this.UI["map-summary-pic"].src = Res.imgs[data.summaryImg].src;
       this.dom.onclick = function() {
         var myPopBig;

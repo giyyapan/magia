@@ -5,18 +5,25 @@ class MissionListItem extends Widget
     @missionData = missionData
     @mission = missionData
     @UI.name.J.text missionData.dspName
-    switch missionData.status
+    @dom.onclick = =>
+      @menu.detailsBox.showMissionDetails this
+      @menu.detailsBox.on "activeMission",(mission)=>
+        if mission is @mission then @updateStatus()
+    @updateStatus()
+  updateStatus:->
+    switch @missionData.status
       when "current"
         @type = "进行中"
       when "finished"
         @type = "已结束"
+        @J.slideUp "fast",=>
+          @remove()
+        return
       when "avail"
         @type = "可接受"
       when "disable"
         @type = "条件不足"
     @UI.status.J.text @type
-    @dom.onclick = =>
-      @menu.detailsBox.showMissionDetails this
 
 class GuildMenu extends Menu
   constructor:(guild)->

@@ -44,7 +44,6 @@ class window.Backpack extends Menu
   initThings:(type="gatherArea")->
     self = this
     @UI['type-switch'].J.find(".tab").on "click",->
-      console.log "fuck",$(this).attr "value"
       return if not $(this).attr "value"
       self.switchTab $(this).attr "value"
     @freeThings()
@@ -80,6 +79,8 @@ class window.Backpack extends Menu
       item.appendTo @UI['item-list']
       item.on "select",->
         self.selectThing this
+    if arr.length is 0 then @UI['item-list'].innerHTML =
+      "<h3>没有道具</h3>"
   selectThing:(item)->
     @J.find("thing-list-item").removeClass "selected"
     console.log item

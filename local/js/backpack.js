@@ -96,7 +96,6 @@
       }
       self = this;
       this.UI['type-switch'].J.find(".tab").on("click", function() {
-        console.log("fuck", $(this).attr("value"));
         if (!$(this).attr("value")) {
           return;
         }
@@ -128,7 +127,7 @@
     };
 
     Backpack.prototype.switchTab = function(tabName) {
-      var arr, item, self, thing, _i, _len, _results;
+      var arr, item, self, thing, _i, _len;
 
       this.UI['item-list'].J.html("");
       this.detailsBox.J.fadeOut("fast");
@@ -153,16 +152,17 @@
       if (!arr) {
         return;
       }
-      _results = [];
       for (_i = 0, _len = arr.length; _i < _len; _i++) {
         thing = arr[_i];
         item = new ThingListItem(thing);
         item.appendTo(this.UI['item-list']);
-        _results.push(item.on("select", function() {
+        item.on("select", function() {
           return self.selectThing(this);
-        }));
+        });
       }
-      return _results;
+      if (arr.length === 0) {
+        return this.UI['item-list'].innerHTML = "<h3>没有道具</h3>";
+      }
     };
 
     Backpack.prototype.selectThing = function(item) {

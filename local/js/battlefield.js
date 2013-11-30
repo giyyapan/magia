@@ -155,7 +155,7 @@
     }
 
     BattlefieldPlayer.prototype.act = function() {
-      this.ondefense = false;
+      this.isDefensed = false;
       this.bf.paused = true;
       this.bf.camera.lookAt({
         x: this.x,
@@ -213,7 +213,7 @@
     };
 
     BattlefieldPlayer.prototype.defense = function() {
-      return this.ondefense = true;
+      return this.isDefensed = true;
     };
 
     BattlefieldPlayer.prototype.castSpell = function(sourceItemWidget, target) {
@@ -264,6 +264,9 @@
       this.bf.camera.shake("fast");
       for (type in damage) {
         value = damage[type];
+        if (this.isDefensed) {
+          value = parseInt(value / 3);
+        }
         this.hp -= value;
       }
       if (this.hp <= 0) {
@@ -433,6 +436,9 @@
       for (name in damage) {
         value = damage[name];
         this.hp -= value;
+      }
+      if (this.hp <= 1 && bf.data.nolose) {
+        this.hp = 1;
       }
       if (this.hp <= 0) {
         this.lifeBar.animate({
@@ -608,7 +614,10 @@
     };
 
     BattlefieldMenu.prototype.handlePlayerDefense = function() {
-      return console.log("defense clicked");
+      console.log("defense clicked");
+      this.hideActionBtns();
+      this.bf.setView("default");
+      return this.bf.player.defense();
     };
 
     BattlefieldMenu.prototype.handlePlayerMagic = function() {
