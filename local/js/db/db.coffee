@@ -27,24 +27,25 @@ class window.Database extends Suzaku.EventEmitter
     @initRules()
   initRules:->
     @rules.data.reaction = [
-      "fire:2,air:1->burn"
-      "burn:3,fire:2,air:1->explode"
-      "fire:1,earth:2->iron"
-      "water:1,earth:1->muddy"
-      "water:2,fire:1,air:1->fog"
-      "cold:2,air:2->freeze"
-      "freeze:2,water:2,air:2->snow"
+      "fire:2,air:1->burn" #点燃
+      "burn:3,fire:2,air:1->explode" #爆炸
+      "fire:1,earth:2->iron" #钢
+      "water:1,earth:1->muddy" #泥泞
+      "water:2,fire:1,air:1->fog" #
+      "ice:2,water:2,air:2->snow"
       "life:2,earth:1->heal"
       "life:2,water:1->clean"
       "life:2,fire:1->brave"
       "iron:3,minus:2->corrosion"#腐蚀
       "life:3,spirit:2,air:2->boost"
       "minus:2,life:2->poison"
+      "spirit:3,poison:2->stun"
     ]
+    @rules.data.qualityLevel = [30,100,200,300,500,800]
   initCharacters:->
     @characters.data =
       nobody:
-        name:"???"
+        name:""
         dialogPic:""
       player:
         name:"艾丽西亚"
@@ -52,15 +53,19 @@ class window.Database extends Suzaku.EventEmitter
       cat:
         description:""
         name:"奇奇"
-        dialogPic:""
+        dialogPic:"catDialog"
       luna:
         name:"露娜"
         description:"绯红魔法店的掌柜"
-        dialogPic:""
+        dialogPic:"lunaDialog"
+      lilith:
+        name:"莉莉丝"
+        description:"奇迹裁缝的掌柜"
+        dialogPic:"lilithDialog"
       dirak:
         name:"狄拉克"
-        description:"武器店的老板"
-        dialogPic:""
+        description:"冒险者公会的管理员"
+        dialogPic:"diracDialog"
   initSprites:->
     @monsters.data =
       qq:
@@ -87,7 +92,34 @@ class window.Database extends Suzaku.EventEmitter
           attack:"16,23:4,6"
           cast:"0,6"
         drop:
-          certain:["bluerose"]
+          certain:[]
+          random:null
+      pig:
+        name:"布塔猪"
+        sprite:Res.sprites.pig
+        icon:null
+        statusValue:
+          hp:1000
+          def:30
+          spd:30
+        skills:
+          attack:
+            damage:
+              normal:30
+              water:10
+          waterball:
+            turn:2
+            damage:
+              water:100
+        anchor:"180,240"
+        movements:
+          normal:"0,0"
+          move:"0,7"
+          attack:"8,16:11"
+          onattack:"17,17"
+          cast:"0,6"
+        drop:
+          certain:[]
           random:null
       slime:
         name:"史莱姆"

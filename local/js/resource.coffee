@@ -3,21 +3,28 @@ window.Imgs =
   summarySnow:  'worldMap/map-summary-snowmountain.jpg'
   summaryHome:  'worldMap/map-summary-home.jpg'
   summaryShop:  'worldMap/map-summary-shop.jpg'
-  buttonCenter:'button_center.png'
-  item:'item.png'
   forestEntry:'forest-entry.jpg'
   forestEntryFloat1:'forest-entry-float.png'
   forestEntryFloat2:'forest-entry-float2.png'
+  forestLake:'forest-lake.jpg'
   snowmountainEntryBg:'snowmountain-entry-bg.jpg'
   snowmountainEntryMain:'snowmountain-entry-main.png'
   snowmountainEntryFloat:'snowmountain-entry-float.png'
+  snowmountainMiddle:'snowmountain-middle.jpg'
+  snowmountainCave:'snowmountain-cave.jpg'
+  snowmountainCaveFloat:'snowmountain-cave-float.png'
   startBg:"start-bg.jpg"
   startBgLight:"start-bg-light.jpg"
   forest2:'forest2.jpg'
   forest3:'forest3.jpg'
   bfForestMain:'bf-forest-main.jpg'
   bfForestFloat:'bf-forest-float.png'
+  bfSnowmountain:'bf-snowmountain.jpg'
   playerDialog:'characters/player-dialog.png'
+  catDialog:'characters/cat-dialog.png'
+  lunaDialog:'characters/luna-dialog.png'
+  lilithDialog:'characters/lilith-dialog.png'
+  dirakDialog:'characters/dirak-dialog.png'
   layer1:'layer1.png'
   layer2:'layer2.png'
   layer3:'layer3.png'
@@ -25,13 +32,37 @@ window.Imgs =
   layer5:'layer5.png'
   layer6:'layer6.png'
   magicShopBg:'magic-shop-bg.jpg'
+  equipShopBg:'equip-shop-bg.jpg'
+  guildBg:'guild-bg.jpg'
   homeDownMain:'home-down-main.jpg'
   homeDownFloat:"home-down-float.png"
   homeUp:'home_up.jpg'
   dialogContinueHint:'menu/dialog-continue-hint.png'
   dialogBg:'menu/dialog-bg.png'
+  item_earthLow:'things/earthLow.jpg'
+  item_earthMid:'things/earthMid.jpg'
+  item_earthHigh:'things/earthHigh.jpg'
+  item_fireLow:'things/fireLow.jpg'
+  item_fireMid:'things/fireMid.jpg'
+  item_fireHigh:'things/fireHigh.jpg'
+  item_waterLow:'things/waterLow.jpg'  
+  item_waterHigh:'things/waterHigh.jpg'
+  item_airMid:'things/airMid.jpg'
+  item_iceLow:'things/iceLow.jpg'
+  item_iceMid:'things/iceMid.jpg'  
+  item_iceHigh:'things/iceHigh.jpg'
+  item_lifeLow:'things/lifeLow.jpg'
+  item_lifeMid:'things/lifeMid.jpg'  
+  item_minusLow:'things/minusLow.jpg'
+  item_minusMid:'things/minusMid.jpg'
+  item_spiritLow:'things/spiritLow.jpg'  
+  item_spiritMid:'things/spiritMid.jpg'
+  item_timeLow:"things/timeLow.jpg"
+  item_spaceLow:"things/spaceLow.jpg"
+
 window.Sprites =
   qq:"qq"
+  pig:"pig"
   
 window.Templates = [
   "start-menu"
@@ -115,17 +146,7 @@ class window.ResourceManager extends Suzaku.EventEmitter
         self.loaded.imgs[this.name] = this
         self._resOnload 'img'
     for sprite in @sprites
-      i = new Image()
-      console.log @spritePath
-      i.src = @spritePath+sprite.mapSrc
-      i.dataSrc = @spritePath+sprite.dataSrc
-      i.name = sprite.name
-      i.addEventListener "load",->
-        img = this
-        $.get img.dataSrc,(data)->
-          console.log data
-          self.loaded.sprites[img.name] = map:img,data:data
-          self._resOnload 'sprite'
+      @loadSprite sprite
     #for sound in @sounds
       #@_resOnload 'sound'
     localDir = @tplPath
@@ -137,6 +158,18 @@ class window.ResourceManager extends Suzaku.EventEmitter
       req.Suzaku_tplName = tplName
     ajaxManager.start =>
       console.log "template loaded" if GameConfig.debug
+  loadSprite:(sprite)->
+    self = this
+    i = new Image()
+    console.log @spritePath
+    i.src = @spritePath+sprite.mapSrc
+    i.dataSrc = @spritePath+sprite.dataSrc
+    i.name = sprite.name
+    i.addEventListener "load",->
+      img = this
+      $.get img.dataSrc,(data)->
+        self.loaded.sprites[img.name] = map:img,data:data
+        self._resOnload 'sprite'
   _resOnload:(type)->
     @loadedNum += 1
     @emit "loadOne",@totalResNum,@loadedNum,type

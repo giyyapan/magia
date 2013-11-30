@@ -72,8 +72,10 @@ class window.DialogBox extends Menu
             dspName = "???"
     @setSpeaker dspName
   setSpeaker:(speaker)->
-    return if not speaker
-    @UI.speaker.J.text "#{speaker}:"
+    if speaker
+      @UI.speaker.J.text "#{speaker}:"
+    else
+      @UI.speaker.J.text " "
   endDisplay:()->
     window.clearInterval @displayInterval
     @displayLock = false

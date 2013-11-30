@@ -16,7 +16,7 @@ ul{overflow:auto;list-style:none;margin:0;padding:0}
 #UILayer{overflow:hidden}#UILayer .menu{position:fixed;left:0;top:0;width:100%;height:100%;z-index:1}
 .invisible{visibility:hidden}
 .screen{position:fixed;top:0;width:1280px;height:720px}
-#loadingPage{color:#fff;width:100%;height:100%;position:absolute;z-index:9999;top:0;left:0}
+#loadingPage{overflow:hidden;color:#fff;width:100%;height:100%;position:absolute;z-index:9999;top:0;left:0}
 #start-menu .logo-holder{width:100%;height:100%;float:right;background:-webkit-gradient(linear, right 73.9%, left top, from(#141414), color-stop(.45, rgba(20,20,20,0.1)), to(rgba(0,0,0,0)));overflow:hidden}#start-menu .logo-holder .real-logo{position:relative;width:100%;height:50%}#start-menu .logo-holder .real-logo div[data-id="logo-holder"]{position:absolute;right:0;bottom:0}#start-menu .logo-holder .real-logo div[data-id="logo-holder"] .start-logo-bg{position:absolute;right:-108px;bottom:-24px;opacity:0}
 #start-menu .logo-holder .real-logo div[data-id="logo-holder"] .start-logo{position:absolute;right:-20px;bottom:0;opacity:0}
 #start-menu .logo-holder .real-logo div[data-id="logo-holder"] p{width:0;height:3px;display:block;background:#fff;position:absolute;right:-36px;bottom:35px}

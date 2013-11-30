@@ -165,9 +165,7 @@
           console.error("" + d + " is not drawable or Menu");
         }
       }
-      return this.drawQueue.after.sort(function(a, b) {
-        return b.z - a.z;
-      });
+      return this.sortDrawQueue();
     };
 
     Camera.prototype.getOffsetScaleX = function(targetZ, s) {

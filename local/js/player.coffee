@@ -4,12 +4,25 @@ playerData =
   money:4000
   energy:50
   backpack:[
-    {name:"healPotion",traitValue:300,type:"supplies"}
-    {name:"firePotion",traitValue:300,type:"supplies"}
-    {name:"scree",number:10,type:"item"}
-    {name:"lakeWater",number:10,type:"item"}
-    {name:"herbs",number:10,type:"item"}
-    {name:"caveMashroom",number:10,type:"item"}
+    {name:"healPotion",traitValue:30,type:"supplies"}
+    {name:"firePotion",traitValue:50,type:"supplies"}
+    {name:"firePotion",traitValue:100,type:"supplies"}
+    {name:"fogPotion",traitValue:30,type:"supplies"}
+    {name:"corrosionPotion",traitValue:100,type:"supplies"}
+    {name:"burnPotion",traitValue:30,type:"supplies"}
+    {name:"ironPotion",traitValue:30,type:"supplies"}
+    {name:"explodePotion",traitValue:50,type:"supplies"}
+    {name:"muddyPotion",traitValue:50,type:"supplies"}
+    {name:"bravePotion",traitValue:50,type:"supplies"}
+    {name:"stunPotion",traitValue:50,type:"supplies"}
+    {name:"earthLow",number:10,type:"item"}
+    {name:"earthMid",number:10,type:"item"}
+    {name:"lifeLow",number:10,type:"item"}
+    {name:"iceLow",number:10,type:"item"}
+    {name:"waterLow",number:10,type:"item"}
+    {name:"fireLow",number:10,type:"item"}
+    {name:"fireMid",number:10,type:"item"}
+    {name:"minusLow",number:10,type:"item"}
     ]
   missions:
     current:{}
@@ -21,6 +34,7 @@ playerData =
   relationships:
     luna:0
     dirak:0
+    lilith:0
   storage:[]
   equipments:[]
   currentEquipments:
@@ -40,16 +54,17 @@ playerData =
     airDef:0
     spiritDef:0
     minusDef:0
-    luk:0
+    precision:95
+    resistance:10
     spd:8
     
 class window.Player extends EventEmitter
   constructor:(db)->
     super null
     @db = db
-    @energy = 50
     if not @loadData()
       @newData()
+    @energy = 20
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"

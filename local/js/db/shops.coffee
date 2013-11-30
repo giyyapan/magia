@@ -26,13 +26,13 @@ class window.ShopsDB extends SubDB
         playerBuyPrice:{0:1,100:0.9,500:0.8}
       equipmentShop:
         name:"奇迹裁缝"
-        npc:null
-        bg:"magicShopBg"
+        npc:"lilith"
+        bg:"equipShopBg"
       adventurerGuild:
         name:"法师协会"
         npc:"dirak"
         npcName:"狄拉克"
-        bg:"magicShopBg"
+        bg:"guildBg"
         exitText:"嗯。一路顺风！"
         welcomeText:
           0:"你好，年轻的魔女。冒险者协会欢迎你！"

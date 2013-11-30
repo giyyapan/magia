@@ -1,11 +1,12 @@
 class ThingListItem extends Widget
   constructor:(playerThing)->
-    console.log playerThing
     super Res.tpls['thing-list-item']
     originData = playerThing.originData
     @UI.img.src = originData.img.src if originData.img
     @UI.name.J.text originData.name
     @UI.quatity.J.text playerThing.number if playerThing.number
+    @playerThing = playerThing
+    @UI.img.src = @playerThing.img.src if @playerThing.img
     @originData = originData
     switch playerThing.type
       when "item" then @playerItem = playerThing
@@ -21,6 +22,7 @@ class DetailsBox extends ItemDetailsBox
     @dom.id = "item-details-box"
     @bp = backpack
     @UI['cancel-btn'].J.hide()
+    @UI['use-btn'].J.hide()
 
 class window.Backpack extends Menu
   constructor:(game)->
@@ -36,20 +38,20 @@ class window.Backpack extends Menu
     @equipments = null
     @initButtons()
   initButtons:->
-    self = this
     @UI['exit-btn'].onclick = =>
       @emit "close"
       @hide()
+  initThings:(type="gatherArea")->
+    self = this
     @UI['type-switch'].J.find(".tab").on "click",->
+      console.log "fuck",$(this).attr "value"
       return if not $(this).attr "value"
       self.switchTab $(this).attr "value"
-  initThings:(type="gatherArea")->
     @freeThings()
     tabName = @currentTabName
     if type is "gatherArea"
       source = @player.backpack
     for thing in @player.backpack
-      console.log thing
       switch thing.type
         when "item" then @items.push thing
         when "supplies" then @supplies.push thing
@@ -72,7 +74,6 @@ class window.Backpack extends Menu
         arr = @equipments
         @UI['equipments-tab'].J.addClass "selected"
       else console.error "wrong type",tabName
-    console.log arr
     return if not arr
     for thing in arr
       item = new ThingListItem thing
@@ -84,7 +85,6 @@ class window.Backpack extends Menu
     console.log item
     @detailsBox.showItemDetails item
   freeThings:->
-    Utils.free @items,@supplies,@materials,@equipments
     @items = []
     @supplies = []
     @materials = []
@@ -93,12 +93,12 @@ class window.Backpack extends Menu
     @init()
     @initThings()
     @UILayer.J.fadeIn "fast",callback
-    @J.slideDown "fast",=>
+    @J.fadeIn "fast",=>
       @emit "show"
       callback() if callback
   hide:(callback)->
     super()
-    @J.slideUp "fast",=>
+    @J.fadeOut "fast",=>
       @emit "hide"
       callback() if callback
       

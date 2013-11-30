@@ -105,6 +105,7 @@
 
   MainHandler = function(req, res) {
     var ext, pathname, realPath, type, urldata;
+    req.setEncoding("utf8");
     urldata = Url.parse(req.url);
     pathname = urldata.pathname;
     if (pathname === "/") {

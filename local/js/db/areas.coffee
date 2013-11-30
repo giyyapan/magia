@@ -24,7 +24,7 @@ class window.AreasDB extends SubDB
         places:
           entry:
             defaultX:300
-            name:"森林入口"
+            name:"森林外围"
             bg:
               forestEntry:
                 z:1000
@@ -32,48 +32,51 @@ class window.AreasDB extends SubDB
               forestEntryFloat1:
                 z:600
                 y:-50
-                scale:1.05
               forestEntryFloat2:
                 z:1
                 x:300
-                scale:2
                 fixToBottom:true
             resPoints:["0,80","400,500","800,300","1000,300"] #start from 1
             resources:[ #每个对应一个资源点
-              "scree"
-              "scree,flint"
-              "lakeWater"
-              "herbs,mouseTailHerbs"
-              "caveMashroom"]
+              "earthLow"
+              "earthLow,fireLow"
+              "fireLow"
+              "lifeLow"
+              "earthLow"]
             monsters:
-              certain:['1:qq,qq,qq']
+              certain:['1:qq,pig,slime']
               random:['2:qq','3:qq']
-            movePoints:["exit","west","east"]
-          east:
-            name:"东部森林"
+            movePoints:["exit:345,585","lake:959,355"]
+          lake:
+            name:"湖"
             bg:
-              forest2:
+              forestLake:
                 z:1000
+            floatBg:
+              forestEntryFloat2:
+                z:1
+                x:300
+                fixToBottom:true
             resPoints:["1,1","20,80"]
-            movePoints:["entry"]
-          west:
-            name:"西部森林"
-            bg:
-              forest3:
-                z:1000
-            resPoints:["1,1","20,80"]
-            movePoints:["entry"]
+            movePoints:["entry:684,600"]
       snowmountain:
-        name:"雪山"
+        name:"雪域"
         costEnergy:10
         description:"雪山里面有雪人，雪人的名字叫耶提"
         summaryImg:'summarySnow'
         dangerLevel:  "中"
         summaryBg:'snowmountainEntryBg'
         x:0,y:0
+        battlefieldBg:
+          bfSnownmountain:
+            z:1000
+            anchor:
+              x:150
+              y:0
+            main:true
         places:
           entry:
-            name:"雪山山顶"
+            name:"大冰原"
             bg:
               snowmountainEntryMain:
                 z:1000
@@ -86,35 +89,35 @@ class window.AreasDB extends SubDB
                 fixToBottom:true
             resPoints:["0,80","400,500","800,300","1000,300"] #start from 1
             resources:[ #每个对应一个资源点
-              "scree"
-              "scree,flint"
-              "lakeWater"
-              "herbs,mouseTailHerbs"
-              "caveMashroom"
+              "iceLow"
+              "iceLow"
+              "iceLow"
+              "iceLow"
+              "iceLow"
               ]
             monsters:
               certain:['1:qq,qq,qq']
               random:['2:qq','3:qq']
-            movePoints:["exit","west","east"]
-          east:
-            name:"东部雪山"
+            movePoints:["exit:180,480","middle:1850,560"]
+          middle:
+            name:"雪谷"
             bg:
-              snowmountainEntryMain:
+              snowmountainMiddle:
                 z:1000
-              snowmountainEntryBg:
-                fixed:true
+            resPoints:["1,1","20,80"]
+            movePoints:["entry:30,50","cave:430,510"]
+          cave:
+            name:"蓝晶洞穴"
+            bg:
+              snowmountainCave:
+                z:1000
             floatBg:
-              snowountainEntryFloat:
-                z:600
-                x:200
+              snowmountainCaveFloat:
+                z:400
+                x:300
                 fixToBottom:true
             resPoints:["1,1","20,80"]
-            movePoints:["entry"]
-          west:
-            name:"西部雪山"
-            bg:["forest3"]
-            resPoints:["1,1","20,80"]
-            movePoints:["entry"]
+            movePoints:["middle:720,120"]
       home:
         name:"魔女宅"
         description:'传说中的魔女——艾丽西亚的祖母留下的大房子。有宽敞的客厅和完善的工作设施，在这个地方应该可以尽情施展自己的才能了吧！'

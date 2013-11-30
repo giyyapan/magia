@@ -75,6 +75,7 @@ WriteFile = (req,realPath,type,stats,res)->
     raw.pipe res
 
 MainHandler = (req,res)->
+  req.setEncoding("utf8");
   urldata = Url.parse req.url
   pathname = urldata.pathname
   if pathname is "/" then pathname = config.defaultPathname

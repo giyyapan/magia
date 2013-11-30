@@ -25,7 +25,7 @@ class SpellSourceItem extends Widget
     @originData = playerSupplies.originData
     @effectData = @originData[type]
     @traitValue = playerSupplies.traitValue
-    @UI.img.src = @originData.img
+    @UI.img.src = playerSupplies.img.src
     @UI.name.J.text @originData.name
     @dom.onclick = (evt)=>
       menu.detailsBox.showItemDetails this
@@ -89,6 +89,9 @@ class BattlefieldPlayer extends Sprite
       @speedItem.tick tickDelay
   attack:(target)->
     @bf.paused = true
+    @z = 999
+    @bf.mainLayer.sortDrawQueue()
+    console.log @bf.mainLayer.drawQueue
     damage = @originData.skills.attack.damage
     @bf.setView "default"
     defaultPos = x:@x,y:@y
@@ -112,6 +115,8 @@ class BattlefieldPlayer extends Sprite
         @animateClock.setRate "fast"
         @useMovement "move",true
         @animate {x:defaultPos.x,y:defaultPos.y},800,=>
+          @z = -1
+          @bf.mainLayer.sortDrawQueue()
           @animateClock.setRate "normal"
           @transform.scaleX = -1
           @useMovement @defaultMovement,true
@@ -384,6 +389,7 @@ class window.Battlefield extends Stage
       y = startY + index*dy
       mdata = @db.monsters.get name
       monster = new BattlefieldMonster this,x,y,mdata
+      monster.z = index
       @monsters.push monster
       @mainLayer.drawQueueAddAfter monster
   initLayers:->
@@ -399,6 +405,7 @@ class window.Battlefield extends Stage
           when "anchor" then bg.setAnchor value
           else bg[name] = value
       @camera.render bg
+      @bgs.push bg
     @mainLayer = @bgs[0] if not @mainLayer
     @camera.defaultReferenceZ = @mainLayer.z
     @menu = new BattlefieldMenu this,Res.tpls['battlefield-menu']

@@ -6,10 +6,7 @@ class window.Things extends EventEmitter
     @name = name
     @dspName = data.name
     @type = type
-    if data.img
-      @img = Res.imgs[data.img]
-    else
-      @img = null
+    @img = @originData.img or Res.imgs["#{type}_#{name}"]
   getDate:->
     return name:@name,type:@type
       
@@ -31,6 +28,7 @@ class window.PlayerSupplies extends Things
     if not data.traitValue then console.error "need trait value"
     originData = db.things.supplies.get name
     super name,originData,"supplies"
+    if not @img then @img = Res.imgs['item_waterLow']
     @maxRemainCount = 5
     @remainCount = data.remainCount or @maxRemainCount
     @traitValue = data.traitValue

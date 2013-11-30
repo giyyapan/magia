@@ -122,10 +122,13 @@ class Place extends Layer
   initBg:->
     initLayer=(layer,detail)->
       for name,value of detail
-        if name is "fixToBottom"
-          layer.fixToBottom()
-        else
-          layer[name] = value
+        switch name
+          when "fixToBottom" then layer.fixToBottom()
+          when "scale"
+            console.log "scale",value
+            layer.transform.scale = value
+            console.log layer
+          else layer[name] = value
     @floatBgs = []
     @bgs = []
     if @data.bg then for imgName,data of @data.bg
@@ -141,6 +144,7 @@ class Place extends Layer
       @floatBgs.push bg
       @camera.render bg 
     @mainBg = @bgs[0]
+    console.log @mainBg
   initMenu:->
     s = Utils.getSize()
     @menu = new Menu Res.tpls['area-menu']
@@ -182,15 +186,17 @@ class Place extends Layer
       evt.stopPropagation()
       @emit "showBackpack"
     @menu.dom.onclick = (evt)=>
-      @searchPosition evt.offsetX,evt.offsetY
+      x = evt.myOffsetX or evt.offsetX
+      y = evt.myOffsetY or evt.offsetY
+      @searchPosition x,y
     @relativeMenu = new Menu Res.tpls['area-relative-menu']
     @relativeMenu.J.addClass @name
-    @relativeMenu.z = 1000
+    @relativeMenu.z = @mainBg.z
     @relativeMenu.UI['res-point-box'].J.hide()
     for p,index in @data.resPoints
       @addResPoint(p,index)
-    for moveTarget,index in @data.movePoints
-      @addMovePoint(moveTarget,index)
+    for mp,index in @data.movePoints
+      @addMovePoint(mp,index)
     @menu.show()
     @relativeMenu.appendTo @menu.UI['relative-wrapper']
     @camera.render @relativeMenu
@@ -247,18 +253,29 @@ class Place extends Layer
       self.handleResPointActive res
     if @data.resources then point.initItems @data.resources,@db
     if @data.monsters then point.initMonsters @data.monsters,@db
-  addMovePoint:(moveTarget,index)->
+  addMovePoint:(data,index)->
     area = @area
+    parts = data.split ":"
+    moveTarget = parts[0]
+    x = parseInt parts[1].split(",")[0]
+    y = parseInt parts[1].split(",")[1]
     item = new Suzaku.Widget @relativeMenu.UI['move-point-tpl'].innerHTML
     if moveTarget is "exit"
       item.UI.target.J.text "离开"
     else
       item.UI.target.J.text @area.originData.places[moveTarget].name
     item.dom.target = moveTarget
+    item.x = x
+    item.y = y
     item.J.addClass "mp-"+moveTarget
+    item.J.css left:"#{x}px",top:"#{y}px"
     item.appendTo @relativeMenu.UI['move-point-box']
-    item.dom.onclick = ->
-      area.enterPlace @target
+    self = this
+    item.dom.onclick = (evt)->
+      evt.myOffsetX = evt.offsetX + item.x - self.currentX
+      evt.myOffsetY = evt.offsetY + item.y
+      self.setCallback 300,=>
+        area.enterPlace @target
   handleResPointActive:(res)->
     if res.type is "item"
       @emit "getItem",res.items
@@ -281,6 +298,7 @@ class window.Area extends Stage
     @data = game.db.areas.get areaName
     @originData = @data
     @backpackMenu = new Backpack game,"gatherArea"
+    console.log this
     @enterPlace "entry"
     #@initBattlefield(["qq","qq"])
     #@initBattlefield(["qq","qq","qq"])

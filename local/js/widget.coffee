@@ -97,7 +97,9 @@ class window.ItemDetailsBox extends Widget
     @currentItem = item
     item.J.addClass "selected"
     @UI.name.J.text item.originData.name
-    @UI.img.src = item.originData.img.src if item.originData.img
+    if item.playerThing.img
+      console.log item.playerThing,item.playerThing.img
+      @UI.img.src = item.playerThing.img.src
     @UI.description.J.text item.originData.description
     @initTraits item.playerItem
     @initTraits item.playerSupplies

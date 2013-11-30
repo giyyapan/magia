@@ -155,6 +155,7 @@ class Magia extends EventEmitter
     rm.start =>
       window.Res = rm.loaded
       window.Res.tpls = window.Res.templates
+      console.log Res
       callback()
     
 window.onload = ->

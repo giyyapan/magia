@@ -23,7 +23,7 @@ class window.Drawable extends Suzaku.EventEmitter
       translateZ:0
       scaleX:1
       scaleY:1
-      scale:1
+      scale:null
       rotate:0
       martrix:null
     @drawQueue = 
@@ -60,6 +60,9 @@ class window.Drawable extends Suzaku.EventEmitter
       @onDrawBlend context,tickDelay
     else
       @onDrawNormal context,tickDelay
+  sortDrawQueue:->
+    @drawQueue.after.sort (a,b)-> return (a.z or 0) - (b.z or 0)
+    @drawQueue.before.sort (a,b)-> return (a.z or 0) - (b.z or 0) if @drawQueue.before
   onDrawBlend:(context,tickDelay)->
     realContext = context
     tempContext = @secondCanvas.getContext "2d"
@@ -117,8 +120,8 @@ class window.Drawable extends Suzaku.EventEmitter
     context.globalAlpha = r.opacity if r.opacity isnt null
     if r.scaleX < 0 then x = - x
     if r.scaleY < 0 then y = - y
-    if r.scaleX is null then r.scaleX = r.scale or 1
-    if r.scaleY is null then r.scaleY = r.scale or 1
+    r.scaleX = r.scale or r.scaleX or 1
+    r.scaleY = r.scale or r.scaleY or 1
     #console.log r.scaleX,r.scaleY,x,y
     context.scale r.scaleX,r.scaleY
     context.translate x >> 0,y >> 0

@@ -2,11 +2,11 @@
 	<link rel="stylesheet" href="css/backpack.css" type="text/css" />
 	<div class="header">
 		<div class="header-tabs">
-			<div class="tab">
+			<div class="tab" data-id="status" style="display:none;" >
 				<span class="unFocused-mark"> </span>
 				<span>状态</span>
 			</div>
-			<div class="tab active">
+			<div data-id="things" class="tab selected">
 				<span class="unFocused-mark"> </span>
 				<span>物品</span>
 			</div>
@@ -33,9 +33,9 @@
 					<span class="unFocused-mark">消耗品</span>
 					<img src="img/menu/backpack-main-tab-all.png">
 				</div>
-				<div class="tab exit-btn" data-id="exit-btn" >
-					<h3>退出</h3>
-				</div>
+				<a class="tab exit-btn btn" data-id="exit-btn" >
+					关闭
+				</a>
 			</div>
 			<div class="item-list-wrapper" >
 				<ul class="item-list" data-id="item-list" >
