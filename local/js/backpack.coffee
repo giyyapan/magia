@@ -23,7 +23,7 @@ class DetailsBox extends ItemDetailsBox
     @UI['cancel-btn'].J.hide()
 
 class window.Backpack extends Menu
-  constructor:(game,type)->
+  constructor:(game)->
     super Res.tpls["backpack"]
     @J.hide()
     @player = game.player
@@ -39,6 +39,7 @@ class window.Backpack extends Menu
     self = this
     @UI['exit-btn'].onclick = =>
       @emit "close"
+      @hide()
     @UI['type-switch'].J.find(".tab").on "click",->
       return if not $(this).attr "value"
       self.switchTab $(this).attr "value"
@@ -92,10 +93,28 @@ class window.Backpack extends Menu
     @init()
     @initThings()
     @UILayer.J.fadeIn "fast",callback
-    @J.slideDown "fast",->
+    @J.slideDown "fast",=>
+      @emit "show"
       callback() if callback
   hide:(callback)->
     super()
-    @J.slideUp "fast",->
+    @J.slideUp "fast",=>
+      @emit "hide"
       callback() if callback
       
+class window.BackpackBtn extends Widget
+  constructor:(game,parentMenu)->
+    tpl = "	<a data-id='backpack' class='backpack-btn'><img src='/img/menu/area-backpack-btn.png'></img></a>"
+    super tpl
+    @game = game
+    @parentMenu = parentMenu
+    @backpack = new Backpack @game
+    @appendTo @parentMenu
+    @backpack.on "hide",=>
+      @parentMenu.show()
+    @dom.onclick = =>
+      @active()
+  active:()->
+    @backpack.show()
+    
+    

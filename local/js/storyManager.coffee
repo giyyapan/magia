@@ -152,7 +152,7 @@ class window.StoryManager extends EventEmitter
   storyEnd:(name,endData)->
     @game.player.storys.completed[name] = true
     @game.player.saveData()
-    if not endData then @game.restoreStage()
+    if not endData or not endData.type then @game.restoreStage()
     @game.popSavedStage()
     switch endData.type
       when "stage"

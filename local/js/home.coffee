@@ -29,6 +29,8 @@ class HomeMenu extends Menu
     super Res.tpls['home-menu']
     @floor = floor
     @functionBtns = []
+    console.log @floor,@floor.game
+    @backpackBtn = new BackpackBtn @floor.game,this
     @subMenu = new SubMenu @UI['sub-menu-layer'],this
   showFunctionBtns:->
     for btn in @functionBtns
@@ -58,6 +60,7 @@ class Floor extends Layer
   constructor:(home)->
     super 0,0
     @home = home
+    @game = home.game
     @camera = new Camera()
     @mainBg = null
     @drawQueueAdd @camera
@@ -76,7 +79,7 @@ class Floor extends Layer
   initLayers:->
   initMenu:->
     s = Utils.getSize()
-    @menu = new HomeMenu Res.tpls['home-menu']
+    @menu = new HomeMenu this
     moveCallback = ()=>
       x = @currentX
       delete @camera.lock

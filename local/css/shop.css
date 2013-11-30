@@ -5,9 +5,9 @@
 .shop-menu .left-section .item-list-wrapper .end-traid{margin-bottom:0}
 .shop-menu .item-details-box-wrapper{position:absolute;top:22px;right:105px}
 .guild-menu .mission-list-wrapper{position:absolute;left:20px;padding:10px;top:0;text-align:center;background:url(/img/menu/mission-list-bg.jpg) no-repeat}.guild-menu .mission-list-wrapper .mission-list{width:468px;height:615px;margin:auto}
-.guild-menu .mission-list-wrapper .mission-list-item{cursor:pointer;position:relative;text-align:center;color:#362f2d;filter:brightness(.7);-webkit-filter:brightness(.7);-moz-filter:brightness(.7);-o-filter:brightness(.7)}.guild-menu .mission-list-wrapper .mission-list-item .bg{display:block;margin:auto;height:100%;width:auto}
+.guild-menu .mission-list-wrapper .mission-list-item{cursor:pointer;position:relative;text-align:center;color:#362f2d}.guild-menu .mission-list-wrapper .mission-list-item .bg{display:block;margin:auto;height:100%;width:auto}
 .guild-menu .mission-list-wrapper .mission-list-item .name{position:absolute;width:100%;left:0;top:37px;font-size:40px;text-shadow:3px 3px 0 rgba(20,20,20,0.2);font-weight:bold;color:#362f2d}
 .guild-menu .mission-list-wrapper .mission-list-item .status{position:absolute;left:54px;top:11px;font-size:21px}
-.guild-menu .mission-list-wrapper .mission-list-item.selected,.guild-menu .mission-list-wrapper .mission-list-item:hover{filter:brightness(1);-webkit-filter:brightness(1);-moz-filter:brightness(1);-o-filter:brightness(1)}
+.guild-menu .mission-list-wrapper .mission-list-item.selected,.guild-menu .mission-list-wrapper .mission-list-item:hover{background:none}
 .guild-menu .mission-type-switch{width:100px}
-.guild-menu .mission-details-box-wrapper{position:absolute;right:20px;top:50px}
+.guild-menu .mission-details-box-wrapper{position:absolute;right:20px;top:40px}

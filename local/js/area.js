@@ -540,7 +540,6 @@
       bf = this.game.switchStage("battle", data);
       console.log(bf);
       bf.on("win", function() {
-        console.log("fuck win");
         _this.game.restoreStage();
         _this.emit("battleWin");
         _this.currentPlace.emit("battleWin");

@@ -194,6 +194,7 @@ class BattlefieldMonster extends Sprite
     @bf = battlefield
     @statusValue = originData.statusValue
     @originData = originData
+    @name = originData.name
     for name,value of originData.statusValue
       this[name] = value
     @maxHp = @statusValue.hp
@@ -404,8 +405,7 @@ class window.Battlefield extends Stage
     @drawQueueAddAfter @menu
   win:->
     monsters = []
-    monsters.push m.name for m in @monsters
-    @emit "win",monsters:monsters
+    @emit "win",monsters:@data.monsters
     console.log "win!!!"
   lose:->
     @emit "lose"

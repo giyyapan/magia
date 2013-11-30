@@ -113,7 +113,7 @@ class Widget extends EventEmitter
     if not waitTime or typeof waitTime is "function"
       callback = waitTime
       s = window.getComputedStyle @dom
-      waitTime = s.webkitAnimationDuration or s.animationDuration
+      waitTime = s.webkitAnimationDuration or s.animationDuration or ".5s"
       waitTime = parseInt((waitTime.replace("s",""))*1000+30)
     window.setTimeout (=>
       callback.call this if callback

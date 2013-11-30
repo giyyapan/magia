@@ -16,6 +16,8 @@ class window.PopupBox extends Widget
     if acceptCallbcak
       @on "accept",acceptCallbcak
       @show()
+  hideCloseBtn:()->
+    @UI.close.J.hide()
   setCloseText:(t)->
     @UI.close.J.text t
   setAcceptText:(t)->
@@ -123,7 +125,9 @@ class window.MissionDetailsBox extends Widget
     @J.fadeOut "fast",callback
   updateStatusText:->
     text = ""
-    switch @currentWidget.mission.status
+    mission = @currentMission or @currentWidget.mission
+    @UI.status.J.removeClass()
+    switch mission.status
       when "current"
         text = "进行中"
       when "finished"
@@ -132,16 +136,20 @@ class window.MissionDetailsBox extends Widget
         text = "可接受"
       when "disable"
         text = "条件不足"
-      else console.error "invailid status",@currentWidget.mission
+      else console.error "invailid status",mission
+    if mission.status is "current" and mission.completed
+      text = "可完成"
+      @UI.status.J.addClass "completed"
+    else
+      @UI.status.J.addClass mission.status
     @UI.status.J.text text
   initMissionData:(mission)->
     @UI.title.J.text mission.dspName
-    @UI.description.J.text mission.data.description.replace /\|/g,"</br>"
+    @UI.description.J.html mission.data.description.replace /\|/g,"</br>"
     @UI['details-content-list'].J.html ""
     data = mission.data
     if data.from
       character = @game.db.characters.get data.from
-      console.log data.from,@game.db.characters.get data.from
       @addContentListItem "委托人",character.name
     rewardText = ""
     for name,value of data.reward
@@ -159,25 +167,22 @@ class window.MissionDetailsBox extends Widget
               sum = monster.split('*')[1] or 1
               monsterName = monster.split("*")[0]
               dspName = @game.db.monsters.get(monsterName).name
-              finished = sum - mission.incompletedRequests.kill[monsterName]
-              @addContentListItem "要求","打败#{sum}只#{dspName} #{finished}/#{sum}"
+              finished = sum - (mission.incompletedRequests.kill[monsterName] or 0)
+              @addContentListItem "要求","打败#{sum}只#{dspName} #{finished}/#{sum}",(finished >= sum)
           when "visit"
-            console.log value
             dspName = @game.db.areas.get(value).name
-            console.log mission,mission.incompletedRequests
             if mission.incompletedRequests.visit[value]
               @addContentListItem "要求","去往 #{dspName}",false
             else
               @addContentListItem "要求","去往 #{dspName}",true
           when "get"
             for thing,index in value.split(",")
-              console.log @game.db.things.get(thing)
               dspName = @game.db.things.get(thing).name
               if mission.incompletedRequests.get[thing]
                 @addContentListItem "要求","获得 #{dspName}",false
               else
                 @addContentListItem "要求","获得 #{dspName}",true
-  addContentListItem:(type,content,completedMark=false)->
+  addContentListItem:(type,content,completed=false)->
     if type is "要求"
       @requestCount += 1
       if @requestCount isnt 1 then type = ""
@@ -185,24 +190,36 @@ class window.MissionDetailsBox extends Widget
     w = new Widget tpl
     w.UI.type.J.text type if type
     w.UI.content.J.text content if content
-    if not completedMark
+    if not completed
       w.UI.completed.J.hide()
     w.appendTo @UI['details-content-list']
   showMissionDetails:(widget,callback)->
-    console.log "show mission"
-    if @currentWidget then @currentWidget.J.removeClass "selected"
-    @currentWidget = widget
-    mission = widget.missionData
-    @updateStatusText()
+    if widget.J
+      console.log "show mission",widget
+      if @currentWidget then @currentWidget.J.removeClass "selected"
+      @currentWidget = widget
+      @currentWidget.J.addClass "selected"
+      @currentMission = null
+      mission = widget.missionData
+    else
+      mission = widget
+      @currentWidget = null
+      @currentMission = mission
+    mission.checkComplete()
     @initMissionData mission
+    @updateStatus mission
+    @J.fadeIn "fast"
+  updateStatus:(mission)->
+    @updateStatusText()
     switch mission.status
       when "current"
-        if mission.checkComplete()
+        if mission.completed
           @setBtnText "完成"
           @UI['active-btn'].onclick = =>
-            mission.complete()
+            mission.finish()
+            new MsgBox "成功","任务 #{mission.dspName} 完成，任务奖励已经获得"
+            @updateStatus mission
             @emit "activeMission",mission
-            @hide callback
         else
           @setBtnText "关闭"
           @UI['active-btn'].onclick = =>
@@ -210,14 +227,16 @@ class window.MissionDetailsBox extends Widget
       when "avail"
         @setBtnText "接受"
         @UI['active-btn'].onclick = =>
-          mission.start()
+          if not mission.start()
+            console.error "mission start faild"
+          new MsgBox "成功","接受任务 #{mission.dspName} 。"
+          @updateStatus mission
           @emit "activeMission",mission
-          @hide callback
       when "finished"
         @setBtnText "关闭"
         @UI['active-btn'].onclick = =>
+          @updateStatus mission
           @hide callback
-    @J.fadeIn "fast"
           
 class window.ListItem extends Widget
   constructor:(tpl,playerThing)->

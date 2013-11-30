@@ -19,7 +19,7 @@ class Mission extends EventEmitter
           @requests.get = {}
           things = value.split ","
           for t in things
-            if t.indexOf("*">-1)
+            if t.indexOf("*") > -1
               name = t.split("*")[0]
               number = parseInt(t.split("*")[1])
             else
@@ -35,7 +35,7 @@ class Mission extends EventEmitter
           @requests.kill = {}
           monsters = value.split ","
           for t in monsters
-            if t.indexOf("*">-1)
+            if t.indexOf("*") > -1
               name = t.split("*")[0]
               number = parseInt(t.split("*")[1])
             else
@@ -50,24 +50,29 @@ class Mission extends EventEmitter
       @incompletedRequests = {}
   initIncompletedRequests:->
     # 遍历玩家的完成任务数据，将当前任务中的要求
-    data = @player.missions.current[@name]
-    if not data then return false 
+    pcr = @player.missions.current[@name]
+    if not pcr then return false 
     for type,obj of @incompletedRequests
-      if data.completedRequests[type]
-        for name,value of data.completedRequests[type]
+      if pcr[type]
+        for name,value of pcr[type]
           if value is true
             delete obj[name]
           if typeof value is "number"
             obj[name] -= value
             if obj[name] <= 0 then delete obj[name]
+    if @incompletedRequests.get
+      for name,number of @incompletedRequests.get
+        hasNumber = @player.hasThing(name)
+        @update "get",name:name,number:hasNumber if hasNumber
     console.log @incompletedRequests
   update:(type,data)->
     ir = @incompletedRequests
     pcr = @player.missions.current[@name] #player completed requests
-    if not pir then return console.error "player no request data",@name
+    if not pcr then return console.error "player no request data",@name
     if not ir[type] then return false
     switch type
       when "kill"
+        console.log "enter kill"
         for monsterName in data
           continue if not ir.kill[monsterName]
           ir.kill[monsterName] -= 1
@@ -84,6 +89,7 @@ class Mission extends EventEmitter
         placeName = data
         delete ir.visit[placeName]
         pcr.visit[placeName] = true
+        console.log ir
     return @checkComplete()
   checkComplete:->
     return yes if @completed is true
@@ -95,13 +101,15 @@ class Mission extends EventEmitter
     return true
   getStatus:->
     player = @player
-    if player.missions.current[name] then return @status = "current"
-    if player.missions.finished[name] then return @status = "finished" #completed and areported
+    if player.missions.current[@name] isnt undefined then return @status = "current"
+    if player.missions.finished[@name] isnt undefined then return @status = "finished" #completed and areported
     if @isAvailable() then return @status = "avail"
     else return @status = "disable"
   autoFinish:->
-    box = new MissionDetailsBox @game
-    box.showMissionDetails this
+    console.log "autofinish"
+    box = new PopupBox "任务信息","任务 #{@dspName} 已经完成",=>
+      @finish()
+    box.hideCloseBtn()
   start:->
     console.log "mission start"
     if not @isAvailable()
@@ -109,14 +117,32 @@ class Mission extends EventEmitter
       return false
     @player.missions.current[@name] = @getNewMissionData()
     @status = "current"
-    #@player.saveData()
+    @handleStartData()
+    @player.saveData()
     return true
   finish:->
     delete @player.missions.current[@name]
     @player.missions.finished[@name] = true
     @status = "finished"
-    #@palyer.saveData()
-    mission.status = "finished"
+    @handleEndData()
+    @palyer.saveData()
+    return true
+  handleEndData:->
+    return false if not @data.end
+    for type,data of @data.end
+      switch type
+        when "story"
+          @game.storyManager.showStory data
+        when "onloackarea"
+          @player.onloackedAreas[data] = true
+  handleStartData:->
+    return false if not @data.start
+    for type,data of @data.start
+      switch type
+        when "story"
+          @game.storyManager.showStory data
+        when "onloackarea"
+          @player.onloackedAreas[data] = true
   getNewMissionData:->
     obj = {}
     for type,data of @requests
@@ -140,27 +166,31 @@ class window.MissionManager extends EventEmitter
   constructor:(game)->
     super null
     @game = game
-    @player = game
+    @player = game.player
     @missions = {}
     for name,data of @game.db.missions.getAll()
       @missions[name] = new Mission this,name,data
     console.log @missions
     @game.on "switchStage",(newStage)=>
+      console.log "on switch stage fired"
       @handleSwitchStage newStage
     @game.player.on "getThing",(type,thing)=>
       @updateCurrentMissions "get",thing
   handleSwitchStage:(newStage)->
     switch newStage.stageName
-      when "battlefield"
+      when "battle"
         newStage.on "win",(data)=>
+          console.log "fuck win",data,data.monsters
           @updateCurrentMissions "kill",data.monsters
       when "area","shop"
         @updateCurrentMissions "visit",newStage.switchStageData
       when "home","guild"
         @updateCurrentMissions "visit",newStage.stageName
   updateCurrentMissions:(type,data)->
-    for name,mission of @missions when @missions.type is "current"
+    for name,mission of @missions when mission.status is "current"
       mission.update type,data
+    @player.saveData()
+    console.log @player
   startMission:(mission)->
     if typeof mission is "string"
       name = mission

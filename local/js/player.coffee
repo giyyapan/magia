@@ -119,6 +119,13 @@ class window.Player extends EventEmitter
         arr.push i for i in @storage when playerItem isnt i
         @storage = arr
         return arr.length isnt length
+  hasThing:(name)->
+    number = 0
+    for thing in @backpack
+      if thing.name is name then number += (thing.number or 1)
+    for thing in @storage
+      if thing.name is name then number += (thing.number or 1)
+    return number
   getItem:(target="backpack",dataObj)-> #target= backpack/storage 只有item是可堆叠的
     name = dataObj.name
     number = dataObj.number

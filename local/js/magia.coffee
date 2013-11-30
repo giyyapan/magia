@@ -24,11 +24,11 @@ class Magia extends EventEmitter
       $("#loadingPage").slideUp "slow"
       window.AudioManager.stop "startMenu"
       window.AudioManager.play "home"
-      #@switchStage "start"
+      @switchStage "start"
       #@switchStage "worldMap"
       #@switchStage "area","forest"
       #@switchStage "shop","magicItemShop"
-      @switchStage "guild" 
+      #@switchStage "guild" 
       #@switchStage "home"
       @startGameLoop()
   switchStage:(stage,data)->

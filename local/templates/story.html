@@ -2,65 +2,169 @@
 >color #efefef fadeIn slow
 @player in:left effect:shadow
 这个地方我们是不是来过呀？
-<!-- @player out -->
-<!-- >img forestEntry fadeIn slow -->
-<!-- >img forestEntry lookaround -->
-<!-- :sound home -->
-<!-- @cat in:right effect:shadow -->
-<!-- 呃....这个附近的景色....|好像....|是有点眼熟... -->
-<!-- :animate shake -->
-<!-- !!啊！艾丽西亚你看那只松鼠！|刚才见到过的！ -->
-<!-- @player in:left effect:none -->
-<!-- !!诶！我也看见了！我们又回到刚才的地方了奇奇！ -->
-<!-- @cat effect:none -->
-<!-- 快看看你奶奶给你寄的地图啦，这森林都出不去今晚就得跪在这里了！ -->
-<!-- 你啊，虽说从没出过远门，但是这样连森林都走不出，还说什么成为世界第一的魔女呀！简直是在逗大爷笑嘛！ -->
-<!-- @player -->
-<!-- 呜呜..（可恶！竟然反论不能！死猫你给我记着）|地图地图.. -->
-<!-- 我看看哈...|沿着小溪的上游走，好像不远就能出森林了，然后奶奶的房子就在森林外面 -->
-<!-- @cat -->
-<!-- 什么啊，这不是挺清楚的么～|地图这种东西果然就是要一开始就拿出来啊哈``哈``哈``哈`` -->
-<!-- @player -->
-<!-- .....（你不也没想到么..） -->
-<!-- @player out -->
-<!-- @cat out -->
-<!-- @nobody -->
-<!-- .````.`````.`````.````` -->
-<!-- :animate shake -->
-<!-- @player in:right -->
-<!-- !!呀！！ -->
-<!-- @cat in:right -->
-<!-- !!喵呜！|怎么回事啊，大惊小怪的！ -->
-<!-- :animate shake -->
-<!-- @player -->
-<!-- 我好像踩到什么```粘粘的东西了！好恶心！ -->
-<!-- 不不不不它扑上来了！ -->
-<!-- @cat -->
-<!-- 喂喂喂你干什么|别拿我挡在前面啊！ -->
-<!-- :animate shake -->
-<!-- >color white fadeIn fast -->
-:battle forest qq nolose
-<!-- :end story start2 -->
-<!-- >img forestEntry fadeIn fast -->
+@player out
+>img forestEntry fadeIn slow
+>img forestEntry lookaround
+:sound home
+@cat in:right effect:shadow
+呃....这个附近的景色....|好像....|是有点眼熟...
+:animate shake
+!!啊！艾丽西亚你看那只松鼠！|刚才见到过的！
+@player in:left effect:none
+!!诶！我也看见了！我们又回到刚才的地方了奇奇！
+@cat effect:none
+快看看你奶奶给你寄的地图啦，这森林都出不去今晚就得跪在这里了！
+你啊，虽说从没出过远门，但是这样连森林都走不出，还说什么成为世界第一的魔女呀！简直是在逗大爷笑嘛！
+@player
+呜呜..（可恶！竟然反论不能！死猫你给我记着）|地图地图..
+我看看哈...|沿着小溪的上游走，好像不远就能出森林了，然后奶奶的房子就在森林外面～
+@cat
+什么啊，这不是挺清楚的么～|地图这种东西果然就是要一开始就拿出来啊哈``哈``哈``哈``
+@player
+.....（你不也没想到么..）
+@player out
+@cat out
+@nobody
+.````.`````.`````.`````
+:animate shake
+@player in:right
+!!呀！！
+@cat in:right
+!!喵呜！|怎么回事啊，大惊小怪的！
+:animate shake
+@player
+我好像踩到什么```粘粘的东西了！好恶心！
+不不不不它扑上来了！
+@cat
+喂喂喂你干什么|别拿我挡在前面啊！
+:animate shake
+>color white fadeIn fast
+:battle forest qq,qq nolose
+:end story start2
+
+***start2
+>img forestEntry fadeIn fast
 @player in:left
 呼...
 @cat
-这玩意是史莱姆吧？你来一趟森林只碰到个这家伙算是运气好的!|真是的，就这种货色你都要把我扔过去，来条龙你直接把我当恭品献上去得了！
+这玩意是史莱姆吧？你来一趟森林只碰到个这家伙算是运气好的!|真是的，就这种货色你都要把我扔过去，来条龙你直接把我当贡品献上去得了！
 @player
 ......（诶这是个好办法？省得你这么烦人）
 @cat
-行了行了快走吧|天黑前得出去才行
+行了行了块走吧|天黑前得出去才行
+:end story start3
+
+***start3
+>img forestEntry fadeOut normal
+@player in:left
+奇奇，现在还没入夜吧？怎么一下子变得这么暗
+@cat in:right
+你``.``.``.``不会真把我当贡品的吧？
+@player
+我们说的话能接上么？
+@cat
+...快逃啊！真的有龙来了！
+@player out
+@cat out
+:animate shake
+@nobody
+吼！
+>color white fadeIn fast
+:battle forest dragon lose
+@nobody
+...我还没成为世界第一的魔女啊，就要这样变成孤魂野鬼了吗...
+@dirak in:right effect:shadow
+还能动的话就朝六点钟方向跑出森林！这里我挡着！
+@player in:left
+嗯``.``.``.``诶？``.```.```.```好、``好的！
+@player out
+@cat in:left
+艾丽西亚等等我啊啊啊啊啊！！！
+:end story start4
+
+***start4
+>	//家
+@player in:left
+呼...真是多亏了您了...说起来，您是？
+@dirak in:right
+不用客气，我是冒险公会的狄拉克。|倒是你，为什么要在森林里乱逛？
+@player
+啊哈，啊哈哈哈```.```.```. | 其实我是来继承奶奶的房子，结果在森林里迷路了...呜...
+啊，还有，我的名字是艾丽西亚
+@dirak
+哦？这么说来，你就是这栋宅子的主人吗...|....
+总之，艾丽西亚，你就先好好休息吧！|明天到冒险者公会来找我，我会给你介绍这个小镇的
 :startMission theGuild
 :end stage home
 
 ***theGuild
 @player in:left
 @cat in:left
-@dirac in:right
-！！哟！来啦？
+@dirak in:right
+！！哟！是艾丽西亚啊？|你果然来了呢
 @player
-啊|狄拉克先生你好～
-@dirac
-恩，看看任务吧！
+啊|狄拉克先生你好～你昨天要我来找你的～
+@dirak
+恩TODOTODOTODO
+:end
+
+***firstMissionComplete
+<!-- //冒险公会 -->
+> img magicShopBg
+@player in:left
+啊哈，我果然是天才魔法少女！区区魔药手到擒来！
+@cat in:right
+打翻坩埚两次，剂量出错三次，点着头发一次 | 啊啦啦，真是手到擒来呢~
+@player
+咦？你在胡说什么呢奇奇，真是的~ |（居然敢在外人面前拆我台...回去要你好看）
+@cat out
+@dirak in:right
+这么快就调配好药剂了吗，真不愧是那位女士的孙女。
+@player
+这么说来你认识我奶奶喽？
+@dirak
+当然。她当年可是这个地区最传奇的冒险者——在我还是个小孩的时候。
+@player
+诶嘿，不愧是我这个天才魔法少女的奶奶！听起来就很厉害。
+@dirak
+那么你有没有兴趣加入我们公会，去成为新的传奇呢？
+@player
+听起来很厉害嘛，那就这么愉快的决定了！
+@dirak
+冒险者的第一要义，就是人际关系！| 冒险者的第一职责，就是帮助他人！
+事不宜迟，现在就去跟镇上的大家打个招呼吧~
+@player
+好嘞~
+@dirak
+那么，就赶快在我这里接下来自镇上几个商店老板的任务吧！|这些委托书上都写了他们各自商店的位置，你一定可以找到的！
+@player
+嗯嗯（点头）
+@dirak out
+@player out
+@cat in:left
+总感觉`.`.`.这大叔是个优秀的业务员呢...
+唉，看来艾西莉亚是要当个廉价劳动力了.```.```.```我好开心~
+:end stage home
+
+***meetLuna
+>img magicShopBg
+@player in:left
+喔！这么多素材和药剂，好厉害！
+@luna in:right
+欢迎光临~你就是新来的那个魔女小姐么？|我是这里的店主，露娜。
+@player
+诶嘿，原来我在这里已经这么出名了吗~~
+@luna
+那是，在森林里迷路，被巨龙攻击，一般人可没有这样的经历呢
+@player
+.``.``.``那个狄拉克大叔就这么把我的糗事全抖出来了吗...
+@luna
+听说你是魔法师，还是个冒险者？我这里有点事想让你帮忙，拜托了。
+@player
+包在我身上！
+@luna out
+@player out
+@cat in:left
+果然是被当成廉价劳动力了啊。
 :end
 

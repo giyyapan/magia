@@ -293,7 +293,6 @@ class window.Area extends Stage
     bf = @game.switchStage "battle",data
     console.log bf
     bf.on "win",=>
-      console.log "fuck win"
       @game.restoreStage()
       @emit "battleWin"
       @currentPlace.emit "battleWin"
