@@ -177,10 +177,8 @@
 
     function SpellSourceItem(tpl, type, menu, playerSupplies) {
       var _this = this;
-      SpellSourceItem.__super__.constructor.call(this, tpl);
+      SpellSourceItem.__super__.constructor.call(this, tpl, playerSupplies);
       this.type = type;
-      this.playerSupplies = playerSupplies;
-      this.originData = playerSupplies.originData;
       this.effectData = this.originData[type];
       this.traitValue = playerSupplies.traitValue;
       this.UI.img.src = playerSupplies.img.src;
@@ -192,7 +190,7 @@
 
     return SpellSourceItem;
 
-  })(Widget);
+  })(ListItem);
 
   DetailsBox = (function(_super) {
     __extends(DetailsBox, _super);

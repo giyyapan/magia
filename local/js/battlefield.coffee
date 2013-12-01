@@ -82,12 +82,10 @@ class window.SpeedItem extends Widget
   setWidgetPosition:(value)->
     @J.css "left",parseInt(value/@maxSpeed*100)+"%"
     
-class SpellSourceItem extends Widget
+class SpellSourceItem extends ListItem
   constructor:(tpl,type,menu,playerSupplies)->
-    super tpl
+    super tpl,playerSupplies
     @type = type
-    @playerSupplies = playerSupplies
-    @originData = playerSupplies.originData
     @effectData = @originData[type]
     @traitValue = playerSupplies.traitValue
     @UI.img.src = playerSupplies.img.src

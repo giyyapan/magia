@@ -275,6 +275,7 @@
 		.spell-source-select-box{
 				.double-border;
 				background-color:@color-bg-brown-lv1;
+				overflow:auto;
 				h2{
 						color:@color-text-black;
 				}
@@ -297,8 +298,19 @@
 						margin-bottom: 3px;
 						font-weight: bold;
 						background-color:@color-item-bg;
+						text-align:left;
 						span{
 								.button-text;
+						}
+						img{
+								border-radius: 8px;
+								margin: 0 10px;
+								margin-right: 47px;
+								margin-top: -8px;
+								border: 1px solid;
+								float: left;
+								width: 45px;
+								height: 45px;
 						}
 						cursor:pointer;
 						&:hover,&.selected{
