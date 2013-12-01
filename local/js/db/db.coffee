@@ -16,14 +16,13 @@ class window.Database extends Suzaku.EventEmitter
     @things = new ThingsDB()
     @shops = new ShopsDB()
     @missions = new MissionsDB()
+    @sprites = new SpritesDB()
+    @monsters = new MonstersDB()
     @rules = new SubDB "rules"
-    @monsters = new SubDB "sprites-monsters"
-    @spriteItems = new SubDB "sprites-items"
     @characters = new SubDB "characters"
     for name of ["AreasDB","ThingsDB","MissionsDB","ShopsDB"]
       delete window[name]
     @initCharacters()
-    @initSprites()
     @initRules()
   initRules:->
     @rules.data.reaction = [
@@ -65,105 +64,4 @@ class window.Database extends Suzaku.EventEmitter
         name:"狄拉克"
         description:"冒险者公会的管理员"
         dialogPic:"dirakDialog"
-  initSprites:->
-    @monsters.data =
-      player:
-        name:"艾丽西亚"
-        sprite:Res.sprites.player
-        icon:null
-        anchor:"190,330"
-        movements:
-          normal:"0,0"
-          attack:"0,10:10"
-          cast:"0,10:10"
-        skills:
-          attack:
-            damage:
-              normal:30
-              water:10
-      qq:
-        name:"企鹅"
-        sprite:Res.sprites.qq
-        icon:null
-        statusValue:
-          hp:1000
-          def:30
-          spd:30
-        skills:
-          attack:
-            damage:
-              normal:30
-              water:10
-          waterball:
-            turn:2
-            damage:
-              water:100
-        anchor:"270,240"
-        movements:
-          normal:"0,6"
-          move:"7,15"
-          attack:"16,23:4,6"
-          cast:"0,6"
-        drop:
-          certain:[]
-          random:null
-      pig:
-        name:"布塔猪"
-        sprite:Res.sprites.pig
-        icon:null
-        statusValue:
-          hp:1000
-          def:30
-          spd:30
-        skills:
-          attack:
-            damage:
-              normal:30
-              water:10
-          waterball:
-            turn:2
-            damage:
-              water:100
-        anchor:"180,240"
-        movements:
-          normal:"0,0"
-          move:"0,7"
-          attack:"8,16:4"
-          onattack:"17,17"
-          cast:"0,6"
-        drop:
-          certain:[]
-          random:null
-      slime:
-        name:"史莱姆"
-        sprite:Res.sprites.slime
-        icon:null
-        statusValue:
-          hp:1000
-          def:30
-          spd:30
-        skills:
-          attack:
-            damage:
-              normal:30
-              water:10
-          waterball:
-            turn:2
-            damage:
-              water:100
-        anchor:"191,180"
-        movements:
-          normal:"0,0"
-          move:"0,6"
-          attack:"7,17:9"
-          cast:"0,6"
-        drop:
-          certain:["bluerose"]
-          random:null
-    @spriteItems.data =
-      fireBall:
-        name:"水球术"
-        movements:
-          normal:""
-          active:""
           

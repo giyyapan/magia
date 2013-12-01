@@ -100,6 +100,8 @@ class window.Camera extends Drawable
         @drawQueueAddAfter d
       console.error "#{d} is not drawable or Menu" if not d.onDraw and GameConfig.debug
     @sortDrawQueue()
+  sortDrawQueue:->
+    @drawQueue.after.sort (a,b)-> return (b.z or 0) - (a.z or 0)
   getOffsetScaleX:(targetZ,s)->
     if typeof targetZ is "object"
       targetZ = targetZ.z

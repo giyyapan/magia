@@ -114,6 +114,7 @@ class window.StoryStage extends Stage
     data =
       monsters:monstersData.split(",")
       bg:areaData.battlefieldBg
+      story:true
     if loseData is "nolose"
       data.nolose = true
     @game.saveStage()
@@ -121,10 +122,12 @@ class window.StoryStage extends Stage
     bf.on "win",=>
       @game.restoreStage()
       @nextStep()
-    bf.on "lose",=>
+    bf.on "lose",(evt)=>
+      evt.handled = true
       if not loseData
         box = new PopupBox "战斗失败","剧情战斗失败！要再试一次吗？</br>点击取消返回家里"
         PopupBox.setCloseText "取消"
+        box.show()
         box.on "accept",=>
           @game.popSavedStage()
           @initBattle areaName,monstersData,loseData

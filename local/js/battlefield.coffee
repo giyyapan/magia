@@ -1,11 +1,76 @@
-class SpeedItem extends Widget
-  constructor:(tpl,originData)->
+class window.BattlefieldAffect extends Drawable
+  constructor:(x,y)->
+    super x,y
+  draw:(context)->
+    context.fillStyle = "rgba(255,255,255,0.5)"
+    context.beginPath()
+    context.arc(100,100,30,0,Math.PI*2,true)
+    context.closePath()
+    context.fill()
+
+class Buff extends EventEmitter
+  constructor:(data)->
+    super null
+  handleAttackDamage:(damage)->
+  handleOnAttacakDamage:(damage)->
+
+class Debuff extends EventEmitter
+  constructor:(data)->
+    super null
+  handleAttackDamage:(damage)->
+  handleOnAttacakDamage:(damage)->
+    
+class Dot extends EventEmitter
+  constructor:(data)->
+    super null
+  handleAttackDamage:(damage)->
+  handleOnAttacakDamage:(damage)->
+
+      
+class window.BattlefieldSprite extends Sprite
+  constructor:(x,y,spriteData)->
+    super 
+    @icon = spriteData.icon
+    @buffs = {}
+    @debuffs = {}
+    @dots = {}
+    @dead = false
+  handleAttackDamage:(damage)->
+    for name,buff of @buffs
+      buff.handleAttackDamage damage
+    for name,debuff of @debuffs
+      debuff.handleAttackDamage damage
+    return damage
+  handleOnAttacakDamage:(damage)->
+    for name,buff of @buffs
+      buff.handleAttackDamage damage
+    for name,debuff of @debuffs
+      debuff.handleAttackDamage damage
+    return damage
+  addStatus:(type,data)->
+    #buff debuff dot
+    switch type
+      when "buff" then
+      when "debuff" then
+      when "dot" then
+    return status
+  clearStatus:(status)->
+    return true
+  draw:(context)->
+    super
+    #context.fillRect -10,-10,10,10
+  tick:(tickDelay)->
+    if not @bf.paused and not @dead
+      @speedItem.tick tickDelay
+
+class window.SpeedItem extends Widget
+  constructor:(tpl,data)->
     super tpl
     @speedGage = 80
     @maxSpeed = 100
-    @hp = 300
-    @speed = originData.statusValue.spd
-    #@icon = originData.icon
+    @speed = data.statusValue.spd
+    console.log data
+    @UI.icon.src = data.icon.src if data.icon
   tick:(tickDelay)->
     @speedGage += tickDelay/1000*@speed
     if @speedGage > @maxSpeed
@@ -66,203 +131,6 @@ class DetailsBox extends ItemDetailsBox
     else
       @bf.player.castSpell sourceItemWidget,@bf.player
         
-class BattlefieldPlayer extends Sprite
-  constructor:(battlefield,x,y,playerData)->
-    @db = battlefield.db
-    originData = @db.monsters.get "player"
-    super x,y,originData
-    console.log this
-    playerData.skills = originData.attack
-    @playerData = playerData
-    @statusValue = playerData.statusValue
-    for name,value of playerData.statusValue
-      this[name] = value
-    @bf= battlefield
-    @lifeBar = new Widget @bf.menu.UI['life-bar']
-    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
-    @speedItem = battlefield.menu.addSpeedItem playerData
-    @speedItem.on "active",=>
-      @act()
-  act:->
-    @isDefensed = false
-    @bf.paused = true
-    @bf.camera.lookAt {x:@x,y:@y - 150},400,1.7
-    @bf.menu.showActionBtns()
-  tick:(tickDelay)->
-    if not @bf.paused
-      @speedItem.tick tickDelay
-  attack:(target)->
-    @bf.paused = true
-    @z = 999
-    @bf.mainLayer.sortDrawQueue()
-    console.log @bf.mainLayer.drawQueue
-    damage = @originData.skills.attack.damage
-    @bf.setView "default"
-    defaultPos = x:@x,y:@y
-    @bf.camera.lookAt {x:@x,y:@y - 150},300,1.7
-    @animateClock.setRate "slow"
-    @useMovement "attack"
-    listener = @on "keyFrame",(index,length)=>
-      realDamage = {}
-      for name,value of damage
-        realDamage[name] = (value / length)
-      realDamage.normal = 600
-      target.onAttack this,realDamage
-    @once "endMove:attack",=>
-      @bf.setView "normal"
-      @bf.camera.unfollow()
-      @off "keyFrame",listener
-      @z = -1
-      @bf.mainLayer.sortDrawQueue()
-      @useMovement @defaultMovement,true
-      @bf.paused = false
-  defense:->
-    @isDefensed = true
-    @bf.paused = false
-  castSpell:(sourceItemWidget,target)->
-    console.log "cast spell to ",target
-    sourceItemWidget.playerSupplies.remainCount -= 1
-    if sourceItemWidget.playerSupplies.remainCount < 0
-      @playerData.removeThing playerSupplies
-    callback = =>
-      @bf.setView "normal"
-      @bf.paused = false
-    if sourceItemWidget.type is "active"
-      switch sourceItemWidget.effectData.type
-        when "attack" then target.onAttack this,sourceItemWidget.effectData.damage
-        when "heal" then target.onHeal sourceItemWidget.effectData.heal
-        when "buff" then target.onBuff sourceItemWidget.effectData.buff
-    else
-      target.addFlipOverEffect sourceItemWidget.effectData
-    callback()
-  addFlipOverEffect:(effect)->
-  onBuff:(effect)->
-  onHeal:(value)->
-    @hp += value
-    if @hp > @statusValue.hp
-      @hp = @statusValue.hp
-    @updateLifeBar "heal"
-  onAttack:(from,damage)->
-    #console.log "player onattack,damage:",damage
-    @bf.camera.shake "fast"
-    for type,value of damage
-      if @isDefensed then value = parseInt(value/3)
-      @hp -= value
-    if @hp <= 0
-      @hp = 0
-      @updateLifeBar()
-      @die()
-    else
-      @updateLifeBar()
-  updateLifeBar:(type="damage")->
-    J = @lifeBar.UI['life-inner'].J
-    if type is "damage"
-      J.addClass "damage"
-      @setCallback 100,=>
-        J.removeClass("damage")
-    J.css "width","#{parseInt(@hp/@statusValue.hp*100)}%"
-    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
-  draw:(context,tickDelay)->
-    super context,tickDelay
-    #context.fillRect(-10,-10,20,20);
-  die:->
-    return if @dead
-    @dead = true
-    @bf.lose()
-    
-class MonsterLifeBar extends Drawable
-  constructor:(monster)->
-    width = 150
-    super 0,-130,150,10
-    @monster = monster
-    @value = @monster.hp
-  draw:(context)->
-    percent = (@value/@monster.maxHp)
-    Utils.drawRoundRect context,-@width/2,-@height/2,parseInt(percent * @width),@height,4,0,0,4
-    if percent > 0.75
-      context.fillStyle = "green"
-    else if percent > 0.3
-      context.fillStyle = "orange"
-    else
-      context.fillStyle = "red"
-    context.fill()
-    Utils.drawRoundRect context,-@width/2,-@height/2,@width,@height,4
-    context.strokeStyle = "white"
-    context.lineWidth = 2
-    context.stroke()
-    
-class BattlefieldMonster extends Sprite
-  constructor:(battlefield,x,y,originData)->
-    super x,y,originData
-    @bf = battlefield
-    @statusValue = originData.statusValue
-    @originData = originData
-    @name = originData.name
-    for name,value of originData.statusValue
-      this[name] = value
-    @maxHp = @statusValue.hp
-    @lifeBar = new MonsterLifeBar this
-    @drawQueueAddAfter @lifeBar
-    @speedItem = battlefield.menu.addSpeedItem originData
-    @speedItem.on "active",=>
-      @attack @bf.player
-  tick:(tickDelay)->
-    if not @bf.paused and not @dead
-      @speedItem.tick tickDelay
-  attack:(target)->
-    @bf.paused = true
-    damage = @originData.skills.attack.damage
-    defaultPos = x:@x,y:@y
-    @useMovement "move",true
-    @animateClock.setRate "fast"
-    @animate {x:target.x+150,y:target.y},800,=>
-      @animateClock.setRate "normal"
-      @useMovement "attack"
-      listener = @on "keyFrame",(index,length)=>
-        realDamage = {}
-        for name,value of damage
-          realDamage[name] = (value / length)
-        target.onAttack this,realDamage
-      @once "endMove:attack",=>
-        @off "keyFrame",listener
-        @transform.scaleX = -1
-        @lifeBar.transform.scaleX = -1
-        @animateClock.setRate "fast"
-        @useMovement "move",true
-        @animate {x:defaultPos.x,y:defaultPos.y},800,=>
-          @animateClock.setRate "normal"
-          @transform.scaleX = 1
-          @lifeBar.transform.scaleX = 1
-          @useMovement @defaultMovement,true
-          @bf.paused = false
-  onAttack:(from,damage)->
-    @bf.camera.shake "fast"
-    for name,value of damage
-      @hp -= value
-    if @hp <= 1 and bf.data.nolose
-      @hp = 1
-    if @hp <= 0
-      @lifeBar.animate value:0,100,"swing"
-      @die()
-      return
-    @lifeBar.animate value:@hp,100,"swing"
-  draw:(context,tickDelay)->
-    super context,tickDelay
-    #context.fillRect(-10,-10,20,20);
-  die:->
-    return if @dead
-    @dead = true
-    @animateClock.paused = true
-    @speedItem.remove()
-    @fadeOut 1000,=>
-      @bf.mainLayer.drawQueueRemove this
-      newArr = []
-      for m in @bf.monsters when m isnt this
-        newArr.push m
-      @bf.monsters = newArr
-      if @bf.monsters.length is 0
-        @bf.win()
-    
 class BattlefieldMenu extends Menu
   constructor:(battlefield,tpl)->
     super tpl
@@ -347,6 +215,9 @@ class BattlefieldMenu extends Menu
       @UI['spell-select-layer'].J.fadeOut 150
   handlePlayerEscape:->
     console.log "escape"
+    if @bf.data.story
+      new MsgBox "提示","剧情战斗不能逃走！请直面人生吧～"
+      return
     @bf.lose()
   showSpellSourceLayer:(type)->
     switch type
@@ -380,7 +251,7 @@ class window.Battlefield extends Stage
   initSprites:->
     s = Utils.getSize()
     baseY = parseInt(s.height/2 + 30)
-    @player = new BattlefieldPlayer this,300,baseY,@game.player,@db.monsters.get("qq")
+    @player = new BattlefieldPlayer this,150,baseY,@game.player
     @mainLayer.drawQueueAddAfter @player
     @monsters = []
     startX = 1000
@@ -390,8 +261,7 @@ class window.Battlefield extends Stage
     for name,index in @data.monsters
       x = startX + index*dx
       y = startY + index*dy
-      mdata = @db.monsters.get name
-      monster = new BattlefieldMonster this,x,y,mdata
+      monster = new BattlefieldMonster this,x,y,name
       monster.z = index
       @monsters.push monster
       @mainLayer.drawQueueAddAfter monster
@@ -408,18 +278,26 @@ class window.Battlefield extends Stage
           when "anchor" then bg.setAnchor value
           else bg[name] = value
       @camera.render bg
+      console.log "fuck",bg
       @bgs.push bg
+    console.log @bgs
     @mainLayer = @bgs[0] if not @mainLayer
     @camera.defaultReferenceZ = @mainLayer.z
     @menu = new BattlefieldMenu this,Res.tpls['battlefield-menu']
     @drawQueueAddAfter @menu
   win:->
     monsters = []
-    @emit "win",monsters:@data.monsters
+    box = new MsgBox "胜利","战斗胜利！"
+    box.on "close",=>
+      @emit "win",monsters:@data.monsters
     console.log "win!!!"
   lose:->
-    @emit "lose"
-    console.log "lose!!!"
+    evt = {}
+    @emit "lose",evt
+    if not evt.handled
+      box = new MsgBox "战斗失败","战斗失败，自动返回家里"
+      box.on "close",=>
+        @game.switchStage "home"
   show:->
     super =>
       @menu.show()

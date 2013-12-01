@@ -28,13 +28,13 @@ class window.PopupBox extends Widget
     @box.J.show()
     @box.J.addClass "animate-popup"
   close:->
-    @emit "close"
     self = this
     @J.fadeOut "fast"
     @box.J.animate {top:"-=30px",opacity:0},"fast",->
       self.box.J.css "top",0
       self.box.J.removeClass "animate-popup"
       self.J.remove()
+      self.emit "close"
       self = null
   accept:->
     console.log this,"accept"
@@ -42,7 +42,7 @@ class window.PopupBox extends Widget
     @close()
     
 class window.MsgBox extends PopupBox
-  constructor:(title,content,autoRemove=false)->
+  constructor:(title,content,autoRemove=false,callback)->
     super
     if autoRemove
       if autoRemove is true then autoRemove = 1000

@@ -14,7 +14,7 @@ class window.AreasDB extends SubDB
           bfForestMain:
             z:1000
             anchor:
-              x:150
+              x:200
               y:0
             main:true
           bfForestFloat:
@@ -69,7 +69,7 @@ class window.AreasDB extends SubDB
           bfSnownmountain:
             z:1000
             anchor:
-              x:150
+              x:200
               y:0
             main:true
         places:

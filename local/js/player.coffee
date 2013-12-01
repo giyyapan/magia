@@ -58,7 +58,7 @@ testPlayerData =
     minusDef:0
     precision:95
     resistance:10
-    spd:20
+    spd:40
 
 playerData =
   name:"Nola"
@@ -99,7 +99,7 @@ playerData =
     minusDef:0
     precision:95
     resistance:10
-    spd:20
+    spd:40
 
 class window.Player extends EventEmitter
   constructor:(db)->
@@ -112,7 +112,8 @@ class window.Player extends EventEmitter
     @energy = @maxEnergy
     @saveLock = false
     window.fuckmylife = =>
-      @newData testPlayerData 
+      @newData testPlayerData
+    window.fuckmylife()
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"

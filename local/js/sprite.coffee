@@ -1,8 +1,8 @@
 class window.Sprite extends Drawable
-  constructor:(x,y,originData)->
+  constructor:(x,y,spriteOriginData)->
     super x,y
-    @originData = originData
-    @dspName = originData.name
+    @spriteOriginData = spriteOriginData
+    @dspName = spriteOriginData.name
     @animateClock = new Clock()
     @animateClock.setRate "normal"
     @animateClock.on "next",=>
@@ -19,10 +19,10 @@ class window.Sprite extends Drawable
     @animateClock.tick tickDelay
     super context,tickDelay
   initSprite:->
-    @spriteMap = @originData.sprite.map
-    @spriteData = @originData.sprite.data
+    @spriteMap = @spriteOriginData.sprite.map
+    @spriteData = @spriteOriginData.sprite.data
     @movements = {}
-    for name,data of @originData.movements
+    for name,data of @spriteOriginData.movements
       a1 = data.split(":")
       arr = a1[0].split(",")
       @movements[name] =
@@ -35,8 +35,8 @@ class window.Sprite extends Drawable
         kfs.push parseInt(f) for f in a1[1].split(",")
         @movements[name].keyFrames = kfs
     @defaultAnchor = 
-      x:parseInt(@originData.anchor.split(",")[0])
-      y:parseInt(@originData.anchor.split(",")[1])
+      x:parseInt(@spriteOriginData.anchor.split(",")[0])
+      y:parseInt(@spriteOriginData.anchor.split(",")[1])
     @setAnchor @defaultAnchor
   useMovement:(name,loopThisMove=false)->
     if not @movements[name]
