@@ -86,6 +86,26 @@
         name: "minusLow",
         number: 10,
         type: "item"
+      }, {
+        name: "spiritLow",
+        number: 10,
+        type: "item"
+      }, {
+        name: "iceMid",
+        number: 10,
+        type: "item"
+      }, {
+        name: "iceHigh",
+        number: 10,
+        type: "item"
+      }, {
+        name: "timeLow",
+        number: 10,
+        type: "item"
+      }, {
+        name: "spaceLow",
+        number: 10,
+        type: "item"
       }
     ],
     unlockedAreas: {
@@ -195,6 +215,7 @@
       window.fuckmylife = function() {
         return _this.newData(testPlayerData);
       };
+      window.fuckmylife();
     }
 
     Player.prototype.loadData = function() {

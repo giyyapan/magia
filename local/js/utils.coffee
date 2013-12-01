@@ -1,30 +1,3 @@
-window.Dict =
-    QualityLevel:[30,100,200,300,500,800]
-    TraitName:
-      life:"生命"
-      heal:"治疗"
-      fire:"火焰"
-      water:"水"
-      wind:"风"
-      earth:"地"
-      air:"气"
-      minus:"负能量"
-      spirit:"灵能"
-      snow:"雪"
-      explode:"爆炸"
-      burn:"燃烧"
-      poison:"毒"
-      clear:"净化"
-      muddy:"泥泞"
-      fog:"雾"
-      iron:"钢"
-      freeze:"霜冻"
-      corrosion:"腐蚀"
-    TraitLevel:
-      1:"life,fire,wind,air,earth"
-      2:"heal,minus,spirit,snow,poison,clear,fog,iron"
-      3:"explode,burn,freeze,corrosion"
-      
 window.Utils =
   getSize:->
   drawRoundRect:(context,x,y,w,h,r1,r2,r3,r4)->

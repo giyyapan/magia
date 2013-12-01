@@ -541,7 +541,7 @@ window.Suzaku.Utils = Utils =
     if target instanceof Array
       newArr = []
       for item,index in target
-        newArr[index] = if deepClone then Utils.clone item,true else item
+        newArr.push if deepClone then Utils.clone item,true else item
       return newArr
     if typeof target is 'object'
       newObj = {}

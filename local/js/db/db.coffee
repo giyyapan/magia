@@ -32,7 +32,7 @@ class window.Database extends Suzaku.EventEmitter
       "water:1,earth:1->muddy" #泥泞
       "water:2,fire:1,air:1->fog" #
       "ice:2,water:2,air:2->snow"
-      "life:2,earth:1->heal"
+      "life:1,earth:1->heal"
       "life:2,water:1->clean"
       "life:2,fire:1->brave"
       "iron:3,minus:2->corrosion"#腐蚀
@@ -40,7 +40,8 @@ class window.Database extends Suzaku.EventEmitter
       "minus:2,life:2->poison"
       "spirit:3,poison:2->stun"
     ]
-    @rules.data.qualityLevel = [30,100,200,300,500,800]
+    arr = Utils.clone Dict.QualityLevel
+    @rules.data.qualityLevel = arr
   initCharacters:->
     @characters.data =
       nobody:

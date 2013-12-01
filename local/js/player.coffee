@@ -23,6 +23,11 @@ testPlayerData =
     {name:"fireLow",number:10,type:"item"}
     {name:"fireMid",number:10,type:"item"}
     {name:"minusLow",number:10,type:"item"}
+    {name:"spiritLow",number:10,type:"item"}
+    {name:"iceMid",number:10,type:"item"}
+    {name:"iceHigh",number:10,type:"item"}
+    {name:"timeLow",number:10,type:"item"}
+    {name:"spaceLow",number:10,type:"item"}
     ]
   unlockedAreas:
     all:true
@@ -113,7 +118,7 @@ class window.Player extends EventEmitter
     @saveLock = false
     window.fuckmylife = =>
       @newData testPlayerData
-    #window.fuckmylife()
+    window.fuckmylife()
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"

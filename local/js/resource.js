@@ -56,7 +56,7 @@
     item_fireHigh: 'things/fireHigh.jpg',
     item_waterLow: 'things/waterLow.jpg',
     item_waterHigh: 'things/waterHigh.jpg',
-    item_airMid: 'things/airMid.jpg',
+    item_airLow: 'things/airMid.jpg',
     item_iceLow: 'things/iceLow.jpg',
     item_iceMid: 'things/iceMid.jpg',
     item_iceHigh: 'things/iceHigh.jpg',
