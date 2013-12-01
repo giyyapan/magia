@@ -4,7 +4,7 @@ class window.BattlefieldAffect extends Drawable
   draw:(context)->
     context.fillStyle = "rgba(255,255,255,0.5)"
     context.beginPath()
-    context.arc(100,100,30,0,Math.PI*2,true)
+    context.arc(0,0,25,0,Math.PI*2,true)
     context.closePath()
     context.fill()
 
