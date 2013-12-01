@@ -27,6 +27,7 @@ class window.BattlefieldMonster extends BattlefieldSprite
     @originData = @db.monsters.get name
     spriteOriginData = @db.sprites.get(@originData.sprite)
     super battlefield,x,y,spriteOriginData
+    if @originData.scale then @transform.scale = @originData.scale;
     @name = @originData.name
     @statusValue = @originData.statusValue
     @maxHp = @statusValue.hp
@@ -62,16 +63,13 @@ class window.BattlefieldMonster extends BattlefieldSprite
   attackFire:(target,index,length)->
     sound = @originData.attackSound or "qqHit"
     window.AudioManager.play sound
-    damage = @handleAttackDamage @originData.skills.attack.damage
+    damage = @handleAttackDamage @originData.damage
     realDamage = {}
     for name,value of damage
       realDamage[name] = (value / length)
-    target.onAttack this,realDamage
-  onAttack:(from,damage)->
+    target.onHurt this,realDamage
+  onHurt:(from,damage)->
     super
-    @handleOnAttacakDamage damage
-    for name,value of damage
-      @hp -= value
     if @hp <= 0
       @lifeBar.animate value:0,100,"swing"
       @die()

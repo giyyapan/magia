@@ -4,6 +4,7 @@
 
   window.Utils = {
     getSize: function() {},
+    getTempCanvas: function() {},
     drawRoundRect: function(context, x, y, w, h, r1, r2, r3, r4) {
       if (typeof r2 === "undefined") {
         r2 = r1;

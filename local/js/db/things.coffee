@@ -28,8 +28,8 @@ class window.ThingsDB extends SubDB
         traits:["earth:200"]
         gatherRequire:null #要求包括时间，季节，技能，等级等
       airLow:
-        name:"清晨的森林里面可以搜集到的神奇雾气，如果装在瓶子里面就不会化开"
-        description:""
+        name:"不化之雾"
+        description:"清晨的森林里面可以搜集到的神奇雾气，如果装在瓶子里面就不会化开"
         traits:["air:20"]
         gatherRequire:null #要求包括时间，季节，技能，等级等
       fireLow:

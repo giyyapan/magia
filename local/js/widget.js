@@ -40,6 +40,10 @@
       return this.UI.close.J.text(t);
     };
 
+    PopupBox.prototype.hideAcceptBtn = function() {
+      return this.UI.accept.J.hide();
+    };
+
     PopupBox.prototype.setAcceptText = function(t) {
       return this.UI.accept.J.text(t);
     };
@@ -95,7 +99,7 @@
           return _this.close();
         }), autoRemove);
       } else {
-        this.UI.accept.J.hide();
+        this.hideAcceptBtn();
       }
       this.show();
     }

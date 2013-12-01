@@ -1,13 +1,3 @@
-class window.BattlefieldAffect extends Drawable
-  constructor:(x,y)->
-    super x,y
-  draw:(context)->
-    context.fillStyle = "rgba(200,200,255,0.75)"
-    context.beginPath()
-    context.arc(0,0,25,0,Math.PI*2,true)
-    context.closePath()
-    context.fill()
-
 class Buff extends EventEmitter
   constructor:(data)->
     super null
@@ -23,13 +13,79 @@ class Debuff extends EventEmitter
 class Dot extends EventEmitter
   constructor:(data)->
     super null
-  handleAttackDamage:(damage)->
-  handleOnAttacakDamage:(damage)->
-
-      
+  active:->
+    
+class Hot extends EventEmitter
+  constructor:(data)->
+    super null
+  active:->
+    
+class DamageText extends Drawable
+  constructor:(host,type,value)->
+    super 0,0
+    switch type
+      when "normal" then @color = "rgb(235, 88, 88)"
+    @y = -110
+    @host = host
+    @value = value
+    @transform.scale = 1
+    @transform.opacity = 0
+    @host.drawQueueAdd this
+    @animate {y:"-=150","transform.opacity":1},"fast",=>
+      @fadeOut "normal",=>
+        @host.drawQueueRemove this
+  draw:(context)->
+    context.font = 'bold 40pt Calibri';
+    context.fillStyle = @color
+    context.fillText @value,0,-10
+    
+class window.BlendLayer extends Drawable
+  constructor:(host,color)->
+    super 0,0,host.width,host.height
+    @host = host
+    @anchor = host.anchor
+    @color = color
+    @thirdCanvas = Utils.getTempCanvas 3
+    @thirdContext = @thirdCanvas.getContext "2d"
+    @host.drawQueueAdd this
+  draw:(realContext)->
+    context = @thirdContext
+    x = Math.floor -@host.anchor.x >> 0
+    y = Math.floor -@host.anchor.y >> 0
+    w = Math.floor @host.width >> 0
+    h = Math.floor @host.height >> 0
+    s = Utils.getSize()
+    context.save()
+    context.translate s.width/2,s.height/2
+    context.clearRect x,y,w,h
+    @host.draw context
+    #context.globalCompositeOperation = "source-atop"
+    context.globalCompositeOperation = "source-in"
+    context.fillStyle = @color
+    context.fillRect x,y,w,h
+    context.restore()
+    realContext.drawImage @thirdCanvas,s.width/2+x,s.height/2+y,w,h,x,y,w,h
+    
+class Shadow extends Drawable
+  constructor:(host,radius)->
+    super 0,110
+    @host = host
+    @host.drawQueueAddBefore this
+    @radius = radius or 70
+    console.log this
+  draw:(context)->
+    context.scale(1, 0.35);
+    context.fillStyle = "rgba(20,20,20,0.2)"
+    context.beginPath()
+    context.arc(0,0,@radius,0,Math.PI*2,true)
+    context.closePath()
+    context.fill()
+    
 class window.BattlefieldSprite extends Sprite
   constructor:(bf,x,y,spriteData)->
     super x,y,spriteData
+    @shadow = new Shadow this,@spriteData.shadowRadius
+    @drawQueueAddBefore @shadow
     @bf = bf
     @hp = null
     @icon = spriteData.icon
@@ -43,17 +99,28 @@ class window.BattlefieldSprite extends Sprite
     for name,debuff of @debuffs
       debuff.handleAttackDamage damage
     return damage
-  handleOnAttacakDamage:(damage)->
+  handleHurtDamage:(damage)->
     for name,buff of @buffs
       buff.handleAttackDamage damage
     for name,debuff of @debuffs
       debuff.handleAttackDamage damage
     return damage
   attackFire:(target,index,length)->
-  onAttack:(from,damage)->
+  onHurt:(from,damage)->
     console.log "#{name} on attack",damage
     @bf.camera.shake "fast"
     window.AudioManager.play "hurt"
+    if @isDefensed
+      effect = new BlendLayer this,"rgba(238, 215, 167, 0.6)"
+    else
+      effect = new BlendLayer this,"rgba(240,30,30,0.8)"
+    effect.transform.opacity = 1
+    effect.flash 150,=>
+      @drawQueueRemove effect
+    @handleHurtDamage damage
+    for type,value of damage
+      new DamageText this,type,value
+      @hp -= value
   addStatus:(type,data)->
     #buff debuff dot
     switch type
@@ -292,13 +359,15 @@ class window.Battlefield extends Stage
     @drawQueueAddAfter @menu
   win:->
     @paused = true
+    @tick = ->
     monsters = []
     box = new MsgBox "胜利","战斗胜利！"
     box.on "close",=>
       @emit "win",monsters:@data.monsters
     console.log "win!!!"
   lose:->
-    @paused = true
+    @mainLayer.fadeOut "normal"
+    @tick = ->
     evt = {}
     @emit "lose",evt
     if not evt.handled

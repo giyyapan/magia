@@ -17,7 +17,7 @@ class window.Drawable extends Suzaku.EventEmitter
     @blendQueue = []
     @onshow = true
     @transform =
-      opacity:null
+      opacity:1
       translateX:0
       translateY:0
       translateZ:0
@@ -302,6 +302,9 @@ Drawable.Animate =
         else
           @x = x + Math.sin(p*10) * 10
         ),time,"swing",callback
+    flash:(time,callback)->
+      @animate {"transform.opacity":1},time,"expoIn",=>
+        @animate {"transform.opacity":0},time,"expoOut",callback
     fadeIn:(time,callback)->
       @animate ((p)->
         @transform.opacity = p

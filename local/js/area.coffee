@@ -1,89 +1,89 @@
-class GatherResultItem extends Widget
-  constructor:(originData,number)->
-    super Res.tpls['thing-list-item']
-    @UI.img.src = originData.img.src if originData.img
-    @UI.name.J.text originData.name
-    @UI.quatity.J.text number
-    @originData = originData
-    
 class GatherResaultBox extends PopupBox
   constructor:(data)->
-    super()
+    super null
     @UI.title.J.text "采集结果"
-    if typeof data is "string"
-      @UI.content.J.text data
+    @hideAcceptBtn()
+    if not data
+      @UI.content.J.text "这里已经没有东西了，下次再来吧。"
     else
-      @UI.content.J.hide()
-      @UI['content-list'].J.show()
-      for itemResData in data
-        originData = itemResData.gatherItem.originData
-        number = itemResData.number
-        console.log itemResData
-        w = new GatherResultItem originData,number
-        w.appendTo @UI['content-list']
+      playerItem = data
+      @UI.img.J.show()
+      @UI.img.src = data.img.src if data.img
+      @UI.content.J.text "采集到了 #{data.dspName} x 1"
 
 class ResPoint extends Suzaku.Widget
   constructor:(place,tpl,data,index)->
     super tpl
     @place = place
+    @db = place.db
     @data = data
     @index = index
     @number = index + 1
     @pointText = "采集点#{index+1}"
-    @items = []
-    @monsters =
-      certain:null #certain 只能有一种情况
-      random:[]
     @UI.name.J.text @pointText
+    parts = data.split " "
+    @items = []
+    @hasBoss = false
+    itemsData = parts[1]
+    switch itemsData
+      when "none","null",undefined
+        @items = null
+      else
+        @initItems itemsData
+    monsterData = parts[2]
+    isBoss = parts[3]
+    switch monsterData
+      when "none","null",undefined
+        @monsters = null
+      else
+        @monsters = monsterData.split ','
+        if isBoss
+          @UI.boss.J.show()
+          @hasBoss = true
+        else @UI.monster.J.show()
     @dom.number = index+1
     @J.addClass "gp#{index+1}"
-    @J.css left:data.split(",")[0]+"px",top:data.split(",")[1]+"px",
+    position = parts[0]
+    @J.css left:position.split(",")[0]+"px",top:position.split(",")[1]+"px",
     @dom.onclick = (evt)=>
       evt.stopPropagation()
-      @emit "active",@active()
-  initItems:(resourcesData,db)->
-    return if not resourcesData[@index]
-    for name in resourcesData[@index].split ","
-      itemData = db.things.items.get name
-      console.log itemData
-      item = new GatherItem name,itemData
-      gatherData = item.getGatherData()
-      @items.push item
-  initMonsters:(monstersData,db)->
-    for mdata in monstersData.random
-      if Utils.compare mdata.split(":")[0],@number
-        @monsters.random.push mdata.split(":")[1]
-    if @monsters.random.length > 0
-      @UI.name.J.text @pointText + "（可）"
-    for mdata in monstersData.certain
-      if Utils.compare mdata.split(":")[0],@number
-        @monsters.certain =  mdata.split(":")[1]
-        @UI.name.J.text @pointText + "（必）"
+      if @monsters and @monsters.length > 0
+        text = if @hasBoss then "<strong>强大的怪物</strong>" else "怪物"
+        box = new PopupBox "采集","这里有#{text}把守，需要打败他们才能采集。</br>要战斗吗？"
+        box.setCloseText "算了"
+        box.setAcceptText "来战"
+        box.show()
+        box.on "accept",=>
+          @emit "active",@active()
+      else
+        @emit "active",@active()
+  initItems:(itemsData)->
+    for name in itemsData.split ","
+      if not @db.things.items.get name then console.error "invailid item name",name
+      @items.push new PlayerItem @db,name
+    if @items.length > 0
+      @UI.collect.J.show()
   handleEncounteringMonster:->
-    if @monsters.certain
-      @place.once "battleWin",=>
-        @monsters.certain = null
-      return @monsters.certain.split(",")
-    for m,index in @monsters.random
-      if Math.random() < 0.3
-        @randomMonsterIndex = index
-        @place.once "battleWin",=>
-          Utils.removeItemByIndex @monsters.random,@randomMonsterIndex
-          delete @randomMonsterIndex
-        return m.split(",")
-    return false
+    if not @monsters or @monsters.length is 0
+      return false
+    @place.once "battleWin",=>
+      @monsters = null
+      @UI.monster.J.hide()
+      @UI.boss.J.hide()
+    return @monsters
   active:->
     console.log "active"
     monsters = @handleEncounteringMonster()
     if monsters
       return type:"monster",monsters:monsters
     else
-      items = []
-      for item in @items
-        gatherNumber = item.tryGather()
-        if gatherNumber
-          items.push gatherItem:item,number:gatherNumber
-      return type:"item",items:items
+      item = Utils.random @items
+      if item
+        newArr = []
+        newArr.push i for i in @items when i isnt item
+        @items = newArr
+        return type:"item",item:item
+    @UI.collect.J.hide()
     return type:"empty"
     
 class Place extends Layer
@@ -251,8 +251,6 @@ class Place extends Layer
     point.appendTo @relativeMenu.UI['res-point-box']
     point.on "active",(res)->
       self.handleResPointActive res
-    if @data.resources then point.initItems @data.resources,@db
-    if @data.monsters then point.initMonsters @data.monsters,@db
   addMovePoint:(data,index)->
     area = @area
     parts = data.split ":"
@@ -278,11 +276,11 @@ class Place extends Layer
         area.enterPlace @target
   handleResPointActive:(res)->
     if res.type is "item"
-      @emit "getItem",res.items
+      @emit "getItem",res.item
     else if res.type is "monster"
       @encounterMonster(res.monsters)
     else if res.type is "empty"
-      box = new GatherResaultBox "什么也没有采集到"
+      box = new GatherResaultBox()
       box.show()
     else
       console.error "invailid res type of res point :#{res}" if GameConfig.debug
@@ -311,14 +309,10 @@ class window.Area extends Stage
     bf = @game.switchStage "battle",data
     console.log bf
     bf.on "win",=>
+      AudioManager.play "home"
       @game.restoreStage()
       @emit "battleWin"
       @currentPlace.emit "battleWin"
-      @currentPlace.menu.show()
-    bf.on "lose",=>
-      @game.restoreStage()
-      @emit "battleLose"
-      @currentPlace.emit "battleLose"
       @currentPlace.menu.show()
   enterPlace:(placeName)->
     if placeName is "exit"
@@ -328,8 +322,8 @@ class window.Area extends Stage
     @currentPlace = new Place this,@game.db,placeName,placeData
     @clearDrawQueue()    
     @drawQueueAddAfter @currentPlace
-    @currentPlace.on "getItem",(itemDataArr)=>
-      @getItem itemDataArr
+    @currentPlace.on "getItem",(playerItem)=>
+      @getItem playerItem
     @currentPlace.on "showBackpack",()=>
       @showBackpack()
   showBackpack:->
@@ -342,14 +336,10 @@ class window.Area extends Stage
         self.currentPlace.menu.show()
     @backpackMenu.show ->
       self.currentPlace.onShow = false
-  getItem:(itemDataArr)->
-    return if not @game.player.checkFreeSpace "backpack",itemDataArr
-    for data in itemDataArr
-      name = data.gatherItem.name
-      originData = data.gatherItem.originData
-      number = data.number
-      @game.player.getItem "backpack",name:name,originData:originData,number:number
-    box = new GatherResaultBox itemDataArr
+  getItem:(playerItem)->
+    console.log playerItem
+    @game.player.getItem "backpack",playerItem
+    box = new GatherResaultBox playerItem
     box.show()
   tick:->
     @currentPlace.tick() if @currentPlace.tick

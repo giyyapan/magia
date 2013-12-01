@@ -35,16 +35,12 @@ class window.AreasDB extends SubDB
                 z:1
                 x:300
                 fixToBottom:true
-            resPoints:["0,80","400,500","800,300","1000,300"] #start from 1
-            resources:[ #每个对应一个资源点
-              "earthLow"
-              "earthLow,fireLow"
-              "fireLow"
-              "lifeLow"
-              "earthLow"]
-            monsters:
-              certain:['1:pig,qq,pig']
-              random:['2:qq','3:qq']
+            resPoints:[
+              "250,500 earthLow pig"
+              "880,430 earthLow,lifeLow pig"
+              "1610,260 airLow,airLow"
+              "1730,550 lifeLow,lifeLow,lifeLow slime,slime"
+              ]
             movePoints:["exit:345,585","lake:959,355"]
           lake:
             name:"湖"
@@ -56,10 +52,10 @@ class window.AreasDB extends SubDB
                 z:1
                 x:300
                 fixToBottom:true
-            resPoints:["500,300","100,500"]
-            resources:[
-              "waterLow"
-              "earthLow"
+            resPoints:[
+              "500,300 waterHigh iceQQ,iceQQKing,iceQQ boss"
+              "100,500 earthMid pigKing boss"
+              "300,300 none slime,slime,slime"
               ]
             movePoints:["entry:684,600"]
       snowmountain:
@@ -93,17 +89,11 @@ class window.AreasDB extends SubDB
                 z:300
                 x:200
                 fixToBottom:true
-            resPoints:["0,80","400,500","800,300","1000,300"] #start from 1
-            resources:[ #每个对应一个资源点
-              "iceLow"
-              "iceLow"
-              "iceLow"
-              "iceLow"
-              "iceLow"
+            resPoints:[
+              "500,300 waterHigh iceQQKing,iceQQ,iceQQ"
+              "100,500 earthMid pigKing"
+              "300,300 none slime,slime,slime"
               ]
-            monsters:
-              certain:['1:qq,qq,qq']
-              random:['2:qq','3:qq']
             movePoints:["exit:180,480","middle:1850,560"]
           middle:
             name:"雪谷"
@@ -122,7 +112,11 @@ class window.AreasDB extends SubDB
                 z:400
                 x:300
                 fixToBottom:true
-            resPoints:["1,1","20,80"]
+            resPoints:[
+              "500,300 waterHigh iceQQKing,iceQQ,iceQQ"
+              "100,500 earthMid pigKing"
+              "300,300 none slime,slime,slime"
+              ]
             movePoints:["middle:720,120"]
       home:
         name:"魔女宅"

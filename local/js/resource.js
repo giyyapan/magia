@@ -75,7 +75,7 @@
 
   window.Sprites = {
     qq: "qq",
-    qqIce: "qq-ice",
+    iceQQ: "qq-ice",
     pig: "pig",
     pigDark: "pig2",
     pigBlue: "pig3",

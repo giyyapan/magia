@@ -53,6 +53,7 @@ class window.Camera extends Drawable
     @y = @defaultY
     @scale = @defaultScale
   onDraw:(context,tickDelay)->
+    context.globalCompositeOperation = "source-over"
     @_handleFollow()
     @_handleAnimate tickDelay
     context.save()

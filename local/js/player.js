@@ -390,11 +390,15 @@
       if (target == null) {
         target = "backpack";
       }
-      name = dataObj.name;
-      number = dataObj.number;
-      item = new PlayerItem(this.db, name, {
-        number: number
-      });
+      if (dataObj instanceof PlayerItem) {
+        item = dataObj;
+      } else {
+        name = dataObj.name;
+        number = dataObj.number;
+        item = new PlayerItem(this.db, name, {
+          number: number
+        });
+      }
       switch (target) {
         case "backpack":
           target = this.backpack;
@@ -438,10 +442,6 @@
 
     Player.prototype.getEquipment = function() {
       return this.emit("getThing", "equipment", supplies);
-    };
-
-    Player.prototype.checkFreeSpace = function(target, things) {
-      return true;
     };
 
     Player.prototype.saveData = function() {

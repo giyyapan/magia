@@ -102,6 +102,7 @@
     };
 
     Camera.prototype.onDraw = function(context, tickDelay) {
+      context.globalCompositeOperation = "source-over";
       this._handleFollow();
       this._handleAnimate(tickDelay);
       context.save();

@@ -12,18 +12,35 @@ class window.MonstersDB extends SubDB
           hp:100
           def:30
           spd:30
-        skills:
-          attack:
-            damage:
-              normal:30
-              water:10
-          waterball:
-            turn:2
-            damage:
-              water:100
+        damage:
+          normal:20
         drop:
-          certain:[]
-          random:null
+          money:20
+      iceQQ:
+        name:"冰企鹅"
+        sprite:"iceQQ"
+        attackSound:"qqHit"
+        statusValue:
+          hp:150
+          def:30
+          spd:30
+        damage:
+          water:30
+        drop:
+          money:15
+      iceQQKing:
+        name:"冰企鹅王"
+        sprite:"iceQQ"
+        attackSound:"qqHit"
+        scale:1.2
+        statusValue:
+          hp:300
+          def:30
+          spd:30
+        damage:
+          water:80
+        drop:
+          money:80
       pig:
         name:"布塔猪"
         sprite:"pig"
@@ -32,36 +49,33 @@ class window.MonstersDB extends SubDB
           hp:150
           def:30
           spd:30
-        skills:
-          attack:
-            damage:
-              normal:30
-              water:10
-          waterball:
-            turn:2
-            damage:
-              water:100
+        damage:
+          normal:15
         drop:
-          certain:[]
-          random:null
+          money:10
+      pigKing:
+        name:"布塔猪王"
+        sprite:"pigDark"
+        scale:1.2
+        attackSound:"pigHit"
+        statusValue:
+          hp:300
+          def:30
+          spd:30
+        damage:
+          normal:30
+        drop:
+          money:100
       slime:
         name:"史莱姆"
         sprite:"slime"
         attackSound:"slimeHit"
         statusValue:
-          hp:60
+          hp:80
           def:30
           spd:30
-        skills:
-          attack:
-            damage:
-              normal:30
-              water:10
-          waterball:
-            turn:2
-            damage:
-              water:100
+        damage:
+          normal:10
         drop:
-          certain:["bluerose"]
-          random:null
+          money:5
     

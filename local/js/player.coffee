@@ -201,9 +201,12 @@ class window.Player extends EventEmitter
       if thing.name is name then number += (thing.number or 1)
     return number
   getItem:(target="backpack",dataObj)-> #target= backpack/storage 只有item是可堆叠的
-    name = dataObj.name
-    number = dataObj.number
-    item = new PlayerItem @db,name,number:number
+    if dataObj instanceof PlayerItem
+      item = dataObj
+    else
+      name = dataObj.name
+      number = dataObj.number
+      item = new PlayerItem @db,name,number:number
     switch target
       when "backpack" then target = @backpack
       when "storage" then target = @storage
@@ -226,8 +229,6 @@ class window.Player extends EventEmitter
     @saveData()
   getEquipment:()->
     @emit "getThing","equipment",supplies
-  checkFreeSpace:(target,things)->
-    return true
   saveData:->
     return if @saveLock
     backpack = []

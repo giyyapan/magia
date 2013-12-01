@@ -48,6 +48,9 @@
       this.originData = this.db.monsters.get(name);
       spriteOriginData = this.db.sprites.get(this.originData.sprite);
       BattlefieldMonster.__super__.constructor.call(this, battlefield, x, y, spriteOriginData);
+      if (this.originData.scale) {
+        this.transform.scale = this.originData.scale;
+      }
       this.name = this.originData.name;
       this.statusValue = this.originData.statusValue;
       this.maxHp = this.statusValue.hp;
@@ -105,23 +108,17 @@
       var damage, name, realDamage, sound, value;
       sound = this.originData.attackSound || "qqHit";
       window.AudioManager.play(sound);
-      damage = this.handleAttackDamage(this.originData.skills.attack.damage);
+      damage = this.handleAttackDamage(this.originData.damage);
       realDamage = {};
       for (name in damage) {
         value = damage[name];
         realDamage[name] = value / length;
       }
-      return target.onAttack(this, realDamage);
+      return target.onHurt(this, realDamage);
     };
 
-    BattlefieldMonster.prototype.onAttack = function(from, damage) {
-      var name, value;
-      BattlefieldMonster.__super__.onAttack.apply(this, arguments);
-      this.handleOnAttacakDamage(damage);
-      for (name in damage) {
-        value = damage[name];
-        this.hp -= value;
-      }
+    BattlefieldMonster.prototype.onHurt = function(from, damage) {
+      BattlefieldMonster.__super__.onHurt.apply(this, arguments);
       if (this.hp <= 0) {
         this.lifeBar.animate({
           value: 0

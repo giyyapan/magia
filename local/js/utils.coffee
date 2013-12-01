@@ -1,5 +1,6 @@
 window.Utils =
   getSize:->
+  getTempCanvas:->
   drawRoundRect:(context,x,y,w,h,r1,r2,r3,r4)->
     if typeof r2 is "undefined"
       r2 = r1

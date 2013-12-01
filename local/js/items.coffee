@@ -12,7 +12,8 @@ class window.Things extends EventEmitter
       
 class window.PlayerItem extends Things
   constructor:(db,name,data)->
-    if not data.number then console.error "invailid data:no number"
+    if not data
+      data = number:1
     originData = db.things.items.get name
     super name,originData,"item"
     @number = data.number
@@ -58,12 +59,3 @@ class window.PlayerEquipment extends Things
     @statusValue = originData.statusValue
   getData:->
     super
-      
-class window.GatherItem extends Things
-  constructor:(name,data)->
-    super name,data,"item"
-  getGatherData:()->
-    return true
-  tryGather:(data)->
-    #check condition
-    return 1

@@ -28,10 +28,29 @@ class window.SpritesDB extends SubDB
           move:"7,15"
           attack:"16,23:4,6"
           cast:"0,6"
+      iceQQ:
+        sprite:Res.sprites.iceQQ
+        icon:Res.imgs.qqBattleIcon
+        anchor:"270,240"
+        movements:
+          normal:"0,6"
+          move:"7,15"
+          attack:"16,23:4,6"
+          cast:"0,6"
       pig:
         sprite:Res.sprites.pig
         icon:Res.imgs.pigBattleIcon
-        anchor:"180,240"
+        anchor:"245,240"
+        movements:
+          normal:"0,0"
+          move:"0,7"
+          attack:"8,16:4"
+          onattack:"17,17"
+          cast:"0,6"
+      pigDark:
+        sprite:Res.sprites.pigDark
+        icon:Res.imgs.pigBattleIcon
+        anchor:"245,240"
         movements:
           normal:"0,0"
           move:"0,7"

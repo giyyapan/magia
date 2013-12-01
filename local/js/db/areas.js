@@ -53,12 +53,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["0,80", "400,500", "800,300", "1000,300"],
-              resources: ["earthLow", "earthLow,fireLow", "fireLow", "lifeLow", "earthLow"],
-              monsters: {
-                certain: ['1:pig,qq,pig'],
-                random: ['2:qq', '3:qq']
-              },
+              resPoints: ["250,500 earthLow pig", "880,430 earthLow,lifeLow pig", "1610,260 airLow,airLow", "1730,550 lifeLow,lifeLow,lifeLow slime,slime"],
               movePoints: ["exit:345,585", "lake:959,355"]
             },
             lake: {
@@ -75,8 +70,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["500,300", "100,500"],
-              resources: ["waterLow", "earthLow"],
+              resPoints: ["500,300 waterHigh iceQQ,iceQQKing,iceQQ boss", "100,500 earthMid pigKing boss", "300,300 none slime,slime,slime"],
               movePoints: ["entry:684,600"]
             }
           }
@@ -122,12 +116,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["0,80", "400,500", "800,300", "1000,300"],
-              resources: ["iceLow", "iceLow", "iceLow", "iceLow", "iceLow"],
-              monsters: {
-                certain: ['1:qq,qq,qq'],
-                random: ['2:qq', '3:qq']
-              },
+              resPoints: ["500,300 waterHigh iceQQKing,iceQQ,iceQQ", "100,500 earthMid pigKing", "300,300 none slime,slime,slime"],
               movePoints: ["exit:180,480", "middle:1850,560"]
             },
             middle: {
@@ -154,7 +143,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["1,1", "20,80"],
+              resPoints: ["500,300 waterHigh iceQQKing,iceQQ,iceQQ", "100,500 earthMid pigKing", "300,300 none slime,slime,slime"],
               movePoints: ["middle:720,120"]
             }
           }

@@ -1,3 +1,15 @@
+class PlayerAttackAffect extends Drawable
+  constructor:(x,y)->
+    super x,y
+    @z = 999
+    @radius = 25
+  draw:(context)->
+    context.fillStyle = "rgba(79, 175, 212, 0.75)"
+    context.beginPath()
+    context.arc(0,0,@radius,0,Math.PI*2,true)
+    context.closePath()
+    context.fill()
+
 class window.BattlefieldPlayer extends BattlefieldSprite
   constructor:(battlefield,x,y,playerData)->
     @db = battlefield.db
@@ -8,14 +20,15 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     @name = "player"
     for name,value of playerData.statusValue
       this[name] = value
-    @bf= battlefield
+    @hp = 30
+    @bf = battlefield
     @lifeBar = new Widget @bf.menu.UI['life-bar']
     @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
     @speedItem = battlefield.menu.addSpeedItem this
     @speedItem.on "active",=>
       @act()
   act:->
-    @isDefensed = false
+    @emit "act"
     @bf.paused = true
     @bf.camera.lookAt {x:@x + 100,y:@y - 150},400,1.7
     @bf.menu.showActionBtns()
@@ -35,16 +48,24 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       @bf.mainLayer.sortDrawQueue()
       @useMovement @defaultMovement,true
   attackFire:(target)->
+    blendLayer = new BlendLayer this,"rgba(79, 175, 212, 0.81)"
+    blendLayer.flash 150,=>
+      @drawQueueRemove blendLayer
     damage = @handleAttackDamage normal:@playerData.statusValue.atk
     window.AudioManager.play "playerCast"
-    effect = new BattlefieldAffect @x + 100,@y - 100
+    effect = new PlayerAttackAffect @x + 100,@y - 100
     @bf.mainLayer.drawQueueAdd effect
     effect.animate x:target.x,y:target.y,300,=>
-      @bf.mainLayer.drawQueueRemove effect
-      target.onAttack this,damage
+      effect.animate {"radius":250,"transform.opacity":0.2},150,=>
+        @bf.mainLayer.drawQueueRemove effect
+      target.onHurt this,damage
       @bf.paused = false
   defense:->
     @isDefensed = true
+    bl = new BlendLayer this,"rgba(238, 215, 167, 0.4)"
+    @once "act",=>
+      @isDefensed = false
+      @drawQueueRemove bl
     @bf.paused = false
   castSpell:(sourceItemWidget,target)->
     console.log "cast spell to ",target
@@ -56,7 +77,7 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       @bf.paused = false
     if sourceItemWidget.type is "active"
       switch sourceItemWidget.effectData.type
-        when "attack" then target.onAttack this,sourceItemWidget.effectData.damage
+        when "attack" then target.onHurt this,sourceItemWidget.effectData.damage
         when "heal" then target.onHeal sourceItemWidget.effectData.heal
         when "buff" then target.onBuff sourceItemWidget.effectData.buff
     else
@@ -69,12 +90,11 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     if @hp > @statusValue.hp
       @hp = @statusValue.hp
     @updateLifeBar "heal"
-  onAttack:(from,damage)->
+  onHurt:(from,damage)->
+    if @isDefensed
+      for type,value of damage
+        damage[type] = parseInt(value/3)
     super
-    @handleOnAttacakDamage damage
-    for type,value of damage
-      if @isDefensed then value = parseInt(value/3)
-      @hp -= value
     if @hp <= 1 and @bf.data.nolose
       @hp = 1
     if @hp <= 0

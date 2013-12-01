@@ -42,8 +42,8 @@
           gatherRequire: null
         },
         airLow: {
-          name: "清晨的森林里面可以搜集到的神奇雾气，如果装在瓶子里面就不会化开",
-          description: "",
+          name: "不化之雾",
+          description: "清晨的森林里面可以搜集到的神奇雾气，如果装在瓶子里面就不会化开",
           traits: ["air:20"],
           gatherRequire: null
         },

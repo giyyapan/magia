@@ -8,7 +8,7 @@ class MissionListItem extends Widget
     @dom.onclick = =>
       @menu.detailsBox.showMissionDetails this
       @menu.detailsBox.on "activeMission",(mission)=>
-        if mission is @mission then @updateStatus()
+        @menu.initMissions()
     @updateStatus()
   updateStatus:->
     switch @missionData.status
@@ -17,7 +17,7 @@ class MissionListItem extends Widget
       when "finished"
         @type = "已结束"
         @J.slideUp "fast",=>
-          @remove()
+          try @remove()
         return
       when "avail"
         @type = "可接受"

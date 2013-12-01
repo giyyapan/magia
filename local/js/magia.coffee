@@ -4,6 +4,14 @@ class Magia extends EventEmitter
     @size = null
     @res = null
     @canvas = new Suzaku.Widget("#gameCanvas")
+    @secondCanvas = new Suzaku.Widget("#secondCanvas")
+    @thirdCanvas = new Suzaku.Widget("#thirdCanvas")
+    Utils.getTempCanvas = (index=2)=>
+      switch index
+        when 2
+          return @secondCanvas.dom
+        when 3
+          return @thirdCanvas.dom
     @UILayer = new Suzaku.Widget("#UILayer")
     @handleDisplaySize()
     @km = new Suzaku.KeybordManager()
@@ -24,9 +32,9 @@ class Magia extends EventEmitter
       $("#loadingPage").slideUp "slow"
       window.AudioManager.stop "startMenu"
       window.AudioManager.play "home"
-      @switchStage "start"
+      #@switchStage "start"
       #@switchStage "worldMap"
-      #@switchStage "area","forest"
+      @switchStage "area","forest"
       #@switchStage "shop","magicItemShop"
       #@switchStage "guild" 
       #@switchStage "home"

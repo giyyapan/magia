@@ -20,6 +20,8 @@ class window.PopupBox extends Widget
     @UI.close.J.hide()
   setCloseText:(t)->
     @UI.close.J.text t
+  hideAcceptBtn:()->
+    @UI.accept.J.hide()
   setAcceptText:(t)->
     @UI.accept.J.text t
   show:->
@@ -51,7 +53,7 @@ class window.MsgBox extends PopupBox
         @close()
         ),autoRemove
     else
-      @UI.accept.J.hide()
+      @hideAcceptBtn()
     @show()
     
 class window.TraitItem extends Widget

@@ -6,13 +6,18 @@
 	<button data-id="center" style="display:none;" >*</button>
 	<template data-id="res-point-tpl" >
 		<a class="res-point" >
-			<img src="img/menu/area-res-point-mark.png" class="animate-scale-in-out" ></img>
-			<span data-id="name"></span>
+			<img src="/img/menu/area-res-point-mark.png" class="bg animate-scale-in-out" ></img>
+			<div class="icon-box animate-scale-in-out" >
+				<img class="" src="/img/menu/area-collect-icon.png" style="display:none;" data-id="collect" />
+				<img class="" src="/img/menu/area-monster-icon.png" style="display:none;" data-id="monster" />
+				<img class="" src="/img/menu/area-boss-icon.png" style="display:none;" data-id="boss" />
+			</div>
+			<span data-id="name" style="display:none;" ></span>
 		</a>
 	</template>
 	<template data-id="move-point-tpl" >
 		<a class="move-point autohide" >
-			<img src="img/menu/area-move-mark.png"></img>
+			<img src="/img/menu/area-move-mark.png"></img>
 			<span data-id="target" > </span>
 		</a>
 	</template>

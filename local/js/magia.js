@@ -13,6 +13,19 @@
       this.size = null;
       this.res = null;
       this.canvas = new Suzaku.Widget("#gameCanvas");
+      this.secondCanvas = new Suzaku.Widget("#secondCanvas");
+      this.thirdCanvas = new Suzaku.Widget("#thirdCanvas");
+      Utils.getTempCanvas = function(index) {
+        if (index == null) {
+          index = 2;
+        }
+        switch (index) {
+          case 2:
+            return _this.secondCanvas.dom;
+          case 3:
+            return _this.thirdCanvas.dom;
+        }
+      };
       this.UILayer = new Suzaku.Widget("#UILayer");
       this.handleDisplaySize();
       this.km = new Suzaku.KeybordManager();
@@ -33,7 +46,7 @@
         $("#loadingPage").slideUp("slow");
         window.AudioManager.stop("startMenu");
         window.AudioManager.play("home");
-        _this.switchStage("start");
+        _this.switchStage("area", "forest");
         return _this.startGameLoop();
       });
     }
