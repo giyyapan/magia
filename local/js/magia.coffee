@@ -45,11 +45,17 @@ class Magia extends EventEmitter
           s = new Home this,data
           window.AudioManager.play "home"
         when "test" then s = new TestStage this,data
-        when "area" then s = new Area this,data
+        when "area"
+          window.AudioManager.play "home"
+          s = new Area this,data
         when "shop" then s = new Shop this,data
         when "guild" then s = new Guild this,data
-        when "story" then s = new StoryStage this,data
-        when "battle" then s = new Battlefield this,data
+        when "story"
+          window.AudioManager.play "home"
+          s = new StoryStage this,data
+        when "battle"
+          window.AudioManager.play "battleBgm"
+          s = new Battlefield this,data
         when "worldMap" then s = new WorldMap this,data
         else console.error "invailid stage:#{stage}"
       s.stageName = stage

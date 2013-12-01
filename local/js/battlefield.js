@@ -12,7 +12,7 @@
     }
 
     BattlefieldAffect.prototype.draw = function(context) {
-      context.fillStyle = "rgba(255,255,255,0.5)";
+      context.fillStyle = "rgba(200,200,255,0.75)";
       context.beginPath();
       context.arc(0, 0, 25, 0, Math.PI * 2, true);
       context.closePath();
@@ -71,8 +71,10 @@
   window.BattlefieldSprite = (function(_super) {
     __extends(BattlefieldSprite, _super);
 
-    function BattlefieldSprite(x, y, spriteData) {
-      BattlefieldSprite.__super__.constructor.apply(this, arguments);
+    function BattlefieldSprite(bf, x, y, spriteData) {
+      BattlefieldSprite.__super__.constructor.call(this, x, y, spriteData);
+      this.bf = bf;
+      this.hp = null;
       this.icon = spriteData.icon;
       this.buffs = {};
       this.debuffs = {};
@@ -108,6 +110,14 @@
         debuff.handleAttackDamage(damage);
       }
       return damage;
+    };
+
+    BattlefieldSprite.prototype.attackFire = function(target, index, length) {};
+
+    BattlefieldSprite.prototype.onAttack = function(from, damage) {
+      console.log("" + name + " on attack", damage);
+      this.bf.camera.shake("fast");
+      return window.AudioManager.play("hurt");
     };
 
     BattlefieldSprite.prototype.addStatus = function(type, data) {

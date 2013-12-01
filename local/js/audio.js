@@ -12,11 +12,17 @@
       GameAudioManager.__super__.constructor.apply(this, arguments);
       this.source = {
         sfxStartCusor: "sfxStartCusor",
-        startClick: "startClick"
+        startClick: "startClick",
+        playerCast: "player-cast",
+        hurt: "hurt",
+        slimeHit: "hit-slime",
+        pigHit: "hit-pig",
+        qqHit: "hit-qq"
       };
       this.bgmSource = {
         startMenu: "startMenu",
-        home: "home"
+        home: "home",
+        battleBgm: "battleBgm"
       };
       this.audios = {};
       resourceContainerDom = document.getElementById("resourceContainer");
@@ -33,22 +39,24 @@
     }
 
     GameAudioManager.prototype.play = function(audioName) {
-      var audio;
+      var a, audio, name, _ref;
       if (GameConfig.noSound) {
         return true;
       }
-      if (this.audios[audioName].isBGM) {
-        for (audio in this.audios) {
-          if (this.audios[audio].isBGM) {
-            this.audios[audio].stop();
+      a = this.audios[audioName];
+      if (!a) {
+        return console.error("not found audio", audioName);
+      }
+      if (a.isBGM) {
+        _ref = this.audios;
+        for (name in _ref) {
+          audio = _ref[name];
+          if (audio.isBGM) {
+            audio.stop();
           }
         }
-        return this.audios[audioName].play();
-      } else if (this.audios[audioName].isBGM === false) {
-        return this.audios[audioName].play();
-      } else {
-        return console.error("not found audio");
       }
+      return a.play();
     };
 
     GameAudioManager.prototype.soundOff = function() {
@@ -135,7 +143,7 @@
       this.doms.push(newAudioDom);
       oggSource = document.createElement("source");
       oggSource.id = newAudioDom.id + "ogg";
-      oggSource.src = this.pathName + this.name + ".ogg";
+      oggSource.src = this.pathName + this.sourceName + ".ogg";
       newAudioDom.appendChild(oggSource);
       return newAudioDom;
     };
@@ -158,6 +166,7 @@
     };
 
     GameAudio.prototype.bgmPlay = function() {
+      console.log("play bgm", this);
       this.doms[0].play();
       return this.doms[0].paused = false;
     };

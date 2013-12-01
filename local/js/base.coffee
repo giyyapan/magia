@@ -22,11 +22,11 @@ window.Dict =
       fog:"雾气"
       iron:"钢"
       freeze:"霜冻"
-      time:"时"
+      traitTime:"时"
       space:"空"
     TraitLevel:
       1:"life,fire,wind,air,earth"
-      2:"heal,minus,spirit,snow,poison,clear,fog,iron,time,space"
+      2:"heal,minus,spirit,snow,poison,clear,fog,iron,traitTime,space"
       3:"explode,burn,freeze,corrosion"
       
 window.Widget = Suzaku.Widget

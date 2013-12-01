@@ -1,10 +1,11 @@
 class window.BattlefieldPlayer extends BattlefieldSprite
   constructor:(battlefield,x,y,playerData)->
     @db = battlefield.db
-    super x,y,@db.sprites.get "player"
+    super battlefield,x,y,@db.sprites.get "player"
     console.log this
     @playerData = playerData
     @statusValue = playerData.statusValue
+    @name = "player"
     for name,value of playerData.statusValue
       this[name] = value
     @bf= battlefield
@@ -35,6 +36,7 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       @useMovement @defaultMovement,true
   attackFire:(target)->
     damage = @handleAttackDamage normal:@playerData.statusValue.atk
+    window.AudioManager.play "playerCast"
     effect = new BattlefieldAffect @x + 100,@y - 100
     @bf.mainLayer.drawQueueAdd effect
     effect.animate x:target.x,y:target.y,300,=>
@@ -68,9 +70,8 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       @hp = @statusValue.hp
     @updateLifeBar "heal"
   onAttack:(from,damage)->
-    #console.log "player onattack,damage:",damage
+    super
     @handleOnAttacakDamage damage
-    @bf.camera.shake "fast"
     for type,value of damage
       if @isDefensed then value = parseInt(value/3)
       @hp -= value

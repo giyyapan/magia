@@ -47,7 +47,7 @@
       this.db = this.bf.db;
       this.originData = this.db.monsters.get(name);
       spriteOriginData = this.db.sprites.get(this.originData.sprite);
-      BattlefieldMonster.__super__.constructor.call(this, x, y, spriteOriginData);
+      BattlefieldMonster.__super__.constructor.call(this, battlefield, x, y, spriteOriginData);
       this.name = this.originData.name;
       this.statusValue = this.originData.statusValue;
       this.maxHp = this.statusValue.hp;
@@ -62,10 +62,9 @@
     }
 
     BattlefieldMonster.prototype.attack = function(target) {
-      var damage, defaultPos,
+      var defaultPos,
         _this = this;
       this.bf.paused = true;
-      damage = this.handleAttackDamage(this.originData.skills.attack.damage);
       defaultPos = {
         x: this.x,
         y: this.y
@@ -80,13 +79,7 @@
         _this.animateClock.setRate("normal");
         _this.useMovement("attack");
         listener = _this.on("keyFrame", function(index, length) {
-          var name, realDamage, value;
-          realDamage = {};
-          for (name in damage) {
-            value = damage[name];
-            realDamage[name] = value / length;
-          }
-          return target.onAttack(_this, realDamage);
+          return _this.attackFire(target, index, length);
         });
         return _this.once("endMove:attack", function() {
           _this.off("keyFrame", listener);
@@ -108,11 +101,23 @@
       });
     };
 
+    BattlefieldMonster.prototype.attackFire = function(target, index, length) {
+      var damage, name, realDamage, sound, value;
+      sound = this.originData.attackSound || "qqHit";
+      window.AudioManager.play(sound);
+      damage = this.handleAttackDamage(this.originData.skills.attack.damage);
+      realDamage = {};
+      for (name in damage) {
+        value = damage[name];
+        realDamage[name] = value / length;
+      }
+      return target.onAttack(this, realDamage);
+    };
+
     BattlefieldMonster.prototype.onAttack = function(from, damage) {
       var name, value;
-      console.log("on attack", damage);
+      BattlefieldMonster.__super__.onAttack.apply(this, arguments);
       this.handleOnAttacakDamage(damage);
-      this.bf.camera.shake("fast");
       for (name in damage) {
         value = damage[name];
         this.hp -= value;

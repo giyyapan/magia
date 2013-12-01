@@ -10,10 +10,11 @@
       var name, value, _ref,
         _this = this;
       this.db = battlefield.db;
-      BattlefieldPlayer.__super__.constructor.call(this, x, y, this.db.sprites.get("player"));
+      BattlefieldPlayer.__super__.constructor.call(this, battlefield, x, y, this.db.sprites.get("player"));
       console.log(this);
       this.playerData = playerData;
       this.statusValue = playerData.statusValue;
+      this.name = "player";
       _ref = playerData.statusValue;
       for (name in _ref) {
         value = _ref[name];
@@ -68,6 +69,7 @@
       damage = this.handleAttackDamage({
         normal: this.playerData.statusValue.atk
       });
+      window.AudioManager.play("playerCast");
       effect = new BattlefieldAffect(this.x + 100, this.y - 100);
       this.bf.mainLayer.drawQueueAdd(effect);
       return effect.animate({
@@ -128,8 +130,8 @@
 
     BattlefieldPlayer.prototype.onAttack = function(from, damage) {
       var type, value;
+      BattlefieldPlayer.__super__.onAttack.apply(this, arguments);
       this.handleOnAttacakDamage(damage);
-      this.bf.camera.shake("fast");
       for (type in damage) {
         value = damage[type];
         if (this.isDefensed) {

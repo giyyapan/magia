@@ -91,7 +91,7 @@ class window.ThingsDB extends SubDB
       timeLow:
         name:"时之沙"
         description:"古代遗迹中出土的沙子，据说有操纵时间的神奇能量"
-        traits:["time:25"]
+        traits:["traitTime:25"]
       spaceLow:
         name:"以太"
         description:"被称为“不存在之物”的神奇元素，配合适当的魔法能够左右空间"

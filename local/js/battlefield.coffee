@@ -2,7 +2,7 @@ class window.BattlefieldAffect extends Drawable
   constructor:(x,y)->
     super x,y
   draw:(context)->
-    context.fillStyle = "rgba(255,255,255,0.5)"
+    context.fillStyle = "rgba(200,200,255,0.75)"
     context.beginPath()
     context.arc(0,0,25,0,Math.PI*2,true)
     context.closePath()
@@ -28,8 +28,10 @@ class Dot extends EventEmitter
 
       
 class window.BattlefieldSprite extends Sprite
-  constructor:(x,y,spriteData)->
-    super 
+  constructor:(bf,x,y,spriteData)->
+    super x,y,spriteData
+    @bf = bf
+    @hp = null
     @icon = spriteData.icon
     @buffs = {}
     @debuffs = {}
@@ -47,6 +49,11 @@ class window.BattlefieldSprite extends Sprite
     for name,debuff of @debuffs
       debuff.handleAttackDamage damage
     return damage
+  attackFire:(target,index,length)->
+  onAttack:(from,damage)->
+    console.log "#{name} on attack",damage
+    @bf.camera.shake "fast"
+    window.AudioManager.play "hurt"
   addStatus:(type,data)->
     #buff debuff dot
     switch type

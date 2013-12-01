@@ -70,12 +70,16 @@ class window.AreasDB extends SubDB
         dangerLevel:  "中"
         x:0,y:0
         battlefieldBg:
-          bfSnownmountain:
+          bfSnowmountain:
             z:1000
             anchor:
               x:200
               y:0
             main:true
+          snowmountainEntryFloat:
+            x:300
+            z:1
+            fixToBottom:true
         places:
           entry:
             name:"大冰原"

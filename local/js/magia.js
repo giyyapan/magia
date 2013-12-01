@@ -61,6 +61,7 @@
             s = new TestStage(this, data);
             break;
           case "area":
+            window.AudioManager.play("home");
             s = new Area(this, data);
             break;
           case "shop":
@@ -70,9 +71,11 @@
             s = new Guild(this, data);
             break;
           case "story":
+            window.AudioManager.play("home");
             s = new StoryStage(this, data);
             break;
           case "battle":
+            window.AudioManager.play("battleBgm");
             s = new Battlefield(this, data);
             break;
           case "worldMap":

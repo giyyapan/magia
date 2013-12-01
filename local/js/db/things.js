@@ -120,7 +120,7 @@
         timeLow: {
           name: "时之沙",
           description: "古代遗迹中出土的沙子，据说有操纵时间的神奇能量",
-          traits: ["time:25"]
+          traits: ["traitTime:25"]
         },
         spaceLow: {
           name: "以太",

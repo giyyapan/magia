@@ -4,9 +4,15 @@ class GameAudioManager extends EventEmitter
     @source = 
       sfxStartCusor:"sfxStartCusor"
       startClick:"startClick"
+      playerCast:"player-cast"
+      hurt:"hurt"
+      slimeHit:"hit-slime"
+      pigHit:"hit-pig"
+      qqHit:"hit-qq"
     @bgmSource=
       startMenu:"startMenu"
       home:"home"
+      battleBgm:"battleBgm"
     @audios = {}      
     resourceContainerDom = document.getElementById("resourceContainer")
     for name,path of @source
@@ -15,15 +21,14 @@ class GameAudioManager extends EventEmitter
       @audios[name] = new GameAudio name,path,resourceContainer,true
   play:(audioName)->
     return true if GameConfig.noSound
-    if @audios[audioName].isBGM
-      for audio of @audios
-        if @audios[audio].isBGM
-          @audios[audio].stop()
-      @audios[audioName].play()
-    else if @audios[audioName].isBGM is false
-      @audios[audioName].play()
-    else
-      console.error "not found audio"
+    a = @audios[audioName]
+    if not a
+      return console.error "not found audio",audioName
+    if a.isBGM
+      for name,audio of @audios
+        if audio.isBGM
+          audio.stop()
+    a.play()
   soundOff:->
     @setSound "all",0
   soundOn: ->
@@ -71,7 +76,7 @@ class GameAudio extends EventEmitter
     #init source
     oggSource = document.createElement "source"
     oggSource.id = newAudioDom.id + "ogg"
-    oggSource.src = @pathName + @name + ".ogg"
+    oggSource.src = @pathName + @sourceName + ".ogg"
     newAudioDom.appendChild oggSource
     return newAudioDom
   soundPlay:->
@@ -83,6 +88,7 @@ class GameAudio extends EventEmitter
     @addAudioDom().play()
     return false
   bgmPlay:->
+    console.log "play bgm",this
     @doms[0].play()
     @doms[0].paused = false
   setVolume:(volume)->

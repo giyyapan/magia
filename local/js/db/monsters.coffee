@@ -7,6 +7,7 @@ class window.MonstersDB extends SubDB
       qq:
         name:"企鹅"
         sprite:"qq"
+        attackSound:"qqHit"
         statusValue:
           hp:100
           def:30
@@ -26,6 +27,7 @@ class window.MonstersDB extends SubDB
       pig:
         name:"布塔猪"
         sprite:"pig"
+        attackSound:"pigHit"
         statusValue:
           hp:150
           def:30
@@ -45,6 +47,7 @@ class window.MonstersDB extends SubDB
       slime:
         name:"史莱姆"
         sprite:"slime"
+        attackSound:"slimeHit"
         statusValue:
           hp:60
           def:30

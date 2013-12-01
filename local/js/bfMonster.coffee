@@ -26,7 +26,7 @@ class window.BattlefieldMonster extends BattlefieldSprite
     @db = @bf.db
     @originData = @db.monsters.get name
     spriteOriginData = @db.sprites.get(@originData.sprite)
-    super x,y,spriteOriginData
+    super battlefield,x,y,spriteOriginData
     @name = @originData.name
     @statusValue = @originData.statusValue
     @maxHp = @statusValue.hp
@@ -39,7 +39,6 @@ class window.BattlefieldMonster extends BattlefieldSprite
       @attack @bf.player 
   attack:(target)->
     @bf.paused = true
-    damage = @handleAttackDamage @originData.skills.attack.damage
     defaultPos = x:@x,y:@y
     @useMovement "move",true
     @animateClock.setRate "fast"
@@ -47,10 +46,7 @@ class window.BattlefieldMonster extends BattlefieldSprite
       @animateClock.setRate "normal"
       @useMovement "attack"
       listener = @on "keyFrame",(index,length)=>
-        realDamage = {}
-        for name,value of damage
-          realDamage[name] = (value / length)
-        target.onAttack this,realDamage
+        @attackFire target,index,length
       @once "endMove:attack",=>
         @off "keyFrame",listener
         @transform.scaleX = -1
@@ -63,10 +59,17 @@ class window.BattlefieldMonster extends BattlefieldSprite
           @lifeBar.transform.scaleX = 1
           @useMovement @defaultMovement,true
           @bf.paused = false
+  attackFire:(target,index,length)->
+    sound = @originData.attackSound or "qqHit"
+    window.AudioManager.play sound
+    damage = @handleAttackDamage @originData.skills.attack.damage
+    realDamage = {}
+    for name,value of damage
+      realDamage[name] = (value / length)
+    target.onAttack this,realDamage
   onAttack:(from,damage)->
-    console.log "on attack",damage
+    super
     @handleOnAttacakDamage damage
-    @bf.camera.shake "fast"
     for name,value of damage
       @hp -= value
     if @hp <= 0
