@@ -58,7 +58,7 @@ testPlayerData =
     minusDef:0
     precision:95
     resistance:10
-    spd:8
+    spd:20
 
 playerData =
   name:"Nola"
@@ -99,7 +99,7 @@ playerData =
     minusDef:0
     precision:95
     resistance:10
-    spd:8
+    spd:20
 
 class window.Player extends EventEmitter
   constructor:(db)->

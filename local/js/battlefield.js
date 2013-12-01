@@ -213,7 +213,8 @@
     };
 
     BattlefieldPlayer.prototype.defense = function() {
-      return this.isDefensed = true;
+      this.isDefensed = true;
+      return this.bf.paused = false;
     };
 
     BattlefieldPlayer.prototype.castSpell = function(sourceItemWidget, target) {

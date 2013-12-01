@@ -127,7 +127,7 @@
       minusDef: 0,
       precision: 95,
       resistance: 10,
-      spd: 8
+      spd: 20
     }
   };
 
@@ -174,7 +174,7 @@
       minusDef: 0,
       precision: 95,
       resistance: 10,
-      spd: 8
+      spd: 20
     }
   };
 

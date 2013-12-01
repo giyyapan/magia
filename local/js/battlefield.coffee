@@ -118,6 +118,7 @@ class BattlefieldPlayer extends Sprite
       @bf.paused = false
   defense:->
     @isDefensed = true
+    @bf.paused = false
   castSpell:(sourceItemWidget,target)->
     console.log "cast spell to ",target
     sourceItemWidget.playerSupplies.remainCount -= 1
