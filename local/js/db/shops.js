@@ -53,8 +53,8 @@
         },
         equipmentShop: {
           name: "奇迹裁缝",
-          npc: "lilith",
-          npcName: "莉莉丝",
+          npc: "nataria",
+          npcName: "娜塔莉娅",
           bg: "equipShopBg",
           exitText: "嗯？就走了么？",
           welcomeText: {

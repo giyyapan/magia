@@ -172,6 +172,7 @@ class window.Shop extends Stage
     @dialogBox = new DialogBox @game
     @dialogBox.show()
     text = @getDataByRelationship @originData.welcomeText
+    console.log text,@originData.npcName
     @dialogBox.display text:text,speaker:@originData.npcName,nostop:true,=>
       @menu.showServiceOptions()
         
