@@ -213,8 +213,8 @@
       }
       r.scaleX = r.scale || r.scaleX || 1;
       r.scaleY = r.scale || r.scaleY || 1;
-      context.scale(r.scaleX, r.scaleY);
       context.translate(x >> 0, y >> 0);
+      context.scale(r.scaleX, r.scaleY);
       if (r.rotate) {
         return context.rotate(r.rotate);
       }

@@ -42,7 +42,6 @@
         value = _ref[name];
         this[name] = value;
       }
-      this.hp = 30;
       this.bf = battlefield;
       this.lifeBar = new Widget(this.bf.menu.UI['life-bar']);
       this.lifeBar.UI['life-text'].J.text("" + (parseInt(this.hp)) + "/" + this.statusValue.hp);

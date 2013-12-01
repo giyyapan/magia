@@ -123,8 +123,8 @@ class window.Drawable extends Suzaku.EventEmitter
     r.scaleX = r.scale or r.scaleX or 1
     r.scaleY = r.scale or r.scaleY or 1
     #console.log r.scaleX,r.scaleY,x,y
-    context.scale r.scaleX,r.scaleY
     context.translate x >> 0,y >> 0
+    context.scale r.scaleX,r.scaleY
     context.rotate r.rotate if r.rotate
   clearImg:->
     @imgData = null

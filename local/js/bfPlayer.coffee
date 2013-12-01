@@ -20,7 +20,7 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     @name = "player"
     for name,value of playerData.statusValue
       this[name] = value
-    @hp = 30
+    #@hp = 30
     @bf = battlefield
     @lifeBar = new Widget @bf.menu.UI['life-bar']
     @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"

@@ -49,7 +49,7 @@
           name: "冰企鹅王",
           sprite: "iceQQ",
           attackSound: "qqHit",
-          scale: 1.2,
+          scale: 1.3,
           statusValue: {
             hp: 300,
             def: 30,
