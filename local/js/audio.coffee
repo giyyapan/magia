@@ -77,7 +77,7 @@ class GameAudio extends EventEmitter
   soundPlay:->
     for soundDom in @doms
       if soundDom.paused
-        soundDom.currentTime = 0
+        try soundDom.currentTime = 0
         soundDom.play()
         return true
     @addAudioDom().play()
@@ -91,7 +91,7 @@ class GameAudio extends EventEmitter
   stop:->
     for soundDom in @doms
       soundDom.pause()
-      soundDom.currentTime = 0
+      try soundDom.currentTime = 0
   pause:->
     for soundDom in @doms
       soundDom.pause()
