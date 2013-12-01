@@ -387,6 +387,7 @@
 
     MissionDetailsBox.prototype.updateStatus = function(mission, callback) {
       var _this = this;
+      mission.initRequests();
       this.updateStatusText();
       switch (mission.status) {
         case "current":

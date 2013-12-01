@@ -27,7 +27,20 @@ class window.ShopsDB extends SubDB
       equipmentShop:
         name:"奇迹裁缝"
         npc:"lilith"
+        npcName:"莉莉丝"
         bg:"equipShopBg"
+        exitText:"嗯？就走了么？"
+        welcomeText:
+          0:"欢迎。但是这里还在装修，现在不卖东西。"
+        waitText:["你在看什么？"]
+        conversations:
+          0:"说过了吧，这里还在装修，现在不卖东西。"
+        sellableType:"supplies"
+        playerSellPrice:{0:0.5,100:0.55,500:0.6,1000:0.65}
+        buyableType:"supplies"
+        buyableItems:
+          0:[]
+        playerBuyPrice:{0:1,100:0.9,500:0.8}
       adventurerGuild:
         name:"法师协会"
         npc:"dirak"

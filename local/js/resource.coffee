@@ -23,7 +23,7 @@ window.Imgs =
   playerDialog:'characters/player-dialog.png'
   catDialog:'characters/cat-dialog.png'
   lunaDialog:'characters/luna-dialog.png'
-  lilithDialog:'characters/lilith-dialog.png'
+  natariDialog:'characters/nataria-dialog.png'
   dirakDialog:'characters/dirak-dialog.png'
   playerBattleIcon:'sprites/icon-player.jpg'
   slimeBattleIcon:'sprites/icon-slime.jpg'

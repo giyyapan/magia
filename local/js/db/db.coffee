@@ -56,10 +56,10 @@ class window.Database extends Suzaku.EventEmitter
         name:"露娜"
         description:"绯红魔法店的掌柜"
         dialogPic:"lunaDialog"
-      lilith:
-        name:"莉莉丝"
+      nataria:
+        name:"娜塔莉娅"
         description:"奇迹裁缝的掌柜"
-        dialogPic:"lilithDialog"
+        dialogPic:"natariDialog"
       dirak:
         name:"狄拉克"
         description:"冒险者公会的管理员"

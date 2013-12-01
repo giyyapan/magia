@@ -75,7 +75,8 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["1,1", "20,80"],
+              resPoints: ["500,300", "100,500"],
+              resources: ["waterLow", "earthLow"],
               movePoints: ["entry:684,600"]
             }
           }

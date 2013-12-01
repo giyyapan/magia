@@ -49,7 +49,7 @@
         x: this.x,
         y: this.y
       };
-      this.animateClock.setRate("slow");
+      this.animateClock.setRate(10);
       this.useMovement("attack");
       listener = this.on("keyFrame", function(index, length) {
         return _this.attackFire(target);

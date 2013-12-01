@@ -212,6 +212,7 @@ class window.MissionDetailsBox extends Widget
     @updateStatus mission,callback
     @J.fadeIn "fast"
   updateStatus:(mission,callback)->
+    mission.initRequests()
     @updateStatusText()
     switch mission.status
       when "current"

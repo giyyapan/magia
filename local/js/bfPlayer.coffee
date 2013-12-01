@@ -24,7 +24,7 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     @bf.mainLayer.sortDrawQueue()
     @bf.setView "default"
     defaultPos = x:@x,y:@y
-    @animateClock.setRate "slow"
+    @animateClock.setRate 10
     @useMovement "attack"
     listener = @on "keyFrame",(index,length)=>
       @attackFire target

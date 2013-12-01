@@ -71,10 +71,10 @@
           description: "绯红魔法店的掌柜",
           dialogPic: "lunaDialog"
         },
-        lilith: {
-          name: "莉莉丝",
+        nataria: {
+          name: "娜塔莉娅",
           description: "奇迹裁缝的掌柜",
-          dialogPic: "lilithDialog"
+          dialogPic: "natariDialog"
         },
         dirak: {
           name: "狄拉克",

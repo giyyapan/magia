@@ -56,7 +56,11 @@ class window.AreasDB extends SubDB
                 z:1
                 x:300
                 fixToBottom:true
-            resPoints:["1,1","20,80"]
+            resPoints:["500,300","100,500"]
+            resources:[
+              "waterLow"
+              "earthLow"
+              ]
             movePoints:["entry:684,600"]
       snowmountain:
         name:"雪域"

@@ -103,7 +103,7 @@
     relationships: {
       luna: 0,
       dirak: 0,
-      lilith: 0
+      nataria: 0
     },
     storage: [],
     equipments: [],
@@ -149,7 +149,7 @@
     relationships: {
       luna: 0,
       dirak: 0,
-      lilith: 0
+      nataria: 0
     },
     unlockedAreas: {},
     storage: [],
@@ -195,7 +195,6 @@
       window.fuckmylife = function() {
         return _this.newData(testPlayerData);
       };
-      window.fuckmylife();
     }
 
     Player.prototype.loadData = function() {

@@ -528,6 +528,7 @@
     Battlefield.prototype.win = function() {
       var box, monsters,
         _this = this;
+      this.paused = true;
       monsters = [];
       box = new MsgBox("胜利", "战斗胜利！");
       box.on("close", function() {
@@ -541,6 +542,7 @@
     Battlefield.prototype.lose = function() {
       var box, evt,
         _this = this;
+      this.paused = true;
       evt = {};
       this.emit("lose", evt);
       if (!evt.handled) {

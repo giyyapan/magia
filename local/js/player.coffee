@@ -36,7 +36,7 @@ testPlayerData =
   relationships:
     luna:0
     dirak:0
-    lilith:0
+    nataria:0
   storage:[]
   equipments:[]
   currentEquipments:
@@ -76,7 +76,7 @@ playerData =
   relationships:
     luna:0
     dirak:0
-    lilith:0
+    nataria:0
   unlockedAreas:{}
   storage:[]
   equipments:[]
@@ -113,7 +113,7 @@ class window.Player extends EventEmitter
     @saveLock = false
     window.fuckmylife = =>
       @newData testPlayerData
-    window.fuckmylife()
+    #window.fuckmylife()
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"

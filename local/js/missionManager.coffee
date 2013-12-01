@@ -42,12 +42,11 @@ class Mission extends EventEmitter
               name = t
               number = 1
             @requests.kill[name] = parseInt(number)
+    console.log @status
+    @incompletedRequests = Utils.clone @requests,true
     if @status is "current" or @status is "avail"
-      @incompletedRequests = Utils.clone @requests,true
       console.log "init requests",@requests
       @initIncompletedRequests()
-    else
-      @incompletedRequests = {}
   initIncompletedRequests:->
     # 遍历玩家的完成任务数据，将当前任务中的要求
     pcr = @player.missions.current[@name]
@@ -92,7 +91,6 @@ class Mission extends EventEmitter
         console.log ir
     return @checkComplete()
   checkComplete:->
-    return yes if @completed is true
     for type,data of @incompletedRequests
       for name,value of data
         return false
