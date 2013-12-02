@@ -1,0 +1,68 @@
+{"frames": [
+
+{
+	"filename": "11.png",
+	"frame": {"x":2,"y":149,"w":165,"h":99},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":23,"w":165,"h":99},
+	"sourceSize": {"w":177,"h":145}
+},
+{
+	"filename": "12.png",
+	"frame": {"x":294,"y":2,"w":155,"h":99},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":23,"w":155,"h":99},
+	"sourceSize": {"w":177,"h":145}
+},
+{
+	"filename": "13.png",
+	"frame": {"x":141,"y":2,"w":151,"h":107},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":23,"w":151,"h":107},
+	"sourceSize": {"w":177,"h":145}
+},
+{
+	"filename": "21.png",
+	"frame": {"x":2,"y":2,"w":137,"h":145},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":18,"y":0,"w":137,"h":145},
+	"sourceSize": {"w":177,"h":145}
+},
+{
+	"filename": "22.png",
+	"frame": {"x":169,"y":111,"w":105,"h":129},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":46,"y":8,"w":105,"h":129},
+	"sourceSize": {"w":177,"h":145}
+},
+{
+	"filename": "23.png",
+	"frame": {"x":276,"y":111,"w":99,"h":117},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":49,"y":13,"w":99,"h":117},
+	"sourceSize": {"w":177,"h":145}
+},
+{
+	"filename": "24.png",
+	"frame": {"x":377,"y":103,"w":91,"h":109},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":50,"y":18,"w":91,"h":109},
+	"sourceSize": {"w":177,"h":145}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "fireball.png",
+	"format": "RGBA8888",
+	"size": {"w":494,"h":250},
+	"scale": "0.6",
+	"smartupdate": "$TexturePacker:SmartUpdate:d232b787adcb9b01dddd5e081402e85f$"
+}
+}
