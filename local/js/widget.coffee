@@ -51,6 +51,7 @@ class window.MsgBox extends PopupBox
       @UI.footer.J.hide()
       window.setTimeout (=>
         @close()
+        callback() if callback
         ),autoRemove
     else
       @hideAcceptBtn()

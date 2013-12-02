@@ -77,8 +77,32 @@ class window.SpritesDB extends SubDB
           attack:"7,17:9"
           cast:"0,6"
     @effects.data =
-      fireBall:
-        name:"水球术"
+      energyBall:
+        anchor:"178,124"
+        sprite:Res.sprites.energyBall
         movements:
-          normal:""
-          active:""
+          fly:"0,3"
+          active:"4,6"
+      fireBall:
+        sprite:Res.sprites.fireBall
+        anchor:"178,124"
+        movements:
+          fly:"0,3"
+          active:"4,6"
+      darkBall:
+        sprite:Res.sprites.darkBall
+        anchor:"178,124"
+        movements:
+          fly:"0,3"
+          active:"4,6"
+      buff:
+        sprite:Res.sprites.buff
+        anchor:"204,250"
+        movements:
+          active:"0,7"
+      debuff:
+        sprite:Res.sprites.debuff
+        anchor:"204,250"
+        movements:
+          active:"0,7"
+

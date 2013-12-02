@@ -46,7 +46,7 @@
         $("#loadingPage").slideUp("slow");
         window.AudioManager.stop("startMenu");
         window.AudioManager.play("home");
-        _this.switchStage("start");
+        _this.switchStage("area", "snowmountain");
         return _this.startGameLoop();
       });
     }

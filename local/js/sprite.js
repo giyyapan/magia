@@ -7,7 +7,8 @@
     __extends(Sprite, _super);
 
     function Sprite(x, y, spriteOriginData) {
-      var _this = this;
+      var name,
+        _this = this;
       Sprite.__super__.constructor.call(this, x, y);
       this.spriteOriginData = spriteOriginData;
       this.dspName = spriteOriginData.name;
@@ -21,8 +22,15 @@
       this.initSprite();
       this.width = this.spriteData.frames[0].frame.w;
       this.height = this.spriteData.frames[0].frame.h;
-      this.defaultMovement = "normal";
-      this.useMovement("normal", true);
+      if (this.movements.normal) {
+        this.defaultMovement = "normal";
+      } else {
+        for (name in this.movements) {
+          this.defaultMovement = name;
+          break;
+        }
+      }
+      this.useMovement(this.defaultMovement, true);
       this.currentFrame = (this.currentMove.startFrame - 1) + Math.round(Math.random() * this.currentMove.length);
     }
 
@@ -64,7 +72,7 @@
       return this.setAnchor(this.defaultAnchor);
     };
 
-    Sprite.prototype.useMovement = function(name, loopThisMove) {
+    Sprite.prototype.useMovement = function(name, loopThisMove, callback) {
       var data;
       if (loopThisMove == null) {
         loopThisMove = false;
@@ -72,9 +80,16 @@
       if (!this.movements[name]) {
         return console.error("no movment:" + name + " in ", this);
       }
-      if (this.currentMove && name !== this.currentMove.name) {
+      if (typeof loopThisMove === "function") {
+        callback = loopThisMove;
+        loopThisMove = false;
+      }
+      this.emit("startMove:" + name);
+      if (this.currentMove) {
         this.emit("endMove:" + this.currentMove.name);
-        this.emit("startMove:" + name);
+        if (name !== this.currentMove.name) {
+          this.emit("changeMove", name);
+        }
       }
       if (loopThisMove) {
         this.loopMovement = name;
@@ -88,7 +103,9 @@
         keyFrames: data.keyFrames
       };
       this.currentFrame = -1;
-      return this._nextFrame();
+      if (callback) {
+        return this.once("endMove:" + name, callback);
+      }
     };
 
     Sprite.prototype._nextFrame = function() {
@@ -106,7 +123,8 @@
       }
       realFrame = this.currentMove.startFrame + this.currentFrame;
       if (realFrame > this.currentMove.endFrame) {
-        return this.useMovement(this.loopMovement);
+        this.useMovement(this.loopMovement);
+        return this._nextFrame();
       } else {
         data = this.spriteData.frames[realFrame];
         if (!data) {

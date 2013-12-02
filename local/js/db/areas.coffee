@@ -36,7 +36,7 @@ class window.AreasDB extends SubDB
                 x:300
                 fixToBottom:true
             resPoints:[
-              "250,500 earthLow pig"
+              "250,500 earthLow slime"
               "880,430 earthLow,lifeLow pig"
               "1610,260 airLow,airLow"
               "1730,550 lifeLow,lifeLow,lifeLow slime,slime"
@@ -90,9 +90,9 @@ class window.AreasDB extends SubDB
                 x:200
                 fixToBottom:true
             resPoints:[
-              "1000,450 iceMid,minusLow icePigKing,icePig,icePig boss"
+              "1000,450 iceMid,minusLow icePig,icePigKing,icePig boss"
               "340,400 iceLow,iceLow,spiritLow iceQQ"
-              "1580,450 iceLow"
+              "1370,510 iceLow"
               "1580,450 fireMid,minusLow iceQQ,slime"
               ]
             movePoints:["exit:180,480","middle:1850,560"]

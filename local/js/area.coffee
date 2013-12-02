@@ -30,6 +30,8 @@ class MovePoint extends Widget
     @J.css left:"#{@x}px",top:"#{@y}px"
     self = this
     @dom.onclick = (evt)=>
+      evt.myOffsetX = evt.offsetX + @x - @place.currentX
+      evt.myOffsetY = evt.offsetY + @y
       @active evt
   active:(evt)->
     if @guardians
@@ -42,11 +44,9 @@ class MovePoint extends Widget
         box.setCloseText "算了"
         box.show()
         @place.encounterMonster @guardians
-      return
-    evt.myOffsetX = evt.offsetX + @x - @area.currentX
-    evt.myOffsetY = evt.offsetY + @y
-    @area.setCallback 300,=>
-      @area.enterPlace @moveTarget
+    else
+      @area.setCallback 300,=>
+        @area.enterPlace @moveTarget
   setGuardians:(data)->
     @UI.guardians.J.show()
     @guardians = data.split ","
@@ -99,7 +99,8 @@ class ResPoint extends Widget
         box.on "accept",=>
           @emit "active",@active()
       else
-        @emit "active",@active()
+        new MsgBox "采集","采集中...",600,=>
+          @emit "active",@active()
   initItems:(itemsData)->
     for name in itemsData.split ","
       if not @db.things.items.get name then console.error "invailid item name",name
@@ -295,7 +296,6 @@ class Place extends Layer
     point.on "active",(res)->
       self.handleResPointActive res
   addMovePoint:(data,index)->
-    console.log "fuck"
     point = new MovePoint this,@relativeMenu.UI['move-point-tpl'].innerHTML,data
     if @data.guardians and @data.guardians[point.moveTarget]
       point.setGuardians @data.guardians[point.moveTarget]

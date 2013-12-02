@@ -3,6 +3,7 @@ class window.MonsterLifeBar extends Drawable
     width = 150
     super 0,-130,150,10
     @monster = monster
+    @name = monster.name
     @value = @monster.hp
   draw:(context)->
     percent = (@value/@monster.maxHp)
@@ -21,25 +22,21 @@ class window.MonsterLifeBar extends Drawable
     
 class window.BattlefieldMonster extends BattlefieldSprite
   constructor:(battlefield,x,y,name)->
-    console.log name
     @bf = battlefield
     @db = @bf.db
     @originData = @db.monsters.get name
     spriteOriginData = @db.sprites.get(@originData.sprite)
-    super battlefield,x,y,spriteOriginData
+    super battlefield,x,y,spriteOriginData,@originData
     if @originData.scale then @transform.scale = @originData.scale;
     @name = @originData.name
-    @statusValue = @originData.statusValue
     @maxHp = @statusValue.hp
     @hp = @maxHp
     @lifeBar = new MonsterLifeBar this
     @drawQueueAddAfter @lifeBar
-    @speedItem = battlefield.menu.addSpeedItem this
-    @speedItem.on "active",=>
-      @emit "act"
-      @attack @bf.player 
+  act:->
+    super
+    @attack @bf.player
   attack:(target)->
-    @bf.paused = true
     defaultPos = x:@x,y:@y
     @useMovement "move",true
     @animateClock.setRate "fast"
@@ -75,6 +72,9 @@ class window.BattlefieldMonster extends BattlefieldSprite
       @lifeBar.animate value:0,100,"swing"
       @die()
       return
+    @lifeBar.animate value:@hp,100,"swing"
+  onHeal:(from,damage)->
+    super
     @lifeBar.animate value:@hp,100,"swing"
   draw:(context,tickDelay)->
     super context,tickDelay

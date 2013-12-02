@@ -74,13 +74,17 @@
   window.MenuImgs = ["worldMap/map-bg.jpg", "worldMap/border.png", "worldMap/border-bg.png", "menu/items-icon.jpg", "menu/bf-status-box-bg.png", "menu/texture-bg.jpg", "menu/arrow-left.png", "menu/arrow-right.png", "menu/backpack-border-bg.jpg", "menu/backpack-border-fl.png", "menu/backpack-flag-bg.png", "menu/backpack-main-bg.png"];
 
   window.Sprites = {
+    player: "player",
+    energyBall: "energyBall",
+    fireBall: "fireBall",
+    buff: "buff",
+    debuff: "debuff",
     qq: "qq",
     iceQQ: "qq-ice",
     pig: "pig",
     pigDark: "pig2",
     pigBlue: "pig3",
-    slime: "slime",
-    player: "player"
+    slime: "slime"
   };
 
   window.Templates = ["start-menu", "home-menu", "world-map", "popup-box", "test-menu", "area-menu", "shop-menu", "guild-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu", "worktable-menu", "item-details-box", "trait-item", "dialog-box", "mission-details-box", "story"];

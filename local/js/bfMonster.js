@@ -11,6 +11,7 @@
       width = 150;
       MonsterLifeBar.__super__.constructor.call(this, 0, -130, 150, 10);
       this.monster = monster;
+      this.name = monster.name;
       this.value = this.monster.hp;
     }
 
@@ -40,34 +41,30 @@
     __extends(BattlefieldMonster, _super);
 
     function BattlefieldMonster(battlefield, x, y, name) {
-      var spriteOriginData,
-        _this = this;
-      console.log(name);
+      var spriteOriginData;
       this.bf = battlefield;
       this.db = this.bf.db;
       this.originData = this.db.monsters.get(name);
       spriteOriginData = this.db.sprites.get(this.originData.sprite);
-      BattlefieldMonster.__super__.constructor.call(this, battlefield, x, y, spriteOriginData);
+      BattlefieldMonster.__super__.constructor.call(this, battlefield, x, y, spriteOriginData, this.originData);
       if (this.originData.scale) {
         this.transform.scale = this.originData.scale;
       }
       this.name = this.originData.name;
-      this.statusValue = this.originData.statusValue;
       this.maxHp = this.statusValue.hp;
       this.hp = this.maxHp;
       this.lifeBar = new MonsterLifeBar(this);
       this.drawQueueAddAfter(this.lifeBar);
-      this.speedItem = battlefield.menu.addSpeedItem(this);
-      this.speedItem.on("active", function() {
-        _this.emit("act");
-        return _this.attack(_this.bf.player);
-      });
     }
+
+    BattlefieldMonster.prototype.act = function() {
+      BattlefieldMonster.__super__.act.apply(this, arguments);
+      return this.attack(this.bf.player);
+    };
 
     BattlefieldMonster.prototype.attack = function(target) {
       var defaultPos,
         _this = this;
-      this.bf.paused = true;
       defaultPos = {
         x: this.x,
         y: this.y
@@ -128,6 +125,13 @@
         this.die();
         return;
       }
+      return this.lifeBar.animate({
+        value: this.hp
+      }, 100, "swing");
+    };
+
+    BattlefieldMonster.prototype.onHeal = function(from, damage) {
+      BattlefieldMonster.__super__.onHeal.apply(this, arguments);
       return this.lifeBar.animate({
         value: this.hp
       }, 100, "swing");

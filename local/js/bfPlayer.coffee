@@ -1,23 +1,12 @@
-class PlayerAttackAffect extends Drawable
-  constructor:(x,y)->
-    super x,y
-    @z = 999
-    @radius = 25
-  draw:(context)->
-    context.fillStyle = "rgba(79, 175, 212, 0.75)"
-    context.beginPath()
-    context.arc(0,0,@radius,0,Math.PI*2,true)
-    context.closePath()
-    context.fill()
-
 class window.BattlefieldPlayer extends BattlefieldSprite
   constructor:(battlefield,x,y,playerData)->
     @db = battlefield.db
-    super battlefield,x,y,@db.sprites.get "player"
+    @playerData = playerData
+    super battlefield,x,y,@db.sprites.get("player"),playerData
+    @castPositionX = 100
+    @castPositionY = -100
     console.log this
     @animateClock.setRate 10
-    @playerData = playerData
-    @statusValue = playerData.statusValue
     @name = "player"
     for name,value of playerData.statusValue
       this[name] = value
@@ -25,16 +14,11 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     @bf = battlefield
     @lifeBar = new Widget @bf.menu.UI['life-bar']
     @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
-    @speedItem = battlefield.menu.addSpeedItem this
-    @speedItem.on "active",=>
-      @act()
   act:->
-    @emit "act"
-    @bf.paused = true
+    super
     @bf.camera.lookAt {x:@x + 100,y:@y - 150},400,1.7
     @bf.menu.showActionBtns()
   attack:(target)->
-    @bf.paused = true
     @z = 10
     @bf.mainLayer.sortDrawQueue()
     @bf.setView "default"
@@ -54,11 +38,8 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       @drawQueueRemove blendLayer
     damage = @handleAttackDamage normal:@playerData.statusValue.atk
     window.AudioManager.play "playerCast"
-    effect = new PlayerAttackAffect @x + 100,@y - 100
-    @bf.mainLayer.drawQueueAdd effect
-    effect.animate x:target.x,y:target.y,300,=>
-      effect.animate {"radius":250,"transform.opacity":0.2},150,=>
-        @bf.mainLayer.drawQueueRemove effect
+    effect = new BfEffectSprite @bf,@db.sprites.get("energyBall"),this,target
+    effect.on "active",=>
       target.onHurt this,damage
       @bf.paused = false
   defense:->
@@ -69,26 +50,20 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       @isDefensed = false
       @drawQueueRemove bl
     @bf.paused = false
-  castSpell:(sourceItemWidget,target)->
+  useSpell:(type,sourceSupplies,target)->
     console.log "cast spell to ",target
-    sourceItemWidget.playerSupplies.remainCount -= 1
-    if sourceItemWidget.playerSupplies.remainCount < 0
-      @playerData.removeThing playerSupplies
-    callback = =>
-      @bf.setView "normal"
-      @bf.paused = false
-    if sourceItemWidget.type is "active"
-      switch sourceItemWidget.effectData.type
-        when "attack" then target.onHurt this,sourceItemWidget.effectData.damage
-        when "heal" then target.onHeal sourceItemWidget.effectData.heal
-        when "buff" then target.onBuff sourceItemWidget.effectData.buff
-    else
-      target.addFlipOverEffect sourceItemWidget.effectData
-    callback()
+    @bf.setView "normal"
+    @useMovement "attack"
+    @once "keyFrame",=>
+      window.AudioManager.play "playerCast"
+      super type,sourceSupplies,target
+    sourceSupplies.remainCount -= 1
+    if sourceSupplies.remainCount < 0
+      @playerData.removeThing sourceSupplies
   addFlipOverEffect:(effect)->
   onBuff:(effect)->
-  onHeal:(value)->
-    @hp += value
+  onHeal:(from,value)->
+    super
     if @hp > @statusValue.hp
       @hp = @statusValue.hp
     @updateLifeBar "heal"

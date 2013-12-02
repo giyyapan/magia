@@ -96,7 +96,10 @@
         }
         this.UI.footer.J.hide();
         window.setTimeout((function() {
-          return _this.close();
+          _this.close();
+          if (callback) {
+            return callback();
+          }
         }), autoRemove);
       } else {
         this.hideAcceptBtn();

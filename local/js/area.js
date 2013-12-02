@@ -55,6 +55,8 @@
       });
       self = this;
       this.dom.onclick = function(evt) {
+        evt.myOffsetX = evt.offsetX + _this.x - _this.place.currentX;
+        evt.myOffsetY = evt.offsetY + _this.y;
         return _this.active(evt);
       };
     }
@@ -64,7 +66,7 @@
         _this = this;
       if (this.guardians) {
         evt.stopPropagation();
-        box = new PopupBox("警告", "这个入口由 <strong>强大的怪物</strong> 把守，必须战胜他们才能通过。</br> 是否战斗？", function() {
+        return box = new PopupBox("警告", "这个入口由 <strong>强大的怪物</strong> 把守，必须战胜他们才能通过。</br> 是否战斗？", function() {
           _this.place.once("battleWin", function() {
             _this.guardians = null;
             return _this.UI.guardians.J.hide();
@@ -74,13 +76,11 @@
           box.show();
           return _this.place.encounterMonster(_this.guardians);
         });
-        return;
+      } else {
+        return this.area.setCallback(300, function() {
+          return _this.area.enterPlace(_this.moveTarget);
+        });
       }
-      evt.myOffsetX = evt.offsetX + this.x - this.area.currentX;
-      evt.myOffsetY = evt.offsetY + this.y;
-      return this.area.setCallback(300, function() {
-        return _this.area.enterPlace(_this.moveTarget);
-      });
     };
 
     MovePoint.prototype.setGuardians = function(data) {
@@ -159,7 +159,9 @@
             return _this.emit("active", _this.active());
           });
         } else {
-          return _this.emit("active", _this.active());
+          return new MsgBox("采集", "采集中...", 600, function() {
+            return _this.emit("active", _this.active());
+          });
         }
       });
     }
@@ -511,7 +513,6 @@
 
     Place.prototype.addMovePoint = function(data, index) {
       var point;
-      console.log("fuck");
       point = new MovePoint(this, this.relativeMenu.UI['move-point-tpl'].innerHTML, data);
       if (this.data.guardians && this.data.guardians[point.moveTarget]) {
         point.setGuardians(this.data.guardians[point.moveTarget]);

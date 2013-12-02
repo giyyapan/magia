@@ -12,8 +12,12 @@ class window.Sprite extends Drawable
     @initSprite()
     @width = @spriteData.frames[0].frame.w
     @height = @spriteData.frames[0].frame.h
-    @defaultMovement = "normal"
-    @useMovement "normal",true
+    if @movements.normal then @defaultMovement = "normal"
+    else
+      for name of @movements
+        @defaultMovement = name
+        break
+    @useMovement @defaultMovement,true
     @currentFrame = (@currentMove.startFrame - 1) + Math.round(Math.random() * @currentMove.length)
   onDraw:(context,tickDelay)->
     @animateClock.tick tickDelay
@@ -38,12 +42,16 @@ class window.Sprite extends Drawable
       x:parseInt(@spriteOriginData.anchor.split(",")[0])
       y:parseInt(@spriteOriginData.anchor.split(",")[1])
     @setAnchor @defaultAnchor
-  useMovement:(name,loopThisMove=false)->
+  useMovement:(name,loopThisMove=false,callback)->
     if not @movements[name]
       return console.error "no movment:#{name} in ",this
-    if @currentMove and name isnt @currentMove.name
+    if typeof loopThisMove is "function"
+      callback = loopThisMove
+      loopThisMove = false
+    @emit "startMove:#{name}"
+    if @currentMove
       @emit "endMove:#{@currentMove.name}"
-      @emit "startMove:#{name}"
+      if name isnt @currentMove.name then @emit "changeMove",name
     if loopThisMove then @loopMovement = name
     data = @movements[name]
     @currentMove =
@@ -54,7 +62,8 @@ class window.Sprite extends Drawable
       keyFrames:data.keyFrames
     #console.error "use movement",@currentMove.name,"loopMovement:",@loopMovement
     @currentFrame = -1
-    @_nextFrame()
+    if callback then @once "endMove:#{name}",callback
+    #@_nextFrame()
   _nextFrame:->
     @currentFrame += 1
     if @currentMove.keyFrames
@@ -65,7 +74,7 @@ class window.Sprite extends Drawable
     realFrame = @currentMove.startFrame + @currentFrame
     if realFrame > @currentMove.endFrame
       @useMovement @loopMovement
-      #@_nextFrame()
+      @_nextFrame()
     else
       data = @spriteData.frames[realFrame]
       if not data

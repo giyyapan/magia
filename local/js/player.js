@@ -215,6 +215,7 @@
       window.fuckmylife = function() {
         return _this.newData(testPlayerData);
       };
+      window.fuckmylife();
     }
 
     Player.prototype.loadData = function() {

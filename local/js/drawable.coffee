@@ -51,6 +51,10 @@ class window.Drawable extends Suzaku.EventEmitter
     @blendQueue.push
       blendImg:blendImg
       method:method
+  destroy:->
+    @destroyed = true
+    @draw = ->
+    @emit "destroy"      
   onDraw:(context,tickDelay)->
     @_handleAnimate tickDelay
     return if not @onshow

@@ -118,7 +118,7 @@ class window.Player extends EventEmitter
     @saveLock = false
     window.fuckmylife = =>
       @newData testPlayerData
-    #window.fuckmylife()
+    window.fuckmylife()
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"

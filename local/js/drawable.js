@@ -82,6 +82,12 @@
       });
     };
 
+    Drawable.prototype.destroy = function() {
+      this.destroyed = true;
+      this.draw = function() {};
+      return this.emit("destroy");
+    };
+
     Drawable.prototype.onDraw = function(context, tickDelay) {
       var name, value, _ref;
       this._handleAnimate(tickDelay);

@@ -11,6 +11,8 @@ class window.ThingsDB extends SubDB
   get:(name)->
     return @items.get(name) or @supplies.get(name) or @equipments.get(name)
   initItems:->
+    # 关于魔法属性 type:attack heal buff debuff dot hot
+    # 其中 attack,dot使用damage，heal,hot使用heal buff,debuff 使用 effect 属性
     @items.data = 
       earthLow:
         name:"双生蘑菇"
@@ -106,11 +108,11 @@ class window.ThingsDB extends SubDB
           name:"治疗术"
           description:"回复一定数量的生命值"
           type:"heal"
-          rate:1
+          heal:1
         defense:
           name:"回复结界"
           description:"制造一个结界，在受到攻击时回复生命值"
-          sameWidthAttack:true
+          sameWithActive:true
       muddyPotion:
         name:"泥泞药剂"
         description:"会让人身上变得粘糊糊的药剂，看起来就很奇怪"
@@ -124,7 +126,7 @@ class window.ThingsDB extends SubDB
         active:
           name:"泥泞陷阱"
           description:"制造一个陷阱，在被攻击时将攻击者减速"
-          sameWidthAttack:true
+          sameWithActive:true
       firePotion:
         name:"火焰药剂"
         description:"有火焰效果的药剂"
@@ -133,14 +135,13 @@ class window.ThingsDB extends SubDB
           name:"火球术"
           description:"释放火球对单体目标进行攻击"
           type:"attack" # area attack
-          sprite:null
+          sprite:"fireBall"
           damage:#rate
-            normal:2
-            fire:5
+            fire:2
         defense:
           name:"火焰陷阱"
           description:"使用火焰包围身体，在受到攻击时对敌人造成火焰伤害"
-          sameWidthAttack:true
+          sameWithActive:true
       ironPotion:
         name:"坚硬药剂"
         description:""
@@ -159,12 +160,12 @@ class window.ThingsDB extends SubDB
           description:"压缩敌人周围的空气一次引爆，造成爆炸伤害并点燃敌人"
           type:"attack"
           damage:
-            normal:8
-            fire:5
+            normal:5
+            fire:3
           next:
             type:"dot"
             damage:
-              fire:3
+              fire:1
       burnPotion:
         name:"燃烧药剂"
         traitName:"burn"
@@ -173,11 +174,11 @@ class window.ThingsDB extends SubDB
           description:"点燃敌人，使其每次行动都受到火焰伤害"
           type:"dot"
           damage:
-            fire:3
+            fire:1
         active:
           name:"火焰之环"
           description:"制造一个燃烧场，点燃攻击的敌人"
-          sameWidthAttack:true
+          sameWithActive:true
       corrosionPotion:
         name:"腐蚀药剂"
         traitName:"corrosion"
@@ -194,7 +195,7 @@ class window.ThingsDB extends SubDB
         defense:
           name:"腐化结界"
           description:"制造一个腐化结界"
-          sameWidthAttack:true
+          sameWithActive:true
           rate:0.3
       icePotion:
         name:"冰霜药剂"

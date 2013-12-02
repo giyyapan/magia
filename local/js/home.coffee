@@ -62,7 +62,7 @@ class Floor extends Layer
     @home = home
     @game = home.game
     @camera = new Camera()
-    @mainBg = null
+    @mainLayer = null
     @drawQueueAdd @camera
     @layers = {}
     @initMenu()
@@ -87,7 +87,7 @@ class Floor extends Layer
         @menu.UI['move-left'].J.removeClass("animate-popup").addClass "animate-pophide"
       else
         @menu.UI['move-left'].J.removeClass("animate-pophide").addClass "animate-popup"
-      if x is (@mainBg.width - s.width)
+      if x is (@mainLayer.width - s.width)
         @menu.UI['move-right'].J.removeClass("animate-popup").addClass "animate-pophide"
       else
         @menu.UI['move-right'].J.removeClass("animate-pophide").addClass "animate-popup"
@@ -96,9 +96,9 @@ class Floor extends Layer
       console.log "right"
       @camera.lock = true
       @currentX += 400
-      if @currentX > @mainBg.width - s.width then @currentX = @mainBg.width - s.width
-      x = @camera.getOffsetPositionX @currentX,@mainBg
-      if x > @mainBg.width then x = @mainBg.width
+      if @currentX > @mainLayer.width - s.width then @currentX = @mainLayer.width - s.width
+      x = @camera.getOffsetPositionX @currentX,@mainLayer
+      if x > @mainLayer.width then x = @mainLayer.width
       @camera.animate {x:x},300,"swing",->
         moveCallback()
     @menu.UI['move-left'].onclick = (evt)=>
@@ -107,7 +107,7 @@ class Floor extends Layer
       @camera.lock = true
       @currentX -= 400
       if @currentX < 0 then @currentX = 0
-      x = @camera.getOffsetPositionX @currentX,@mainBg
+      x = @camera.getOffsetPositionX @currentX,@mainLayer
       @camera.animate {x:x},300,"swing",->
         moveCallback()
     
@@ -115,11 +115,11 @@ class FirstFloor extends Floor
   constructor:->
     super
     @currentX = 400
-    @camera.x = @camera.getOffsetPositionX @currentX,@mainBg
+    @camera.x = @camera.getOffsetPositionX @currentX,@mainLayer
   initLayers:->
     main = new Layer Res.imgs.homeDownMain
     float = new Layer Res.imgs.homeDownFloat
-    @mainBg = main
+    @mainLayer = main
     main.z = 300
     float.z = 0 
     float.fixToBottom()
@@ -148,9 +148,9 @@ class FirstFloor extends Floor
             box = new MsgBox "睡觉","睡觉中"
             box.hideCloseBtn()
             @layers.float.fadeOut "slow"
-            @mainBg.fadeOut "slow",=>
+            @mainLayer.fadeOut "slow",=>
               @setCallback 1000,=>
-                @mainBg.fadeIn "slow",=>
+                @mainLayer.fadeIn "slow",=>
                   box.close()
                   player = @game.player
                   player.hp = player.statusValue.hp
@@ -181,7 +181,7 @@ class SecondFloor extends Floor
     @onshow = false
   initLayers:->
     main = new Layer Res.imgs.homeUp
-    @mainBg = main
+    @mainLayer = main
     @layers =
       main:main
     @camera.render main
@@ -199,12 +199,12 @@ class SecondFloor extends Floor
         @home.goDown()
   showWorkTable:->
     worktable = new Worktable @home
-    @mainBg.onshow = false
+    @mainLayer.onshow = false
     @drawQueueAdd worktable
     worktable.on "close",=>
       @drawQueueRemove worktable
       console.log "close"
-      @mainBg.onshow = true
+      @mainLayer.onshow = true
       @init()
       
 class window.Home extends Stage
@@ -240,7 +240,9 @@ class window.Home extends Stage
             @secondFloor.animate {"transform.opacity":1,y:0},500,"expoOut"
             @secondFloor.init()
   exit:->
-    @firstFloor.fadeOut "slow"
-    @fadeOut "slow",=>
+    time = "slow"
+    for name,layer of @firstFloor.layers
+      layer.fadeOut time
+    @fadeOut time,=>
       @clearDrawQueue()
       @game.switchStage "worldMap"
