@@ -29,9 +29,9 @@
         translateX: 0,
         translateY: 0,
         translateZ: 0,
-        scaleX: 1,
-        scaleY: 1,
-        scale: null,
+        scaleX: null,
+        scaleY: null,
+        scale: 1,
         rotate: 0,
         martrix: null
       };
@@ -205,14 +205,8 @@
       if (r.opacity !== null) {
         context.globalAlpha = r.opacity;
       }
-      if (r.scaleX < 0) {
-        x = -x;
-      }
-      if (r.scaleY < 0) {
-        y = -y;
-      }
-      r.scaleX = r.scale || r.scaleX || 1;
-      r.scaleY = r.scale || r.scaleY || 1;
+      r.scaleX = r.scaleX || r.scale || 1;
+      r.scaleY = r.scaleY || r.scale || 1;
       context.translate(x >> 0, y >> 0);
       context.scale(r.scaleX, r.scaleY);
       if (r.rotate) {

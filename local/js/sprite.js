@@ -87,7 +87,8 @@
         length: data.length,
         keyFrames: data.keyFrames
       };
-      return this.currentFrame = -1;
+      this.currentFrame = -1;
+      return this._nextFrame();
     };
 
     Sprite.prototype._nextFrame = function() {

@@ -140,7 +140,7 @@ class window.BattlefieldSprite extends Sprite
 class window.SpeedItem extends Widget
   constructor:(tpl,data)->
     super tpl
-    @speedGage = 80
+    @speedGage = 50
     @maxSpeed = 100
     @speed = data.statusValue.spd
     console.log data
@@ -149,7 +149,7 @@ class window.SpeedItem extends Widget
     @speedGage += tickDelay/1000*@speed
     if @speedGage > @maxSpeed
       @setWidgetPosition @maxSpeed
-      @speedGage -= @maxSpeed
+      @speedGage = 0
       @emit "active"
     else
       @setWidgetPosition @speedGage
@@ -358,14 +358,24 @@ class window.Battlefield extends Stage
     @menu = new BattlefieldMenu this,Res.tpls['battlefield-menu']
     @drawQueueAddAfter @menu
   win:->
-    @paused = true
     @tick = ->
-    monsters = []
-    box = new MsgBox "胜利","战斗胜利！"
+    @menu.J.fadeOut "fast"
+    text = ""
+    wraper = "<span class='center'>{}</span>"
+    dropMoney = 0
+    for m in @monsters
+      for name,value of m.drop
+        switch name
+          when "money" then dropMoney += value
+    @player.money += value
+    text = wraper.replace "{}","获得金钱:#{value}G"
+    @player.saveData()
+    box = new MsgBox "胜利","战斗胜利！</br>#{text}"
     box.on "close",=>
       @emit "win",monsters:@data.monsters
     console.log "win!!!"
   lose:->
+    @menu.J.fadeOut "fast"
     @mainLayer.fadeOut "normal"
     @tick = ->
     evt = {}

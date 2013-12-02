@@ -70,7 +70,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["500,300 waterHigh iceQQ,iceQQKing,iceQQ boss", "100,500 earthMid pigKing boss", "300,300 none slime,slime,slime"],
+              resPoints: ["500,300 waterHigh iceQQ,iceQQKing,iceQQ boss", "1260,440 earthMid pigKing boss", "150,180 none slime,slime,slime"],
               movePoints: ["entry:684,600"]
             }
           }
@@ -100,7 +100,7 @@
           },
           places: {
             entry: {
-              name: "大冰原",
+              name: "大雪原",
               bg: {
                 snowmountainEntryMain: {
                   z: 1000
@@ -116,18 +116,21 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["500,300 waterHigh iceQQKing,iceQQ,iceQQ", "100,500 earthMid pigKing", "300,300 none slime,slime,slime"],
+              resPoints: ["1000,450 iceMid,minusLow icePigKing,icePig,icePig boss", "340,400 iceLow,iceLow,spiritLow iceQQ", "1580,450 iceLow", "1580,450 fireMid,minusLow iceQQ,slime"],
               movePoints: ["exit:180,480", "middle:1850,560"]
             },
             middle: {
-              name: "雪谷",
+              name: "雪落谷",
               bg: {
                 snowmountainMiddle: {
                   z: 1000
                 }
               },
-              resPoints: ["1,1", "20,80"],
-              movePoints: ["entry:30,50", "cave:430,510"]
+              resPoints: [],
+              movePoints: ["entry:30,50", "cave:430,510"],
+              guardians: {
+                cave: "icePigKing,iceQQKing,icePigKing"
+              }
             },
             cave: {
               name: "蓝晶洞穴",
@@ -143,7 +146,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["500,300 waterHigh iceQQKing,iceQQ,iceQQ", "100,500 earthMid pigKing", "300,300 none slime,slime,slime"],
+              resPoints: ["500,300 waterHigh iceQQKing,iceQQ,iceQQ", "100,500 timeLow pigKing", "300,300 spaceLow slime,slime,slime"],
               movePoints: ["middle:720,120"]
             }
           }

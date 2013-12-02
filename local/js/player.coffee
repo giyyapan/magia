@@ -1,5 +1,5 @@
 testPlayerData = 
-  name:"Nola"
+  name:"艾丽西亚"
   lastStage:"home"
   money:4000
   energy:50
@@ -53,7 +53,7 @@ testPlayerData =
   basicStatusValue:
     hp:300
     mp:300
-    atk:20
+    atk:30
     normalDef:30
     fireDef:0
     waterDef:0
@@ -66,7 +66,7 @@ testPlayerData =
     spd:40
 
 playerData =
-  name:"Nola"
+  name:"艾丽西亚"
   lastStage:"home"
   money:0
   energy:30
@@ -118,7 +118,7 @@ class window.Player extends EventEmitter
     @saveLock = false
     window.fuckmylife = =>
       @newData testPlayerData
-    window.fuckmylife()
+    #window.fuckmylife()
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"

@@ -50,14 +50,15 @@ class window.BattlefieldMonster extends BattlefieldSprite
         @attackFire target,index,length
       @once "endMove:attack",=>
         @off "keyFrame",listener
-        @transform.scaleX = -1
-        @lifeBar.transform.scaleX = -1
+        scale =  @transform.scale
+        @transform.scaleX = - scale
+        @lifeBar.transform.scaleX = - scale
         @animateClock.setRate "fast"
         @useMovement "move",true
         @animate {x:defaultPos.x,y:defaultPos.y},800,=>
           @animateClock.setRate "normal"
-          @transform.scaleX = 1
-          @lifeBar.transform.scaleX = 1
+          @transform.scaleX = scale
+          @lifeBar.transform.scaleX = scale
           @useMovement @defaultMovement,true
           @bf.paused = false
   attackFire:(target,index,length)->

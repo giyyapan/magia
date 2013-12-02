@@ -30,7 +30,7 @@
           icon: Res.imgs.playerBattleIcon,
           anchor: "200,330",
           movements: {
-            normal: "0,0",
+            normal: "11,15",
             attack: "0,10:10",
             cast: "0,10:10"
           }
@@ -59,6 +59,18 @@
         },
         pig: {
           sprite: Res.sprites.pig,
+          icon: Res.imgs.pigBattleIcon,
+          anchor: "245,240",
+          movements: {
+            normal: "0,0",
+            move: "0,7",
+            attack: "8,16:4",
+            onattack: "17,17",
+            cast: "0,6"
+          }
+        },
+        icePig: {
+          sprite: Res.sprites.pigBlue,
           icon: Res.imgs.pigBattleIcon,
           anchor: "245,240",
           movements: {

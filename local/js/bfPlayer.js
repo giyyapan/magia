@@ -34,6 +34,7 @@
       this.db = battlefield.db;
       BattlefieldPlayer.__super__.constructor.call(this, battlefield, x, y, this.db.sprites.get("player"));
       console.log(this);
+      this.animateClock.setRate(10);
       this.playerData = playerData;
       this.statusValue = playerData.statusValue;
       this.name = "player";
@@ -118,6 +119,7 @@
         _this = this;
       this.isDefensed = true;
       bl = new BlendLayer(this, "rgba(238, 215, 167, 0.4)");
+      this.speedItem.speedGage += 30;
       this.once("act", function() {
         _this.isDefensed = false;
         return _this.drawQueueRemove(bl);

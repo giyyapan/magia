@@ -21,9 +21,9 @@ class window.Drawable extends Suzaku.EventEmitter
       translateX:0
       translateY:0
       translateZ:0
-      scaleX:1
-      scaleY:1
-      scale:null
+      scaleX:null
+      scaleY:null
+      scale:1
       rotate:0
       martrix:null
     @drawQueue = 
@@ -118,10 +118,8 @@ class window.Drawable extends Suzaku.EventEmitter
     x = r.translateX + @x
     y = r.translateY + @y
     context.globalAlpha = r.opacity if r.opacity isnt null
-    if r.scaleX < 0 then x = - x
-    if r.scaleY < 0 then y = - y
-    r.scaleX = r.scale or r.scaleX or 1
-    r.scaleY = r.scale or r.scaleY or 1
+    r.scaleX = r.scaleX or r.scale or 1
+    r.scaleY = r.scaleY or r.scale or 1
     #console.log r.scaleX,r.scaleY,x,y
     context.translate x >> 0,y >> 0
     context.scale r.scaleX,r.scaleY

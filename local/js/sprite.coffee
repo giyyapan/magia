@@ -54,6 +54,7 @@ class window.Sprite extends Drawable
       keyFrames:data.keyFrames
     #console.error "use movement",@currentMove.name,"loopMovement:",@loopMovement
     @currentFrame = -1
+    @_nextFrame()
   _nextFrame:->
     @currentFrame += 1
     if @currentMove.keyFrames

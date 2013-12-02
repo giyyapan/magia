@@ -15,6 +15,7 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     @db = battlefield.db
     super battlefield,x,y,@db.sprites.get "player"
     console.log this
+    @animateClock.setRate 10
     @playerData = playerData
     @statusValue = playerData.statusValue
     @name = "player"
@@ -63,6 +64,7 @@ class window.BattlefieldPlayer extends BattlefieldSprite
   defense:->
     @isDefensed = true
     bl = new BlendLayer this,"rgba(238, 215, 167, 0.4)"
+    @speedItem.speedGage += 30
     @once "act",=>
       @isDefensed = false
       @drawQueueRemove bl

@@ -11,7 +11,47 @@ class GatherResaultBox extends PopupBox
       @UI.img.src = data.img.src if data.img
       @UI.content.J.text "采集到了 #{data.dspName} x 1"
 
-class ResPoint extends Suzaku.Widget
+class MovePoint extends Widget
+  constructor:(place,tpl,data)->
+    @place = place
+    @area = place.area
+    parts = data.split ":"
+    @moveTarget = parts[0]
+    @x = parseInt parts[1].split(",")[0]
+    @y = parseInt parts[1].split(",")[1]
+    @guardians = null
+    super tpl
+    if @moveTarget is "exit"
+      @text = "离开"
+    else
+      @text = @area.originData.places[@moveTarget].name
+    @UI.target.J.text @text
+    @J.addClass "mp-"+@moveTarget
+    @J.css left:"#{@x}px",top:"#{@y}px"
+    self = this
+    @dom.onclick = (evt)=>
+      @active evt
+  active:(evt)->
+    if @guardians
+      evt.stopPropagation()
+      box = new PopupBox "警告","这个入口由 <strong>强大的怪物</strong> 把守，必须战胜他们才能通过。</br> 是否战斗？",=>
+        @place.once "battleWin",=>
+          @guardians = null
+          @UI.guardians.J.hide()
+        box.setAcceptText "来战"
+        box.setCloseText "算了"
+        box.show()
+        @place.encounterMonster @guardians
+      return
+    evt.myOffsetX = evt.offsetX + @x - @area.currentX
+    evt.myOffsetY = evt.offsetY + @y
+    @area.setCallback 300,=>
+      @area.enterPlace @moveTarget
+  setGuardians:(data)->
+    @UI.guardians.J.show()
+    @guardians = data.split ","
+
+class ResPoint extends Widget
   constructor:(place,tpl,data,index)->
     super tpl
     @place = place
@@ -49,7 +89,10 @@ class ResPoint extends Suzaku.Widget
       evt.stopPropagation()
       if @monsters and @monsters.length > 0
         text = if @hasBoss then "<strong>强大的怪物</strong>" else "怪物"
-        box = new PopupBox "采集","这里有#{text}把守，需要打败他们才能采集。</br>要战斗吗？"
+        if @items
+          box = new PopupBox "采集","这里有#{text}把守，需要打败他们才能采集。</br>要战斗吗？"
+        else
+          box = new PopupBox "战斗","这里是怪物的栖息地。</br>要和怪物战斗吗？"
         box.setCloseText "算了"
         box.setAcceptText "来战"
         box.show()
@@ -252,28 +295,11 @@ class Place extends Layer
     point.on "active",(res)->
       self.handleResPointActive res
   addMovePoint:(data,index)->
-    area = @area
-    parts = data.split ":"
-    moveTarget = parts[0]
-    x = parseInt parts[1].split(",")[0]
-    y = parseInt parts[1].split(",")[1]
-    item = new Suzaku.Widget @relativeMenu.UI['move-point-tpl'].innerHTML
-    if moveTarget is "exit"
-      item.UI.target.J.text "离开"
-    else
-      item.UI.target.J.text @area.originData.places[moveTarget].name
-    item.dom.target = moveTarget
-    item.x = x
-    item.y = y
-    item.J.addClass "mp-"+moveTarget
-    item.J.css left:"#{x}px",top:"#{y}px"
-    item.appendTo @relativeMenu.UI['move-point-box']
-    self = this
-    item.dom.onclick = (evt)->
-      evt.myOffsetX = evt.offsetX + item.x - self.currentX
-      evt.myOffsetY = evt.offsetY + item.y
-      self.setCallback 300,=>
-        area.enterPlace @target
+    console.log "fuck"
+    point = new MovePoint this,@relativeMenu.UI['move-point-tpl'].innerHTML,data
+    if @data.guardians and @data.guardians[point.moveTarget]
+      point.setGuardians @data.guardians[point.moveTarget]
+    point.appendTo @relativeMenu.UI['move-point-box']
   handleResPointActive:(res)->
     if res.type is "item"
       @emit "getItem",res.item

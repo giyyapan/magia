@@ -85,9 +85,11 @@
           return _this.attackFire(target, index, length);
         });
         return _this.once("endMove:attack", function() {
+          var scale;
           _this.off("keyFrame", listener);
-          _this.transform.scaleX = -1;
-          _this.lifeBar.transform.scaleX = -1;
+          scale = _this.transform.scale;
+          _this.transform.scaleX = -scale;
+          _this.lifeBar.transform.scaleX = -scale;
           _this.animateClock.setRate("fast");
           _this.useMovement("move", true);
           return _this.animate({
@@ -95,8 +97,8 @@
             y: defaultPos.y
           }, 800, function() {
             _this.animateClock.setRate("normal");
-            _this.transform.scaleX = 1;
-            _this.lifeBar.transform.scaleX = 1;
+            _this.transform.scaleX = scale;
+            _this.lifeBar.transform.scaleX = scale;
             _this.useMovement(_this.defaultMovement, true);
             return _this.bf.paused = false;
           });

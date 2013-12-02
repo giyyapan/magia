@@ -34,7 +34,7 @@ class Magia extends EventEmitter
       window.AudioManager.play "home"
       @switchStage "start"
       #@switchStage "worldMap"
-      #@switchStage "area","forest"
+      #@switchStage "area","snowmountain"
       #@switchStage "shop","magicItemShop"
       #@switchStage "guild" 
       #@switchStage "home"

@@ -53,6 +53,31 @@ class window.MonstersDB extends SubDB
           normal:15
         drop:
           money:10
+      icePig:
+        name:"皮格猪"
+        sprite:"icePig"
+        attackSound:"pigHit"
+        statusValue:
+          hp:150
+          def:30
+          spd:30
+        damage:
+          normal:15
+        drop:
+          money:10
+      icePigKing:
+        name:"皮格猪王"
+        sprite:"icePig"
+        scale:1.2
+        attackSound:"pigHit"
+        statusValue:
+          hp:300
+          def:30
+          spd:30
+        damage:
+          normal:30
+        drop:
+          money:100
       pigKing:
         name:"布塔猪王"
         sprite:"pigDark"

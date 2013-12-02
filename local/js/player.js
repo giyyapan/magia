@@ -5,7 +5,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   testPlayerData = {
-    name: "Nola",
+    name: "艾丽西亚",
     lastStage: "home",
     money: 4000,
     energy: 50,
@@ -137,7 +137,7 @@
     basicStatusValue: {
       hp: 300,
       mp: 300,
-      atk: 20,
+      atk: 30,
       normalDef: 30,
       fireDef: 0,
       waterDef: 0,
@@ -152,7 +152,7 @@
   };
 
   playerData = {
-    name: "Nola",
+    name: "艾丽西亚",
     lastStage: "home",
     money: 0,
     energy: 30,
@@ -215,7 +215,6 @@
       window.fuckmylife = function() {
         return _this.newData(testPlayerData);
       };
-      window.fuckmylife();
     }
 
     Player.prototype.loadData = function() {

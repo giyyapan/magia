@@ -263,7 +263,7 @@
 
     function SpeedItem(tpl, data) {
       SpeedItem.__super__.constructor.call(this, tpl);
-      this.speedGage = 80;
+      this.speedGage = 50;
       this.maxSpeed = 100;
       this.speed = data.statusValue.spd;
       console.log(data);
@@ -276,7 +276,7 @@
       this.speedGage += tickDelay / 1000 * this.speed;
       if (this.speedGage > this.maxSpeed) {
         this.setWidgetPosition(this.maxSpeed);
-        this.speedGage -= this.maxSpeed;
+        this.speedGage = 0;
         return this.emit("active");
       } else {
         return this.setWidgetPosition(this.speedGage);
@@ -643,12 +643,29 @@
     };
 
     Battlefield.prototype.win = function() {
-      var box, monsters,
+      var box, dropMoney, m, name, text, value, wraper, _i, _len, _ref, _ref1,
         _this = this;
-      this.paused = true;
       this.tick = function() {};
-      monsters = [];
-      box = new MsgBox("胜利", "战斗胜利！");
+      this.menu.J.fadeOut("fast");
+      text = "";
+      wraper = "<span class='center'>{}</span>";
+      dropMoney = 0;
+      _ref = this.monsters;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        m = _ref[_i];
+        _ref1 = m.drop;
+        for (name in _ref1) {
+          value = _ref1[name];
+          switch (name) {
+            case "money":
+              dropMoney += value;
+          }
+        }
+      }
+      this.player.money += value;
+      text = wraper.replace("{}", "获得金钱:" + value + "G");
+      this.player.saveData();
+      box = new MsgBox("胜利", "战斗胜利！</br>" + text);
       box.on("close", function() {
         return _this.emit("win", {
           monsters: _this.data.monsters
@@ -660,6 +677,7 @@
     Battlefield.prototype.lose = function() {
       var box, evt,
         _this = this;
+      this.menu.J.fadeOut("fast");
       this.mainLayer.fadeOut("normal");
       this.tick = function() {};
       evt = {};
