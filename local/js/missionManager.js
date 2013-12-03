@@ -365,6 +365,7 @@
 
     MissionManager.prototype.startMission = function(mission) {
       var name;
+      console.log("startMission", mission);
       if (typeof mission === "string") {
         name = mission;
         mission = this.missions[name];

@@ -62,9 +62,10 @@ class window.PlayerEquipment extends Things
     originDataStr = db.things.equipments.get name
     parts = originDataStr.split " "
     originData =
+      name:name
       part:parts[0]
       price:parseInt(parts[1])
-      name:parts[2]
+      dspName:parts[2]
       statusValue:parts[3]
     super name,originData,"equipment"
     switch originData.part
@@ -81,4 +82,4 @@ class window.PlayerEquipment extends Things
       @statusValue[name] = value
     console.log "equipment",@originData.name,@statusValue,@originData.statusValue
   getData:()->
-    super
+    return @originData.name

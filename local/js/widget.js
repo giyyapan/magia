@@ -178,7 +178,6 @@
       item.J.addClass("selected");
       this.UI.name.J.text(item.originData.name);
       if (item.playerThing.img) {
-        console.log(item.playerThing, item.playerThing.img);
         this.UI.img.src = item.playerThing.img.src;
       }
       this.UI.description.J.text(item.originData.description);
@@ -427,7 +426,7 @@
             if (!mission.start()) {
               console.error("mission start faild");
             }
-            new MsgBox("成功", "接受任务 " + mission.dspName + " 。");
+            new MsgBox("成功", "接受任务 " + mission.dspName + " ");
             _this.updateStatus(mission);
             return _this.emit("activeMission", mission);
           };

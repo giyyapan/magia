@@ -62,9 +62,11 @@ class window.DialogBox extends Menu
         when "in"
           if not @characters[name]
             @characters[name] = new DialogCharacter @UI['character-tpl'].innerHTML,name,data
-          @currentCharacter = @characters[name]
-          @currentCharacter.getIn value 
-          @currentCharacter.appendTo @UI['character-section']
+            @currentCharacter = @characters[name]
+            @currentCharacter.appendTo @UI['character-section']
+            @currentCharacter.getIn value
+          else
+            @currentCharacter = @characters[name]
         when "out"
           if not @currentCharacter then return console.error "no such character",name
           @currentCharacter.getOut value
@@ -95,7 +97,7 @@ class window.DialogBox extends Menu
     if not data.text
       callback() if callback
       return
-    if not @onshow
+    if not @onshow or not $(".dialog-box").length > 0
       @show =>
         @display(data,callback)
       return
@@ -144,7 +146,7 @@ class window.DialogBox extends Menu
       ),40
   show:(callback)->
     #@UILayer.J.find("menu").fadeOut "fast"
-    if @onshow
+    if @onshow and $(".dialog-box").length > 0
       callback() if callback
       return
     @onshow = true

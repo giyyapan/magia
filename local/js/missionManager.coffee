@@ -189,6 +189,7 @@ class window.MissionManager extends EventEmitter
       mission.update type,data
     @player.saveData()
   startMission:(mission)->
+    console.log "startMission",mission
     if typeof mission is "string"
       name = mission
       mission = @missions[name]

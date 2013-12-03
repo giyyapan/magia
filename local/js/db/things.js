@@ -319,7 +319,7 @@
         hat1: "h 20 普通的黑帽 hp:20,def:5",
         robe1: "r 20 普通的披肩 def:15",
         shose1: "s 20 普通的皮鞋 spd:5",
-        weapon1: "w 20 木头法杖 atk:10",
+        weapon1: "w 20 木头法杖 atk:15",
         hat2: "h 200 见习魔女帽 hp:50,def:10",
         robe2: "r 300 见习魔女披风 def:40",
         shose2: "s 200 见习魔女鞋 spd:8",

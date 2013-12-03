@@ -22,9 +22,8 @@
     StoryStage.prototype.nextStep = function() {
       var line;
       this.currentStep += 1;
-      console.log("story next step");
       line = this.storyData[this.currentStep];
-      console.log(line);
+      console.log("story next step", line);
       if (!line) {
         return this.storyEnd();
       }
@@ -52,6 +51,9 @@
     StoryStage.prototype.switchBg = function(type, name, animateName, animateTime) {
       var color, imgName, s,
         _this = this;
+      if (animateTime == null) {
+        animateTime = "fast";
+      }
       console.log("switch bg", type, name);
       this.dialogBox.hide();
       switch (type) {
@@ -128,11 +130,15 @@
           }
           break;
         case "sound":
+        case "playSound":
           AudioManager.play(a[1]);
           break;
         case "battle":
           this.initBattle(a[1], a[2], a[3]);
           return true;
+        case "nosound":
+          AudioManager.mute();
+          break;
         case "startMission":
           return this.startMission(a[1]);
         case "completeMission":

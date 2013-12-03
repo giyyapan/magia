@@ -36,10 +36,12 @@ class window.AreasDB extends SubDB
                 x:300
                 fixToBottom:true
             resPoints:[
-              "250,500 earthLow slime"
-              "880,430 earthLow,lifeLow pig"
-              "1610,260 airLow,airLow"
-              "1730,550 lifeLow,lifeLow,lifeLow slime,slime"
+              "250,500 earthLow,earthLow,fireLow,fireLow slime"
+              "1280,550 waterLow,waterLow slime"
+              "880,430 earthLow,earthLow,lifeLow,lifeLow pig"
+              "450,430 fireLow,earthLow"
+              "1610,260 airLow,airLow,airLow"
+              "1730,550 lifeLow,lifeLow,lifeLow,fireLow slime,slime"
               ]
             movePoints:["exit:345,585","lake:959,355"]
           lake:
@@ -53,8 +55,9 @@ class window.AreasDB extends SubDB
                 x:300
                 fixToBottom:true
             resPoints:[
-              "500,300 waterHigh iceQQ,iceQQKing,iceQQ boss"
-              "1260,440 earthMid pigKing boss"
+              "500,300 waterHigh,fireMid,lifeMid,fireMid iceQQ,iceQQKing,iceQQ boss"
+              "1260,440 earthMid,earthLow,fireLow,spiritLow pigKing boss"
+              "770,470 waterLow,waterLow,waterLow"
               "150,180 none slime,slime,slime"
               ]
             movePoints:["entry:684,600"]

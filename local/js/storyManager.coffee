@@ -12,9 +12,9 @@ class window.StoryStage extends Stage
     @endData = null
   nextStep:->
     @currentStep += 1
-    console.log "story next step"
     line = @storyData[@currentStep]
-    console.log line
+    console.log "story next step",line
+    #console.log line
     if not line
       return @storyEnd()
     if line.indexOf("<!") is 0 #for comment
@@ -30,7 +30,7 @@ class window.StoryStage extends Stage
     @dialogBox.clearCharacters()
     @menu.hide()
     @emit "storyEnd",@endData
-  switchBg:(type,name,animateName,animateTime)->
+  switchBg:(type,name,animateName,animateTime="fast")->
     console.log "switch bg",type,name
     @dialogBox.hide()
     switch type
@@ -74,11 +74,13 @@ class window.StoryStage extends Stage
             @nextStep()
           return true
         else console.error "invailid animate name",name
-      when "sound"
+      when "sound","playSound"
         AudioManager.play a[1]
       when "battle"
         @initBattle a[1],a[2],a[3]
         return true
+      when "nosound"
+        AudioManager.mute()
       when "startMission"
         return @startMission a[1]
       when "completeMission"

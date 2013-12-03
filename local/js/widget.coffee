@@ -101,7 +101,6 @@ class window.ItemDetailsBox extends Widget
     item.J.addClass "selected"
     @UI.name.J.text item.originData.name
     if item.playerThing.img
-      console.log item.playerThing,item.playerThing.img
       @UI.img.src = item.playerThing.img.src
     @UI.description.J.text item.originData.description
     @initTraits item.playerItem
@@ -240,7 +239,7 @@ class window.MissionDetailsBox extends Widget
         @UI['active-btn'].onclick = =>
           if not mission.start()
             console.error "mission start faild"
-          new MsgBox "成功","接受任务 #{mission.dspName} 。"
+          new MsgBox "成功","接受任务 #{mission.dspName} "
           @updateStatus mission
           @emit "activeMission",mission
       when "finished"

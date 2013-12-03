@@ -143,9 +143,10 @@
       originDataStr = db.things.equipments.get(name);
       parts = originDataStr.split(" ");
       originData = {
+        name: name,
         part: parts[0],
         price: parseInt(parts[1]),
-        name: parts[2],
+        dspName: parts[2],
         statusValue: parts[3]
       };
       PlayerEquipment.__super__.constructor.call(this, name, originData, "equipment");
@@ -179,7 +180,7 @@
     };
 
     PlayerEquipment.prototype.getData = function() {
-      return PlayerEquipment.__super__.getData.apply(this, arguments);
+      return this.originData.name;
     };
 
     return PlayerEquipment;
