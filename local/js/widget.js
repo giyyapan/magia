@@ -184,14 +184,22 @@
       this.UI.description.J.text(item.originData.description);
       this.initTraits(item.playerItem);
       this.initTraits(item.playerSupplies);
+      this.initEquipmentData(item.playerEquipment);
       this.J.fadeIn("fast");
       return this.UI['content'].J.fadeIn(100);
+    };
+
+    ItemDetailsBox.prototype.initEquipmentData = function(playerEquipment) {
+      if (!playerEquipment) {
+        return false;
+      }
+      return console.log("init equipment data", playerEquipment);
     };
 
     ItemDetailsBox.prototype.initTraits = function(thingData) {
       var name, value, _ref, _results;
       if (!thingData || !thingData.traits) {
-        return;
+        return false;
       }
       this.UI['traits-list'].J.html("");
       _ref = thingData.traits;

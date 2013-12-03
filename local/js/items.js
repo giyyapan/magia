@@ -16,7 +16,7 @@
       this.img = this.originData.img || Res.imgs["" + type + "_" + name];
     }
 
-    Things.prototype.getDate = function() {
+    Things.prototype.getData = function() {
       return {
         name: this.name,
         type: this.type
@@ -79,10 +79,23 @@
       this.traitValue = data.traitValue;
       this.traitName = originData.traitName;
       this.traits = {};
-      this.traitLevel = this._getTraitLevel();
+      this.traitLevel = this._getTraitLevel(db);
+      this.traitValueLevel = this._getTraitValueLevel(db);
       this.traits[originData.traitName] = this.traitValue;
       this.price = this._getPrice();
     }
+
+    PlayerSupplies.prototype._getTraitValueLevel = function(db) {
+      var index, v, _i, _len, _ref;
+      _ref = db.rules.get("qualityLevel");
+      for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
+        v = _ref[index];
+        if (this.traitValue < v) {
+          break;
+        }
+      }
+      return parseInt(index + 1);
+    };
 
     PlayerSupplies.prototype._getTraitLevel = function() {
       var level, name, traits, _i, _len, _ref, _ref1;
@@ -126,11 +139,44 @@
     __extends(PlayerEquipment, _super);
 
     function PlayerEquipment(db, name, data) {
-      var originData;
-      originData = db.things.equipments.get(name);
+      var originData, originDataStr, parts;
+      originDataStr = db.things.equipments.get(name);
+      parts = originDataStr.split(" ");
+      originData = {
+        part: parts[0],
+        price: parseInt(parts[1]),
+        name: parts[2],
+        statusValue: parts[3]
+      };
       PlayerEquipment.__super__.constructor.call(this, name, originData, "equipment");
-      this.statusValue = originData.statusValue;
+      switch (originData.part) {
+        case "h":
+          this.part = "hat";
+          break;
+        case "r":
+          this.part = "robe";
+          break;
+        case "s":
+          this.part = "shose";
+          break;
+        case "w":
+          this.part = "weapon";
+      }
+      this.initStatusValue();
     }
+
+    PlayerEquipment.prototype.initStatusValue = function() {
+      var data, name, value, _i, _len, _ref;
+      this.statusValue = {};
+      _ref = this.originData.statusValue.split(",");
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        data = _ref[_i];
+        name = data.split(":")[0];
+        value = parseInt(data.split(":")[1]);
+        this.statusValue[name] = value;
+      }
+      return console.log("equipment", this.originData.name, this.statusValue, this.originData.statusValue);
+    };
 
     PlayerEquipment.prototype.getData = function() {
       return PlayerEquipment.__super__.getData.apply(this, arguments);

@@ -106,10 +106,15 @@ class window.ItemDetailsBox extends Widget
     @UI.description.J.text item.originData.description
     @initTraits item.playerItem
     @initTraits item.playerSupplies
+    @initEquipmentData item.playerEquipment
     @J.fadeIn "fast"
     @UI['content'].J.fadeIn 100
+  initEquipmentData:(playerEquipment)->
+    return false if not playerEquipment
+    console.log "init equipment data",playerEquipment
+    #TODO#####################
   initTraits:(thingData)->
-    return if not thingData or not thingData.traits
+    return false if not thingData or not thingData.traits
     @UI['traits-list'].J.html ""
     for name,value of thingData.traits
       new TraitItem(name,value).appendTo @UI['traits-list']

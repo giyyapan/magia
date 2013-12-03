@@ -3,16 +3,15 @@ class window.ThingsDB extends SubDB
     super "things"
     @items = new SubDB "things-items"
     @supplies = new SubDB "things-supplies"
-    @equipment = new SubDB "things-equipments"
+    @equipments = new SubDB "things-equipments"
     console.log "fuck"
     @initItems()
     @initSupplies()
+    @initEquipments()
     console.log @supplies
   get:(name)->
     return @items.get(name) or @supplies.get(name) or @equipments.get(name)
   initItems:->
-    # 关于魔法属性 type:attack heal buff debuff dot hot
-    # 其中 attack,dot使用damage，heal,hot使用heal buff,debuff 使用 effect 属性
     @items.data = 
       earthLow:
         name:"双生蘑菇"
@@ -99,6 +98,8 @@ class window.ThingsDB extends SubDB
         description:"被称为“不存在之物”的神奇元素，配合适当的魔法能够左右空间"
         traits:["space:20"]
   initSupplies:->
+    # 关于魔法属性 type:attack heal buff debuff dot hot
+    # 其中 attack,dot使用damage，heal,hot使用heal buff,debuff 使用 effect,onHurt,onHeal 属性
     @supplies.data =
       healPotion:
         name:"治疗药剂"
@@ -123,7 +124,7 @@ class window.ThingsDB extends SubDB
           type:"debuff" #debuff 属性值决定效果和成功率
           effect:
             spd:[0.9,0.5]
-        active:
+        defense:
           name:"泥泞陷阱"
           description:"制造一个陷阱，在被攻击时将攻击者减速"
           sameWithActive:true
@@ -151,7 +152,7 @@ class window.ThingsDB extends SubDB
           description:"提升自己的物理防御"
           type:"buff"
           effect:
-            normalDef:[1.3,2]
+            def:[1.3,2]
       explodePotion:
         name:"爆炸药剂"
         traitName:"explode"
@@ -173,9 +174,10 @@ class window.ThingsDB extends SubDB
           name:"点燃"
           description:"点燃敌人，使其每次行动都受到火焰伤害"
           type:"dot"
+          sprite:"fireBall"
           damage:
             fire:1
-        active:
+        defense:
           name:"火焰之环"
           description:"制造一个燃烧场，点燃攻击的敌人"
           sameWithActive:true
@@ -191,7 +193,7 @@ class window.ThingsDB extends SubDB
           next:
             type:"debuff"
             effect:
-              normalDef:[0.8,0.3]
+              def:[0.8,0.3]
         defense:
           name:"腐化结界"
           description:"制造一个腐化结界"
@@ -208,7 +210,7 @@ class window.ThingsDB extends SubDB
           name:"雾气召唤"
           description:"在敌人周围制造雾气，降低他们的精准"
           effect:
-            precision:[0.8,0.5]
+            accuracy:[0.8,0.5]
       snowPotion:
         name:"风雪药剂"
         traitName:"snow"
@@ -220,7 +222,7 @@ class window.ThingsDB extends SubDB
           name:"勇气术"
           description:"增加自己的物理攻击力"
           effect:
-            precision:[1.5,3]
+            atk:[1.5,3]
       cleanPotion:
         name:"净化药剂"
         traitName:"clean"
@@ -232,6 +234,18 @@ class window.ThingsDB extends SubDB
         active:
           type:"debuff"
           name:"晕眩术"
+          turn:[1,5]
           effect:
-            stun:true
+            spd:0.1
+  initEquipments:->
+    # h for hat ; r for robe ; s for shose ; w for weapon
+    @equipments.data =
+      hat1:"h 20 普通的黑帽 hp:20,def:5"
+      robe1:"r 20 普通的披肩 def:15"
+      shose1:"s 20 普通的皮鞋 spd:5"
+      weapon1:"w 20 木头法杖 atk:10"
+      hat2:"h 200 见习魔女帽 hp:50,def:10"
+      robe2:"r 300 见习魔女披风 def:40"
+      shose2:"s 200 见习魔女鞋 spd:8"
+      weapon2:"w 300 木头法杖 atk:20"
         

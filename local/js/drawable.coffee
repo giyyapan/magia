@@ -1,4 +1,4 @@
-class window.Drawable extends Suzaku.EventEmitter
+class window.Drawable extends EventEmitter
   constructor:(x,y,width,height)->
     super()
     @x = x or 0
@@ -17,7 +17,7 @@ class window.Drawable extends Suzaku.EventEmitter
     @blendQueue = []
     @onshow = true
     @transform =
-      opacity:1
+      opacity:null
       translateX:0
       translateY:0
       translateZ:0
@@ -308,14 +308,48 @@ Drawable.Animate =
       @animate {"transform.opacity":1},time,"expoIn",=>
         @animate {"transform.opacity":0},time,"expoOut",callback
     fadeIn:(time,callback)->
+      @transform.opacity = 0 if @transform.opacity is null
       @animate ((p)->
         @transform.opacity = p
         ),time,"linear",callback
     fadeOut:(time,callback)->
+      @transform.opacity = 1 if @transform.opacity is null
       @animate ((p)->
         @transform.opacity = 1 - p
         ),time,"linear",callback
         
+class window.BlendLayer extends Drawable
+  constructor:(host,color,animateName,time)->
+    super 0,0,host.width,host.height
+    @host = host
+    @anchor = host.anchor
+    @color = color
+    @thirdCanvas = Utils.getTempCanvas 3
+    @thirdContext = @thirdCanvas.getContext "2d"
+    @host.drawQueueAdd this
+    if animateName
+      if not time then time = "fast"
+      this[animateName] time,=>
+        @host.drawQueueRemove this
+        @destroy()
+  draw:(realContext)->
+    context = @thirdContext
+    x = Math.floor -@host.anchor.x >> 0
+    y = Math.floor -@host.anchor.y >> 0
+    w = Math.floor @host.width >> 0
+    h = Math.floor @host.height >> 0
+    s = Utils.getSize()
+    context.save()
+    context.translate s.width/2,s.height/2
+    context.clearRect x,y,w,h
+    @host.draw context
+    #context.globalCompositeOperation = "source-atop"
+    context.globalCompositeOperation = "source-in"
+    context.fillStyle = @color
+    context.fillRect x,y,w,h
+    context.restore()
+    realContext.drawImage @thirdCanvas,s.width/2+x,s.height/2+y,w,h,x,y,w,h
+
 class window.Layer extends Drawable
   constructor:(img)->
     s = Utils.getSize()
@@ -331,7 +365,6 @@ class window.Layer extends Drawable
     super img
     @width = img.width
     @height = img.height
-    console.log img,this
     return this
     
 class window.Stage extends Drawable

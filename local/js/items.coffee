@@ -7,7 +7,7 @@ class window.Things extends EventEmitter
     @dspName = data.name
     @type = type
     @img = @originData.img or Res.imgs["#{type}_#{name}"]
-  getDate:->
+  getData:->
     return name:@name,type:@type
       
 class window.PlayerItem extends Things
@@ -35,9 +35,14 @@ class window.PlayerSupplies extends Things
     @traitValue = data.traitValue
     @traitName = originData.traitName
     @traits = {}
-    @traitLevel = @_getTraitLevel()
+    @traitLevel = @_getTraitLevel db
+    @traitValueLevel = @_getTraitValueLevel db
     @traits[originData.traitName] = @traitValue
     @price = @_getPrice()
+  _getTraitValueLevel:(db)->
+    for v,index in db.rules.get "qualityLevel"
+      break if @traitValue < v
+    return parseInt(index + 1)
   _getTraitLevel:->
     for level,traits of Dict.TraitLevel
       for name in traits.split ","
@@ -54,8 +59,26 @@ class window.PlayerSupplies extends Things
         
 class window.PlayerEquipment extends Things
   constructor:(db,name,data)->
-    originData = db.things.equipments.get name
+    originDataStr = db.things.equipments.get name
+    parts = originDataStr.split " "
+    originData =
+      part:parts[0]
+      price:parseInt(parts[1])
+      name:parts[2]
+      statusValue:parts[3]
     super name,originData,"equipment"
-    @statusValue = originData.statusValue
-  getData:->
+    switch originData.part
+      when "h" then @part = "hat"
+      when "r" then @part = "robe"
+      when "s" then @part = "shose"
+      when "w" then @part = "weapon"
+    @initStatusValue()
+  initStatusValue:()->
+    @statusValue = {}
+    for data in @originData.statusValue.split ","
+      name = data.split(":")[0]
+      value = parseInt data.split(":")[1]
+      @statusValue[name] = value
+    console.log "equipment",@originData.name,@statusValue,@originData.statusValue
+  getData:()->
     super

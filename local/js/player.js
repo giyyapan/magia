@@ -12,15 +12,11 @@
     backpack: [
       {
         name: "healPotion",
-        traitValue: 30,
-        type: "supplies"
-      }, {
-        name: "firePotion",
-        traitValue: 50,
-        type: "supplies"
-      }, {
-        name: "firePotion",
         traitValue: 100,
+        type: "supplies"
+      }, {
+        name: "firePotion",
+        traitValue: 130,
         type: "supplies"
       }, {
         name: "fogPotion",
@@ -128,26 +124,25 @@
     storage: [],
     equipments: [],
     currentEquipments: {
-      hat: "bigginerHat",
-      weapon: "begginerStaff",
-      clothes: "bigginerRobe",
-      shose: "bigginerShose",
+      hat: "hat1",
+      weapon: "weapon1",
+      robe: "robe1",
+      shose: "shose1",
       other: null
     },
     basicStatusValue: {
       hp: 300,
       mp: 300,
-      atk: 30,
-      normalDef: 30,
+      atk: 10,
+      def: 0,
       fireDef: 0,
-      waterDef: 0,
-      earthDef: 0,
-      airDef: 0,
+      iceDef: 0,
+      inpactDef: 0,
       spiritDef: 0,
       minusDef: 0,
-      precision: 95,
+      accuracy: 95,
       resistance: 10,
-      spd: 40
+      spd: 30
     }
   };
 
@@ -175,26 +170,25 @@
     storage: [],
     equipments: [],
     currentEquipments: {
-      hat: "bigginerHat",
-      weapon: "begginerStaff",
-      clothes: "bigginerRobe",
-      shose: "bigginerShose",
+      hat: "hat1",
+      weapon: "weapon1",
+      robe: "robe1",
+      shose: "shose1",
       other: null
     },
     basicStatusValue: {
       hp: 300,
       mp: 300,
-      atk: 20,
-      normalDef: 30,
+      atk: 10,
+      def: 0,
       fireDef: 0,
-      waterDef: 0,
-      earthDef: 0,
-      airDef: 0,
+      iceDef: 0,
+      inpactDef: 0,
       spiritDef: 0,
       minusDef: 0,
-      precision: 95,
-      resistance: 10,
-      spd: 40
+      accuracy: 80,
+      miss: 5,
+      spd: 30
     }
   };
 
@@ -215,7 +209,6 @@
       window.fuckmylife = function() {
         return _this.newData(testPlayerData);
       };
-      window.fuckmylife();
     }
 
     Player.prototype.loadData = function() {
@@ -243,8 +236,16 @@
       return true;
     };
 
+    Player.prototype.handleOldVersionData = function() {
+      if (this.data.currentEquipments.hat === "bigginerHat") {
+        this.data.currentEquipments = playerData.currentEquipments;
+      }
+      return this.data.basicStatusValue = playerData.basicStatusValue;
+    };
+
     Player.prototype.initData = function() {
-      var equipmentName, name, part, _i, _j, _len, _len1, _ref, _ref1;
+      var equipmentName, name, part, _i, _len, _ref, _ref1;
+      this.handleOldVersionData();
       this.money = this.data.money;
       this.energy = this.data.energy;
       this.relationships = this.data.relationships;
@@ -252,17 +253,20 @@
       this.lastStage = this.data.lastStage;
       this.storys = this.data.storys;
       this.missions = this.data.missions;
-      this.equipments = [];
+      this.equipments = {};
       _ref = this.data.equipments;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         name = _ref[_i];
-        this.equipments.push(new PlayerEquipment(this.db, name));
+        this.equipments.push = new PlayerEquipment(this.db, name);
       }
       this.currentEquipments = {};
       _ref1 = this.data.currentEquipments;
-      for (equipmentName = _j = 0, _len1 = _ref1.length; _j < _len1; equipmentName = ++_j) {
-        part = _ref1[equipmentName];
-        this.currentEquipments[part] = new PlayerEquipment(equipmentName);
+      for (part in _ref1) {
+        equipmentName = _ref1[part];
+        if (!equipmentName) {
+          continue;
+        }
+        this.currentEquipments[part] = new PlayerEquipment(this.db, equipmentName);
       }
       this.backpack = [];
       this.storage = [];
@@ -273,7 +277,7 @@
     };
 
     Player.prototype.updateStatusValue = function() {
-      var equip, name, part, value, _i, _len, _ref, _ref1, _results;
+      var equip, name, part, value, _ref, _ref1;
       this.basicStatusValue = this.data.basicStatusValue;
       this.statusValue = {};
       _ref = this.basicStatusValue;
@@ -282,23 +286,15 @@
         this.statusValue[name] = value;
       }
       _ref1 = this.currentEquipments;
-      _results = [];
-      for (equip = _i = 0, _len = _ref1.length; _i < _len; equip = ++_i) {
-        part = _ref1[equip];
-        _results.push((function() {
-          var _results1;
-          _results1 = [];
-          for (name in this.statusValue) {
-            if (equip.statusValue[name]) {
-              _results1.push(this.statusValue[name] += equip.statusValue[name]);
-            } else {
-              _results1.push(void 0);
-            }
+      for (part in _ref1) {
+        equip = _ref1[part];
+        for (name in this.statusValue) {
+          if (equip.statusValue[name]) {
+            this.statusValue[name] += equip.statusValue[name];
           }
-          return _results1;
-        }).call(this));
+        }
       }
-      return _results;
+      return console.log("update status value", this.statusValue);
     };
 
     Player.prototype.initThingsFrom = function(originType) {

@@ -166,7 +166,6 @@
     };
 
     GameAudio.prototype.bgmPlay = function() {
-      console.log("play bgm", this);
       this.doms[0].play();
       return this.doms[0].paused = false;
     };

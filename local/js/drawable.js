@@ -25,7 +25,7 @@
       this.blendQueue = [];
       this.onshow = true;
       this.transform = {
-        opacity: 1,
+        opacity: null,
         translateX: 0,
         translateY: 0,
         translateZ: 0,
@@ -489,7 +489,7 @@
 
     return Drawable;
 
-  })(Suzaku.EventEmitter);
+  })(EventEmitter);
 
   Drawable.BlendMethod = {
     linearLight: function(r1, g1, b1, a1, r2, g2, b2, a2) {
@@ -558,17 +558,69 @@
         });
       },
       fadeIn: function(time, callback) {
+        if (this.transform.opacity === null) {
+          this.transform.opacity = 0;
+        }
         return this.animate((function(p) {
           return this.transform.opacity = p;
         }), time, "linear", callback);
       },
       fadeOut: function(time, callback) {
+        if (this.transform.opacity === null) {
+          this.transform.opacity = 1;
+        }
         return this.animate((function(p) {
           return this.transform.opacity = 1 - p;
         }), time, "linear", callback);
       }
     }
   };
+
+  window.BlendLayer = (function(_super) {
+    __extends(BlendLayer, _super);
+
+    function BlendLayer(host, color, animateName, time) {
+      var _this = this;
+      BlendLayer.__super__.constructor.call(this, 0, 0, host.width, host.height);
+      this.host = host;
+      this.anchor = host.anchor;
+      this.color = color;
+      this.thirdCanvas = Utils.getTempCanvas(3);
+      this.thirdContext = this.thirdCanvas.getContext("2d");
+      this.host.drawQueueAdd(this);
+      if (animateName) {
+        if (!time) {
+          time = "fast";
+        }
+        this[animateName](time, function() {
+          _this.host.drawQueueRemove(_this);
+          return _this.destroy();
+        });
+      }
+    }
+
+    BlendLayer.prototype.draw = function(realContext) {
+      var context, h, s, w, x, y;
+      context = this.thirdContext;
+      x = Math.floor(-this.host.anchor.x >> 0);
+      y = Math.floor(-this.host.anchor.y >> 0);
+      w = Math.floor(this.host.width >> 0);
+      h = Math.floor(this.host.height >> 0);
+      s = Utils.getSize();
+      context.save();
+      context.translate(s.width / 2, s.height / 2);
+      context.clearRect(x, y, w, h);
+      this.host.draw(context);
+      context.globalCompositeOperation = "source-in";
+      context.fillStyle = this.color;
+      context.fillRect(x, y, w, h);
+      context.restore();
+      return realContext.drawImage(this.thirdCanvas, s.width / 2 + x, s.height / 2 + y, w, h, x, y, w, h);
+    };
+
+    return BlendLayer;
+
+  })(Drawable);
 
   window.Layer = (function(_super) {
     __extends(Layer, _super);
@@ -595,7 +647,6 @@
       Layer.__super__.setImg.call(this, img);
       this.width = img.width;
       this.height = img.height;
-      console.log(img, this);
       return this;
     };
 

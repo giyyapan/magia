@@ -88,7 +88,7 @@ class GameAudio extends EventEmitter
     @addAudioDom().play()
     return false
   bgmPlay:->
-    console.log "play bgm",this
+    #console.log "play bgm",this
     @doms[0].play()
     @doms[0].paused = false
   setVolume:(volume)->

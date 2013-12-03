@@ -8,12 +8,10 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     console.log this
     @animateClock.setRate 10
     @name = "player"
-    for name,value of playerData.statusValue
-      this[name] = value
     #@hp = 30
     @bf = battlefield
     @lifeBar = new Widget @bf.menu.UI['life-bar']
-    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
+    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@realStatusValue.hp}"
   act:->
     super
     @bf.camera.lookAt {x:@x + 100,y:@y - 150},400,1.7
@@ -33,10 +31,10 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       @bf.mainLayer.sortDrawQueue()
       @useMovement @defaultMovement,true
   attackFire:(target)->
-    blendLayer = new BlendLayer this,"rgba(79, 175, 212, 0.81)"
-    blendLayer.flash 150,=>
-      @drawQueueRemove blendLayer
-    damage = @handleAttackDamage normal:@playerData.statusValue.atk
+    statusValue = @realStatusValue
+    new BlendLayer this,"rgba(79, 175, 212, 0.81)","flash",150
+    damage = normal:statusValue.atk
+    @handleAttackDamage damage
     window.AudioManager.play "playerCast"
     effect = new BfEffectSprite @bf,@db.sprites.get("energyBall"),this,target
     effect.on "active",=>
@@ -46,6 +44,7 @@ class window.BattlefieldPlayer extends BattlefieldSprite
     @isDefensed = true
     bl = new BlendLayer this,"rgba(238, 215, 167, 0.4)"
     @speedItem.speedGage += 30
+    @bf.setView "normal"
     @once "act",=>
       @isDefensed = false
       @drawQueueRemove bl
@@ -64,13 +63,10 @@ class window.BattlefieldPlayer extends BattlefieldSprite
   onBuff:(effect)->
   onHeal:(from,value)->
     super
-    if @hp > @statusValue.hp
-      @hp = @statusValue.hp
+    if @hp > @realStatusValue.hp
+      @hp = @realStatusValue.hp
     @updateLifeBar "heal"
   onHurt:(from,damage)->
-    if @isDefensed
-      for type,value of damage
-        damage[type] = parseInt(value/3)
     super
     if @hp <= 1 and @bf.data.nolose
       @hp = 1
@@ -86,12 +82,13 @@ class window.BattlefieldPlayer extends BattlefieldSprite
       J.addClass "damage"
       @setCallback 100,=>
         J.removeClass("damage")
-    J.css "width","#{parseInt(@hp/@statusValue.hp*100)}%"
-    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@statusValue.hp}"
+    J.css "width","#{parseInt(@hp/@realStatusValue.hp*100)}%"
+    @lifeBar.UI['life-text'].J.text "#{parseInt(@hp)}/#{@realStatusValue.hp}"
   draw:(context,tickDelay)->
     super context,tickDelay
     #context.fillRect(-10,-10,20,20);
   die:->
+    super
     return if @dead
     @dead = true
     @bf.lose()

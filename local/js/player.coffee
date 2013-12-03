@@ -4,9 +4,8 @@ testPlayerData =
   money:4000
   energy:50
   backpack:[
-    {name:"healPotion",traitValue:30,type:"supplies"}
-    {name:"firePotion",traitValue:50,type:"supplies"}
-    {name:"firePotion",traitValue:100,type:"supplies"}
+    {name:"healPotion",traitValue:100,type:"supplies"}
+    {name:"firePotion",traitValue:130,type:"supplies"}
     {name:"fogPotion",traitValue:30,type:"supplies"}
     {name:"corrosionPotion",traitValue:100,type:"supplies"}
     {name:"burnPotion",traitValue:30,type:"supplies"}
@@ -45,25 +44,24 @@ testPlayerData =
   storage:[]
   equipments:[]
   currentEquipments:
-    hat:"bigginerHat"#hp
-    weapon:"begginerStaff"#atk
-    clothes:"bigginerRobe"#def
-    shose:"bigginerShose"#spd
+    hat:"hat1"#hp
+    weapon:"weapon1"#atk
+    robe:"robe1"#def
+    shose:"shose1"#spd
     other:null
   basicStatusValue:
     hp:300
     mp:300
-    atk:30
-    normalDef:30
+    atk:10
+    def:0
     fireDef:0
-    waterDef:0
-    earthDef:0
-    airDef:0
+    iceDef:0
+    inpactDef:0
     spiritDef:0
     minusDef:0
-    precision:95
+    accuracy:95
     resistance:10
-    spd:40
+    spd:30
 
 playerData =
   name:"艾丽西亚"
@@ -86,26 +84,25 @@ playerData =
   storage:[]
   equipments:[]
   currentEquipments:
-    hat:"bigginerHat"#hp
-    weapon:"begginerStaff"#atk
-    clothes:"bigginerRobe"#def
-    shose:"bigginerShose"#spd
+    hat:"hat1"#hp
+    weapon:"weapon1"#atk
+    robe:"robe1"#def
+    shose:"shose1"#spd
     other:null
   basicStatusValue:
     hp:300
     mp:300
-    atk:20
-    normalDef:30
+    atk:10
+    def:0
     fireDef:0
-    waterDef:0
-    earthDef:0
-    airDef:0
+    iceDef:0
+    inpactDef:0
     spiritDef:0
     minusDef:0
-    precision:95
-    resistance:10
-    spd:40
-
+    accuracy:80
+    miss:5
+    spd:30
+    
 class window.Player extends EventEmitter
   constructor:(db)->
     super null
@@ -118,7 +115,7 @@ class window.Player extends EventEmitter
     @saveLock = false
     window.fuckmylife = =>
       @newData testPlayerData
-    window.fuckmylife()
+    #window.fuckmylife()
   loadData:->
     dataKey = Utils.localData "get","dataKey"
     data = Utils.localData "get","playerData"
@@ -136,7 +133,12 @@ class window.Player extends EventEmitter
     console.log "new data",@data
     @initData()
     return true
+  handleOldVersionData:->
+    if @data.currentEquipments.hat is "bigginerHat"
+      @data.currentEquipments = playerData.currentEquipments
+    @data.basicStatusValue = playerData.basicStatusValue
   initData:()->
+    @handleOldVersionData()
     @money = @data.money
     @energy = @data.energy
     @relationships = @data.relationships
@@ -144,12 +146,13 @@ class window.Player extends EventEmitter
     @lastStage = @data.lastStage
     @storys = @data.storys
     @missions = @data.missions
-    @equipments = []
+    @equipments = {}
     for name in @data.equipments
-      @equipments.push new PlayerEquipment @db,name
+      @equipments.push = new PlayerEquipment @db,name
     @currentEquipments = {}
-    for part,equipmentName in @data.currentEquipments 
-      @currentEquipments[part] = new PlayerEquipment equipmentName
+    for part,equipmentName of @data.currentEquipments
+      continue if not equipmentName
+      @currentEquipments[part] = new PlayerEquipment @db,equipmentName
     @backpack = []
     @storage = []
     @initThingsFrom "backpack"
@@ -161,9 +164,10 @@ class window.Player extends EventEmitter
     @statusValue = {}
     for name,value of @basicStatusValue
       @statusValue[name] = value
-    for part,equip in @currentEquipments
+    for part,equip of @currentEquipments
       for name of @statusValue
         @statusValue[name] += equip.statusValue[name] if equip.statusValue[name]
+    console.log "update status value",@statusValue
   initThingsFrom:(originType)->
     switch originType
       when "backpack"

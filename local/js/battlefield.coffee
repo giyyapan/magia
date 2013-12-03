@@ -1,39 +1,12 @@
-class window.BlendLayer extends Drawable
-  constructor:(host,color)->
-    super 0,0,host.width,host.height
-    @host = host
-    @anchor = host.anchor
-    @color = color
-    @thirdCanvas = Utils.getTempCanvas 3
-    @thirdContext = @thirdCanvas.getContext "2d"
-    @host.drawQueueAdd this
-  draw:(realContext)->
-    context = @thirdContext
-    x = Math.floor -@host.anchor.x >> 0
-    y = Math.floor -@host.anchor.y >> 0
-    w = Math.floor @host.width >> 0
-    h = Math.floor @host.height >> 0
-    s = Utils.getSize()
-    context.save()
-    context.translate s.width/2,s.height/2
-    context.clearRect x,y,w,h
-    @host.draw context
-    #context.globalCompositeOperation = "source-atop"
-    context.globalCompositeOperation = "source-in"
-    context.fillStyle = @color
-    context.fillRect x,y,w,h
-    context.restore()
-    realContext.drawImage @thirdCanvas,s.width/2+x,s.height/2+y,w,h,x,y,w,h
-    
 class window.SpeedItem extends Widget
-  constructor:(tpl,data)->
+  constructor:(tpl,host)->
     super tpl
     @speedGage = 50
     @maxSpeed = 100
-    @speed = data.statusValue.spd
-    console.log data
-    @UI.icon.src = data.icon.src if data.icon
+    @host = host
+    @UI.icon.src = host.icon.src if @host.icon
   tick:(tickDelay)->
+    @speed = @host.realStatusValue.spd
     @speedGage += tickDelay/1000*@speed
     if @speedGage > @maxSpeed
       @setWidgetPosition @maxSpeed
@@ -75,7 +48,9 @@ class DetailsBox extends ItemDetailsBox
     menu = @bf.menu
     menu.UI['magic-menus'].J.fadeOut 150
     w = sourceItemWidget
-    if w.type is "active"
+    if w.type is "defense"
+      @bf.player.useSpell w.type,w.playerSupplies,@bf.player
+    else
       switch w.effectData.type
         when "attack","debuff","dot"
           menu.hideActionBtns()
@@ -86,8 +61,6 @@ class DetailsBox extends ItemDetailsBox
             success:(target)=>@bf.player.useSpell w.type,w.playerSupplies,target
         else
           @bf.player.useSpell w.type,w.playerSupplies,@bf.player
-    else
-      @bf.player.useSpell w.type,w.playerSupplies,@bf.player
         
 class BattlefieldMenu extends Menu
   constructor:(battlefield,tpl)->
@@ -115,9 +88,9 @@ class BattlefieldMenu extends Menu
     @UI['spell-select-box'].onclick = stopPropagation
     @UI['spell-source-box'].onclick = stopPropagation
     @detailsBox.onclick = stopPropagation
-  addSpeedItem:(originData)->
+  addSpeedItem:(bfSprite)->
     tpl = @UI['speed-item-tpl'].innerHTML
-    item = new SpeedItem tpl,originData
+    item = new SpeedItem tpl,bfSprite
     item.appendTo @UI['speed-item-list']
     return item
   showActionBtns:(callback)->
@@ -171,7 +144,8 @@ class BattlefieldMenu extends Menu
     @UI['magic-menus'].J.show()
     @UI['spell-select-layer'].J.fadeIn 150
     @UI['spell-select-layer'].dom.onclick = =>
-      @UI['spell-select-layer'].J.fadeOut 150
+      @UI['spell-select-layer'].J.fadeOut 150,=>
+        @detailsBox.J.hide()
   handlePlayerEscape:->
     console.log "escape"
     if @bf.data.story
@@ -196,7 +170,8 @@ class BattlefieldMenu extends Menu
     @UI['spell-source-layer'].J.fadeIn 150
     @UI['spell-source-layer'].dom.onclick = =>
       @UI['spell-select-box'].J.find("li").removeClass "selected"
-      @UI['spell-source-layer'].J.fadeOut 150
+      @UI['spell-source-layer'].J.fadeOut 150,=>
+        @detailsBox.J.hide()
     
 class window.Battlefield extends Stage
   constructor:(game,data)->
@@ -242,9 +217,7 @@ class window.Battlefield extends Stage
           when "anchor" then bg.setAnchor value
           else bg[name] = value
       @camera.render bg
-      console.log "fuck",bg
       @bgs.push bg
-    console.log @bgs
     @mainLayer = @bgs[0] if not @mainLayer
     @camera.defaultReferenceZ = @mainLayer.z
     @menu = new BattlefieldMenu this,Res.tpls['battlefield-menu']
@@ -254,13 +227,14 @@ class window.Battlefield extends Stage
     @menu.J.fadeOut "fast"
     text = ""
     wraper = "<span class='center'>{}</span>"
-    dropMoney = 0
-    for m in @monsters
-      for name,value of m.drop
+    money = 0
+    for mname in @data.monsters
+      mdata = @db.monsters.get mname
+      for name,value of mdata.drop
         switch name
-          when "money" then dropMoney += value
-    @game.player.money += value
-    text = wraper.replace "{}","获得金钱:#{value}G"
+          when "money" then money += parseInt(value)
+    @game.player.money += money
+    text = wraper.replace "{}","获得金钱:#{money}G"
     @game.player.saveData()
     box = new MsgBox "胜利","战斗胜利！</br>#{text}"
     box.on "close",=>

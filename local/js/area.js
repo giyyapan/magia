@@ -298,8 +298,7 @@
               break;
             case "scale":
               console.log("scale", value);
-              layer.transform.scale = value;
-              _results.push(console.log(layer));
+              _results.push(layer.transform.scale = value);
               break;
             default:
               _results.push(layer[name] = value);
@@ -314,7 +313,6 @@
         for (imgName in _ref) {
           data = _ref[imgName];
           bg = new Layer().setImg(Res.imgs[imgName]);
-          console.log(bg, data);
           initLayer(bg, data);
           this.bgs.push(bg);
           this.camera.render(bg);
@@ -325,14 +323,12 @@
         for (imgName in _ref1) {
           data = _ref1[imgName];
           bg = new Layer().setImg(Res.imgs[imgName]);
-          console.log(bg, data);
           initLayer(bg, data);
           this.floatBgs.push(bg);
           this.camera.render(bg);
         }
       }
-      this.mainBg = this.bgs[0];
-      return console.log(this.mainBg);
+      return this.mainBg = this.bgs[0];
     };
 
     Place.prototype.initMenu = function() {
@@ -360,7 +356,6 @@
       this.menu.UI['move-right'].onclick = function(evt) {
         var x;
         evt.stopPropagation();
-        console.log("right");
         _this.camera.lock = true;
         _this.currentX += 400;
         if (_this.currentX > _this.mainBg.width - s.width) {
@@ -379,7 +374,6 @@
       this.menu.UI['move-left'].onclick = function(evt) {
         var x;
         evt.stopPropagation();
-        console.log("left");
         _this.camera.lock = true;
         _this.currentX -= 400;
         if (_this.currentX < 0) {
@@ -555,7 +549,6 @@
       this.data = game.db.areas.get(areaName);
       this.originData = this.data;
       this.backpackMenu = new Backpack(game, "gatherArea");
-      console.log(this);
       this.enterPlace("entry");
     }
 
@@ -568,7 +561,6 @@
       };
       this.game.saveStage();
       bf = this.game.switchStage("battle", data);
-      console.log(bf);
       return bf.on("win", function() {
         AudioManager.play("home");
         _this.game.restoreStage();
@@ -602,7 +594,6 @@
     Area.prototype.showBackpack = function() {
       var self;
       console.log("show backpack");
-      console.log(this.backpackMenu);
       self = this;
       this.backpackMenu.on("close", function() {
         self.currentPlace.onShow = true;

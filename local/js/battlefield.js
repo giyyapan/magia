@@ -4,57 +4,21 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  window.BlendLayer = (function(_super) {
-    __extends(BlendLayer, _super);
-
-    function BlendLayer(host, color) {
-      BlendLayer.__super__.constructor.call(this, 0, 0, host.width, host.height);
-      this.host = host;
-      this.anchor = host.anchor;
-      this.color = color;
-      this.thirdCanvas = Utils.getTempCanvas(3);
-      this.thirdContext = this.thirdCanvas.getContext("2d");
-      this.host.drawQueueAdd(this);
-    }
-
-    BlendLayer.prototype.draw = function(realContext) {
-      var context, h, s, w, x, y;
-      context = this.thirdContext;
-      x = Math.floor(-this.host.anchor.x >> 0);
-      y = Math.floor(-this.host.anchor.y >> 0);
-      w = Math.floor(this.host.width >> 0);
-      h = Math.floor(this.host.height >> 0);
-      s = Utils.getSize();
-      context.save();
-      context.translate(s.width / 2, s.height / 2);
-      context.clearRect(x, y, w, h);
-      this.host.draw(context);
-      context.globalCompositeOperation = "source-in";
-      context.fillStyle = this.color;
-      context.fillRect(x, y, w, h);
-      context.restore();
-      return realContext.drawImage(this.thirdCanvas, s.width / 2 + x, s.height / 2 + y, w, h, x, y, w, h);
-    };
-
-    return BlendLayer;
-
-  })(Drawable);
-
   window.SpeedItem = (function(_super) {
     __extends(SpeedItem, _super);
 
-    function SpeedItem(tpl, data) {
+    function SpeedItem(tpl, host) {
       SpeedItem.__super__.constructor.call(this, tpl);
       this.speedGage = 50;
       this.maxSpeed = 100;
-      this.speed = data.statusValue.spd;
-      console.log(data);
-      if (data.icon) {
-        this.UI.icon.src = data.icon.src;
+      this.host = host;
+      if (this.host.icon) {
+        this.UI.icon.src = host.icon.src;
       }
     }
 
     SpeedItem.prototype.tick = function(tickDelay) {
+      this.speed = this.host.realStatusValue.spd;
       this.speedGage += tickDelay / 1000 * this.speed;
       if (this.speedGage > this.maxSpeed) {
         this.setWidgetPosition(this.maxSpeed);
@@ -130,7 +94,9 @@
       menu = this.bf.menu;
       menu.UI['magic-menus'].J.fadeOut(150);
       w = sourceItemWidget;
-      if (w.type === "active") {
+      if (w.type === "defense") {
+        return this.bf.player.useSpell(w.type, w.playerSupplies, this.bf.player);
+      } else {
         switch (w.effectData.type) {
           case "attack":
           case "debuff":
@@ -148,8 +114,6 @@
           default:
             return this.bf.player.useSpell(w.type, w.playerSupplies, this.bf.player);
         }
-      } else {
-        return this.bf.player.useSpell(w.type, w.playerSupplies, this.bf.player);
       }
     };
 
@@ -199,10 +163,10 @@
       return this.detailsBox.onclick = stopPropagation;
     };
 
-    BattlefieldMenu.prototype.addSpeedItem = function(originData) {
+    BattlefieldMenu.prototype.addSpeedItem = function(bfSprite) {
       var item, tpl;
       tpl = this.UI['speed-item-tpl'].innerHTML;
-      item = new SpeedItem(tpl, originData);
+      item = new SpeedItem(tpl, bfSprite);
       item.appendTo(this.UI['speed-item-list']);
       return item;
     };
@@ -295,7 +259,9 @@
       this.UI['magic-menus'].J.show();
       this.UI['spell-select-layer'].J.fadeIn(150);
       return this.UI['spell-select-layer'].dom.onclick = function() {
-        return _this.UI['spell-select-layer'].J.fadeOut(150);
+        return _this.UI['spell-select-layer'].J.fadeOut(150, function() {
+          return _this.detailsBox.J.hide();
+        });
       };
     };
 
@@ -342,7 +308,9 @@
       this.UI['spell-source-layer'].J.fadeIn(150);
       return this.UI['spell-source-layer'].dom.onclick = function() {
         _this.UI['spell-select-box'].J.find("li").removeClass("selected");
-        return _this.UI['spell-source-layer'].J.fadeOut(150);
+        return _this.UI['spell-source-layer'].J.fadeOut(150, function() {
+          return _this.detailsBox.J.hide();
+        });
       };
     };
 
@@ -421,10 +389,8 @@
           }
         }
         this.camera.render(bg);
-        console.log("fuck", bg);
         this.bgs.push(bg);
       }
-      console.log(this.bgs);
       if (!this.mainLayer) {
         this.mainLayer = this.bgs[0];
       }
@@ -434,27 +400,28 @@
     };
 
     Battlefield.prototype.win = function() {
-      var box, dropMoney, m, name, text, value, wraper, _i, _len, _ref, _ref1,
+      var box, mdata, mname, money, name, text, value, wraper, _i, _len, _ref, _ref1,
         _this = this;
       this.tick = function() {};
       this.menu.J.fadeOut("fast");
       text = "";
       wraper = "<span class='center'>{}</span>";
-      dropMoney = 0;
-      _ref = this.monsters;
+      money = 0;
+      _ref = this.data.monsters;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        m = _ref[_i];
-        _ref1 = m.drop;
+        mname = _ref[_i];
+        mdata = this.db.monsters.get(mname);
+        _ref1 = mdata.drop;
         for (name in _ref1) {
           value = _ref1[name];
           switch (name) {
             case "money":
-              dropMoney += value;
+              money += parseInt(value);
           }
         }
       }
-      this.game.player.money += value;
-      text = wraper.replace("{}", "获得金钱:" + value + "G");
+      this.game.player.money += money;
+      text = wraper.replace("{}", "获得金钱:" + money + "G");
       this.game.player.saveData();
       box = new MsgBox("胜利", "战斗胜利！</br>" + text);
       box.on("close", function() {

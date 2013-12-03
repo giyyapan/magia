@@ -19,11 +19,11 @@
           attackSound: "qqHit",
           statusValue: {
             hp: 100,
-            def: 30,
+            def: 10,
             spd: 30
           },
           damage: {
-            normal: 20
+            normal: 60
           },
           drop: {
             money: 20
@@ -35,11 +35,11 @@
           attackSound: "qqHit",
           statusValue: {
             hp: 150,
-            def: 30,
-            spd: 30
+            def: 10,
+            spd: 35
           },
           damage: {
-            water: 30
+            ice: 80
           },
           drop: {
             money: 15
@@ -52,11 +52,11 @@
           scale: 1.3,
           statusValue: {
             hp: 300,
-            def: 30,
-            spd: 30
+            def: 20,
+            spd: 35
           },
           damage: {
-            water: 80
+            ice: 120
           },
           drop: {
             money: 80
@@ -68,11 +68,12 @@
           attackSound: "pigHit",
           statusValue: {
             hp: 150,
-            def: 30,
+            def: 10,
             spd: 30
           },
           damage: {
-            normal: 15
+            normal: 35,
+            impact: 30
           },
           drop: {
             money: 10
@@ -84,11 +85,12 @@
           attackSound: "pigHit",
           statusValue: {
             hp: 150,
-            def: 30,
+            def: 20,
             spd: 30
           },
           damage: {
-            normal: 15
+            normal: 30,
+            ice: 30
           },
           drop: {
             money: 10
@@ -102,10 +104,11 @@
           statusValue: {
             hp: 300,
             def: 30,
-            spd: 30
+            spd: 28
           },
           damage: {
-            normal: 30
+            normal: 40,
+            ice: 50
           },
           drop: {
             money: 100
@@ -119,10 +122,10 @@
           statusValue: {
             hp: 300,
             def: 30,
-            spd: 30
+            spd: 28
           },
           damage: {
-            normal: 30
+            impact: 80
           },
           drop: {
             money: 100
@@ -133,12 +136,12 @@
           sprite: "slime",
           attackSound: "slimeHit",
           statusValue: {
-            hp: 80,
-            def: 30,
-            spd: 30
+            hp: 50,
+            def: 5,
+            spd: 20
           },
           damage: {
-            normal: 10
+            normal: 40
           },
           drop: {
             money: 5

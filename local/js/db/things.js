@@ -10,10 +10,11 @@
       ThingsDB.__super__.constructor.call(this, "things");
       this.items = new SubDB("things-items");
       this.supplies = new SubDB("things-supplies");
-      this.equipment = new SubDB("things-equipments");
+      this.equipments = new SubDB("things-equipments");
       console.log("fuck");
       this.initItems();
       this.initSupplies();
+      this.initEquipments();
       console.log(this.supplies);
     }
 
@@ -160,7 +161,7 @@
               spd: [0.9, 0.5]
             }
           },
-          active: {
+          defense: {
             name: "泥泞陷阱",
             description: "制造一个陷阱，在被攻击时将攻击者减速",
             sameWithActive: true
@@ -194,7 +195,7 @@
             description: "提升自己的物理防御",
             type: "buff",
             effect: {
-              normalDef: [1.3, 2]
+              def: [1.3, 2]
             }
           }
         },
@@ -224,11 +225,12 @@
             name: "点燃",
             description: "点燃敌人，使其每次行动都受到火焰伤害",
             type: "dot",
+            sprite: "fireBall",
             damage: {
               fire: 1
             }
           },
-          active: {
+          defense: {
             name: "火焰之环",
             description: "制造一个燃烧场，点燃攻击的敌人",
             sameWithActive: true
@@ -247,7 +249,7 @@
             next: {
               type: "debuff",
               effect: {
-                normalDef: [0.8, 0.3]
+                def: [0.8, 0.3]
               }
             }
           },
@@ -270,7 +272,7 @@
             name: "雾气召唤",
             description: "在敌人周围制造雾气，降低他们的精准",
             effect: {
-              precision: [0.8, 0.5]
+              accuracy: [0.8, 0.5]
             }
           }
         },
@@ -286,7 +288,7 @@
             name: "勇气术",
             description: "增加自己的物理攻击力",
             effect: {
-              precision: [1.5, 3]
+              atk: [1.5, 3]
             }
           }
         },
@@ -303,11 +305,25 @@
           active: {
             type: "debuff",
             name: "晕眩术",
+            turn: [1, 5],
             effect: {
-              stun: true
+              spd: 0.1
             }
           }
         }
+      };
+    };
+
+    ThingsDB.prototype.initEquipments = function() {
+      return this.equipments.data = {
+        hat1: "h 20 普通的黑帽 hp:20,def:5",
+        robe1: "r 20 普通的披肩 def:15",
+        shose1: "s 20 普通的皮鞋 spd:5",
+        weapon1: "w 20 木头法杖 atk:10",
+        hat2: "h 200 见习魔女帽 hp:50,def:10",
+        robe2: "r 300 见习魔女披风 def:40",
+        shose2: "s 200 见习魔女鞋 spd:8",
+        weapon2: "w 300 木头法杖 atk:20"
       };
     };
 

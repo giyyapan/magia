@@ -171,24 +171,20 @@ class Place extends Layer
           when "scale"
             console.log "scale",value
             layer.transform.scale = value
-            console.log layer
           else layer[name] = value
     @floatBgs = []
     @bgs = []
     if @data.bg then for imgName,data of @data.bg
       bg = new Layer().setImg Res.imgs[imgName]
-      console.log bg,data
       initLayer bg,data
       @bgs.push bg
       @camera.render bg 
     if @data.floatBg then for imgName,data of @data.floatBg
       bg = new Layer().setImg Res.imgs[imgName]
-      console.log bg,data
       initLayer bg,data
       @floatBgs.push bg
       @camera.render bg 
     @mainBg = @bgs[0]
-    console.log @mainBg
   initMenu:->
     s = Utils.getSize()
     @menu = new Menu Res.tpls['area-menu']
@@ -207,7 +203,6 @@ class Place extends Layer
         @menu.UI['move-right'].J.addClass("autohide").fadeIn 200
     @menu.UI['move-right'].onclick = (evt)=>
       evt.stopPropagation()
-      console.log "right"
       @camera.lock = true
       @currentX += 400
       #if @currentX < 0 then @currentX = 0
@@ -218,7 +213,6 @@ class Place extends Layer
         moveCallback()
     @menu.UI['move-left'].onclick = (evt)=>
       evt.stopPropagation()
-      console.log "left"
       @camera.lock = true
       @currentX -= 400
       if @currentX < 0 then @currentX = 0
@@ -322,7 +316,6 @@ class window.Area extends Stage
     @data = game.db.areas.get areaName
     @originData = @data
     @backpackMenu = new Backpack game,"gatherArea"
-    console.log this
     @enterPlace "entry"
     #@initBattlefield(["qq","qq"])
     #@initBattlefield(["qq","qq","qq"])
@@ -333,7 +326,6 @@ class window.Area extends Stage
       bg:@data.battlefieldBg
     @game.saveStage()
     bf = @game.switchStage "battle",data
-    console.log bf
     bf.on "win",=>
       AudioManager.play "home"
       @game.restoreStage()
@@ -354,7 +346,6 @@ class window.Area extends Stage
       @showBackpack()
   showBackpack:->
     console.log "show backpack"
-    console.log @backpackMenu
     self = this
     @backpackMenu.on "close",->
       self.currentPlace.onShow = true

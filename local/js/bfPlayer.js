@@ -7,7 +7,6 @@
     __extends(BattlefieldPlayer, _super);
 
     function BattlefieldPlayer(battlefield, x, y, playerData) {
-      var name, value, _ref;
       this.db = battlefield.db;
       this.playerData = playerData;
       BattlefieldPlayer.__super__.constructor.call(this, battlefield, x, y, this.db.sprites.get("player"), playerData);
@@ -16,14 +15,9 @@
       console.log(this);
       this.animateClock.setRate(10);
       this.name = "player";
-      _ref = playerData.statusValue;
-      for (name in _ref) {
-        value = _ref[name];
-        this[name] = value;
-      }
       this.bf = battlefield;
       this.lifeBar = new Widget(this.bf.menu.UI['life-bar']);
-      this.lifeBar.UI['life-text'].J.text("" + (parseInt(this.hp)) + "/" + this.statusValue.hp);
+      this.lifeBar.UI['life-text'].J.text("" + (parseInt(this.hp)) + "/" + this.realStatusValue.hp);
     }
 
     BattlefieldPlayer.prototype.act = function() {
@@ -59,15 +53,14 @@
     };
 
     BattlefieldPlayer.prototype.attackFire = function(target) {
-      var blendLayer, damage, effect,
+      var damage, effect, statusValue,
         _this = this;
-      blendLayer = new BlendLayer(this, "rgba(79, 175, 212, 0.81)");
-      blendLayer.flash(150, function() {
-        return _this.drawQueueRemove(blendLayer);
-      });
-      damage = this.handleAttackDamage({
-        normal: this.playerData.statusValue.atk
-      });
+      statusValue = this.realStatusValue;
+      new BlendLayer(this, "rgba(79, 175, 212, 0.81)", "flash", 150);
+      damage = {
+        normal: statusValue.atk
+      };
+      this.handleAttackDamage(damage);
       window.AudioManager.play("playerCast");
       effect = new BfEffectSprite(this.bf, this.db.sprites.get("energyBall"), this, target);
       return effect.on("active", function() {
@@ -82,6 +75,7 @@
       this.isDefensed = true;
       bl = new BlendLayer(this, "rgba(238, 215, 167, 0.4)");
       this.speedItem.speedGage += 30;
+      this.bf.setView("normal");
       this.once("act", function() {
         _this.isDefensed = false;
         return _this.drawQueueRemove(bl);
@@ -110,20 +104,13 @@
 
     BattlefieldPlayer.prototype.onHeal = function(from, value) {
       BattlefieldPlayer.__super__.onHeal.apply(this, arguments);
-      if (this.hp > this.statusValue.hp) {
-        this.hp = this.statusValue.hp;
+      if (this.hp > this.realStatusValue.hp) {
+        this.hp = this.realStatusValue.hp;
       }
       return this.updateLifeBar("heal");
     };
 
     BattlefieldPlayer.prototype.onHurt = function(from, damage) {
-      var type, value;
-      if (this.isDefensed) {
-        for (type in damage) {
-          value = damage[type];
-          damage[type] = parseInt(value / 3);
-        }
-      }
       BattlefieldPlayer.__super__.onHurt.apply(this, arguments);
       if (this.hp <= 1 && this.bf.data.nolose) {
         this.hp = 1;
@@ -150,8 +137,8 @@
           return J.removeClass("damage");
         });
       }
-      J.css("width", "" + (parseInt(this.hp / this.statusValue.hp * 100)) + "%");
-      return this.lifeBar.UI['life-text'].J.text("" + (parseInt(this.hp)) + "/" + this.statusValue.hp);
+      J.css("width", "" + (parseInt(this.hp / this.realStatusValue.hp * 100)) + "%");
+      return this.lifeBar.UI['life-text'].J.text("" + (parseInt(this.hp)) + "/" + this.realStatusValue.hp);
     };
 
     BattlefieldPlayer.prototype.draw = function(context, tickDelay) {
@@ -159,6 +146,7 @@
     };
 
     BattlefieldPlayer.prototype.die = function() {
+      BattlefieldPlayer.__super__.die.apply(this, arguments);
       if (this.dead) {
         return;
       }

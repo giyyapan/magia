@@ -51,7 +51,7 @@
         this.transform.scale = this.originData.scale;
       }
       this.name = this.originData.name;
-      this.maxHp = this.statusValue.hp;
+      this.maxHp = this.realStatusValue.hp;
       this.hp = this.maxHp;
       this.lifeBar = new MonsterLifeBar(this);
       this.drawQueueAddAfter(this.lifeBar);
@@ -107,7 +107,8 @@
       var damage, name, realDamage, sound, value;
       sound = this.originData.attackSound || "qqHit";
       window.AudioManager.play(sound);
-      damage = this.handleAttackDamage(this.originData.damage);
+      damage = Utils.clone(this.originData.damage);
+      this.handleAttackDamage(damage);
       realDamage = {};
       for (name in damage) {
         value = damage[name];
@@ -143,6 +144,7 @@
 
     BattlefieldMonster.prototype.die = function() {
       var _this = this;
+      BattlefieldMonster.__super__.die.apply(this, arguments);
       if (this.dead) {
         return;
       }

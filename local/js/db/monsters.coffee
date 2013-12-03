@@ -10,10 +10,10 @@ class window.MonstersDB extends SubDB
         attackSound:"qqHit"
         statusValue:
           hp:100
-          def:30
+          def:10
           spd:30
         damage:
-          normal:20
+          normal:60
         drop:
           money:20
       iceQQ:
@@ -22,10 +22,10 @@ class window.MonstersDB extends SubDB
         attackSound:"qqHit"
         statusValue:
           hp:150
-          def:30
-          spd:30
+          def:10
+          spd:35
         damage:
-          water:30
+          ice:80
         drop:
           money:15
       iceQQKing:
@@ -35,10 +35,10 @@ class window.MonstersDB extends SubDB
         scale:1.3
         statusValue:
           hp:300
-          def:30
-          spd:30
+          def:20
+          spd:35
         damage:
-          water:80
+          ice:120
         drop:
           money:80
       pig:
@@ -47,10 +47,11 @@ class window.MonstersDB extends SubDB
         attackSound:"pigHit"
         statusValue:
           hp:150
-          def:30
+          def:10
           spd:30
         damage:
-          normal:15
+          normal:35
+          impact:30
         drop:
           money:10
       icePig:
@@ -59,10 +60,11 @@ class window.MonstersDB extends SubDB
         attackSound:"pigHit"
         statusValue:
           hp:150
-          def:30
+          def:20
           spd:30
         damage:
-          normal:15
+          normal:30
+          ice:30
         drop:
           money:10
       icePigKing:
@@ -73,9 +75,10 @@ class window.MonstersDB extends SubDB
         statusValue:
           hp:300
           def:30
-          spd:30
+          spd:28
         damage:
-          normal:30
+          normal:40
+          ice:50
         drop:
           money:100
       pigKing:
@@ -86,9 +89,9 @@ class window.MonstersDB extends SubDB
         statusValue:
           hp:300
           def:30
-          spd:30
+          spd:28
         damage:
-          normal:30
+          impact:80
         drop:
           money:100
       slime:
@@ -96,11 +99,11 @@ class window.MonstersDB extends SubDB
         sprite:"slime"
         attackSound:"slimeHit"
         statusValue:
-          hp:80
-          def:30
-          spd:30
+          hp:50
+          def:5
+          spd:20
         damage:
-          normal:10
+          normal:40
         drop:
           money:5
     

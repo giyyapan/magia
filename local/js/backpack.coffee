@@ -92,6 +92,7 @@ class window.Backpack extends Menu
     @equipments = []
   show:(callback)->
     @init()
+    @UI.money.J.text "金钱：#{@player.money}G"
     @initThings()
     @UILayer.J.fadeIn "fast",callback
     @J.fadeIn "fast",=>

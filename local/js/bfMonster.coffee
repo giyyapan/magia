@@ -29,7 +29,7 @@ class window.BattlefieldMonster extends BattlefieldSprite
     super battlefield,x,y,spriteOriginData,@originData
     if @originData.scale then @transform.scale = @originData.scale;
     @name = @originData.name
-    @maxHp = @statusValue.hp
+    @maxHp = @realStatusValue.hp
     @hp = @maxHp
     @lifeBar = new MonsterLifeBar this
     @drawQueueAddAfter @lifeBar
@@ -61,7 +61,8 @@ class window.BattlefieldMonster extends BattlefieldSprite
   attackFire:(target,index,length)->
     sound = @originData.attackSound or "qqHit"
     window.AudioManager.play sound
-    damage = @handleAttackDamage @originData.damage
+    damage = Utils.clone @originData.damage
+    @handleAttackDamage damage
     realDamage = {}
     for name,value of damage
       realDamage[name] = (value / length)
@@ -80,6 +81,7 @@ class window.BattlefieldMonster extends BattlefieldSprite
     super context,tickDelay
     #context.fillRect(-10,-10,20,20);
   die:->
+    super
     return if @dead
     @dead = true
     @animateClock.paused = true
