@@ -1,7 +1,7 @@
 {
     "name": "艾丽西亚的魔法工房",
-    "version": "0.1.2",
-    "version_code":"6",
+    "version": "0.1.3",
+    "version_code":"7",
     "type": "web",
     "package": "com.uniquestudio.magiahosted",
     "minimum_runtime_version": "0.1.0",

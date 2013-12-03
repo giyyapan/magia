@@ -182,7 +182,6 @@
       this.menu.UI['move-right'].onclick = function(evt) {
         var x;
         evt.stopPropagation();
-        console.log("right");
         _this.camera.lock = true;
         _this.currentX += 400;
         if (_this.currentX > _this.mainLayer.width - s.width) {
@@ -201,7 +200,6 @@
       return this.menu.UI['move-left'].onclick = function(evt) {
         var x;
         evt.stopPropagation();
-        console.log("left");
         _this.camera.lock = true;
         _this.currentX -= 400;
         if (_this.currentX < 0) {

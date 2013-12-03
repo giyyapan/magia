@@ -93,7 +93,6 @@ class Floor extends Layer
         @menu.UI['move-right'].J.removeClass("animate-pophide").addClass "animate-popup"
     @menu.UI['move-right'].onclick = (evt)=>
       evt.stopPropagation()
-      console.log "right"
       @camera.lock = true
       @currentX += 400
       if @currentX > @mainLayer.width - s.width then @currentX = @mainLayer.width - s.width
@@ -103,7 +102,6 @@ class Floor extends Layer
         moveCallback()
     @menu.UI['move-left'].onclick = (evt)=>
       evt.stopPropagation()
-      console.log "left"
       @camera.lock = true
       @currentX -= 400
       if @currentX < 0 then @currentX = 0
