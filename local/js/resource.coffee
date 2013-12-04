@@ -83,7 +83,11 @@ window.MenuImgs = [
 window.Sprites =
   player:"player"
   energyBall:"energyBall"
+  darkBall:"darkBall"
   fireBall:"fireBall"
+  ice:"ice"
+  explode:"explode"
+  burn:"burn"
   buff:"buff"
   debuff:"debuff"
   qq:"qq"
@@ -92,7 +96,7 @@ window.Sprites =
   pigDark:"pig2"
   pigBlue:"pig3"
   slime:"slime"
-  
+  iceSlime:"slime-blue"
 window.Templates = [
   "start-menu"
   "home-menu"

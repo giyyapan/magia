@@ -51,6 +51,18 @@
         traitValue: 50,
         type: "supplies"
       }, {
+        name: "icePotion",
+        traitValue: 50,
+        type: "supplies"
+      }, {
+        name: "earthPotion",
+        traitValue: 50,
+        type: "supplies"
+      }, {
+        name: "snowPotion",
+        traitValue: 50,
+        type: "supplies"
+      }, {
         name: "earthLow",
         number: 10,
         type: "item"
@@ -110,7 +122,9 @@
     missions: {
       current: {},
       completed: {},
-      finished: {}
+      finished: {
+        theGuild: true
+      }
     },
     storys: {
       current: null,
@@ -208,6 +222,9 @@
       this.saveLock = false;
       window.fuckmylife = function() {
         return _this.newData(testPlayerData);
+      };
+      window.whothehellareyou = function() {
+        return console.log(_this);
       };
     }
 

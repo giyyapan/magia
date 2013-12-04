@@ -423,12 +423,12 @@
         case "avail":
           this.setBtnText("接受");
           return this.UI['active-btn'].onclick = function() {
-            if (!mission.start()) {
-              console.error("mission start faild");
-            }
-            new MsgBox("成功", "接受任务 " + mission.dspName + " ");
-            _this.updateStatus(mission);
-            return _this.emit("activeMission", mission);
+            return mission.start(function() {
+              _this.game.switchStage("guild");
+              new MsgBox("成功", "接受任务 " + mission.dspName + " ");
+              _this.updateStatus(mission);
+              return _this.emit("activeMission", mission);
+            });
           };
         case "finished":
           this.setBtnText("关闭");

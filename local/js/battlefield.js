@@ -402,6 +402,7 @@
     Battlefield.prototype.win = function() {
       var box, mdata, mname, money, name, text, value, wraper, _i, _len, _ref, _ref1,
         _this = this;
+      AudioManager.mute();
       this.tick = function() {};
       this.menu.J.fadeOut("fast");
       text = "";
@@ -435,6 +436,7 @@
     Battlefield.prototype.lose = function() {
       var box, evt,
         _this = this;
+      AudioManager.mute();
       this.menu.J.fadeOut("fast");
       this.mainLayer.fadeOut("normal");
       this.tick = function() {};

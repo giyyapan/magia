@@ -204,7 +204,7 @@
       return box.hideCloseBtn();
     };
 
-    Mission.prototype.start = function() {
+    Mission.prototype.start = function(callback) {
       console.log("mission start");
       if (!this.isAvailable()) {
         console.error("not availe!", this);
@@ -212,7 +212,7 @@
       }
       this.player.missions.current[this.name] = this.getNewMissionData();
       this.status = "current";
-      this.handleStartData();
+      this.handleStartData(callback);
       this.player.saveData();
       return this;
     };
@@ -249,27 +249,31 @@
       return _results;
     };
 
-    Mission.prototype.handleStartData = function() {
-      var data, type, _ref, _results;
+    Mission.prototype.handleStartData = function(callback) {
+      var data, handled, type, _ref;
       if (!this.data.start) {
-        return false;
+        if (callback) {
+          callback();
+        }
       }
+      handled = false;
       _ref = this.data.start;
-      _results = [];
       for (type in _ref) {
         data = _ref[type];
         switch (type) {
           case "story":
-            _results.push(this.game.storyManager.showStory(data));
+            this.game.storyManager.showStory(data, callback);
+            handled = true;
             break;
-          case "onloackarea":
-            _results.push(this.player.onloackedAreas[data] = true);
-            break;
-          default:
-            _results.push(void 0);
+          case "unlockarea":
+            this.player.unlockedAreas[data] = true;
         }
       }
-      return _results;
+      if (!handled) {
+        if (callback) {
+          return callback();
+        }
+      }
     };
 
     Mission.prototype.getNewMissionData = function() {

@@ -133,7 +133,12 @@
           this.color = "#59a84c";
           this.textColor = "black";
           break;
+        case "flipOver":
+          this.color = "#97D4F1";
+          this.textColor = "black";
+          break;
         default:
+          console.log("else buff tye is ", type);
           this.color = "#555";
           this.textColor = "white";
       }
@@ -203,9 +208,13 @@
 
     Status.prototype.remove = function() {
       var l, _i, _len, _ref;
+      if (!this.host) {
+        return;
+      }
       console.log("status  " + this.name + " removed");
       this.host.removeStatus(this);
       this.host.drawQueueRemove(this.statusMark);
+      this.statusMark.destroy();
       _ref = this.listeners;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         l = _ref[_i];
@@ -246,11 +255,6 @@
       _ref = FlipOverEffect.__super__.constructor.apply(this, arguments);
       return _ref;
     }
-
-    FlipOverEffect.prototype.remove = function() {
-      FlipOverEffect.__super__.remove.apply(this, arguments);
-      return delete this.host.flipOverEffects[this.name];
-    };
 
     return FlipOverEffect;
 
@@ -615,7 +619,7 @@
     };
 
     BattlefieldSprite.prototype.castSpell = function(sourceSupplies, spellData, target, callback) {
-      var damage, effect, f, heal, name, self, sprite, spriteData,
+      var damage, effect, f, heal, name, next, self, sprite, spriteData,
         _this = this;
       console.log("castSpell", arguments);
       name = spellData.name;
@@ -665,17 +669,28 @@
             return target.updateStatusValue();
           };
       }
-      spriteData = this.db.sprites.effects.get(sprite);
-      spellData.spriteData = spriteData;
-      effect = new BfEffectSprite(this.bf, spriteData, this, target);
-      effect.once("active", function() {
+      if (sprite !== "none") {
+        spriteData = this.db.sprites.effects.get(sprite);
+        spellData.spriteData = spriteData;
+        effect = new BfEffectSprite(this.bf, spriteData, this, target);
+        effect.once("active", function() {
+          f();
+          if (callback) {
+            return callback();
+          }
+        });
+      } else {
         f();
         if (callback) {
-          return callback();
+          callback();
         }
-      });
+      }
       if (spellData.next) {
-        return this.castSpell(sourceSupplies, spellData.next, target, callback);
+        next = spellData.next;
+        if (!next.name) {
+          next.name = spellData.name;
+        }
+        return this.castSpell(sourceSupplies, next, target, callback);
       } else {
 
       }
@@ -683,7 +698,7 @@
 
     BattlefieldSprite.prototype.onHeal = function(from, heal) {
       this.hp += heal;
-      new BlendLayer(this, "rgba(180,250,200,0.6)", "flash", "fast");
+      new BlendLayer(this, "rgba(180,250,200,0.8)", "flash", "normal");
       return new DamageText(this, "heal", heal);
     };
 
@@ -710,9 +725,9 @@
         return new DamageText(this, "miss");
       } else {
         if (this.isDefensed) {
-          return effect = new BlendLayer(this, "rgba(238, 215, 167, 0.6)", "flash", "fast");
+          return effect = new BlendLayer(this, "rgba(238, 215, 167, 0.8)", "flash", "normal");
         } else {
-          return effect = new BlendLayer(this, "rgba(240,30,30,0.8)", "flash", "fast");
+          return effect = new BlendLayer(this, "rgba(240,30,30,0.8)", "flash", "normal");
         }
       }
     };

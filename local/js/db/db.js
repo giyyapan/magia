@@ -49,9 +49,14 @@
 
     Database.prototype.initRules = function() {
       var arr;
-      this.rules.data.reaction = ["fire:2,air:1->burn", "burn:3,fire:2,air:1->explode", "fire:1,earth:2->iron", "water:1,earth:1->muddy", "water:2,fire:1,air:1->fog", "ice:2,water:2,air:2->snow", "life:1,earth:1->heal", "life:2,water:1->clean", "life:2,fire:1->brave", "iron:3,minus:2->corrosion", "life:3,spirit:2,air:2->boost", "minus:2,life:2->poison", "spirit:3,poison:2->stun"];
+      this.rules.data.reaction = ["fire:2,air:1->burn", "burn:2,fire:2,air:1->explode", "fire:1,earth:2->iron", "water:1,earth:1->muddy", "water:2,fire:1,air:1->fog", "ice:2,water:2,air:2->snow", "life:1,earth:1->heal", "life:2,fire:1->brave", "iron:3,minus:1->corrosion", "life:2,spirit:2,air:2->boost", "minus:1,life:2->poison", "spirit:2,poison:2->stun"];
       arr = Utils.clone(Dict.QualityLevel);
-      return this.rules.data.qualityLevel = arr;
+      this.rules.data.qualityLevel = arr;
+      return this.rules.data.traitLevel = {
+        1: "life,fire,wind,air,earth,ice",
+        2: "heal,minus,spirit,poison,clear,fog,iron,traitTime,space",
+        3: "explode,burn,freeze,corrosion,boost,snow,stun"
+      };
     };
 
     Database.prototype.initCharacters = function() {

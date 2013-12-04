@@ -76,7 +76,11 @@ class StatusMark extends Drawable
       when "buff","hot","heal"
         @color = "#59a84c"
         @textColor = "black"
+      when "flipOver"
+        @color = "#97D4F1"
+        @textColor = "black"      
       else
+        console.log "else buff tye is ",type
         @color = "#555"
         @textColor = "white"
     if @host.name is "player"
@@ -125,9 +129,11 @@ class Status extends EventEmitter
       console.log "remove status"
       @remove()
   remove:->
+    return if not @host
     console.log "status  #{@name} removed"
     @host.removeStatus this
     @host.drawQueueRemove @statusMark
+    @statusMark.destroy()
     for l in @listeners
       @host.off l.event,l.f
     @host = null
@@ -144,9 +150,6 @@ class Status extends EventEmitter
       func:func
 
 class FlipOverEffect extends Status
-  remove:->
-    super
-    delete @host.flipOverEffects[@name]
     
 class Dot extends Status
   constructor:(host,sourceSupplies,spellData)->
@@ -383,18 +386,24 @@ class window.BattlefieldSprite extends Sprite
         f = ->
           target.addStatus "debuff",new Debuff target,sourceSupplies,spellData
           target.updateStatusValue()
-    spriteData = @db.sprites.effects.get sprite
-    spellData.spriteData = spriteData
-    effect = new BfEffectSprite @bf,spriteData,this,target
-    effect.once "active",=>
+    if sprite isnt "none"
+      spriteData = @db.sprites.effects.get sprite
+      spellData.spriteData = spriteData
+      effect = new BfEffectSprite @bf,spriteData,this,target
+      effect.once "active",=>
+        f()
+        callback() if callback
+    else
       f()
       callback() if callback
     if spellData.next
-      @castSpell sourceSupplies,spellData.next,target,callback
+      next = spellData.next
+      if not next.name then next.name = spellData.name
+      @castSpell sourceSupplies,next,target,callback
     else
   onHeal:(from,heal)->
     @hp += heal
-    new BlendLayer this,"rgba(180,250,200,0.6)","flash","fast"
+    new BlendLayer this,"rgba(180,250,200,0.8)","flash","normal"
     new DamageText this,"heal",heal
   onHurt:(from,damage)->
     console.log "#{@name} on hurt",damage
@@ -412,9 +421,9 @@ class window.BattlefieldSprite extends Sprite
       new DamageText this,"miss"
     else
       if @isDefensed
-        effect = new BlendLayer this,"rgba(238, 215, 167, 0.6)","flash","fast"
+        effect = new BlendLayer this,"rgba(238, 215, 167, 0.8)","flash","normal"
       else
-        effect = new BlendLayer this,"rgba(240,30,30,0.8)","flash","fast"
+        effect = new BlendLayer this,"rgba(240,30,30,0.8)","flash","normal"
   addStatus:(type,status)->
     switch type
       when "buff" then type = "buffs"

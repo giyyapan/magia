@@ -75,7 +75,7 @@
           console.error("invailid type", item.type);
       }
       player.saveData();
-      return new MsgBox("购买成功", "获得了一个 " + item.dspName, 420);
+      return new MsgBox("购买成功", "获得了一个 " + item.dspName, 600);
     };
 
     ShopItemDetailsBox.prototype.playerSellItem = function(item, price) {
@@ -91,7 +91,7 @@
         this.menu.removeListItem(item);
       }
       player.saveData();
-      return new MsgBox("出售成功", "获得了一个 " + item.dspName, 420);
+      return new MsgBox("出售成功", "卖出了一个 " + item.dspName + " </br> 获得金钱：" + price + " G", 600);
     };
 
     return ShopItemDetailsBox;

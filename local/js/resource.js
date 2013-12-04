@@ -76,7 +76,11 @@
   window.Sprites = {
     player: "player",
     energyBall: "energyBall",
+    darkBall: "darkBall",
     fireBall: "fireBall",
+    ice: "ice",
+    explode: "explode",
+    burn: "burn",
     buff: "buff",
     debuff: "debuff",
     qq: "qq",
@@ -84,7 +88,8 @@
     pig: "pig",
     pigDark: "pig2",
     pigBlue: "pig3",
-    slime: "slime"
+    slime: "slime",
+    iceSlime: "slime-blue"
   };
 
   window.Templates = ["start-menu", "home-menu", "world-map", "popup-box", "test-menu", "area-menu", "shop-menu", "guild-menu", "area-relative-menu", "thing-list-item", "backpack", "battlefield-menu", "worktable-menu", "item-details-box", "trait-item", "dialog-box", "mission-details-box", "story"];

@@ -22,6 +22,7 @@ class window.MissionsDB extends SubDB
         catHint:""
         start:
           unlockarea:"forest"
+          story:"firstMission"
         end:
           story:"firstMissionComplete"
         reward:

@@ -6,6 +6,7 @@ class window.StartMenu extends Stage
     @bgLight = new Layer Res.imgs.startBgLight
     @drawQueueAdd bg,@bgLight
     @initMenu()
+    @soundOff = false
     @changeBgClock = new Clock "fast",=>
       @changeBgClock.paused = true
       @bgLight.animate {"transform.opacity":Math.random()},200,=>
@@ -25,6 +26,15 @@ class window.StartMenu extends Stage
       @game.player.loadData()
       lastStage = @game.player.data.lastStage
       @game.switchStage lastStage
+    @menu.UI.sound.onclick = =>
+      if @soundOff
+        AudioManager.soundOn()
+        @soundOff = false
+        @menu.UI.sound.J.text "关闭声音"
+      else
+        AudioManager.soundOff()
+        @soundOff = true
+        @menu.UI.sound.J.text "打开声音"
     @menu.UI.newgame.onclick = =>
       console.log  "new game btn click"
       AudioManager.play("startClick")

@@ -101,7 +101,8 @@ class ReactionBox extends Widget
       for n,i of @traitItems
         i.remove()
       @traitItems = {}
-      new MsgBox("获得物品","你获得了#{s.dspName}！")
+      mb = new MsgBox "获得物品","你获得了#{s.dspName}！</br>请在背包中查看。"
+      mb.UI.img.src = s.img.src if s.img
       @worktable.game.player.getSupplies "backpack",s
   initReactions:->
     for r in @worktable.db.rules.get "reaction"

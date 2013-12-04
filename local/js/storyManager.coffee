@@ -30,18 +30,19 @@ class window.StoryStage extends Stage
     @dialogBox.clearCharacters()
     @menu.hide()
     @emit "storyEnd",@endData
-  switchBg:(type,name,animateName,animateTime="fast")->
-    console.log "switch bg",type,name
+  switchBg:(type,name,animateName="fadeIn",animateTime="fast")->
     @dialogBox.hide()
     switch type
       when "color"
         color = name
+        console.log "switch bg color",name
         @bgLayer.drawColor name
       when "img"
         imgName = name
-        @bgLayer.setImg Res.imgs[name]
-      else return console.error "invailid bg type",type
-    return if not animateName
+        console.log "switch bg img",imgName
+        @bgLayer.setImg Res.imgs[imgName]
+      else
+        console.error "invailid type:",type
     switch animateName
       when "lookaround"
         s = Utils.getSize()
@@ -161,23 +162,31 @@ class window.StoryManager extends EventEmitter
         continue
       @currentArr.push l
     console.log @storys
-  showStory:(name)->
+  showStory:(name,callback)->
     storyData = @storys[name] 
     if not storyData then return console.error "cannot find story named #{name}"
     @game.saveStage()
     stage = @game.switchStage "story",storyData
     stage.on "storyEnd",(endData)=>
-      @storyEnd name,endData
-  storyEnd:(name,endData)->
+      @storyEnd name,endData,callback
+  storyEnd:(name,endData,callback)->
     @game.player.storys.completed[name] = true
     @game.player.saveData()
     if not endData or not endData.type
-      return @game.restoreStage()
+      if callback
+        callback()
+      else
+        @game.restoreStage()
+      return
     @game.popSavedStage()
-    switch endData.type
-      when "stage"
-        @game.switchStage endData.name,endData.data
-      when "story"
-        @showStory endData.name
-      else console.error "invailid story end data type",endData.type
+    if endData.type is "story"
+        @showStory endData.name,callback
+    else
+      if callback
+        callback()
+      else
+        switch endData.type
+          when "stage"
+            @game.switchStage endData.name,endData.data
+          else console.error "invailid story end data type",endData.type
     

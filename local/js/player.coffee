@@ -14,6 +14,9 @@ testPlayerData =
     {name:"muddyPotion",traitValue:50,type:"supplies"}
     {name:"bravePotion",traitValue:50,type:"supplies"}
     {name:"stunPotion",traitValue:50,type:"supplies"}
+    {name:"icePotion",traitValue:50,type:"supplies"}
+    {name:"earthPotion",traitValue:50,type:"supplies"}
+    {name:"snowPotion",traitValue:50,type:"supplies"}
     {name:"earthLow",number:10,type:"item"}
     {name:"earthMid",number:10,type:"item"}
     {name:"lifeLow",number:10,type:"item"}
@@ -33,7 +36,7 @@ testPlayerData =
   missions:
     current:{}
     completed:{}#completed but not reported
-    finished:{}#completed and areported
+    finished:{theGuild:true}#completed and areported
   storys:
     current:null
     completed:{}
@@ -115,6 +118,8 @@ class window.Player extends EventEmitter
     @saveLock = false
     window.fuckmylife = =>
       @newData testPlayerData
+    window.whothehellareyou = =>
+      console.log this
     #window.fuckmylife()
   loadData:->
     dataKey = Utils.localData "get","dataKey"

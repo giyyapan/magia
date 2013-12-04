@@ -18,6 +18,7 @@
       snow: "雪",
       explode: "爆炸",
       burn: "燃烧",
+      boost: "急速",
       poison: "毒",
       clear: "净化",
       muddy: "泥泞",
@@ -29,11 +30,6 @@
       freeze: "霜冻",
       traitTime: "时",
       space: "空"
-    },
-    TraitLevel: {
-      1: "life,fire,wind,air,earth",
-      2: "heal,minus,spirit,snow,poison,clear,fog,iron,traitTime,space",
-      3: "explode,burn,freeze,corrosion"
     }
   };
 

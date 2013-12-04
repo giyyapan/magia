@@ -43,8 +43,8 @@ class window.PlayerSupplies extends Things
     for v,index in db.rules.get "qualityLevel"
       break if @traitValue < v
     return parseInt(index + 1)
-  _getTraitLevel:->
-    for level,traits of Dict.TraitLevel
+  _getTraitLevel:(db)->
+    for level,traits of db.rules.get "traitLevel"
       for name in traits.split ","
         if @traitName is name
           return parseInt level

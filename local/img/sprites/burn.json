@@ -1,0 +1,52 @@
+{"frames": [
+
+{
+	"filename": "1.png",
+	"frame": {"x":778,"y":2,"w":208,"h":209},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":35,"y":14,"w":208,"h":209},
+	"sourceSize": {"w":302,"h":243}
+},
+{
+	"filename": "2.png",
+	"frame": {"x":234,"y":2,"w":238,"h":225},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":12,"w":238,"h":225},
+	"sourceSize": {"w":302,"h":243}
+},
+{
+	"filename": "3.png",
+	"frame": {"x":2,"y":2,"w":230,"h":243},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":17,"y":0,"w":230,"h":243},
+	"sourceSize": {"w":302,"h":243}
+},
+{
+	"filename": "4.png",
+	"frame": {"x":474,"y":2,"w":302,"h":221},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":14,"w":302,"h":221},
+	"sourceSize": {"w":302,"h":243}
+},
+{
+	"filename": "5.png",
+	"frame": {"x":988,"y":2,"w":276,"h":187},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":25,"w":276,"h":187},
+	"sourceSize": {"w":302,"h":243}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "flame.png",
+	"format": "RGBA8888",
+	"size": {"w":1266,"h":247},
+	"scale": "0.83333",
+	"smartupdate": "$TexturePacker:SmartUpdate:2bc6f27479887ffc530af0b4a894f72a$"
+}
+}

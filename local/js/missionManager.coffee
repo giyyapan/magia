@@ -108,14 +108,14 @@ class Mission extends EventEmitter
     box = new PopupBox "任务信息","任务 #{@dspName} 已经完成",=>
       @finish()
     box.hideCloseBtn()
-  start:->
+  start:(callback)->
     console.log "mission start"
     if not @isAvailable()
       console.error "not availe!",this
       return false
     @player.missions.current[@name] = @getNewMissionData()
     @status = "current"
-    @handleStartData()
+    @handleStartData callback
     @player.saveData()
     return this
   finish:->
@@ -133,14 +133,18 @@ class Mission extends EventEmitter
           @game.storyManager.showStory data
         when "onloackarea"
           @player.onloackedAreas[data] = true
-  handleStartData:->
-    return false if not @data.start
+  handleStartData:(callback)->
+    if not @data.start then callback() if callback
+    handled = false
     for type,data of @data.start
       switch type
         when "story"
-          @game.storyManager.showStory data
-        when "onloackarea"
-          @player.onloackedAreas[data] = true
+          @game.storyManager.showStory data,callback
+          handled = true
+        when "unlockarea"
+          @player.unlockedAreas[data] = true
+    if not handled
+      callback() if callback
   getNewMissionData:->
     obj = {}
     for type,data of @requests

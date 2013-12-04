@@ -10,6 +10,7 @@
     function GameAudioManager() {
       var name, path, resourceContainerDom, _ref, _ref1;
       GameAudioManager.__super__.constructor.apply(this, arguments);
+      this.nosound = false;
       this.source = {
         sfxStartCusor: "sfxStartCusor",
         startClick: "startClick",
@@ -43,6 +44,9 @@
       if (GameConfig.noSound) {
         return true;
       }
+      if (this.nosound) {
+        return;
+      }
       a = this.audios[audioName];
       if (!a) {
         return console.error("not found audio", audioName);
@@ -60,11 +64,13 @@
     };
 
     GameAudioManager.prototype.soundOff = function() {
-      return this.setSound("all", 0);
+      this.setSound("all", 0);
+      return this.nosound = true;
     };
 
     GameAudioManager.prototype.soundOn = function() {
-      return this.setSound("all", 1);
+      this.setSound("all", 1);
+      return this.nosound = false;
     };
 
     GameAudioManager.prototype.setSound = function(soundName, volume) {
@@ -166,8 +172,21 @@
     };
 
     GameAudio.prototype.bgmPlay = function() {
-      this.doms[0].play();
-      return this.doms[0].paused = false;
+      var dom, dv, s;
+      dom = this.doms[0];
+      dom.play();
+      dom.paused = false;
+      dom.volume = 0;
+      dv = 0.05;
+      return s = window.setInterval((function() {
+        var v;
+        v = dom.volume;
+        if (v + dv >= 1) {
+          return window.clearInterval(s);
+        } else {
+          return dom.volume += dv;
+        }
+      }), 5);
     };
 
     GameAudio.prototype.setVolume = function(volume) {

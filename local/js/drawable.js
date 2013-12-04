@@ -548,14 +548,10 @@
         }), time, "swing", callback);
       },
       flash: function(time, callback) {
-        var _this = this;
+        this.transform.opacity = 1;
         return this.animate({
-          "transform.opacity": 1
-        }, time, "expoIn", function() {
-          return _this.animate({
-            "transform.opacity": 0
-          }, time, "expoOut", callback);
-        });
+          "transform.opacity": 0
+        }, time, "expoIn", callback);
       },
       fadeIn: function(time, callback) {
         if (this.transform.opacity === null) {

@@ -97,9 +97,9 @@
       return parseInt(index + 1);
     };
 
-    PlayerSupplies.prototype._getTraitLevel = function() {
+    PlayerSupplies.prototype._getTraitLevel = function(db) {
       var level, name, traits, _i, _len, _ref, _ref1;
-      _ref = Dict.TraitLevel;
+      _ref = db.rules.get("traitLevel");
       for (level in _ref) {
         traits = _ref[level];
         _ref1 = traits.split(",");

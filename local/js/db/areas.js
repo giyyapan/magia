@@ -116,7 +116,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["1000,450 iceMid,minusLow icePig,icePigKing,icePig boss", "340,400 iceLow,iceLow,spiritLow iceQQ", "1370,510 iceLow", "1580,450 fireMid,minusLow iceQQ,slime"],
+              resPoints: ["1000,450 iceMid,minusLow icePig,icePigKing,icePig boss", "340,400 iceLow,iceLow,spiritLow iceSlime,iceSlime,iceSlime", "1370,510 iceLow", "1580,450 fireMid,minusLow iceQQ,iceSlime"],
               movePoints: ["exit:180,480", "middle:1850,560"]
             },
             middle: {
@@ -146,7 +146,7 @@
                   fixToBottom: true
                 }
               },
-              resPoints: ["500,300 waterHigh iceQQKing,iceQQ,iceQQ", "100,500 timeLow pigKing", "300,300 spaceLow slime,slime,slime"],
+              resPoints: ["520,250 earthHigh,iceHigh,earthMid iceQQ,iceQQ", "1130,520 waterHigh,fireHigh,fireMid,earthHigh iceQQKing,iceSlime,iceSlime boss", "1070,320 timeLow,lifeMid,lifeMid,iceMid", "90,470 spaceLow,spiritLow,spiritMid,minusMid"],
               movePoints: ["middle:720,120"]
             }
           }

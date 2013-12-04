@@ -106,4 +106,15 @@ class window.MonstersDB extends SubDB
           normal:40
         drop:
           money:5
-    
+      iceSlime:
+        name:"蓝史莱姆"
+        sprite:"iceSlime"
+        attackSound:"slimeHit"
+        statusValue:
+          hp:80
+          def:10
+          spd:25
+        damage:
+          ice:40
+        drop:
+          money:10

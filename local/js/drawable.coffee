@@ -305,8 +305,8 @@ Drawable.Animate =
           @x = x + Math.sin(p*10) * 10
         ),time,"swing",callback
     flash:(time,callback)->
-      @animate {"transform.opacity":1},time,"expoIn",=>
-        @animate {"transform.opacity":0},time,"expoOut",callback
+      @transform.opacity = 1
+      @animate {"transform.opacity":0},time,"expoIn",callback
     fadeIn:(time,callback)->
       @transform.opacity = 0 if @transform.opacity is null
       @animate ((p)->

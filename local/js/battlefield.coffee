@@ -223,6 +223,7 @@ class window.Battlefield extends Stage
     @menu = new BattlefieldMenu this,Res.tpls['battlefield-menu']
     @drawQueueAddAfter @menu
   win:->
+    AudioManager.mute()
     @tick = ->
     @menu.J.fadeOut "fast"
     text = ""
@@ -241,6 +242,7 @@ class window.Battlefield extends Stage
       @emit "win",monsters:@data.monsters
     console.log "win!!!"
   lose:->
+    AudioManager.mute()
     @menu.J.fadeOut "fast"
     @mainLayer.fadeOut "normal"
     @tick = ->

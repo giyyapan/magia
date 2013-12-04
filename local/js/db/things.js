@@ -27,46 +27,46 @@
         earthLow: {
           name: "双生蘑菇",
           description: "森林里面会生长的奇特蘑菇，有地属性的能量。",
-          traits: ["earth:10"],
+          traits: ["earth:25"],
           gatherRequire: null
         },
         earthMid: {
           name: "发光石",
           description: "比较少见到的发光宝石，是很多地属性魔法的原料",
-          traits: ["earth:50"],
+          traits: ["earth:80"],
           gatherRequire: null
         },
         earthHigh: {
           name: "圣甲虫琥珀",
           description: "只有在很极端的情况下才能保留下来的宝石，里面的圣甲虫充满了地属性的魔力",
-          traits: ["earth:200"],
+          traits: ["earth:400"],
           gatherRequire: null
         },
         airLow: {
           name: "不化之雾",
           description: "清晨的森林里面可以搜集到的神奇雾气，如果装在瓶子里面就不会化开",
-          traits: ["air:20"],
+          traits: ["air:28"],
           gatherRequire: null
         },
         fireLow: {
           name: "火焰苔藓",
           description: "一种富含火元素的植物，制作火药的时候会加入这样的粉末",
-          traits: ["fire:15", "earth:8"]
+          traits: ["fire:25", "earth:8"]
         },
         fireMid: {
           name: "火榴石",
           description: "虽然纯度不高，但是也算是火元素的结晶，有比较搞的火元素含量",
-          traits: ["fire:60"]
+          traits: ["fire:85"]
         },
-        fireHight: {
+        fireHigh: {
           name: "龙吸袋",
           description: "巨龙喷射龙吸所用的器官的一部分，非常稀有",
-          traits: ["fire:180"]
+          traits: ["fire:380"]
         },
         waterLow: {
           name: "湖水",
           description: "清澈的湖水，在森林中的小湖里面可以找到",
-          traits: ["water:10"]
+          traits: ["water:20"]
         },
         waterHigh: {
           name: "无尽之泉",
@@ -76,12 +76,12 @@
         iceLow: {
           name: "冰结晶",
           description: "冰元素稍微丰富一点的区域就能找到这样的结晶，用来保存食物非常有效",
-          traits: ["ice:15"]
+          traits: ["ice:23"]
         },
         iceMid: {
           name: "蓝钻",
           description: "很多冰结晶能够生成一颗这样的宝石，冰元素含量不错",
-          traits: ["ice:60"]
+          traits: ["ice:80"]
         },
         iceHigh: {
           name: "天河之尘",
@@ -91,42 +91,42 @@
         lifeLow: {
           name: "药草",
           description: "有治疗效果的药草，很多汉方药里都有它的成分",
-          traits: ["life:16"]
+          traits: ["life:35"]
         },
         lifeMid: {
           name: "生命之水",
           description: "擦在伤口上就能让伤口快速愈合的神奇泉水，生命元素很丰富",
-          traits: ["life:55"]
+          traits: ["life:80"]
         },
         minusLow: {
           name: "彼岸花",
           description: "生长在生和死的境界线之间的花，有种让人不悦的力量",
-          traits: ["minus:20"]
+          traits: ["minus:30"]
         },
         minusMid: {
           name: "虚无碎片",
           description: "来自深渊的碎片，据说是魔法战争时期造成的大震动留下的遗产，负能量含量较高",
-          traits: ["minus:80"]
+          traits: ["minus:100"]
         },
         spiritLow: {
           name: "妖精的羽毛",
           description: "魅惑的妖精翅膀上的羽毛，有一种光是看着就让人着迷的魔力",
-          traits: ["spirit:30"]
+          traits: ["spirit:33"]
         },
         spiritMid: {
           name: "梦魇之角",
           description: "梦魇偶尔会在现界中被找到，他们的角是强大的灵能和负能量来源",
-          traits: ["spirit:180", "minus:120"]
+          traits: ["spirit:280", "minus:120"]
         },
         timeLow: {
           name: "时之沙",
           description: "古代遗迹中出土的沙子，据说有操纵时间的神奇能量",
-          traits: ["traitTime:25"]
+          traits: ["traitTime:33"]
         },
         spaceLow: {
           name: "以太",
           description: "被称为“不存在之物”的神奇元素，配合适当的魔法能够左右空间",
-          traits: ["space:20"]
+          traits: ["space:33"]
         }
       };
     };
@@ -141,7 +141,7 @@
             name: "治疗术",
             description: "回复一定数量的生命值",
             type: "heal",
-            heal: 1
+            heal: 2
           },
           defense: {
             name: "回复结界",
@@ -158,7 +158,7 @@
             description: "降低敌人的行动速度",
             type: "debuff",
             effect: {
-              spd: [0.9, 0.5]
+              spd: [0.7, 0.4]
             }
           },
           defense: {
@@ -177,7 +177,7 @@
             type: "attack",
             sprite: "fireBall",
             damage: {
-              fire: 2
+              fire: 2.5
             }
           },
           defense: {
@@ -187,15 +187,29 @@
           }
         },
         ironPotion: {
-          name: "坚硬药剂",
-          description: "",
+          name: "钢化药剂",
+          description: "能够使自己的体表变得钢铁一般坚硬的药剂",
           traitName: "iron",
           active: {
             name: "坚硬术",
-            description: "提升自己的物理防御",
+            description: "将体表化为钢铁，提升自己的物理防御",
             type: "buff",
             effect: {
-              def: [1.3, 2]
+              def: [1.5, 3]
+            }
+          }
+        },
+        earthPotion: {
+          name: "地震药剂",
+          description: "能够引发地震的药剂",
+          traitName: "earth",
+          active: {
+            type: "attack",
+            sprite: "explode",
+            name: "地震术",
+            description: "使用大地的力量对敌人造成冲击伤害",
+            damage: {
+              impact: 2.5
             }
           }
         },
@@ -206,14 +220,16 @@
             name: "引爆",
             description: "压缩敌人周围的空气一次引爆，造成爆炸伤害并点燃敌人",
             type: "attack",
+            sprite: "explode",
             damage: {
-              normal: 5,
-              fire: 3
+              impact: 3,
+              fire: 2
             },
             next: {
               type: "dot",
+              sprite: "burn",
               damage: {
-                fire: 1
+                fire: 2
               }
             }
           }
@@ -225,9 +241,9 @@
             name: "点燃",
             description: "点燃敌人，使其每次行动都受到火焰伤害",
             type: "dot",
-            sprite: "fireBall",
+            sprite: "burn",
             damage: {
-              fire: 1
+              fire: 2
             }
           },
           defense: {
@@ -239,6 +255,7 @@
         corrosionPotion: {
           name: "腐蚀药剂",
           traitName: "corrosion",
+          description: "能够腐蚀敌人皮肤和盔甲的药剂",
           active: {
             name: "腐蚀术",
             description: "造成负能量伤害，并降低敌人物理防御",
@@ -262,11 +279,35 @@
         },
         icePotion: {
           name: "冰霜药剂",
-          traitName: "ice"
+          description: "有使空气冻结的效果的药剂",
+          traitName: "ice",
+          active: {
+            name: "急冻术",
+            description: "使用冰能量对敌人进行攻击,并轻微降低敌人的速度",
+            type: "attack",
+            sprite: "ice",
+            damage: {
+              ice: 2
+            },
+            next: {
+              name: "急冻",
+              type: "debuff",
+              sprite: "none",
+              effect: {
+                spd: [0.95, 0.7]
+              }
+            }
+          },
+          defense: {
+            name: "冰霜陷阱",
+            description: "冻结周围的空气，使攻击自己的敌人减速",
+            sameWithActive: true
+          }
         },
         fogPotion: {
           name: "雾气药剂",
           traitName: "fog",
+          description: "能够生成浓雾的药剂",
           active: {
             type: "debuff",
             name: "雾气召唤",
@@ -274,11 +315,60 @@
             effect: {
               accuracy: [0.8, 0.5]
             }
+          },
+          defense: {
+            name: "浓雾笼罩",
+            description: "在自己周围制造雾气，降低攻击敌人的精准",
+            sameWithActive: true,
+            rate: 0.5
           }
         },
         snowPotion: {
           name: "风雪药剂",
-          traitName: "snow"
+          traitName: "snow",
+          description: "可以将天气变得极其恶劣的药剂",
+          active: {
+            type: "attack",
+            name: "暴风雪",
+            sprite: "ice",
+            description: "在敌人周围制造暴风雪，给予冰霜伤害，减速并降低他们的精准",
+            damage: {
+              ice: 3
+            },
+            next: {
+              type: "debuff",
+              name: "风雪",
+              sprite: "none",
+              effect: {
+                spd: [0.8, 0.4],
+                accuracy: [0.8, 0.5]
+              }
+            }
+          },
+          defense: {
+            name: "风雪禁区",
+            description: "在自己周围制造风雪的禁区，所有试图靠近的人都会收到减速并降低精准",
+            type: "debuff",
+            sprite: "ice",
+            rate: 0.5,
+            effect: {
+              spd: [0.8, 0.4],
+              accuracy: [0.8, 0.5]
+            }
+          }
+        },
+        boostPotion: {
+          name: "欢欣药剂",
+          traitName: "boost",
+          description: "能够让人跑得飞起的药剂",
+          active: {
+            type: "buff",
+            name: "心灵急速",
+            description: "让自己跑得飞起",
+            effect: {
+              spd: [2, 4]
+            }
+          }
         },
         bravePotion: {
           name: "勇气药剂",
@@ -286,28 +376,49 @@
           active: {
             type: "buff",
             name: "勇气术",
-            description: "增加自己的物理攻击力",
+            description: "让勇气充满身体，增加自己的物理攻击力",
             effect: {
-              atk: [1.5, 3]
+              atk: [1.8, 3]
+            }
+          },
+          defense: {
+            name: "失落结界",
+            description: "让失落袭击攻击敌人，降低他们的防御力",
+            type: "debuff",
+            effect: {
+              def: [0.8, 0.6]
             }
           }
         },
-        cleanPotion: {
-          name: "净化药剂",
-          traitName: "clean"
-        },
         poisonPotion: {
-          name: "毒药"
+          name: "毒性药剂",
+          description: "能够使对人中毒的药剂",
+          traitName: "poison",
+          active: {
+            type: "dot",
+            name: "痛苦术",
+            description: "对敌人施加毒性法术，每回合对他们造成负能量伤害",
+            damage: {
+              minus: 3
+            }
+          },
+          defense: {
+            name: "痛苦结界",
+            description: "对进攻的敌人施加毒性法术，每回合对他们造成负能量伤害",
+            sameWithActive: true
+          }
         },
         stunPotion: {
           name: "晕眩药剂",
           traitName: "stun",
+          description: "能够让人发昏的药剂",
           active: {
             type: "debuff",
             name: "晕眩术",
-            turn: [1, 5],
+            description: "使敌人眩晕，严重减低他们的速度，持续数个回合",
+            turn: [1, 3],
             effect: {
-              spd: 0.1
+              spd: 0.2
             }
           }
         }

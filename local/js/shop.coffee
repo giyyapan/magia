@@ -37,7 +37,7 @@ class ShopItemDetailsBox extends ItemDetailsBox
       when "equipment" then player.getEquipment "backpack",item.playerEquipment
       else console.error "invailid type",item.type
     player.saveData()
-    new MsgBox "购买成功","获得了一个 #{item.dspName}",420
+    new MsgBox "购买成功","获得了一个 #{item.dspName}",600
   playerSellItem:(item,price)->
     player = @shop.player
     player.money += price
@@ -49,7 +49,7 @@ class ShopItemDetailsBox extends ItemDetailsBox
       @hide()
       @menu.removeListItem item
     player.saveData()
-    new MsgBox "出售成功","获得了一个 #{item.dspName}",420
+    new MsgBox "出售成功","卖出了一个 #{item.dspName} </br> 获得金钱：#{price} G",600
             
 class ShopListItem extends ListItem
   constructor:(tpl,mode,playerThing,menu)->

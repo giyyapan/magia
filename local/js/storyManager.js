@@ -51,25 +51,26 @@
     StoryStage.prototype.switchBg = function(type, name, animateName, animateTime) {
       var color, imgName, s,
         _this = this;
+      if (animateName == null) {
+        animateName = "fadeIn";
+      }
       if (animateTime == null) {
         animateTime = "fast";
       }
-      console.log("switch bg", type, name);
       this.dialogBox.hide();
       switch (type) {
         case "color":
           color = name;
+          console.log("switch bg color", name);
           this.bgLayer.drawColor(name);
           break;
         case "img":
           imgName = name;
-          this.bgLayer.setImg(Res.imgs[name]);
+          console.log("switch bg img", imgName);
+          this.bgLayer.setImg(Res.imgs[imgName]);
           break;
         default:
-          return console.error("invailid bg type", type);
-      }
-      if (!animateName) {
-        return;
+          console.error("invailid type:", type);
       }
       switch (animateName) {
         case "lookaround":
@@ -257,7 +258,7 @@
       return console.log(this.storys);
     };
 
-    StoryManager.prototype.showStory = function(name) {
+    StoryManager.prototype.showStory = function(name, callback) {
       var stage, storyData,
         _this = this;
       storyData = this.storys[name];
@@ -267,24 +268,35 @@
       this.game.saveStage();
       stage = this.game.switchStage("story", storyData);
       return stage.on("storyEnd", function(endData) {
-        return _this.storyEnd(name, endData);
+        return _this.storyEnd(name, endData, callback);
       });
     };
 
-    StoryManager.prototype.storyEnd = function(name, endData) {
+    StoryManager.prototype.storyEnd = function(name, endData, callback) {
       this.game.player.storys.completed[name] = true;
       this.game.player.saveData();
       if (!endData || !endData.type) {
-        return this.game.restoreStage();
+        if (callback) {
+          callback();
+        } else {
+          this.game.restoreStage();
+        }
+        return;
       }
       this.game.popSavedStage();
-      switch (endData.type) {
-        case "stage":
-          return this.game.switchStage(endData.name, endData.data);
-        case "story":
-          return this.showStory(endData.name);
-        default:
-          return console.error("invailid story end data type", endData.type);
+      if (endData.type === "story") {
+        return this.showStory(endData.name, callback);
+      } else {
+        if (callback) {
+          return callback();
+        } else {
+          switch (endData.type) {
+            case "stage":
+              return this.game.switchStage(endData.name, endData.data);
+            default:
+              return console.error("invailid story end data type", endData.type);
+          }
+        }
       }
     };
 

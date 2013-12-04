@@ -76,6 +76,15 @@ class window.SpritesDB extends SubDB
           move:"0,6"
           attack:"7,17:9"
           cast:"0,6"
+      iceSlime:
+        sprite:Res.sprites.iceSlime
+        icon:Res.imgs.slimeBattleIcon
+        anchor:"191,180"
+        movements:
+          normal:"0,0"
+          move:"0,6"
+          attack:"7,17:9"
+          cast:"0,6"
     @effects.data =
       energyBall:
         anchor:"178,124"
@@ -89,6 +98,21 @@ class window.SpritesDB extends SubDB
         movements:
           fly:"0,3"
           active:"4,6"
+      burn:
+        sprite:Res.sprites.burn
+        anchor:"159,150"
+        movements:
+          active:"0,4"
+      ice:
+        sprite:Res.sprites.ice
+        anchor:"145,150"
+        movements:
+          active:"0,5"
+      explode:
+        sprite:Res.sprites.explode
+        anchor:"183,320"
+        movements:
+          active:"0,4"
       darkBall:
         sprite:Res.sprites.darkBall
         anchor:"178,124"

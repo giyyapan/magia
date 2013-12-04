@@ -1,0 +1,52 @@
+{"frames": [
+
+{
+	"filename": "1.png",
+	"frame": {"x":1196,"y":2,"w":282,"h":327},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":23,"y":77,"w":282,"h":327},
+	"sourceSize": {"w":306,"h":407}
+},
+{
+	"filename": "2.png",
+	"frame": {"x":888,"y":2,"w":306,"h":329},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":71,"w":306,"h":329},
+	"sourceSize": {"w":306,"h":407}
+},
+{
+	"filename": "3.png",
+	"frame": {"x":604,"y":2,"w":282,"h":331},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":23,"y":74,"w":282,"h":331},
+	"sourceSize": {"w":306,"h":407}
+},
+{
+	"filename": "4.png",
+	"frame": {"x":310,"y":2,"w":292,"h":365},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":13,"y":42,"w":292,"h":365},
+	"sourceSize": {"w":306,"h":407}
+},
+{
+	"filename": "5.png",
+	"frame": {"x":2,"y":2,"w":306,"h":405},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":306,"h":405},
+	"sourceSize": {"w":306,"h":407}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "explode.png",
+	"format": "RGBA8888",
+	"size": {"w":1480,"h":409},
+	"scale": "0.83333",
+	"smartupdate": "$TexturePacker:SmartUpdate:00b0d29c337486782ae944af7ed3e59b$"
+}
+}

@@ -1,6 +1,7 @@
 class GameAudioManager extends EventEmitter
   constructor: ->
     super
+    @nosound = false
     @source = 
       sfxStartCusor:"sfxStartCusor"
       startClick:"startClick"
@@ -21,6 +22,7 @@ class GameAudioManager extends EventEmitter
       @audios[name] = new GameAudio name,path,resourceContainer,true
   play:(audioName)->
     return true if GameConfig.noSound
+    return if @nosound
     a = @audios[audioName]
     if not a
       return console.error "not found audio",audioName
@@ -31,8 +33,10 @@ class GameAudioManager extends EventEmitter
     a.play()
   soundOff:->
     @setSound "all",0
+    @nosound = true
   soundOn: ->
     @setSound "all",1
+    @nosound = false
   setSound:(soundName,volume) ->
     if soundName is "all"
       for audio of @audios
@@ -89,8 +93,16 @@ class GameAudio extends EventEmitter
     return false
   bgmPlay:->
     #console.log "play bgm",this
-    @doms[0].play()
-    @doms[0].paused = false
+    dom = @doms[0]
+    dom.play()
+    dom.paused = false
+    dom.volume = 0
+    dv = 0.05
+    s = window.setInterval (->
+      v = dom.volume
+      if v + dv >= 1 then window.clearInterval s
+      else dom.volume += dv
+      ),5
   setVolume:(volume)->
     for soundDom in @doms
       soundDom.volume = volume

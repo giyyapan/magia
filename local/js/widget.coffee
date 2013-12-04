@@ -237,11 +237,11 @@ class window.MissionDetailsBox extends Widget
       when "avail"
         @setBtnText "接受"
         @UI['active-btn'].onclick = =>
-          if not mission.start()
-            console.error "mission start faild"
-          new MsgBox "成功","接受任务 #{mission.dspName} "
-          @updateStatus mission
-          @emit "activeMission",mission
+          mission.start =>
+            @game.switchStage "guild"
+            new MsgBox "成功","接受任务 #{mission.dspName} "
+            @updateStatus mission
+            @emit "activeMission",mission
       when "finished"
         @setBtnText "关闭"
         @UI['active-btn'].onclick = =>

@@ -27,21 +27,25 @@ class window.Database extends Suzaku.EventEmitter
   initRules:->
     @rules.data.reaction = [
       "fire:2,air:1->burn" #点燃
-      "burn:3,fire:2,air:1->explode" #爆炸
+      "burn:2,fire:2,air:1->explode" #爆炸
       "fire:1,earth:2->iron" #钢
       "water:1,earth:1->muddy" #泥泞
       "water:2,fire:1,air:1->fog" #
       "ice:2,water:2,air:2->snow"
       "life:1,earth:1->heal"
-      "life:2,water:1->clean"
       "life:2,fire:1->brave"
-      "iron:3,minus:2->corrosion"#腐蚀
-      "life:3,spirit:2,air:2->boost"
-      "minus:2,life:2->poison"
-      "spirit:3,poison:2->stun"
+      "iron:3,minus:1->corrosion"#腐蚀
+      "life:2,spirit:2,air:2->boost"
+      "minus:1,life:2->poison"
+      "spirit:2,poison:2->stun"
     ]
     arr = Utils.clone Dict.QualityLevel
     @rules.data.qualityLevel = arr
+    @rules.data.traitLevel =
+      1:"life,fire,wind,air,earth,ice"
+      2:"heal,minus,spirit,poison,clear,fog,iron,traitTime,space"
+      3:"explode,burn,freeze,corrosion,boost,snow,stun"
+      
   initCharacters:->
     @characters.data =
       nobody:
