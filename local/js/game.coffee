@@ -1,7 +1,7 @@
 conf =
   debug:2 #0 to turn debug off, 1 for basic debug, and 2 for full debug
   #noSound:true
-  showFPS:true
+  showFPS:false
   #maxFPS:30
   frameRate:60
   canvasId:"#gameCanvas"
